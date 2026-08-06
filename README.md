@@ -66,8 +66,8 @@ Engineered to supersede legacy, fragmented AI coding extensions, LUMI provides a
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/earendil-works/pi-main.git
-cd pi-main
+git clone https://github.com/CardSorting/LUMPI.git
+cd LUMPI
 
 # 2. Install dependencies without running untrusted post-install scripts
 npm install --ignore-scripts
@@ -216,41 +216,28 @@ LUMI processes developer interactions through a multi-layered pipeline connectin
 +-----------------------------------------------------------------------------------+
 ```
 
+### Agent Lifecycle & Turn Execution Flow
+
 ```mermaid
-graph TD
-    User["Developer / Terminal User"] --> TUI["@earendil-works/pi-tui<br/>(Differential Terminal Rendering)"]
-    TUI --> AgentEngine["@earendil-works/pi-coding-agent<br/>(Session Manager & Agent Runtime)"]
-    
-    subgraph Host Integration & RPC Layer
-        AgentEngine --> HostBridge["@earendil-works/pi-codemarie<br/>(CodemarieBridge Host Provider)"]
-        AgentEngine --> ClientRPC["@earendil-works/pi-client / server<br/>(IPC Broker & Client Bindings)"]
-        AgentEngine --> Protocol["@earendil-works/pi-protocol<br/>(Typed RPC Codecs & Schemas)"]
-    end
+sequenceDiagram
+    autonumber
+    actor User as Developer / TUI
+    participant Agent as Agent Core Engine
+    participant Host as CodeMarie Host Provider
+    participant Substrate as BroccoliDB Substrate
+    participant Router as LLM Gateway Router
+    participant LLM as Provider API (Codex/Claude)
 
-    subgraph Core Execution Engine
-        AgentEngine --> CoreRuntime["@earendil-works/pi-agent-core<br/>(Agent CAS State Machine)"]
-        AgentEngine --> AIRouter["@earendil-works/pi-ai<br/>(Multi-Provider LLM Router)"]
-    end
-    
-    subgraph High-Throughput Substrate Engine
-        CoreRuntime --> BroccoliDB["@earendil-works/broccolidb<br/>(16MB Zero-GC Slab Allocator)"]
-        BroccoliDB --> SharedBuffer["SharedArrayBuffer Ring Buffers"]
-        BroccoliDB --> DiskKernel["ZenIOEngine Zero-Copy Streaming"]
-    end
-    
-    subgraph Isolated Execution Environments
-        CoreRuntime --> Sandboxing["Security & Isolation Layer"]
-        Sandboxing --> Gondolin["Gondolin Micro-VM"]
-        Sandboxing --> Docker["Docker Container"]
-        Sandboxing --> OpenShell["OpenShell Policy Sandbox"]
-    end
-
-    subgraph External LLM Gateways
-        AIRouter --> OpenAI["OpenAI Codex (Default: gpt-5.6-luna)"]
-        AIRouter --> Anthropic["Anthropic Claude"]
-        AIRouter --> Gemini["Google Gemini"]
-        AIRouter --> LocalLLM["Ollama / OpenRouter / xAI / Cerebras"]
-    end
+    User->>Agent: Prompt Input ("Refactor src/index.ts")
+    Agent->>Host: Request Workspace Context & Diff Client
+    Host-->>Agent: Returns Active Workspace State
+    Agent->>Substrate: Allocate 16MB Zero-GC Slab Buffer
+    Agent->>Router: Construct Prompt Payload
+    Router->>LLM: Stream Inference Request
+    LLM-->>Router: Response Stream Tokens
+    Router-->>Agent: Token Delta Callbacks
+    Agent->>Substrate: Write Zero-Copy State
+    Agent->>User: Differential TUI Screen Render (< 16ms)
 ```
 
 ---
