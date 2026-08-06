@@ -1,0 +1,23 @@
+import type { IController as Controller } from "@core/controller/types";
+import type { UserOrganizationUpdateRequest } from "@shared/proto/dietcode/account";
+import type { Empty } from "@shared/proto/dietcode/common";
+import { fetchRemoteConfig } from "@/core/storage/remote-config/fetch";
+
+/**
+ * Handles setting the user's active organization
+ * @param controller The controller instance
+ * @param request UserOrganization to set as active
+ * @returns Empty response
+ */
+export async function setUserOrganization(
+	controller: Controller,
+	request: UserOrganizationUpdateRequest,
+): Promise<Empty> {
+	if (!controller.accountService) {
+		throw new Error("Account service not available");
+	}
+	// Switch to the specified organization using the account service
+	await controller.accountService.switchAccount(request.organizationId);
+	await fetchRemoteConfig(controller);
+	return {};
+}

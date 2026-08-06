@@ -1,0 +1,61 @@
+{
+	"name": "@earendil-works/pi-codemarie",
+	"version": "0.83.0",
+	"description": "Codemarie / LUMI agent core controller, task lifecycle, state persistence, and MoD prompt steering",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./hosts": {
+			"types": "./dist/hosts/index.d.ts",
+			"import": "./dist/hosts/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"scripts": {
+		"clean": "shx rm -rf dist",
+		"build": "tsgo -p tsconfig.build.json"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "0.91.1",
+		"@google/genai": "1.52.0",
+		"@modelcontextprotocol/sdk": "1.30.0",
+		"@noorm/broccolidb": "1.1.0",
+		"@bufbuild/protobuf": "2.2.5",
+		"better-sqlite3": "12.8.0",
+		"kysely": "0.28.14",
+		"zod": "3.25.76",
+		"execa": "1.0.0",
+		"simple-git": "3.33.0",
+		"chokidar": "5.0.0",
+		"diff": "8.0.4",
+		"ignore": "7.0.5",
+		"nanoid": "3.3.16",
+		"ora": "9.3.0",
+		"picomatch": "2.3.2",
+		"shell-quote": "1.10.0",
+		"strip-ansi": "7.2.0",
+		"turndown": "7.2.4",
+		"undici": "8.9.0",
+		"uuid": "10.0.0",
+		"axios": "1.19.0",
+		"open": "11.0.0",
+		"vscode-uri": "3.1.0"
+	},
+	"devDependencies": {
+		"@types/node": "22.19.0",
+		"shx": "0.4.0",
+		"typescript": "5.9.3"
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	}
+}
