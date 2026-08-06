@@ -1,0 +1,24 @@
+name: Q&A & Troubleshooting
+description: Ask a question about LUMI configuration, installation, or keybindings
+title: "[Q&A]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for asking a question! Before posting, please search existing issues, discussions, and [docs/FAQ.md](docs/FAQ.md).
+  - type: textarea
+    id: question
+    attributes:
+      label: What is your question?
+      description: Provide a clear and concise explanation of what you are trying to accomplish.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment Information
+      description: Node version, OS, terminal emulator, provider API.
+      placeholder: e.g. Node v22.19.0, macOS M3, iTerm2, OpenAI Codex
+    validations:
+      required: false

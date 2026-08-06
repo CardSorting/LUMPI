@@ -1,0 +1,23 @@
+name: Community Extension & Tool Showcase
+description: Share a custom LUMI extension, tool integration, or subagent recipe with the community
+title: "[Showcase]: "
+labels: ["showcase"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Showcase your LUMI extension or custom integration!
+  - type: input
+    id: repository
+    attributes:
+      label: Repository / Gist URL
+      placeholder: https://github.com/username/lumi-custom-extension
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description & Usage
+      description: Explain what your extension does and how developers can load it.
+    validations:
+      required: true

@@ -17,15 +17,14 @@
 <p align="center">
   <a href="docs/EXECUTIVE_BRIEF.md">Executive Brief</a> •
   <a href="docs/ADOPTION_GUIDE.md">Adoption Playbook</a> •
+  <a href="docs/SECURITY_EVALUATION.md">CISO Assessment</a> •
+  <a href="docs/DEMOS_AND_EXAMPLES.md">Recipe Gallery</a> •
   <a href="docs/FAQ.md">FAQ</a> •
   <a href="docs/ECOSYSTEM.md">Ecosystem</a> •
   <a href="QUICK_REFERENCE.md">CLI Cheatsheet</a> •
   <a href="#-choose-your-onboarding-path">Choose Your Path</a> •
   <a href="#-5-minute-interactive-guided-tour">5-Min Tour</a> •
-  <a href="#-quick-start--installation">Quick Start</a> •
-  <a href="#-interactive-tui-preview">TUI Preview</a> •
-  <a href="#-enterprise-recipes--workflow-showcase">Recipes</a> •
-  <a href="#-system-architecture">Architecture</a>
+  <a href="#-quick-start--installation">Quick Start</a>
 </p>
 
 ---
@@ -37,12 +36,13 @@ Select your role for a tailored, zero-friction onboarding path:
 | Target Persona | Core Objective | Fast Track Link |
 | :--- | :--- | :--- |
 | **Engineering Executive / CTO** | Review ROI, security compliance, and strategic architecture | [👉 Executive Brief](docs/EXECUTIVE_BRIEF.md) • [👉 Enterprise Adoption Guide](docs/ADOPTION_GUIDE.md) |
-| **Individual Developer** | Launch LUMI locally in under 30 seconds & access CLI cheatsheet | [👉 30-Second Quickstart](#1-30-second-local-developer-quickstart) • [👉 FAQ](docs/FAQ.md) |
+| **CISO / Security Architect** | Evaluate threat model, data flow, zero telemetry, and micro-VM | [👉 CISO Security Sheet](docs/SECURITY_EVALUATION.md) • [👉 Compliance](docs/COMPLIANCE.md) |
+| **Individual Developer** | Launch LUMI locally in under 30 seconds & access recipe gallery | [👉 30-Second Quickstart](#1-30-second-local-developer-quickstart) • [👉 Recipe Gallery](docs/DEMOS_AND_EXAMPLES.md) |
 | **System Architect** | Evaluate monorepo packages, TUI, substrate memory, and diagrams | [👉 Architecture Guide](docs/ARCHITECTURE.md) • [👉 Diagrams Catalog](docs/DIAGRAMS.md) |
-| **DevOps / Security Lead** | Deploy micro-VM sandboxing, enterprise proxies & air-gapped LLMs | [👉 Security & Air-Gap Guide](docs/SECURITY_AND_AIRGAP.md) • [👉 Compliance](docs/COMPLIANCE.md) |
+| **DevOps / Security Lead** | Deploy micro-VM sandboxing, enterprise proxies & air-gapped LLMs | [👉 Security & Air-Gap Guide](docs/SECURITY_AND_AIRGAP.md) • [👉 FAQ](docs/FAQ.md) |
 | **AI Researcher / Evaluator** | Benchmark agent tool calls, memory allocation, and coding accuracy | [👉 Benchmark Methodology](docs/BENCHMARKS.md) |
 | **Extension & Tool Author** | Build custom agent tools, subagents, or providers | [👉 Extensions Tutorial](docs/EXTENSIONS_GUIDE.md) • [👉 Ecosystem Showcase](docs/ECOSYSTEM.md) |
-| **Engine Contributor** | Build, test, and contribute to `@earendil-works/*` | [👉 Developer Field Guide](DEVELOPMENT.md) • [👉 Triage Taxonomy](docs/TRIAGE_AND_LABELING.md) |
+| **Engine Contributor** | Build, test, and contribute to `@earendil-works/*` | [👉 15-Min Contributor Onboarding](docs/CONTRIBUTOR_ONBOARDING.md) • [👉 Developer Field Guide](DEVELOPMENT.md) |
 
 ---
 
@@ -52,6 +52,9 @@ Explore our comprehensive documentation suite in [`docs/`](docs/):
 
 - 💼 **[Executive ROI Brief](docs/EXECUTIVE_BRIEF.md)**: CTO/VP 1-pager covering ROI, zero telemetry, and performance.
 - 🏢 **[Enterprise Adoption & Rollout Guide](docs/ADOPTION_GUIDE.md)**: 5-Phase rollout matrix, evaluation rubrics, and security checklists.
+- 🛡️ **[CISO & Security Evaluation Sheet](docs/SECURITY_EVALUATION.md)**: Threat model, data flow diagrams, zero telemetry, and air-gap protocols.
+- 🎨 **[Demos & Example Recipes Gallery](docs/DEMOS_AND_EXAMPLES.md)**: 10 copy-pasteable recipes for audits, tests, Ollama, and swarms.
+- ⏱️ **[15-Minute Contributor Onboarding](docs/CONTRIBUTOR_ONBOARDING.md)**: Fast-track contributor guide for monorepo development.
 - ❓ **[FAQ & Friction Resolution Guide](docs/FAQ.md)**: Answers across runtime setups, keybindings, air-gaps, and substrates.
 - 🔌 **[Ecosystem & Extensibility Showcase](docs/ECOSYSTEM.md)**: Extension API specifications, custom tools, and RPC integration.
 - 🛡️ **[Security Compliance Matrix](docs/COMPLIANCE.md)**: Enterprise security control mapping, privacy, and SLA policies.
