@@ -30,6 +30,8 @@ interface RunOptions {
 	env: "docker" | "daytona"
 	provider: string
 	model: string
+	agent?: string
+	agentImportPath?: string
 	dataset?: string
 	tasks: string
 	trials: number
@@ -41,6 +43,7 @@ const PROVIDER_MODEL_PREFIX: Record<string, string> = {
 	anthropic: "anthropic",
 	openrouter: "openrouter",
 	openai: "openai-native",
+	"openai-codex": "openai-codex",
 	gemini: "gemini", // Needs different handling
 }
 
@@ -48,6 +51,7 @@ const PROVIDER_API_KEY_ENV: Record<string, string> = {
 	anthropic: "ANTHROPIC_API_KEY",
 	openrouter: "OPENROUTER_API_KEY",
 	openai: "OPENAI_API_KEY",
+	"openai-codex": "OPENAI_CODEX_API_KEY",
 	gemini: "GEMINI_API_KEY",
 }
 
@@ -109,13 +113,13 @@ function runHarborTask(clineBenchDir: string, taskId: string, options: RunOption
 
 	// Build Harbor model string
 	const modelPrefix = PROVIDER_MODEL_PREFIX[options.provider] || options.provider
-	const harborModel = `${modelPrefix}:${options.model}`
+	const harborModel = `${modelPrefix}/${options.model}`
 
 	// Set up environment
 	const apiKeyEnv = PROVIDER_API_KEY_ENV[options.provider]
-	const apiKey = process.env[apiKeyEnv] || process.env.API_KEY
+	const apiKey = process.env[apiKeyEnv] || process.env.API_KEY || ""
 
-	if (!apiKey) {
+	if (!apiKey && options.provider !== "openai-codex" && !options.agentImportPath) {
 		return {
 			taskId,
 			passed: false,
@@ -126,7 +130,7 @@ function runHarborTask(clineBenchDir: string, taskId: string, options: RunOption
 
 	const harborEnv = {
 		...process.env,
-		API_KEY: apiKey,
+		...(apiKey ? { API_KEY: apiKey } : {}),
 	}
 
 	// Build Harbor command
@@ -139,7 +143,13 @@ function runHarborTask(clineBenchDir: string, taskId: string, options: RunOption
 	} else {
 		harborArgs.push("-p", `tasks/${taskId}`)
 	}
-	harborArgs.push("-a", "cline-cli", "-m", harborModel, "--env", options.env)
+
+	if (options.agentImportPath) {
+		harborArgs.push("--agent-import-path", options.agentImportPath)
+	} else {
+		harborArgs.push("-a", options.agent || "cline-cli")
+	}
+	harborArgs.push("-m", harborModel, "--env", options.env)
 
 	console.log(`  Running: harbor ${harborArgs.join(" ")}`)
 
@@ -242,6 +252,10 @@ async function main() {
 			options.provider = args[++i]
 		} else if (args[i] === "--model" && args[i + 1]) {
 			options.model = args[++i]
+		} else if (args[i] === "--agent" && args[i + 1]) {
+			options.agent = args[++i]
+		} else if (args[i] === "--agent-import-path" && args[i + 1]) {
+			options.agentImportPath = args[++i]
 		} else if (args[i] === "--tasks" && args[i + 1]) {
 			options.tasks = args[++i]
 		} else if (args[i] === "--dataset" && args[i + 1]) {

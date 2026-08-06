@@ -37,6 +37,7 @@ type PiCodingAgentHarnessOptions = {
 	model?: PiCodingAgentModelSelection;
 	noTools?: CreateAgentSessionOptions["noTools"];
 	transformSystemPrompt?: (defaultPrompt: string) => string;
+	timeoutMs?: number;
 };
 
 type PiCodingAgentHarnessWithOutput<TOutput extends JsonValue> = PiCodingAgentHarnessOptions & {
@@ -157,12 +158,25 @@ async function runPiCodingAgent<TOutput extends JsonValue>(
 			await evalSession.reload();
 		}
 		let abortPromise: Promise<void> | undefined;
+		let timeoutTimer: NodeJS.Timeout | undefined;
+		const timeoutController = options.timeoutMs ? new AbortController() : undefined;
+		if (options.timeoutMs && timeoutController) {
+			timeoutTimer = setTimeout(() => {
+				timeoutController.abort(new Error(`Eval execution timed out after ${options.timeoutMs}ms`));
+			}, options.timeoutMs);
+		}
+		const activeSignal =
+			signal && timeoutController
+				? AbortSignal.any([signal, timeoutController.signal])
+				: (signal ?? timeoutController?.signal);
+
 		const abort = () => {
+			if (timeoutTimer) clearTimeout(timeoutTimer);
 			abortPromise ??= evalSession.abort();
 		};
-		signal?.addEventListener("abort", abort, { once: true });
+		activeSignal?.addEventListener("abort", abort, { once: true });
 		try {
-			signal?.throwIfAborted();
+			activeSignal?.throwIfAborted();
 			if (evalSession.extensionRunner.getExtensionPaths().length !== 0) {
 				throw new Error("Expected an isolated eval session to start without extensions.");
 			}
@@ -170,7 +184,7 @@ async function runPiCodingAgent<TOutput extends JsonValue>(
 			let response: string | undefined;
 			for (const step of steps) {
 				if (step.type === "prompt") {
-					response = await promptAgent(evalSession, step.content, signal);
+					response = await promptAgent(evalSession, step.content, activeSignal);
 				} else {
 					await evalSession.reload();
 				}
@@ -202,7 +216,8 @@ async function runPiCodingAgent<TOutput extends JsonValue>(
 				},
 			};
 		} finally {
-			signal?.removeEventListener("abort", abort);
+			if (timeoutTimer) clearTimeout(timeoutTimer);
+			activeSignal?.removeEventListener("abort", abort);
 			if (abortPromise) await abortPromise;
 		}
 	} catch (error) {

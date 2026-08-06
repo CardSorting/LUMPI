@@ -119,6 +119,9 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
 	// Always include these
 	addGuideline("Be concise in your responses");
 	addGuideline("Show file paths clearly when working with files");
+	addGuideline(
+		"When asked to respond with exact text or tool output, output only that content without preambles or commentary",
+	);
 
 	const guidelines = guidelinesList.map((g) => `- ${g}`).join("\n");
 
@@ -138,8 +141,7 @@ ${APP_NAME} documentation (read only when the user asks about ${APP_NAME} itself
 - Examples: ${examplesPath} (extensions, custom tools, SDK)
 - When reading ${APP_NAME} docs or examples, resolve docs/... under Additional docs and examples/... under Examples, not the current working directory
 - When asked about: extensions (docs/extensions.md, examples/extensions/), themes (docs/themes.md), skills (docs/skills.md), prompt templates (docs/prompt-templates.md), TUI components (docs/tui.md), keybindings (docs/keybindings.md), SDK integrations (docs/sdk.md), custom providers (docs/custom-provider.md), adding models (docs/models.md), packages (docs/packages.md), environment variables (docs/environment-variables.md)
-- When working on ${APP_NAME} topics, read the docs and examples, and follow .md cross-references before implementing
-- Always read ${APP_NAME} .md files completely and follow links to related docs (e.g., tui.md for TUI API details)`;
+- When working on ${APP_NAME} topics, read docs and examples if needed for unfamiliar requirements, but implement straightforward tasks directly without unnecessary doc reads`;
 
 	if (appendSectionText) {
 		prompt += appendSectionText;
