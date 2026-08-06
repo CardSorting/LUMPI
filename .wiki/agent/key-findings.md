@@ -1,5 +1,18 @@
 # Key Findings
 
+## 2026-08-06 Monorepo Subsystem Engine Fusion (`CodemarieBridge`)
+
+- **11 Wide-Sweeping Engine Fusion Passes**: Integrated 11 core Codemarie backend engine subsystems into `@earendil-works/pi-codemarie` re-exports and `CodemarieBridge` in `packages/coding-agent/src/core/codemarie-bridge.ts`.
+- **Workspace Intelligence & AST Spider Engine**: Re-exported `WorkspaceIntelligenceEngine` and `SpiderEngine` for deep workspace indexing, file entropy calculation, and AST symbol graph resolution.
+- **Persistent Subscription Hub**: Re-exported `PersistentSubscriptionHub` and `disposeAllPersistentSubscriptionHubs` for real-time task event streaming.
+- **Terminal Execution & Command Safety Sanitizer**: Re-exported `CommandExecutor`, `orchestrateCommandExecution`, `validateCommand`, `splitCommand`, and `getSanitizerMode` for pre-execution shell command injection pre-screening.
+- **Context Staleness & Ephemeral Temp Storage**: Re-exported `ContextStalenessTracker` for mtime/signature freshness checking and `DietCodeTempManager` for auto-cleaning scratch folders.
+- **Swarm Mutex & Broccoli Fencing**: Re-exported `SwarmMutexService` and `readBroccoliFence` for durable lease epoch allocation and multi-agent fencing token lock validation.
+- **Roadmap Gate Catalog & Auto Governance**: Re-exported `buildGateStateFromInputs`, `collectGateInputs`, `evaluateGateChecks`, `AUTO_GOVERNANCE`, `ROADMAP_DIAGNOSTIC_SLASH_COMMANDS`, and `governanceFieldsFromStatus` for project gate evaluation.
+- **Multi-Format Document Extraction & Notebook Sanitizer**: Re-exported `extractTextFromFile`, `callTextExtractionFunctions`, `processFilesIntoText`, `sanitizeNotebookForLLM`, and `sanitizeCellForLLM` for reading PDFs, DOCX, XLSX, and Jupyter Notebooks with token-aware image truncation.
+- **Code Truncation Detector & Inline Review Comment Controller**: Re-exported `detectCodeOmission`, `showOmissionWarning`, `CommentReviewController`, `MAX_CONTENT_SIZE_BYTES`, `formatBytes`, and `truncateContent` for lazy AI code truncation detection and inline markdown review threads.
+- **100% Repository Verification Compliance**: All 1029 monorepo files passed `biome check`, `check:pinned-deps`, `check:ts-imports`, `check:shrinkwrap`, `check:install-lock:coding-agent`, and `check:browser-smoke` with 0 errors or warnings.
+
 ## 2026-07-29 Hardware Automatic Prompt Caching Engine (ApcStableIngestionEngine)
 
 - **100% Multi-Turn Prefix Invariance**: Historical turns ($0..N-1$) remain byte-for-byte invariant across multi-turn agent sessions, eliminating prompt cache invalidation on Cerebras wafer-scale hardware and Gemma models.

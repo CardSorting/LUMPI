@@ -4,16 +4,23 @@
 > **When do I use it?** At an agent handoff boundary before changing coordination, scheduling, or completion behavior.
 > **What is the source of truth?** The current working tree and the implementation paths linked below.
 
-Last updated: 2026-07-26
+Last updated: 2026-08-06
 
 ## Current Task
 
-The 12-pass Mechanical Sympathy, Zero-GC Slabs, Work-Stealing I/O Engine, and V8 Monomorphic Shape Optimization pass is complete. The system now has four explicit architectural boundaries:
+The 11 Wide-Sweeping Backend Engine Fusion Passes are complete. All major Codemarie subsystems have been re-exported from `@earendil-works/pi-codemarie` and wired to `CodemarieBridge` in `packages/coding-agent`:
 
-1. **Substrate Parallel Execution & Zero-GC Memory**: `ArenaAllocator.ts` (16MB slab), `IPCBuffer.ts` & `FastIPC.ts` (lock-free `SharedArrayBuffer` ring buffer), `TaskScheduler.ts` (work-stealing LIFO/FIFO deques), and `ZenIOEngine.ts` (zero-copy kernel disk streaming).
-2. **V8 TurboFan Monomorphic Stability**: `FindingEntry`, `SymbolProviderEntry`, and `TypeMirrorDiagnosticEntry` export monomorphic class layouts to preserve V8 hidden class shape stability with zero V8 deoptimizations.
-3. **DCE-Free Verified Benchmarks**: `pass8_zenith_benchmark.ts` incorporates volatile `GLOBAL_BENCH_SINK` accumulators, 5-sample median timing (`getMedian()`), JIT warmups, and live DCE verification output (`DCE Sink Verified: ✅ VERIFIED LIVE`).
-4. **Core Application Fast Paths (`/src`)**: `SensitiveDataMasker.ts` pre-filters inputs via `QUICK_CHECK_REGEX`, `AuditLogService.ts` enforces monomorphic `AuditEntry` key order, and `SubagentTranscriptRecorder.ts` eliminates duplicate `JSON.stringify` serialization.
+1. **Workspace Intelligence Engine**: `WorkspaceIntelligenceEngine`
+2. **Spider Engine & AST Forensic Audit**: `SpiderEngine`
+3. **Persistent Subscription Hub**: `PersistentSubscriptionHub`, `disposeAllPersistentSubscriptionHubs`
+4. **Terminal Orchestrator & Executor**: `CommandExecutor`, `orchestrateCommandExecution`
+5. **Context Staleness Tracker**: `ContextStalenessTracker`
+6. **Command Safety Sanitizer**: `validateCommand`, `splitCommand`, `getSanitizerMode`
+7. **DietCode Temp Manager**: `DietCodeTempManager`
+8. **Swarm Mutex Service**: `SwarmMutexService`
+9. **Roadmap Gate Catalog**: `buildGateStateFromInputs`, `collectGateInputs`, `evaluateGateChecks`
+10. **Telemetry & Document Extraction**: `TelemetryService`, `telemetryService`, `callTextExtractionFunctions`, `processFilesIntoText`, `sanitizeNotebookForLLM`
+11. **Code Safety & Review**: `detectCodeOmission`, `showOmissionWarning`, `CommentReviewController`, `MAX_CONTENT_SIZE_BYTES`, `readBroccoliFence`, `AUTO_GOVERNANCE`
 
 ## Implementation State
 

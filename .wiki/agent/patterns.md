@@ -1,5 +1,14 @@
 # Execution Patterns
 
+## Codemarie Engine Bridge Access & Subsystem Re-Exports
+
+1. **Top-Level Monorepo Package Imports**: Import unified Codemarie engines directly from `@earendil-works/pi-codemarie` top-level exports (`import { CommandExecutor, SwarmMutexService, ... } from "@earendil-works/pi-codemarie"`).
+2. **Bridge Accessor Facade (`CodemarieBridge`)**: Instantiate or query `CodemarieBridge` in `packages/coding-agent/src/core/codemarie-bridge.ts` to access low-level subsystem engines without managing complex dependency setups.
+3. **Pre-Execution Shell Command Screening**: Call `bridge.validateCommand(command)` and `bridge.getSanitizerMode()` to pre-screen shell command injection boundaries before executing terminal tools.
+4. **Cognitive Freshness Verification**: Call `bridge.getContextStalenessTracker(cwd)` to verify file `mtime` and content signatures before constructing model prompts.
+5. **Lazy AI Code Truncation Safety**: Call `bridge.detectCodeOmission(originalContent, newContent)` before saving file edits to prevent lazy AI truncation comments from replacing code.
+6. **Multi-Format Document Text Extraction**: Call `bridge.extractTextFromFile(filePath, options)` or `bridge.sanitizeNotebookForLLM(jsonString)` to read binary documents, PDFs, DOCX, XLSX, and Jupyter Notebooks into model-optimized text.
+
 ## Hardware Automatic Prompt Caching Engine (APC) & Main Token Buffer Ingestion
 
 1. **System Prompt Token 0 Normalization**: Normalize line endings (`\r\n` -> `\n`) and strip leading/trailing whitespace (`normalizeSystemPrompt`) to guarantee Token 0 cache key alignment across provider models.

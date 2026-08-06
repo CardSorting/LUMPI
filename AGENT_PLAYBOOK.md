@@ -22,11 +22,24 @@ Last audited: 2026-08-06
 | Substrate | BroccoliDB package | `packages/broccolidb` |
 | CLI Bridge | CodemarieBridge & BroccoliBridge | `packages/coding-agent/src/core/codemarie-bridge.ts`, `packages/coding-agent/src/core/broccolidb-bridge.ts` |
 | CLI Flags | Engine & MoD steering | `LUMI --mod`, `LUMI --engine=codemarie` |
-| Verification | `npm run check` clean | All 7 monorepo validation steps passing |
+| Engine Fusion | 11 Wide-Sweeping Engine Fusion Passes | `packages/codemarie/src/index.ts`, `packages/coding-agent/src/core/codemarie-bridge.ts` |
+| Verification | `npm run check` clean | All 7 monorepo validation steps passing (1029 files checked) |
 
 ## What Is Happening Right Now
 
-The active work now includes complete 12-pass mechanical sympathy, zero-allocation algorithms, and work-stealing parallel execution:
+The active work now includes 11 wide-sweeping backend engine fusion passes, unifying Codemarie subsystems directly into `@earendil-works/pi-codemarie` exports and `CodemarieBridge` in `packages/coding-agent`:
+
+1. **Workspace Intelligence Engine**: `WorkspaceIntelligenceEngine` (structural indexing, file entropy, symbol graphs).
+2. **Spider Engine**: `SpiderEngine` (AST symbol extraction, dependency graph traversal).
+3. **Persistent Subscription Hub**: `PersistentSubscriptionHub`, `disposeAllPersistentSubscriptionHubs` (event stream subscriptions).
+4. **Terminal Orchestrator & Executor**: `CommandExecutor`, `orchestrateCommandExecution`.
+5. **Context Staleness Tracker**: `ContextStalenessTracker` (mtime & signature freshness verification).
+6. **Command Safety Sanitizer**: `validateCommand`, `splitCommand`, `getSanitizerMode`.
+7. **DietCode Temp Manager**: `DietCodeTempManager` (auto-cleaning scratch workspace storage).
+8. **Swarm Mutex Service**: `SwarmMutexService` (distributed fencing locks and lease epoch management).
+9. **Roadmap Gate Catalog**: `buildGateStateFromInputs`, `collectGateInputs`, `evaluateGateChecks`.
+10. **Telemetry & Document Extraction Engine**: `TelemetryService`, `telemetryService`, `extractTextFromFile`, `callTextExtractionFunctions`, `processFilesIntoText`, `sanitizeNotebookForLLM`, `sanitizeCellForLLM`.
+11. **Code Safety & Review Controller**: `detectCodeOmission`, `showOmissionWarning`, `CommentReviewController`, `MAX_CONTENT_SIZE_BYTES`, `formatBytes`, `truncateContent`, `readBroccoliFence`, `broccoliFencePath`, `AUTO_GOVERNANCE`, `ROADMAP_DIAGNOSTIC_SLASH_COMMANDS`, `governanceFieldsFromStatus`.
 
 - `src/core/task/tools/execution/ExecutionFunnel.ts` is the sole approval and execution authority: it freezes pure handler intents, evaluates current settings/policy, records one decision, and only then issues an invocation- and generation-scoped permit.
 - `src/core/task/lifecycle/TaskLifecycleFunnel.ts` is the sole task-state transition authority: it commits typed, generation-bound lifecycle intents and publishes one immutable event after record/event compare-and-swap.
