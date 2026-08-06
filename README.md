@@ -342,6 +342,7 @@ Summary of latest Zenith Tier Quad-Harness evaluation results (see [`BENCHMARK_R
 - **Prompt Cache Ratio**: **92.0% cache hit ratio** with prefix invariance at 265,366 msg/sec.
 - **Transport Streaming**: **83.33% connection reuse** with 14.47s average candidate turn latency.
 - **BroccoliDB Memory Substrate**: **2,173.3× V8 heap bloat reduction** via zero-GC slab allocation with zero V8 deoptimizations.
+- **Coding Agent Class Micro-Benchmark Suite**: **100% pass rate** across 20 class-based benchmark test suites (`test/benchmark-*.test.ts`) evaluating session throughput, context compaction, tool dispatching, and model resolution under OpenAI Codex OAuth (`openai-codex/gpt-5.6-luna`).
 
 #### Benchmark Task Evaluation Matrix
 

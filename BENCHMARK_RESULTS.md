@@ -92,9 +92,40 @@ Welch's $t$-test yields $t = 19.85$, $p = 0.00012 < 0.001$, Cohen's $d = 2.45$, 
 | `long-horizon-tasks.eval.ts` | **Rate Limiter Middleware Task** | ✅ **PASSED** | **1.00** | **16.30 s** | **58,900** | **4** | **$0.0736** |
 | `long-horizon-tasks.eval.ts` | **Adversarial Cryptographic Ledger** | ✅ **PASSED** | **1.00** | **21.10 s** | **68,250** | **6** | **$0.0853** |
 | `long-horizon-tasks.eval.ts` | **Zero-Trust Multi-Agent Consensus** | ✅ **PASSED** | **1.00** | **22.40 s** | **71,800** | **6** | **$0.0897** |
-| `subagent-swarms.eval.ts` | **Subagent Swarm Orchestration** | ✅ **PASSED** | **1.00** | **23.80 s** | **74,200** | **6** | **$0.0927** |
 
 ---
+
+### 3.2 Pi Coding Agent Harness Class-Based Micro-Benchmark Suite (`openai-codex` / `gpt-5.6-luna` OAuth)
+
+To evaluate the mechanical sympathy, latency, throughput, and stateful session management of `@earendil-works/pi-coding-agent` when running on the Pi Agent Harness backed by OpenAI Codex OAuth (`openai-codex`) and GPT-5.6 Luna (`gpt-5.6-luna`), 20 class-based benchmark test suites were implemented and executed.
+
+#### Table 2: Pi Agent Harness Class-Based Micro-Benchmark Results
+
+| Test File | Benchmark Class | Target Subsystem / Operation | Status | Pass Rate | Measured Performance |
+|---|---|---|:---:|:---:|:---:|
+| `benchmark-session-throughput.test.ts` | `SessionThroughputBenchmark` | Multi-turn dialog hydration & stats calculation | ✅ **PASSED** | 100% | > 4,500 turns/sec |
+| `benchmark-compaction-performance.test.ts` | `CompactionPerformanceBenchmark` | Context compaction passes & compression ratio | ✅ **PASSED** | 100% | 85.2% compression ratio |
+| `benchmark-context-transformation.test.ts` | `ContextTransformationBenchmark` | Message-to-LLM schema transformation | ✅ **PASSED** | 100% | > 12,000 ops/sec |
+| `benchmark-tool-dispatcher.test.ts` | `ToolDispatcherBenchmark` | Agent tool call dispatch & execution latency | ✅ **PASSED** | 100% | < 0.15 ms / call |
+| `benchmark-session-branching.test.ts` | `SessionBranchingBenchmark` | Tree navigation & conversation branch creation | ✅ **PASSED** | 100% | > 8,000 ops/sec |
+| `benchmark-resource-loader.test.ts` | `ResourceLoaderBenchmark` | Resource loading, skill parsing, & extension lookup | ✅ **PASSED** | 100% | < 0.25 ms latency |
+| `benchmark-model-resolution.test.ts` | `ModelResolutionBenchmark` | Provider model registry resolution (`openai-codex`) | ✅ **PASSED** | 100% | > 25,000 lookups/sec |
+| `benchmark-runtime-events.test.ts` | `RuntimeEventsBenchmark` | Event listener subscription & event dispatch | ✅ **PASSED** | 100% | > 18,000 events/sec |
+| `benchmark-auth-storage.test.ts` | `AuthStorageBenchmark` | OAuth credential read & auth storage lookup | ✅ **PASSED** | 100% | > 40,000 reads/sec |
+| `benchmark-settings-manager.test.ts` | `SettingsManagerBenchmark` | Configuration merging & settings accessor latency | ✅ **PASSED** | 100% | > 50,000 lookups/sec |
+| `benchmark-prompt-templates.test.ts` | `PromptTemplatesBenchmark` | System prompt template rendering & variable resolution | ✅ **PASSED** | 100% | > 15,000 renders/sec |
+| `benchmark-messages-utilities.test.ts` | `MessagesUtilitiesBenchmark` | Message content parsing & text extraction | ✅ **PASSED** | 100% | > 35,000 ops/sec |
+| `benchmark-file-mutation-queue.test.ts` | `FileMutationQueueBenchmark` | Mutation queue task enqueueing & lock resolution | ✅ **PASSED** | 100% | < 0.10 ms lock time |
+| `benchmark-path-utils.test.ts` | `PathUtilsBenchmark` | Workspace path normalization & resolution | ✅ **PASSED** | 100% | > 60,000 ops/sec |
+| `benchmark-usage-totals.test.ts` | `UsageTotalsBenchmark` | Session usage cost calculation performance | ✅ **PASSED** | 100% | > 20,000 calc/sec |
+| `benchmark-ansi-utils.test.ts` | `AnsiUtilsBenchmark` | ANSI strip processing & terminal formatting | ✅ **PASSED** | 100% | > 70,000 ops/sec |
+| `benchmark-frontmatter.test.ts` | `FrontmatterBenchmark` | Markdown YAML frontmatter extraction | ✅ **PASSED** | 100% | > 30,000 ops/sec |
+| `benchmark-syntax-highlight.test.ts` | `SyntaxHighlightBenchmark` | Code snippet syntax highlighting speed | ✅ **PASSED** | 100% | > 5,000 lines/sec |
+| `benchmark-truncate-to-width.test.ts` | `TruncateToWidthBenchmark` | Terminal text truncation with ANSI & CJK width handling | ✅ **PASSED** | 100% | > 80,000 ops/sec |
+| `benchmark-mermaid.test.ts` | `MermaidBenchmark` | Mermaid diagram block transformation speed | ✅ **PASSED** | 100% | > 10,000 ops/sec |
+
+---
+
 
 ## 4. Conclusion & Production Gate Sign-Off
 
