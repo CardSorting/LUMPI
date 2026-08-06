@@ -1,6 +1,10 @@
 # LUMI - High-Velocity Agentic AI Coding Engine
 
 <p align="center">
+  <img src="docs/assets/lumi_mascot_header.png" alt="LUMI AI Coding Engine - Tech-Mascot" width="720" />
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Node.js-%3E%3D22.19.0-brightgreen?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js Version" />
   <img src="https://img.shields.io/badge/TypeScript-Native_Strip--Only-blue?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Biome-Verified-purple?style=for-the-badge" alt="Biome" />
