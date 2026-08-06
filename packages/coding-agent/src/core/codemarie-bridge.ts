@@ -46,6 +46,30 @@ import {
 	WorkspaceIntelligenceEngine,
 	WriteCoalescer,
 } from "@earendil-works/pi-codemarie";
+import {
+	buildJoyRideWorkspaceSnapshot,
+	bumpTaskGeneration,
+	classifyCommand,
+	createJoyRideTaskScope,
+	flushTaskGeneration,
+	flushWorkspace,
+	getJoyRideCache,
+	getJoyRideDecisionLog,
+	getJoyRideStats,
+	isEnvAlteringCommand,
+	isJoyRideHitDecision,
+	isReadOnlyCacheableCommand,
+	type JoyRideCacheDecision,
+	type JoyRideCommandClassification,
+	type JoyRideTaskScope,
+	type JoyRideWorkspaceSnapshot,
+	logJoyRideDiagnostics,
+	lookupSafeCommandResult,
+	registerTaskLifecycle,
+	shutdownJoyRideCache,
+	storeCommandDiagnostic,
+	storeReusableCommandResult,
+} from "@earendil-works/pi-codemarie/joyride";
 import { URI } from "vscode-uri";
 
 export interface CodemarieBridgeOptions {
@@ -378,5 +402,100 @@ export class CodemarieBridge {
 			return "task-codemarie";
 		}
 		return "task-cli";
+	}
+
+	// ============================================================================
+	// JoyRide Execution Caching & Diagnostics API
+	// ============================================================================
+
+	public getJoyRideCache() {
+		return getJoyRideCache();
+	}
+
+	public createJoyRideTaskScope(
+		taskId: string,
+		cwd: string,
+		terminalMode = false,
+		apiRequestCount = 0,
+	): JoyRideTaskScope {
+		return createJoyRideTaskScope(taskId, cwd, terminalMode ? "true" : "false", apiRequestCount);
+	}
+
+	public async lookupSafeCommandResult(command: string, scope: JoyRideTaskScope): Promise<JoyRideCacheDecision> {
+		return await lookupSafeCommandResult(this.getJoyRideCache(), command, scope);
+	}
+
+	public async storeReusableCommandResult(
+		command: string,
+		result: [boolean, unknown] | { output: string; exitCode?: number },
+		scope: JoyRideTaskScope,
+	): Promise<unknown> {
+		const payload: [boolean, string] = Array.isArray(result)
+			? [result[0], String(result[1] ?? "")]
+			: [false, result.output];
+		return await storeReusableCommandResult(this.getJoyRideCache(), command, payload as never, scope);
+	}
+
+	public async storeCommandDiagnostic(
+		command: string,
+		result: [boolean, unknown] | { output: string; exitCode?: number },
+		scope: JoyRideTaskScope,
+	): Promise<unknown> {
+		const payload: [boolean, string] = Array.isArray(result)
+			? [result[0], String(result[1] ?? "")]
+			: [false, result.output];
+		return await storeCommandDiagnostic(this.getJoyRideCache(), command, payload as never, scope);
+	}
+
+	public classifyCommand(command: string): JoyRideCommandClassification {
+		return classifyCommand(command);
+	}
+
+	public isEnvAlteringCommand(command: string): boolean {
+		return isEnvAlteringCommand(command);
+	}
+
+	public isReadOnlyCacheableCommand(command: string): boolean {
+		return isReadOnlyCacheableCommand(command);
+	}
+
+	public isJoyRideHitDecision(decision: JoyRideCacheDecision): boolean {
+		return isJoyRideHitDecision(decision);
+	}
+
+	public registerTaskLifecycle(taskId: string, generation = 0): void {
+		registerTaskLifecycle(this.getJoyRideCache(), taskId, generation);
+	}
+
+	public bumpTaskGeneration(taskId: string): void {
+		bumpTaskGeneration(this.getJoyRideCache(), taskId);
+	}
+
+	public flushTaskGeneration(taskId: string, reason = "task_completed"): void {
+		flushTaskGeneration(this.getJoyRideCache(), taskId, reason as never);
+	}
+
+	public flushWorkspace(workspaceFingerprint: string, reason = "command_environment_changed"): void {
+		flushWorkspace(this.getJoyRideCache(), workspaceFingerprint, reason as never);
+	}
+
+	public async buildJoyRideWorkspaceSnapshot(cwd: string, terminalMode = false): Promise<JoyRideWorkspaceSnapshot> {
+		return await buildJoyRideWorkspaceSnapshot(cwd, terminalMode ? "true" : "false");
+	}
+
+	public logJoyRideDiagnostics(): void {
+		logJoyRideDiagnostics(this.getJoyRideCache());
+	}
+
+	public getJoyRideDecisionLog(limit = 32): readonly JoyRideCacheDecision[] {
+		return getJoyRideDecisionLog(limit);
+	}
+
+	public getJoyRideStats() {
+		return getJoyRideStats(this.getJoyRideCache());
+	}
+
+	public shutdownJoyRideCache(reason = "workspace_closed"): number {
+		return shutdownJoyRideCache();
 	}
 }

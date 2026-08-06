@@ -4,14 +4,15 @@
  */
 
 import { createHash } from "crypto";
-import type { JoyRideCache } from "./JoyRideCache";
-import { canJoyRideRetainScratch } from "./JoyRideConfig";
-import { buildJoyRideWorkspaceSnapshot, type JoyRideTaskScope } from "./JoyRideContext";
-import { recordJoyRideDecision } from "./JoyRideDecisionLog";
-import { diagnosticOnlyDecision, type JoyRideCacheDecision, rejectedDecision } from "./JoyRideDecisions";
-import { JOYRIDE_REASON } from "./JoyRideReasonCodes";
-import { createScratchArtifactCacheKey } from "./keys";
-import type { JoyRideCleanupHandler, JoyRideDurability, JoyRideSetMetadata } from "./types";
+import type { JoyRideCache } from "./JoyRideCache.js";
+import { canJoyRideRetainScratch } from "./JoyRideConfig.js";
+import { buildJoyRideWorkspaceSnapshot, type JoyRideTaskScope } from "./JoyRideContext.js";
+import { recordJoyRideDecision } from "./JoyRideDecisionLog.js";
+import { diagnosticOnlyDecision, type JoyRideCacheDecision, rejectedDecision } from "./JoyRideDecisions.js";
+import { JOYRIDE_REASON } from "./JoyRideReasonCodes.js";
+import { createScratchArtifactCacheKey } from "./keys.js";
+import type { JoyRideCleanupHandler, JoyRideDurability, JoyRideSetMetadata } from "./types.js";
+
 
 export interface ScratchArtifactSpec {
 	artifactKind: string;

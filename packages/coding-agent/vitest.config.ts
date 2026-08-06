@@ -34,7 +34,26 @@ export default mergeConfig(
 				{ find: /^@mariozechner\/pi-ai\/oauth$/, replacement: workspaceSourcePaths.aiOAuth },
 				{ find: /^@mariozechner\/pi-agent-core$/, replacement: workspaceSourcePaths.agentIndex },
 				{ find: /^@mariozechner\/pi-tui$/, replacement: workspaceSourcePaths.tuiIndex },
+				{
+					find: /^vscode$/,
+					replacement: fileURLToPath(new URL("../codemarie/src/test/vscode-mock.ts", import.meta.url)),
+				},
+				{
+					find: /^@shared\/(.+)$/,
+					replacement: fileURLToPath(new URL("../codemarie/src/shared/$1", import.meta.url)),
+				},
+				{
+					find: /^@core\/(.+)$/,
+					replacement: fileURLToPath(new URL("../codemarie/src/core/$1", import.meta.url)),
+				},
+				{
+					find: /^@\/(.+)$/,
+					replacement: fileURLToPath(new URL("../codemarie/src/$1", import.meta.url)),
+				},
 			],
 		},
 	}),
 );
+
+
+

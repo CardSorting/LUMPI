@@ -5,9 +5,9 @@
 
 import type { DietCodeToolResponseContent } from "@shared/messages/content";
 import { Logger } from "@shared/services/Logger";
-import { recordJoyRideCacheHit } from "./JoyRideAudit";
-import type { JoyRideCache } from "./JoyRideCache";
-import { classifyCommand, isEnvAlteringCommand, isVerificationCommand } from "./JoyRideCommandClassifier";
+import { recordJoyRideCacheHit } from "./JoyRideAudit.js";
+import type { JoyRideCache } from "./JoyRideCache.js";
+import { classifyCommand, isEnvAlteringCommand, isVerificationCommand } from "./JoyRideCommandClassifier.js";
 import {
 	canJoyRideReuseCommands,
 	canJoyRideReuseSearch,
@@ -19,14 +19,14 @@ import {
 	isJoyRideDegraded,
 	isJoyRideDisabled,
 	markJoyRideDegraded,
-} from "./JoyRideConfig";
+} from "./JoyRideConfig.js";
 import {
 	buildApprovalBoundaryId,
 	buildJoyRideWorkspaceSnapshot,
 	type JoyRideTaskScope,
 	type JoyRideWorkspaceSnapshot,
-} from "./JoyRideContext";
-import { recordJoyRideDecision } from "./JoyRideDecisionLog";
+} from "./JoyRideContext.js";
+import { recordJoyRideDecision } from "./JoyRideDecisionLog.js";
 import {
 	degradedDecision,
 	diagnosticOnlyDecision,
@@ -36,21 +36,22 @@ import {
 	type JoyRideCommandLookupDecision,
 	type JoyRideSearchLookupDecision,
 	missDecision,
-} from "./JoyRideDecisions";
+} from "./JoyRideDecisions.js";
 import type {
 	JoyRideCommandCacheEntry,
 	JoyRideGrepCacheEntry,
 	JoyRideSearchLookupOptions,
-} from "./JoyRideHotPathTypes";
-import { JOYRIDE_REASON } from "./JoyRideReasonCodes";
+} from "./JoyRideHotPathTypes.js";
+import { JOYRIDE_REASON } from "./JoyRideReasonCodes.js";
 import {
 	createCommandResultCacheKey,
 	createGrepResultCacheKey,
 	createJoyRideFingerprint,
 	createVerificationCacheKey,
-} from "./keys";
-import { summarizeJoyRideCommandOutput } from "./summaries";
-import type { JoyRideSetMetadata, JoyRideValidationFingerprint } from "./types";
+} from "./keys.js";
+import { summarizeJoyRideCommandOutput } from "./summaries.js";
+import type { JoyRideSetMetadata, JoyRideValidationFingerprint } from "./types.js";
+
 
 const SEARCH_IMPLEMENTATION_VERSION = "ripgrep-v1";
 

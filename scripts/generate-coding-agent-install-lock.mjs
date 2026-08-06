@@ -17,7 +17,9 @@ const allowedInstallScriptPackages = new Map([
 	["@google/genai@1.52.0", "preinstall is a no-op in the published package"],
 	["protobufjs@7.6.5", "postinstall only warns about protobufjs version scheme mismatches"],
 	["better-sqlite3@12.8.0", "native SQLite database driver build script"],
+	["puppeteer-chromium-resolver@23.0.0", "optional chromium resolver downloader script"],
 ]);
+
 
 const args = new Set(process.argv.slice(2));
 const checkOnly = args.has("--check");

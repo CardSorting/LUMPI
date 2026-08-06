@@ -3,7 +3,8 @@
  * JoyRide hot-path entry and lookup option types.
  */
 
-import type { summarizeJoyRideCommandOutput } from "./summaries";
+import type { summarizeJoyRideCommandOutput } from "./summaries.js";
+
 
 export interface JoyRideCommandCacheEntry {
 	command: string;

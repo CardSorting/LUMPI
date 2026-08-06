@@ -9,9 +9,9 @@
  * Legacy APIs were removed. Use typed decision APIs only.
  */
 
-export type { JoyRideCacheHitAudit } from "./JoyRideAudit";
-export { getJoyRideCacheHitAuditCount, getJoyRideCacheHitAuditTrail } from "./JoyRideAudit";
-export type { JoyRideCommandClassification, JoyRideCommandTier } from "./JoyRideCommandClassifier";
+export type { JoyRideCacheHitAudit } from "./JoyRideAudit.js";
+export { getJoyRideCacheHitAuditCount, getJoyRideCacheHitAuditTrail } from "./JoyRideAudit.js";
+export type { JoyRideCommandClassification, JoyRideCommandTier } from "./JoyRideCommandClassifier.js";
 export {
 	canCommandSkipExecution,
 	classifyCommand,
@@ -19,8 +19,8 @@ export {
 	isEnvAlteringCommand,
 	isReadOnlyCacheableCommand,
 	isVerificationCommand,
-} from "./JoyRideCommandClassifier";
-export type { JoyRideOperationalConfig, JoyRideOperationalMode } from "./JoyRideConfig";
+} from "./JoyRideCommandClassifier.js";
+export type { JoyRideOperationalConfig, JoyRideOperationalMode } from "./JoyRideConfig.js";
 export {
 	explainJoyRideConfig,
 	getJoyRideConfig,
@@ -35,14 +35,16 @@ export {
 	loadJoyRideConfigFromEnv,
 	resetJoyRideConfig,
 	setJoyRideConfig,
-} from "./JoyRideConfig";
-export { buildJoyRideWorkspaceSnapshot } from "./JoyRideContext";
+} from "./JoyRideConfig.js";
+export type { JoyRideTaskScope, JoyRideWorkspaceSnapshot } from "./JoyRideContext.js";
+export { buildJoyRideWorkspaceSnapshot } from "./JoyRideContext.js";
+
 export {
 	clearJoyRideDecisionLog,
 	explainJoyRideDecision,
 	getJoyRideDecisionLog,
 	getLastJoyRideDecision,
-} from "./JoyRideDecisionLog";
+} from "./JoyRideDecisionLog.js";
 export type {
 	JoyRideCacheDecision,
 	JoyRideCommandLookupDecision,
@@ -57,9 +59,9 @@ export type {
 	JoyRideRejectedDecision,
 	JoyRideSearchLookupDecision,
 	JoyRideStaleDecision,
-} from "./JoyRideDecisions";
-export { isJoyRideHitDecision } from "./JoyRideDecisions";
-export type { JoyRideDiagnosticReport } from "./JoyRideDiagnostics";
+} from "./JoyRideDecisions.js";
+export { isJoyRideHitDecision } from "./JoyRideDecisions.js";
+export type { JoyRideDiagnosticReport } from "./JoyRideDiagnostics.js";
 export {
 	buildJoyRideDiagnosticReport,
 	createJoyRideBugReportSnapshot,
@@ -68,7 +70,7 @@ export {
 	getJoyRideStats,
 	logJoyRideDiagnostics,
 	summarizeJoyRideHealth,
-} from "./JoyRideDiagnostics";
+} from "./JoyRideDiagnostics.js";
 export {
 	createJoyRideTaskScope,
 	lookupSafeCommandResult,
@@ -79,12 +81,12 @@ export {
 	storeReusableCommandResult,
 	storeSearchResult,
 	storeVerificationProof,
-} from "./JoyRideHotPath";
+} from "./JoyRideHotPath.js";
 export type {
 	JoyRideCommandCacheEntry,
 	JoyRideGrepCacheEntry,
 	JoyRideSearchLookupOptions,
-} from "./JoyRideHotPathTypes";
+} from "./JoyRideHotPathTypes.js";
 export {
 	bumpTaskGeneration,
 	flushTaskGeneration,
@@ -92,27 +94,27 @@ export {
 	registerTaskLifecycle,
 	shutdownJoyRide,
 	withTaskCacheScope,
-} from "./JoyRideLifecycle";
-export type { JoyRideReasonCode } from "./JoyRideReasonCodes";
-export { JOYRIDE_REASON } from "./JoyRideReasonCodes";
-export type { ScratchArtifactEntry, ScratchArtifactSpec } from "./JoyRideScratch";
+} from "./JoyRideLifecycle.js";
+export type { JoyRideReasonCode } from "./JoyRideReasonCodes.js";
+export { JOYRIDE_REASON } from "./JoyRideReasonCodes.js";
+export type { ScratchArtifactEntry, ScratchArtifactSpec } from "./JoyRideScratch.js";
 export {
 	createScratchArtifactEntry,
 	disposeScratchArtifact,
 	flushScratchForTask,
 	rejectUnsafeArtifact,
 	storeScratchArtifactWithCleanup,
-} from "./JoyRideScratch";
-export type { VerificationProofInput } from "./JoyRideVerification";
+} from "./JoyRideScratch.js";
+export type { VerificationProofInput } from "./JoyRideVerification.js";
 export {
 	buildVerificationFingerprint,
 	explainVerificationMiss,
 	lookupVerificationProofWithExplain,
 	validateVerificationProof,
-} from "./JoyRideVerification";
+} from "./JoyRideVerification.js";
 
-import { JoyRideCache } from "./JoyRideCache";
-import { shutdownJoyRide } from "./JoyRideLifecycle";
+import { JoyRideCache } from "./JoyRideCache.js";
+import { shutdownJoyRide } from "./JoyRideLifecycle.js";
 
 const joyRideCache = new JoyRideCache();
 
@@ -126,4 +128,5 @@ export function shutdownJoyRideCache(): number {
 	return shutdownJoyRide(joyRideCache, "workspace_closed");
 }
 
-export { clearJoyRideDecisionLog as clearJoyRideDiagnostics } from "./JoyRideDecisionLog";
+export { clearJoyRideDecisionLog as clearJoyRideDiagnostics } from "./JoyRideDecisionLog.js";
+

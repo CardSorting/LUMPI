@@ -3,9 +3,10 @@
  * JoyRide lifecycle helpers — centralized task/workspace flush and shutdown.
  */
 
-import type { JoyRideCache } from "./JoyRideCache";
-import { JOYRIDE_REASON } from "./JoyRideReasonCodes";
-import type { JoyRideInvalidationReason } from "./types";
+import type { JoyRideCache } from "./JoyRideCache.js";
+import { JOYRIDE_REASON } from "./JoyRideReasonCodes.js";
+import type { JoyRideInvalidationReason } from "./types.js";
+
 
 export function registerTaskLifecycle(cache: JoyRideCache, taskId: string, generation = 0): void {
 	cache.registerTask(taskId, generation);

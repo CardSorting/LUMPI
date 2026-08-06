@@ -1,0 +1,22 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@api/*": ["./src/core/api/*"],
+			"@core/*": ["./src/core/*"],
+			"@generated/*": ["./src/generated/*"],
+			"@hosts/*": ["./src/hosts/*"],
+			"@integrations/*": ["./src/integrations/*"],
+			"@packages/*": ["./src/packages/*"],
+			"@services/*": ["./src/services/*"],
+			"@shared/*": ["./src/shared/*"],
+			"@utils/*": ["./src/utils/*"]
+		}
+	},
+
+	"include": ["src/**/*.ts", "src/**/*.d.ts"],
+	"exclude": ["node_modules", "dist", "**/*.test.ts", "src/test", "tests"]
+}

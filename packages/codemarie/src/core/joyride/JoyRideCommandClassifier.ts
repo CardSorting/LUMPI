@@ -76,7 +76,10 @@ const ENV_ALTERING_PATTERNS: RegExp[] = [
 	/\bbrew\s+(install|upgrade|unlink)\b/i,
 	/\bfvm\b/,
 	/\bgit\s+config\b/i,
+	/\bgit\s+(checkout|switch|reset|pull|merge|rebase|clean)\b/i,
+	/\bcd\b/i,
 ];
+
 
 export function normalizeCommand(command: string): string {
 	return command.trim().replace(/\s+/g, " ");

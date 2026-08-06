@@ -3,13 +3,14 @@
  * Verification proof helpers — strict reuse semantics.
  */
 
-import type { JoyRideCache } from "./JoyRideCache";
-import { buildJoyRideWorkspaceSnapshot, type JoyRideTaskScope } from "./JoyRideContext";
-import { type JoyRideCacheDecision, missDecision } from "./JoyRideDecisions";
-import { lookupVerificationProof } from "./JoyRideHotPath";
-import { JOYRIDE_REASON } from "./JoyRideReasonCodes";
-import { createVerificationCacheKey } from "./keys";
-import type { JoyRideValidationFingerprint } from "./types";
+import type { JoyRideCache } from "./JoyRideCache.js";
+import { buildJoyRideWorkspaceSnapshot, type JoyRideTaskScope } from "./JoyRideContext.js";
+import { type JoyRideCacheDecision, missDecision } from "./JoyRideDecisions.js";
+import { lookupVerificationProof } from "./JoyRideHotPath.js";
+import { JOYRIDE_REASON } from "./JoyRideReasonCodes.js";
+import { createVerificationCacheKey } from "./keys.js";
+import type { JoyRideValidationFingerprint } from "./types.js";
+
 
 export interface VerificationProofInput {
 	command: string;

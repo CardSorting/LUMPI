@@ -860,6 +860,11 @@ export class AgentSession {
 		);
 		this._disconnectFromAgent();
 		this._eventListeners = [];
+		try {
+			this._codemarieBridge?.shutdownJoyRideCache();
+		} catch {
+			// Best effort shutdown on dispose
+		}
 		cleanupSessionResources(this.sessionId);
 	}
 
@@ -2806,6 +2811,8 @@ export class AgentSession {
 						this._emit({ type: "bash_execution_update", id: options?.id, delta });
 					},
 					signal: abortController.signal,
+					codemarieBridge: this._codemarieBridge,
+					taskId: "task-pi",
 				},
 			);
 

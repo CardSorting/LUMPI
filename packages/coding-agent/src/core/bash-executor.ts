@@ -12,6 +12,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { stripAnsi } from "../utils/ansi.ts";
 import { sanitizeBinaryOutput } from "../utils/shell.ts";
+import type { CodemarieBridge } from "./codemarie-bridge.ts";
 import type { BashOperations } from "./tools/bash.ts";
 import { DEFAULT_MAX_BYTES, truncateTail } from "./tools/truncate.ts";
 
@@ -24,6 +25,10 @@ export interface BashExecutorOptions {
 	onChunk?: (chunk: string) => void;
 	/** AbortSignal for cancellation */
 	signal?: AbortSignal;
+	/** Optional CodemarieBridge for JoyRide execution caching */
+	codemarieBridge?: CodemarieBridge;
+	/** Optional task identifier for task-scoped caching */
+	taskId?: string;
 }
 
 export interface BashResult {
@@ -53,6 +58,45 @@ export async function executeBashWithOperations(
 	operations: BashOperations,
 	options?: BashExecutorOptions,
 ): Promise<BashResult> {
+	const bridge = options?.codemarieBridge;
+	const taskId = options?.taskId || "task-pi";
+	let joyRideScope: ReturnType<CodemarieBridge["createJoyRideTaskScope"]> | undefined;
+
+	if (bridge) {
+		try {
+			joyRideScope = bridge.createJoyRideTaskScope(taskId, cwd);
+			bridge.registerTaskLifecycle(taskId, joyRideScope.generation);
+
+			const decision = await bridge.lookupSafeCommandResult(command, joyRideScope);
+			if (bridge.isJoyRideHitDecision(decision)) {
+				let cachedOutput = "";
+				let cachedExitCode = 0;
+				const hitValue = (decision as { value?: unknown }).value;
+				if (Array.isArray(hitValue)) {
+					cachedOutput = String(hitValue[1] ?? "");
+				} else if (typeof hitValue === "string") {
+					cachedOutput = hitValue;
+				} else if (typeof hitValue === "object" && hitValue !== null) {
+					const valObj = hitValue as { output?: string; exitCode?: number };
+					cachedOutput = valObj.output ?? "";
+					cachedExitCode = valObj.exitCode ?? 0;
+				}
+
+				if (options?.onChunk && cachedOutput) {
+					options.onChunk(cachedOutput);
+				}
+				return {
+					output: cachedOutput,
+					exitCode: cachedExitCode,
+					cancelled: false,
+					truncated: false,
+				};
+			}
+		} catch {
+			// Fail-open to normal execution on JoyRide error
+		}
+	}
+
 	const outputChunks: string[] = [];
 	let outputBytes = 0;
 	const maxOutputBytes = DEFAULT_MAX_BYTES * 2;
@@ -119,10 +163,29 @@ export async function executeBashWithOperations(
 			tempFileStream.end();
 		}
 		const cancelled = options?.signal?.aborted ?? false;
+		const exitCode = cancelled ? undefined : (result.exitCode ?? undefined);
+		const finalOutput = truncationResult.truncated ? truncationResult.content : fullOutput;
+
+		if (bridge && joyRideScope && !cancelled) {
+			try {
+				if (exitCode === 0) {
+					await bridge.storeReusableCommandResult(command, { output: finalOutput, exitCode: 0 }, joyRideScope);
+				} else if (exitCode !== undefined) {
+					await bridge.storeCommandDiagnostic(command, { output: finalOutput, exitCode }, joyRideScope);
+				}
+
+				if (bridge.isEnvAlteringCommand(command)) {
+					const snapshot = await bridge.buildJoyRideWorkspaceSnapshot(cwd);
+					bridge.flushWorkspace(snapshot.workspaceFingerprint, "command_environment_changed");
+				}
+			} catch {
+				// Non-fatal caching attempt
+			}
+		}
 
 		return {
-			output: truncationResult.truncated ? truncationResult.content : fullOutput,
-			exitCode: cancelled ? undefined : (result.exitCode ?? undefined),
+			output: finalOutput,
+			exitCode,
 			cancelled,
 			truncated: truncationResult.truncated,
 			fullOutputPath: tempFilePath,

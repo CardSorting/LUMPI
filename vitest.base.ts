@@ -10,6 +10,8 @@ export const workspaceSourcePaths = {
 	agentIndex: fileURLToPath(new URL("./packages/agent/src/index.ts", import.meta.url)),
 	codingAgentIndex: fileURLToPath(new URL("./packages/coding-agent/src/index.ts", import.meta.url)),
 	tuiIndex: fileURLToPath(new URL("./packages/tui/src/index.ts", import.meta.url)),
+	codemarieIndex: fileURLToPath(new URL("./packages/codemarie/dist/index.js", import.meta.url)),
+	codemarieJoyRide: fileURLToPath(new URL("./packages/codemarie/src/core/joyride/index.ts", import.meta.url)),
 } as const;
 
 export default defineConfig({
@@ -25,6 +27,14 @@ export default defineConfig({
 			},
 			{ find: /^@earendil-works\/pi-agent-core$/, replacement: workspaceSourcePaths.agentIndex },
 			{ find: /^@earendil-works\/pi-tui$/, replacement: workspaceSourcePaths.tuiIndex },
+			{ find: /^@earendil-works\/pi-codemarie\/joyride$/, replacement: workspaceSourcePaths.codemarieJoyRide },
+			{ find: /^@earendil-works\/pi-codemarie$/, replacement: workspaceSourcePaths.codemarieIndex },
 		],
 	},
 });
+
+
+
+
+
+

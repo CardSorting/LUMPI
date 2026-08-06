@@ -32,8 +32,10 @@
 			"@earendil-works/pi-tui/*": ["./packages/tui/src/*"],
 			"@earendil-works/pi-agent-old": ["./packages/agent-old/src/index.ts"],
 			"@earendil-works/pi-agent-old/*": ["./packages/agent-old/src/*"],
-			"@earendil-works/pi-codemarie": ["./packages/codemarie/src/index.ts"],
-			"@earendil-works/pi-codemarie/*": ["./packages/codemarie/src/*"],
+			"@earendil-works/pi-codemarie": ["./packages/codemarie/dist/index.d.ts"],
+			"@earendil-works/pi-codemarie/joyride": ["./packages/codemarie/dist/index.d.ts"],
+			"@earendil-works/pi-codemarie/*": ["./packages/codemarie/dist/index.d.ts"],
+
 			"@noorm/broccolidb": ["./packages/broccolidb/src/index.ts"],
 			"@noorm/broccolidb/*": ["./packages/broccolidb/src/*"],
 			"@/*": ["./packages/codemarie/src/*"],
@@ -48,6 +50,15 @@
 			"@utils/*": ["./packages/codemarie/src/utils/*"]
 		}
 	},
-	"include": ["packages/*/src/**/*", "packages/*/test/**/*", "packages/session-backends/*/src/**/*", "packages/session-backends/*/test/**/*", "packages/coding-agent/examples/**/*"],
-	"exclude": ["**/dist/**", "packages/coding-agent/examples/extensions/gondolin/**", "packages/codemarie/**/*"]
+	"include": [
+		"packages/{agent,ai,client,coding-agent,protocol,server,telemetry,tui}/src/**/*",
+		"packages/{agent,ai,client,coding-agent,protocol,server,telemetry,tui}/test/**/*",
+		"packages/session-backends/*/src/**/*",
+		"packages/session-backends/*/test/**/*",
+		"packages/coding-agent/examples/**/*"
+	],
+	"exclude": ["**/dist/**", "packages/coding-agent/examples/extensions/gondolin/**", "**/packages/codemarie/**"]
 }
+
+
+
