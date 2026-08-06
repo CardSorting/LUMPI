@@ -1,7 +1,7 @@
 /** Unified workspace cache invalidation — snapshot + session brief. */
 
-import { invalidateSessionBriefCache } from "./RoadmapSession";
-import { invalidateSnapshotCache } from "./RoadmapSnapshot";
+import { invalidateSessionBriefCache } from "./RoadmapSession.js";
+import { invalidateSnapshotCache } from "./RoadmapSnapshot.js";
 
 export function invalidateRoadmapWorkspaceCache(workspace?: string): void {
 	invalidateSnapshotCache(workspace);

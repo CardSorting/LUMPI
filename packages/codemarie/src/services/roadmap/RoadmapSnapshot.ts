@@ -1,7 +1,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
-import { getRoadmapConfig } from "./RoadmapConfig";
-import type { RoadmapValidation } from "./RoadmapSchema";
+import { getRoadmapConfig } from "./RoadmapConfig.js";
+import type { RoadmapValidation } from "./RoadmapSchema.js";
 
 export type EvidenceTier = "light" | "standard" | "full";
 

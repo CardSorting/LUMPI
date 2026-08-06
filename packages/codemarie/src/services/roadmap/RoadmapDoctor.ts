@@ -1,16 +1,16 @@
 import * as fs from "fs/promises";
 import * as path from "path";
-import { AUTO_GOVERNANCE, formatKanbanGateStatusLine, midTaskAgentNextCall } from "./RoadmapAutoGovernance";
-import { getRoadmapConfig } from "./RoadmapConfig";
+import { AUTO_GOVERNANCE, formatKanbanGateStatusLine, midTaskAgentNextCall } from "./RoadmapAutoGovernance.js";
+import { getRoadmapConfig } from "./RoadmapConfig.js";
 import {
 	formatExplainGateReport,
 	gateExplainParamsFromStatus,
 	recommendNextAction,
 	wrapClarityEnvelope,
-} from "./RoadmapOperator";
-import { progressJsonlPath, readLastError } from "./RoadmapProgress";
-import type { RoadmapService } from "./RoadmapService";
-import { bundledSkillPath, isBundledSkillAvailable } from "./RoadmapSkillInstall";
+} from "./RoadmapOperator.js";
+import { progressJsonlPath, readLastError } from "./RoadmapProgress.js";
+import type { RoadmapService } from "./RoadmapService.js";
+import { bundledSkillPath, isBundledSkillAvailable } from "./RoadmapSkillInstall.js";
 
 export async function runDoctorChecks(
 	roadmapService: RoadmapService,

@@ -22,6 +22,8 @@ export interface BuildSystemPromptOptions {
 	contextFiles?: Array<{ path: string; content: string }>;
 	/** Pre-loaded skills. */
 	skills?: Skill[];
+	/** Optional CodeMarie MoD steering directives string. */
+	codemarieSteeringDirectives?: string;
 }
 
 /** Build the system prompt with tools, guidelines, and context */
@@ -35,10 +37,12 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
 		cwd,
 		contextFiles: providedContextFiles,
 		skills: providedSkills,
+		codemarieSteeringDirectives,
 	} = options;
 	const promptCwd = cwd.replace(/\\/g, "/");
 
-	const appendSection = appendSystemPrompt ? `\n\n${appendSystemPrompt}` : "";
+	const appendSection = [appendSystemPrompt, codemarieSteeringDirectives].filter(Boolean).join("\n\n");
+	const appendSectionText = appendSection ? `\n\n${appendSection}` : "";
 
 	const contextFiles = providedContextFiles ?? [];
 	const skills = providedSkills ?? [];
@@ -46,8 +50,8 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
 	if (customPrompt) {
 		let prompt = customPrompt;
 
-		if (appendSection) {
-			prompt += appendSection;
+		if (appendSectionText) {
+			prompt += appendSectionText;
 		}
 
 		// Append project context files
@@ -137,8 +141,8 @@ ${APP_NAME} documentation (read only when the user asks about ${APP_NAME} itself
 - When working on ${APP_NAME} topics, read the docs and examples, and follow .md cross-references before implementing
 - Always read ${APP_NAME} .md files completely and follow links to related docs (e.g., tui.md for TUI API details)`;
 
-	if (appendSection) {
-		prompt += appendSection;
+	if (appendSectionText) {
+		prompt += appendSectionText;
 	}
 
 	// Append project context files

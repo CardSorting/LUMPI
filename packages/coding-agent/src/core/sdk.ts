@@ -5,6 +5,7 @@ import { getAgentDir } from "../config.ts";
 import { resolvePath } from "../utils/paths.ts";
 import { AgentSession } from "./agent-session.ts";
 import { formatNoModelsAvailableMessage } from "./auth-guidance.ts";
+import type { CodemarieBridge } from "./codemarie-bridge.ts";
 import { DEFAULT_THINKING_LEVEL } from "./defaults.ts";
 import type { ExtensionRunner, LoadExtensionsResult, SessionStartEvent, ToolDefinition } from "./extensions/index.ts";
 import { convertToLlm } from "./messages.ts";
@@ -82,6 +83,8 @@ export interface CreateAgentSessionOptions {
 	settingsManager?: SettingsManager;
 	/** Session start event metadata for extension runtime startup. */
 	sessionStartEvent?: SessionStartEvent;
+	/** Optional CodeMarie bridge for MoD prompt steering and governance. */
+	codemarieBridge?: CodemarieBridge;
 }
 
 /** Result from createAgentSession */
@@ -387,6 +390,7 @@ export async function createAgentSession(options: CreateAgentSessionOptions = {}
 		excludedToolNames,
 		extensionRunnerRef,
 		sessionStartEvent: options.sessionStartEvent,
+		codemarieBridge: options.codemarieBridge,
 	});
 	const extensionsResult = resourceLoader.getExtensions();
 

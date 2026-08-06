@@ -8,7 +8,7 @@ import { openExternal } from "@utils/env";
  * @param newFileContent The new content of the file to check.
  * @returns True if a potential omission is detected, false otherwise.
  */
-function detectCodeOmission(originalFileContent: string, newFileContent: string): boolean {
+export function detectCodeOmission(originalFileContent: string, newFileContent: string): boolean {
 	const originalLines = originalFileContent.split("\n");
 	const newLines = newFileContent.split("\n");
 	const omissionKeywords = ["remain", "remains", "unchanged", "rest", "previous", "existing", "..."];

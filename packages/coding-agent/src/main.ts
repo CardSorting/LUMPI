@@ -668,6 +668,7 @@ export async function main(args: string[], options?: MainOptions) {
 		modEnabled: parsed.mod,
 	});
 	codemarieBridge.initialize();
+	await codemarieBridge.refreshSteering();
 	const autoTrustOnReloadCwd =
 		parsed.projectTrustOverride === undefined && !hasTrustRequiringProjectResources(sessionCwd)
 			? sessionCwd
@@ -794,6 +795,7 @@ export async function main(args: string[], options?: MainOptions) {
 			excludeTools: sessionOptions.excludeTools,
 			noTools: sessionOptions.noTools,
 			customTools: sessionOptions.customTools,
+			codemarieBridge,
 		});
 		const cliThinkingOverride = parsed.thinking !== undefined || cliThinkingFromModel;
 		if (created.session.model && cliThinkingOverride) {

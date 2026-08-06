@@ -2,14 +2,14 @@ import * as crypto from "crypto";
 import { execa } from "execa";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { AUTO_GOVERNANCE, isAutoClearableGovernanceOnly, midTaskAgentNextCall } from "./RoadmapAutoGovernance";
-import { invalidateRoadmapWorkspaceCache } from "./RoadmapCache";
-import { isDigestContext, slimCheckpointPayload } from "./RoadmapCheckpointDigest";
-import { buildCockpitPayload } from "./RoadmapCockpit";
-import { getRoadmapConfig, type RoadmapConfig } from "./RoadmapConfig";
-import { runDoctorChecks } from "./RoadmapDoctor";
-import { formatExplainStaleReport } from "./RoadmapFreshness";
-import { buildGateStateFromInputs, collectGateInputs } from "./RoadmapGateCatalog";
+import { AUTO_GOVERNANCE, isAutoClearableGovernanceOnly, midTaskAgentNextCall } from "./RoadmapAutoGovernance.js";
+import { invalidateRoadmapWorkspaceCache } from "./RoadmapCache.js";
+import { isDigestContext, slimCheckpointPayload } from "./RoadmapCheckpointDigest.js";
+import { buildCockpitPayload } from "./RoadmapCockpit.js";
+import { getRoadmapConfig, type RoadmapConfig } from "./RoadmapConfig.js";
+import { runDoctorChecks } from "./RoadmapDoctor.js";
+import { formatExplainStaleReport } from "./RoadmapFreshness.js";
+import { buildGateStateFromInputs, collectGateInputs } from "./RoadmapGateCatalog.js";
 import {
 	determinePhase,
 	formatExplainGateReport,
@@ -17,14 +17,14 @@ import {
 	isBootstrapIncomplete,
 	wrapClarityEnvelope as operatorWrapClarityEnvelope,
 	recommendNextAction,
-} from "./RoadmapOperator";
+} from "./RoadmapOperator.js";
 import {
 	clearLastError,
 	formatWatchReport,
 	readCurrentProgress,
 	readLastError,
 	recordLastError,
-} from "./RoadmapProgress";
+} from "./RoadmapProgress.js";
 import {
 	bootstrapSkeleton,
 	findBootstrapPlaceholders,
@@ -34,9 +34,9 @@ import {
 	type RoadmapValidation,
 	SOUP_RISK_LEVELS,
 	validateRoadmapContent,
-} from "./RoadmapSchema";
-import { BUNDLED_SKILL_REL } from "./RoadmapSkillInstall";
-import { buildSnapshotKey, type EvidenceTier, getSnapshotFromCache, setSnapshotCache } from "./RoadmapSnapshot";
+} from "./RoadmapSchema.js";
+import { BUNDLED_SKILL_REL } from "./RoadmapSkillInstall.js";
+import { buildSnapshotKey, type EvidenceTier, getSnapshotFromCache, setSnapshotCache } from "./RoadmapSnapshot.js";
 
 interface HeavyScanResult {
 	workspace: string;
@@ -1737,7 +1737,7 @@ export class RoadmapService {
 	public async getProgressSnapshot(workspace: string, context = ""): Promise<Record<string, unknown>> {
 		const ctx = (context || "").trim().toLowerCase();
 		if (ctx === "--tail") {
-			const { readProgressTail } = await import("./RoadmapProgress");
+			const { readProgressTail } = await import("./RoadmapProgress.js");
 			return this.wrapClarityEnvelope({
 				action: "progress",
 				success: true,
@@ -1747,7 +1747,7 @@ export class RoadmapService {
 			});
 		}
 
-		const { buildProgressSnapshot, formatProgressReport } = await import("./RoadmapProgress");
+		const { buildProgressSnapshot, formatProgressReport } = await import("./RoadmapProgress.js");
 		const snapshot = await buildProgressSnapshot(workspace);
 		const report = await formatProgressReport({
 			workspace,

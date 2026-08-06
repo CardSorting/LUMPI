@@ -5,8 +5,8 @@ import {
 	gateEditInstruction,
 	isAutoClearableGovernanceOnly,
 	ROADMAP_DIAGNOSTIC_SLASH_COMMANDS,
-} from "./RoadmapAutoGovernance";
-import { REQUIRED_SECTIONS } from "./RoadmapSchema";
+} from "./RoadmapAutoGovernance.js";
+import { REQUIRED_SECTIONS } from "./RoadmapSchema.js";
 
 export const OPERATOR_PLAYBOOK = `
 Auto-rolling roadmap checkpoint (operators)

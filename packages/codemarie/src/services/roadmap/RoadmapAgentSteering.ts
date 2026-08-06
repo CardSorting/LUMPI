@@ -1,6 +1,6 @@
 /** Live agent steering — compact entity-card lines for prompts and environment_details (Backstage-style). */
 
-import { AUTO_GOVERNANCE, formatKanbanGateStatusLine, isAutoClearableBrief } from "./RoadmapAutoGovernance";
+import { AUTO_GOVERNANCE, formatKanbanGateStatusLine, isAutoClearableBrief } from "./RoadmapAutoGovernance.js";
 
 function truncate(text: string, limit = 120): string {
 	const stripped = text.split(/\s+/).filter(Boolean).join(" ");

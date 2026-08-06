@@ -1,9 +1,9 @@
 import * as path from "path";
-import { formatRoadmapSteeringBlock } from "./RoadmapAgentSteering";
-import { governanceFieldsFromStatus } from "./RoadmapAutoGovernance";
-import { getRoadmapConfig } from "./RoadmapConfig";
-import { RoadmapService } from "./RoadmapService";
-import { BUNDLED_SKILL_REL } from "./RoadmapSkillInstall";
+import { formatRoadmapSteeringBlock } from "./RoadmapAgentSteering.js";
+import { governanceFieldsFromStatus } from "./RoadmapAutoGovernance.js";
+import { getRoadmapConfig } from "./RoadmapConfig.js";
+import { RoadmapService } from "./RoadmapService.js";
+import { BUNDLED_SKILL_REL } from "./RoadmapSkillInstall.js";
 
 interface BriefCacheEntry {
 	brief: Record<string, unknown>;

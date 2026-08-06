@@ -53,6 +53,7 @@ import { sleep } from "../utils/sleep.ts";
 import { normalizeToolResultImages } from "../utils/tool-result-images.ts";
 import { formatNoApiKeyFoundMessage, formatNoModelSelectedMessage } from "./auth-guidance.ts";
 import { type BashResult, executeBashWithOperations } from "./bash-executor.ts";
+import type { CodemarieBridge } from "./codemarie-bridge.ts";
 import {
 	type CompactionResult,
 	calculateContextTokens,
@@ -225,6 +226,8 @@ export interface AgentSessionConfig {
 	extensionRunnerRef?: { current?: ExtensionRunner };
 	/** Session start event metadata emitted when extensions bind to this runtime. */
 	sessionStartEvent?: SessionStartEvent;
+	/** Optional CodeMarie bridge for MoD prompt steering and governance. */
+	codemarieBridge?: CodemarieBridge;
 }
 
 export interface ExtensionBindings {
@@ -353,6 +356,7 @@ export class AgentSession {
 	private _excludedToolNames?: Set<string>;
 	private _baseToolsOverride?: Record<string, AgentTool>;
 	private _sessionStartEvent: SessionStartEvent;
+	private _codemarieBridge?: CodemarieBridge;
 	private _extensionUIContext?: ExtensionUIContext;
 	private _extensionMode: ExtensionMode = "print";
 	private _extensionCommandContextActions?: ExtensionCommandContextActions;
@@ -389,6 +393,7 @@ export class AgentSession {
 		this._excludedToolNames = config.excludedToolNames ? new Set(config.excludedToolNames) : undefined;
 		this._baseToolsOverride = config.baseToolsOverride;
 		this._sessionStartEvent = config.sessionStartEvent ?? { type: "session_start", reason: "startup" };
+		this._codemarieBridge = config.codemarieBridge;
 
 		// Always subscribe to agent events for internal handling
 		// (session persistence, extensions, auto-compaction, retry logic)
@@ -632,6 +637,9 @@ export class AgentSession {
 
 		// Emit to extensions first
 		await this._emitExtensionEvent(event);
+
+		// Broadcast to CodeMarie persistent subscription hub
+		void this._codemarieBridge?.broadcastEvent(event);
 
 		// Notify all listeners
 		this._emit(event.type === "agent_end" ? { ...event, willRetry: this._willRetryAfterAgentEnd(event) } : event);
@@ -1042,6 +1050,7 @@ export class AgentSession {
 			loaderAppendSystemPrompt.length > 0 ? loaderAppendSystemPrompt.join("\n\n") : undefined;
 		const loadedSkills = this._resourceLoader.getSkills().skills;
 		const loadedContextFiles = this._resourceLoader.getAgentsFiles().agentsFiles;
+		const codemarieDirectives = this._codemarieBridge?.getSteeringPromptDirectivesSync();
 
 		this._baseSystemPromptOptions = {
 			cwd: this._cwd,
@@ -1052,6 +1061,7 @@ export class AgentSession {
 			selectedTools: validToolNames,
 			toolSnippets,
 			promptGuidelines,
+			codemarieSteeringDirectives: codemarieDirectives || undefined,
 		};
 		return buildSystemPrompt(this._baseSystemPromptOptions);
 	}

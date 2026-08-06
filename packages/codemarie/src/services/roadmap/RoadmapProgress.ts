@@ -3,15 +3,15 @@ import * as os from "os";
 import * as path from "path";
 import { writeCoalescer } from "@/core/storage/WriteCoalescer";
 import { Logger } from "@/shared/services/Logger";
-import { formatWatchSteeringLine } from "./RoadmapAgentSteering";
+import { formatWatchSteeringLine } from "./RoadmapAgentSteering.js";
 import {
 	AUTO_GOVERNANCE,
 	formatKanbanGateStatusLine,
 	isAutoClearableGovernanceOnly,
 	mergeGovernanceFields,
-} from "./RoadmapAutoGovernance";
-import { getRoadmapConfig } from "./RoadmapConfig";
-import { recommendNextAction } from "./RoadmapOperator";
+} from "./RoadmapAutoGovernance.js";
+import { getRoadmapConfig } from "./RoadmapConfig.js";
+import { recommendNextAction } from "./RoadmapOperator.js";
 
 const MAX_LOG_BYTES = 1024 * 1024;
 const MAX_LOG_LINES = 2000;
@@ -294,9 +294,9 @@ export async function formatProgressReport(params: {
 }
 
 export async function buildProgressSnapshot(workspace: string): Promise<Record<string, unknown>> {
-	const { buildSteeringContext } = await import("./RoadmapSteeringContext");
-	const { isBootstrapIncomplete } = await import("./RoadmapOperator");
-	const { RoadmapService } = await import("./RoadmapService");
+	const { buildSteeringContext } = await import("./RoadmapSteeringContext.js");
+	const { isBootstrapIncomplete } = await import("./RoadmapOperator.js");
+	const { RoadmapService } = await import("./RoadmapService.js");
 
 	const steering = await buildSteeringContext(workspace);
 	const current = await readCurrentProgress();

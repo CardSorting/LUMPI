@@ -107,12 +107,49 @@ import {
 } from "@utils/model-utils";
 import { arePathsEqual, getDesktopDir, isLocatedInPath } from "@utils/path";
 import { filterExistingFiles } from "@utils/tabFiltering";
-import cloneDeep from "clone-deep";
 import fs from "fs/promises";
-import Mutex from "p-mutex";
-import pWaitFor from "p-wait-for";
+import { nanoid } from "nanoid";
 import * as path from "path";
-import { ulid } from "ulid";
+
+function ulid(): string {
+	return nanoid(26);
+}
+
+class Mutex {
+	private current: Promise<unknown> = Promise.resolve();
+
+	public async withLock<T>(fn: () => T | Promise<T>): Promise<T> {
+		const prev = this.current;
+		let resolveNext: () => void;
+		this.current = new Promise<void>((res) => {
+			resolveNext = res;
+		});
+		try {
+			await prev;
+			return await fn();
+		} finally {
+			resolveNext!();
+		}
+	}
+}
+
+async function pWaitFor(
+	condition: () => boolean | Promise<boolean>,
+	options?: { interval?: number; timeout?: number },
+): Promise<void> {
+	const interval = options?.interval ?? 100;
+	const timeout = options?.timeout;
+	const startTime = Date.now();
+	while (true) {
+		if (await condition()) {
+			return;
+		}
+		if (timeout !== undefined && Date.now() - startTime >= timeout) {
+			throw new Error("Timed out waiting for condition");
+		}
+		await new Promise((resolve) => setTimeout(resolve, interval));
+	}
+}
 import type { SystemPromptContext } from "@/core/prompts/system-prompt";
 import { getSystemPrompt } from "@/core/prompts/system-prompt";
 import { HostProvider } from "@/hosts/host-provider";
@@ -733,14 +770,17 @@ export class Task {
 	}
 
 	private refreshEnvironmentLease(): void {
-		const probe = this.toolExecutor.getGuard().validateEnvironment();
-		void probe
-			.then((lease) => {
-				this.environmentLeaseSnapshot = lease;
-			})
-			.catch((error) => {
-				Logger.warn(`[Task ${this.taskId}] Environment discovery unavailable; continuing:`, error);
-			});
+		const guard = this.toolExecutor.getGuard() as unknown as { validateEnvironment?: () => Promise<unknown> };
+		if (typeof guard?.validateEnvironment === "function") {
+			void guard
+				.validateEnvironment()
+				.then((lease: unknown) => {
+					this.environmentLeaseSnapshot = lease as import("../integrity/EnvironmentIntegrity").EnvironmentLease;
+				})
+				.catch((error: unknown) => {
+					Logger.warn(`[Task ${this.taskId}] Environment discovery unavailable; continuing:`, error);
+				});
+		}
 	}
 
 	/** Task-local advisory timing evidence for tests and development diagnostics. */
@@ -2999,7 +3039,7 @@ export class Task {
 	}
 
 	private async resolveSiblingWorkspaceLocality(blocks: ToolUse[]): Promise<boolean[]> {
-		const results = new Array<boolean>(blocks.length).fill(true);
+		const results = Array.from({ length: blocks.length }, () => true);
 		let cursor = 0;
 		const workers = Array.from({ length: Math.min(DEFAULT_SIBLING_TOOL_CONCURRENCY, blocks.length) }, async () => {
 			while (cursor < blocks.length) {
@@ -3215,7 +3255,7 @@ export class Task {
 			//throw new Error("No more content blocks to stream! This shouldn't happen...") // remove and just return after testing
 		}
 
-		const block = cloneDeep(this.taskState.assistantMessageContent[this.taskState.currentStreamingContentIndex]); // need to create copy bc while stream is updating the array, it could be updating the reference block properties too
+		const block = structuredClone(this.taskState.assistantMessageContent[this.taskState.currentStreamingContentIndex]); // need to create copy bc while stream is updating the array, it could be updating the reference block properties too
 		const initialTurnControl = executionFunnel.getTurnControl(this.taskState, this.isParallelToolCallingEnabled());
 		let processedBlockCount = 1;
 		switch (block.type) {
@@ -3291,7 +3331,7 @@ export class Task {
 						this.taskState.currentStreamingContentIndex,
 					)) {
 						if (candidate.type !== "tool_use" || candidate.partial) break;
-						completeSiblings.push(cloneDeep(candidate));
+						completeSiblings.push(structuredClone(candidate));
 					}
 				}
 				if (completeSiblings.length > 1) {
@@ -4881,7 +4921,7 @@ export class Task {
 			"\n\n# Phase Transitions\nPlan and Act phases are managed automatically. Do not ask the user to switch modes. Finalized plans via plan_mode_respond auto-transition to ACT MODE; user steering may return you to PLAN MODE for scope pivots.";
 
 		try {
-			const { getRoadmapEnvironmentSection } = await import("@/services/roadmap/RoadmapSession");
+			const { getRoadmapEnvironmentSection } = await import("../../services/roadmap/RoadmapSession.js");
 			const roadmapSection = await getRoadmapEnvironmentSection(this.cwd);
 			if (roadmapSection) {
 				details += roadmapSection;

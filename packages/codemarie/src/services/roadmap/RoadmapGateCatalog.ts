@@ -1,8 +1,8 @@
-import { gateEditInstruction } from "./RoadmapAutoGovernance";
-import type { RoadmapConfig } from "./RoadmapConfig";
-import { getRoadmapConfig } from "./RoadmapConfig";
-import type { RoadmapValidation } from "./RoadmapSchema";
-import { findBootstrapPlaceholders } from "./RoadmapSchema";
+import { gateEditInstruction } from "./RoadmapAutoGovernance.js";
+import type { RoadmapConfig } from "./RoadmapConfig.js";
+import { getRoadmapConfig } from "./RoadmapConfig.js";
+import type { RoadmapValidation } from "./RoadmapSchema.js";
+import { findBootstrapPlaceholders } from "./RoadmapSchema.js";
 
 export interface GateClosedEntry {
 	id: string;

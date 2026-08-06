@@ -1,15 +1,15 @@
 import * as path from "path";
-import { AUTO_GOVERNANCE, formatKanbanGateStatusLine } from "./RoadmapAutoGovernance";
-import { getRoadmapConfig } from "./RoadmapConfig";
+import { AUTO_GOVERNANCE, formatKanbanGateStatusLine } from "./RoadmapAutoGovernance.js";
+import { getRoadmapConfig } from "./RoadmapConfig.js";
 import {
 	formatExplainGateReport,
 	gateExplainParamsFromStatus,
 	recommendNextAction,
 	wrapClarityEnvelope,
-} from "./RoadmapOperator";
-import { readCurrentProgress, readLastError } from "./RoadmapProgress";
-import type { RoadmapService } from "./RoadmapService";
-import { BUNDLED_SKILL_REL } from "./RoadmapSkillInstall";
+} from "./RoadmapOperator.js";
+import { readCurrentProgress, readLastError } from "./RoadmapProgress.js";
+import type { RoadmapService } from "./RoadmapService.js";
+import { BUNDLED_SKILL_REL } from "./RoadmapSkillInstall.js";
 
 export function formatCockpitReport(
 	payload: Record<string, unknown>,

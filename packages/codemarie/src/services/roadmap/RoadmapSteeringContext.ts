@@ -3,9 +3,9 @@
  * One bundle for agents, operators, and progress snapshots.
  */
 import * as path from "path";
-import { governanceFieldsFromStatus, midTaskAgentNextCall } from "./RoadmapAutoGovernance";
-import { recommendNextAction } from "./RoadmapOperator";
-import { RoadmapService } from "./RoadmapService";
+import { governanceFieldsFromStatus, midTaskAgentNextCall } from "./RoadmapAutoGovernance.js";
+import { recommendNextAction } from "./RoadmapOperator.js";
+import { RoadmapService } from "./RoadmapService.js";
 
 const STEERING_PAYLOAD_KEYS = [
 	"workspace",
