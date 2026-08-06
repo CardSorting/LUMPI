@@ -210,18 +210,28 @@ export type {
 	JoyRideWorkspaceSnapshot,
 } from "./core/joyride/index.js";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// JoyZoning Strategy & Structural Governance Engine
+export {
+	validateJoyZoning,
+	getLayer,
+	suggestLayerForContent,
+	generateLayerComment,
+	isLayerTagSupported,
+	parseLayerTag,
+	validateSmells,
+	validateLayering,
+	validateImportDepth,
+	type Layer,
+	CommentStyle,
+} from "./utils/joy-zoning.js";
+export {
+	detectWorkspaceArchitectureProfile,
+	type WorkspaceArchitectureProfile,
+	type JoyZoningSteeringThresholds,
+	DEFAULT_JOY_ZONING_STEERING_THRESHOLDS,
+} from "./core/policy/WorkspaceArchitectureProfile.js";
+export { StabilityPolicy } from "./core/policy/StabilityPolicy.js";
+export { triggerAudit as triggerJoyZoningAudit } from "./core/controller/joyZoning/triggerAudit.js";
+export { executeRefactor as executeJoyZoningRefactor } from "./core/controller/joyZoning/executeRefactor.js";
+export { executeBatchRefactor as executeJoyZoningBatchRefactor } from "./core/controller/joyZoning/executeBatchRefactor.js";
+export { getJoyZoningSection } from "./core/prompts/system-prompt/components/joy_zoning.js";

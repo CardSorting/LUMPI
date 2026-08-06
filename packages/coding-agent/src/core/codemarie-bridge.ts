@@ -1,3 +1,4 @@
+import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import {
@@ -12,37 +13,54 @@ import {
 	ContextStalenessTracker,
 	Controller,
 	createLockAuthority,
+	detectWorkspaceArchitectureProfile,
 	EnvironmentIntegrity,
 	type EnvironmentLease,
+	executeJoyZoningBatchRefactor,
+	executeJoyZoningRefactor,
 	findBootstrapPlaceholders,
 	findLastIndex,
 	formatBytes,
 	formatResponse,
 	type GateInputs,
 	type GateState,
+	generateLayerComment,
+	getJoyZoningSection,
+	getLayer,
 	governanceFieldsFromStatus,
 	HEALTH_STATUSES,
 	type HostProvider,
 	initializeCliHostProvider,
+	isLayerTagSupported,
 	KnowledgeGraphService,
+	type Layer,
 	type LockAuthority,
 	MAX_CONTENT_SIZE_BYTES,
 	PersistentSubscriptionHub,
 	PlanModeEnforcer,
+	parseLayerTag,
 	parsePartialArrayString,
 	REQUIRED_SECTIONS,
 	ROADMAP_DIAGNOSTIC_SLASH_COMMANDS,
 	readBroccoliFence,
 	runDoctorChecks,
 	SpiderEngine,
+	StabilityPolicy,
 	SwarmMutexService,
 	sanitizeCellForLLM,
 	sanitizeNotebookForLLM,
+	suggestLayerForContent,
 	TaskLatencyTracker,
 	TemplateEngine,
+	triggerJoyZoningAudit,
 	truncateContent,
 	UniversalGuard,
 	VariantBuilder,
+	validateImportDepth,
+	validateJoyZoning,
+	validateLayering,
+	validateSmells,
+	type WorkspaceArchitectureProfile,
 	WorkspaceIntelligenceEngine,
 	WriteCoalescer,
 } from "@earendil-works/pi-codemarie";
@@ -379,32 +397,39 @@ export class CodemarieBridge {
 		}
 	}
 
-	public async getSteeringPromptDirectives(): Promise<string> {
+	public async getSteeringPromptDirectives(mode: "plan" | "act" = "act"): Promise<string> {
 		const steering = await this.getSteeringContext();
-		if (!steering || steering.ok === false) {
-			return "";
-		}
+		const cwd = this.options.cwd || process.cwd();
+		const profile = detectWorkspaceArchitectureProfile(cwd);
+		const joyZoningSection = await getJoyZoningSection(undefined, { mode, cwd });
 
 		const lines: string[] = ["\n<codemarie_steering>"];
-		if (steering.project_identity_line) {
-			lines.push(`Identity: ${steering.project_identity_line}`);
+		if (steering && steering.ok !== false) {
+			if (steering.project_identity_line) {
+				lines.push(`Identity: ${steering.project_identity_line}`);
+			}
+			if (steering.phase) {
+				lines.push(`Phase: ${steering.phase}`);
+			}
+			if (steering.health_status) {
+				lines.push(`Health Status: ${steering.health_status}`);
+			}
+			if (steering.agent_next_call) {
+				lines.push(`Recommended Steering Call: ${steering.agent_next_call}`);
+			}
+			const digest = steering.project_steering_digest as Record<string, unknown> | undefined;
+			if (digest?.strategic_narrative) {
+				lines.push(`Strategic Narrative: ${digest.strategic_narrative}`);
+			}
+			if (digest?.center_of_gravity_excerpt) {
+				lines.push(`Center of Gravity: ${digest.center_of_gravity_excerpt}`);
+			}
 		}
-		if (steering.phase) {
-			lines.push(`Phase: ${steering.phase}`);
-		}
-		if (steering.health_status) {
-			lines.push(`Health Status: ${steering.health_status}`);
-		}
-		if (steering.agent_next_call) {
-			lines.push(`Recommended Steering Call: ${steering.agent_next_call}`);
-		}
-		const digest = steering.project_steering_digest as Record<string, unknown> | undefined;
-		if (digest?.strategic_narrative) {
-			lines.push(`Strategic Narrative: ${digest.strategic_narrative}`);
-		}
-		if (digest?.center_of_gravity_excerpt) {
-			lines.push(`Center of Gravity: ${digest.center_of_gravity_excerpt}`);
-		}
+
+		lines.push(`JoyZoning Posture: ${profile.mode.toUpperCase()} (${profile.reason})`);
+		lines.push(`JoyZoning Steering: ${profile.joyZoningSteering}`);
+		lines.push("\n--- PRIMARY ARCHITECTURAL STEERING DIRECTIVE ---");
+		lines.push(joyZoningSection);
 		lines.push("</codemarie_steering>\n");
 
 		return lines.join("\n");
@@ -594,5 +619,157 @@ export class CodemarieBridge {
 
 	public stopBackgroundStorageMaintenance(): void {
 		this.getStorageManager().stopBackgroundMaintenance();
+	}
+
+	// ============================================================================
+	// JoyZoning Strategy & Architectural Governance API
+	// ============================================================================
+
+	public detectWorkspaceArchitectureProfile(cwd?: string): WorkspaceArchitectureProfile {
+		return detectWorkspaceArchitectureProfile(cwd || this.options.cwd || process.cwd());
+	}
+
+	public getStabilityPolicy(cwd?: string): StabilityPolicy {
+		return StabilityPolicy.getInstance(cwd || this.options.cwd || process.cwd());
+	}
+
+	public validateJoyZoning(filePath: string, content: string): { success: boolean; errors: string[] } {
+		return validateJoyZoning(filePath, content);
+	}
+
+	public getLayer(filePath: string, content?: string): Layer {
+		return getLayer(filePath, content);
+	}
+
+	public suggestLayerForContent(content: string): { layer: Layer; reason: string } | null {
+		return suggestLayerForContent(content);
+	}
+
+	public generateLayerComment(filePath: string, layer: string, content?: string): string | null {
+		return generateLayerComment(filePath, layer, content);
+	}
+
+	public isLayerTagSupported(filePath: string, content?: string): boolean {
+		return isLayerTagSupported(filePath, content);
+	}
+
+	public parseLayerTag(content: string): Layer | null {
+		return parseLayerTag(content);
+	}
+
+	public validateSmells(filePath: string, content: string): string[] {
+		return validateSmells(filePath, content);
+	}
+
+	public validateLayering(filePath: string, content: string): string[] {
+		return validateLayering(filePath, content);
+	}
+
+	public validateImportDepth(filePath: string, content: string): string[] {
+		return validateImportDepth(filePath, content);
+	}
+
+	public async runJoyZoningAudit(
+		request: Parameters<typeof triggerJoyZoningAudit>[1],
+		responseStream: Parameters<typeof triggerJoyZoningAudit>[2],
+		requestId?: string,
+	): Promise<void> {
+		const controller = this.getController();
+		if (!controller) throw new Error("Controller is not initialized.");
+		await triggerJoyZoningAudit(controller, request, responseStream, requestId);
+	}
+
+	public async executeJoyZoningRefactor(
+		request: Parameters<typeof executeJoyZoningRefactor>[1],
+	): ReturnType<typeof executeJoyZoningRefactor> {
+		const controller = this.getController();
+		if (!controller) throw new Error("Controller is not initialized.");
+		return await executeJoyZoningRefactor(controller, request);
+	}
+
+	public async executeJoyZoningBatchRefactor(
+		request: Parameters<typeof executeJoyZoningBatchRefactor>[1],
+	): ReturnType<typeof executeJoyZoningBatchRefactor> {
+		const controller = this.getController();
+		if (!controller) throw new Error("Controller is not initialized.");
+		return await executeJoyZoningBatchRefactor(controller, request);
+	}
+
+	public ensureLayerHeader(filePath: string, content: string): { updated: boolean; content: string } {
+		if (!this.isLayerTagSupported(filePath, content)) {
+			return { updated: false, content };
+		}
+		const layer = this.getLayer(filePath, content);
+		const newContent = this.generateLayerComment(filePath, layer, content);
+		if (newContent && newContent !== content) {
+			return { updated: true, content: newContent };
+		}
+		return { updated: false, content };
+	}
+
+	public async getJoyZoningHealthSummary(cwd?: string): Promise<{
+		profile: WorkspaceArchitectureProfile;
+		fileCount: number;
+		layerDistribution: Record<Layer, number>;
+		tagCoveragePercentage: number;
+		violationsCount: number;
+	}> {
+		const targetCwd = cwd || this.options.cwd || process.cwd();
+		const profile = this.detectWorkspaceArchitectureProfile(targetCwd);
+		const distribution: Record<Layer, number> = {
+			domain: 0,
+			core: 0,
+			infrastructure: 0,
+			plumbing: 0,
+			ui: 0,
+		};
+
+		let fileCount = 0;
+		let taggedCount = 0;
+		let violationsCount = 0;
+
+		const walkDir = (dir: string) => {
+			let entries: fs.Dirent[] = [];
+			try {
+				entries = fs.readdirSync(dir, { withFileTypes: true });
+			} catch {
+				return;
+			}
+
+			for (const entry of entries) {
+				if (entry.name.startsWith(".") || entry.name === "node_modules" || entry.name === "dist") continue;
+				const fullPath = path.join(dir, entry.name);
+				if (entry.isDirectory()) {
+					walkDir(fullPath);
+				} else if (entry.isFile()) {
+					const ext = path.extname(entry.name).toLowerCase();
+					if ([".ts", ".tsx", ".js", ".jsx", ".py", ".go", ".rs", ".java"].includes(ext)) {
+						fileCount++;
+						try {
+							const content = fs.readFileSync(fullPath, "utf-8");
+							const layer = this.getLayer(fullPath, content);
+							distribution[layer] = (distribution[layer] || 0) + 1;
+							const tag = this.parseLayerTag(content);
+							if (tag) taggedCount++;
+							const res = this.validateJoyZoning(fullPath, content);
+							violationsCount += res.errors.length;
+						} catch {
+							// skip unreadable file
+						}
+					}
+				}
+			}
+		};
+
+		walkDir(targetCwd);
+
+		const tagCoveragePercentage = fileCount > 0 ? Math.round((taggedCount / fileCount) * 100) : 100;
+		return {
+			profile,
+			fileCount,
+			layerDistribution: distribution,
+			tagCoveragePercentage,
+			violationsCount,
+		};
 	}
 }

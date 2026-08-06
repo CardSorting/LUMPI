@@ -1,18 +1,19 @@
 import * as fs from "fs";
-import minimatch from "minimatch";
+import { minimatch } from "minimatch";
 import * as path from "path";
 import * as ts from "typescript";
-import { StabilityPolicy } from "../core/policy/StabilityPolicy";
+import { StabilityPolicy } from "../core/policy/StabilityPolicy.js";
 
 export type Layer = "domain" | "core" | "infrastructure" | "plumbing" | "ui";
 
-export enum CommentStyle {
-	JSDOC = "jsdoc", // /** [LAYER: TYPE] */
-	SLASH = "slash", // // [LAYER: TYPE]
-	HASH = "hash", // # [LAYER: TYPE]
-	DASH = "dash", // -- [LAYER: TYPE]
-	HTML = "html", // <!-- [LAYER: TYPE] -->
-}
+export const CommentStyle = {
+	JSDOC: "jsdoc", // /** [LAYER: TYPE] */
+	SLASH: "slash", // // [LAYER: TYPE]
+	HASH: "hash", // # [LAYER: TYPE]
+	DASH: "dash", // -- [LAYER: TYPE]
+	HTML: "html", // <!-- [LAYER: TYPE] -->
+} as const;
+export type CommentStyle = (typeof CommentStyle)[keyof typeof CommentStyle];
 
 const STYLE_REGISTRY: Record<string, CommentStyle> = {
 	".ts": CommentStyle.JSDOC,
@@ -177,10 +178,11 @@ export function isLayerTagSupported(filePath: string, content?: string): boolean
 
 	// 1. Path-based Glob Exclusion (Optimized with Cached Matchers)
 	if (EXCLUDE_PATTERN_CACHE === null) {
-		EXCLUDE_PATTERN_CACHE = excludePaths.map((p) => (f: string) => minimatch(f, p, { dot: true }));
+		EXCLUDE_PATTERN_CACHE = excludePaths.map((p: string) => (f: string) => minimatch(f, p, { dot: true }));
 	}
 
-	for (const matcher of EXCLUDE_PATTERN_CACHE) {
+	const matchers = EXCLUDE_PATTERN_CACHE ?? [];
+	for (const matcher of matchers) {
 		if (matcher(filePath) || matcher(path.relative(process.cwd(), filePath))) {
 			return false;
 		}

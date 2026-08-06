@@ -54,6 +54,12 @@ export const BASE_SLASH_COMMANDS: SlashCommand[] = [
 		section: "default",
 		cliCompatible: true,
 	},
+	{
+		name: "joyzoning",
+		description: "Perform a JoyZoning architectural audit (layer health, entropy, drift, and refactoring opportunities)",
+		section: "default",
+		cliCompatible: true,
+	},
 ];
 
 // VS Code-only slash commands
