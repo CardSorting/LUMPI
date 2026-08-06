@@ -533,6 +533,7 @@
 		"node_modules/@earendil-works/pi-codemarie": {
 			"version": "0.83.0",
 			"resolved": "https://registry.npmjs.org/@earendil-works/pi-codemarie/-/pi-codemarie-0.83.0.tgz",
+			"license": "Apache-2.0",
 			"dependencies": {
 				"@anthropic-ai/sdk": "0.91.1",
 				"@google/genai": "1.52.0",
@@ -909,7 +910,7 @@
 		"node_modules/@noorm/broccolidb": {
 			"version": "1.1.0",
 			"resolved": "https://registry.npmjs.org/@noorm/broccolidb/-/broccolidb-1.1.0.tgz",
-			"license": "MIT",
+			"license": "Apache-2.0",
 			"dependencies": {
 				"@modelcontextprotocol/sdk": "1.30.0",
 				"better-sqlite3": "12.8.0",

@@ -139,4 +139,4 @@ Agents express intent. Capabilities validate intent. Runtime governs execution. 
 
 ## License
 
-MIT
+Apache-2.0

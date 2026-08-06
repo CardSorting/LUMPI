@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/Biome-Verified-purple?style=for-the-badge" alt="Biome" />
   <img src="https://img.shields.io/badge/Substrate-Zero--GC_BroccoliDB-orange?style=for-the-badge" alt="BroccoliDB Substrate" />
   <img src="https://img.shields.io/badge/Sandbox-Gondolin_Micro--VM-darkgreen?style=for-the-badge" alt="Micro-VM Sandboxing" />
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
+  <img src="https://img.shields.io/badge/License-MIT%20%2F%20Apache--2.0-green?style=for-the-badge" alt="License MIT / Apache-2.0" />
   <img src="https://img.shields.io/badge/Sponsor-Earendil-pink?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor" />
 </p>
 
@@ -485,4 +485,7 @@ node node_modules/vitest/dist/cli.js --run packages/coding-agent/test/suite/harn
 
 ## 📄 License
 
-LUMI is licensed under the [MIT License](LICENSE).
+This repository contains components under different licenses:
+- **Codemarie** (`packages/codemarie/`) and **BroccoliDB** (`packages/broccolidb/`) are licensed under the [Apache License 2.0](LICENSE).
+- **Pi packages** (`packages/agent/`, `packages/ai/`, `packages/client/`, `packages/coding-agent/`, `packages/evals/`, `packages/protocol/`, `packages/server/`, `packages/session-backends/`, `packages/telemetry/`, `packages/tui/`) and original Pi files are licensed under the [MIT License](LICENSE).
+

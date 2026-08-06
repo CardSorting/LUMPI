@@ -2,6 +2,7 @@
 	"name": "@cline/analysis",
 	"version": "1.0.0",
 	"description": "Analysis framework for Cline evaluations with failure classification and metrics",
+	"license": "Apache-2.0",
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",

@@ -85,3 +85,10 @@ To run monorepo typechecks and lint verification:
 ```bash
 npm run check
 ```
+
+---
+
+## 📄 License
+
+`@earendil-works/pi-codemarie` is licensed under the [Apache License 2.0](LICENSE).
+
