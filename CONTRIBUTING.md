@@ -1,102 +1,166 @@
-# Contributing to pi
+# Contributing to LUMI
 
-This guide exists to save both sides time.
+Thank you for your interest in contributing to **LUMI**! This guide exists to streamline the onboarding experience for engine contributors while maintaining high code quality and architectural integrity across the monorepo.
 
-## Philosophy
+---
 
-First things first: **pi's core is minimal**.
+## 🧭 Philosophy & Architecture Core
 
-If your feature does not belong in the core, it should be an extension. PRs that bloat the core will likely be rejected.
+First things first: **LUMI's core is minimal and extensible**.
 
-Pi's core exists to be minimal and to be extensible so that it can be influenced and manipulated by extensions.  Even hook points for extensions however should be well considered and discussed to avoid adding unmaintainable bloat and complex interactions.
+LUMI is structured around an event-driven architecture that keeps the execution core lean while enabling rich extensibility through extensions, custom tools, and subagents:
 
-## The One Rule
+- **Core Engine (`@earendil-works/pi-agent-core`)**: Enforces state machine transitions, CAS history tracking, and prompt assembly.
+- **Host Integration (`@earendil-works/pi-codemarie`)**: Merges host workspace navigation, environment variables, window state, and diff clients.
+- **Substrate Storage (`@earendil-works/broccolidb`)**: Provides high-throughput 16MB zero-GC slab memory allocation.
+- **Multi-LLM Gateway (`@earendil-works/pi-ai`)**: Routes inference requests across OpenAI Codex, Anthropic Claude, Gemini, and local providers.
+- **Terminal UI (`@earendil-works/pi-tui`)**: Renders differential terminal screen buffers at sub-16ms latencies.
 
-**You must understand your code.** If you cannot explain what your changes do and how they interact with the rest of the system, your PR will be closed.
+If your proposed feature does not belong in the core, it should be built as an **extension**. PRs that add unneeded complexity to the core will be rejected.
 
-Using AI to write code is fine. Submitting AI-generated slop without understanding it is not.
+---
 
-If you use an agent, run it from the `pi` root directory so it picks up `AGENTS.md` automatically. Your agent must follow the rules and guidelines in that file.
+## ⚡ Quick Contributor Onboarding
 
-## Contribution Gate
-
-All issues and PRs from new contributors are auto-closed by default.
-
-Issues submitted Friday through Sunday are not guaranteed to be reviewed.  If something is urgent, ask on Discord: https://discord.com/invite/3cU7Bz4UPx
-
-Maintainers review auto-closed issues daily and reopen worthwhile ones. Issues that do not meet the quality bar below will not be reopened or receive a reply.
-
-Approval happens through maintainer replies on issues:
-
-- `lgtmi`: your future issues will not be auto-closed
-- `lgtm`: your future issues and PRs will not be auto-closed
-
-The command must be at the start of the reply (optionally after one or more `@username` mentions) or at the end. `lgtmi` does not grant rights to submit PRs. Only `lgtm` grants rights to submit PRs.
-
-## Quality Bar For Issues
-
-If you open an issue, you must use one of the two GitHub issue templates.
-
-If you open an issue, keep it short, concrete, and worth reading.
-
-- Keep it concise. If it does not fit on one screen, it is too long.
-- Write in your own voice (do not use an LLM to generate text, if you must, follow up with a clearly AI labeled comment).
-- State the bug or request clearly.
-- Explain why it matters.
-- If you want to implement the change yourself, say so.
-
-If the issue is real and written well, a maintainer may reopen it or reply with `lgtmi` or `lgtm` in the command position described above.
-
-## Blocking
-
-If you ignore this document twice, or if you spam the tracker with agent-generated issues, your GitHub account will be permanently blocked.
-
-If you send a large volume of issues through automation, your GitHub account will be permanently blocked. No taksies backsies.
-
-## Before Submitting a PR
-
-Do not open a PR unless you have already been approved by a maintainer using `lgtm` in the command position described above.
-
-Before submitting a PR:
+### 1. Repository Setup
 
 ```bash
+# Clone the repository
+git clone https://github.com/CardSorting/LUMPI.git
+cd LUMPI
+
+# Install all workspace dependencies without running untrusted post-install scripts
+npm install --ignore-scripts
+```
+
+### 2. Verify Local Build & Test Harness
+
+```bash
+# Run full monorepo quality gate (formatting, types, imports, shrinkwrap)
 npm run check
+
+# Run non-e2e test suite from repository root
 ./test.sh
 ```
 
-Both must pass.
+---
 
-Do not edit `CHANGELOG.md`. Changelog entries are added by maintainers.
+## 📜 The Golden Rule
 
-If you are adding a new provider to `packages/ai`, see `AGENTS.md` for required tests.
+**You must understand your code.** If you cannot explain what your changes do and how they interact with the rest of the system, your PR will be closed.
 
-## Questions?
+Using AI coding assistants is fine. Submitting un-reviewed AI-generated slop without understanding it is not.
 
-Ask on [Discord](https://discord.com/invite/nKXTsAcmbT).
+If you use an agent to develop changes in this repository, run it from the workspace root directory so it automatically picks up the [`AGENTS.md`](AGENTS.md) project guidelines.
 
-## FAQ
+---
 
-### Why are new issues and PRs auto-closed?
+## 🛡️ Contribution Gate & Maintainer Triage
 
-pi receives more issues than the maintainers can responsibly review in real time. Many reports do not meet the quality bar in this guide or do not follow CONTRIBUTING.md. Some are slung at the repository mindlessly via an agent instead of being reviewed and shaped by the person submitting them. Auto-closing creates a buffer so maintainers can review the tracker on their own schedule and reopen the issues that meet the quality bar.
+To protect maintainer bandwidth and prevent tracker spam, LUMI enforces an automated contribution triage workflow:
 
-### Why are weekend issues lower priority?
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+## PULL REQUEST & ISSUE TRIAGE FLOWCHART
+├─────────────────────────────────────────────────────────────────────────────┤
+│  1. Submission by Contributor                                               │
+│     └─ New issue or PR created ──► Auto-closed by Bot (Triage Buffer)       │
+│                                                                             │
+│  2. Maintainer Review & Triage                                              │
+│     ├─ Maintainer posts `lgtmi` ──► Issues auto-approved for contributor    │
+│     └─ Maintainer posts `lgtm`  ──► Issues & PRs approved for contributor   │
+│                                                                             │
+│  3. Quality Gate Verification                                               │
+│     └─ Run `npm run check` & `./test.sh` ──► CI Green ──► Merged into main  │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-We triage the tracker during working hours. That means more issues can accumulate over the weekend. Anything submitted Friday through Sunday may be missed or given lower priority in the Monday review queue. If a problem is urgent, ask on Discord and include the short version, a repro, and the relevant logs.
+1. **Auto-Closed by Default**: All issues and PRs from new contributors are automatically closed upon submission.
+2. **Daily Triage**: Maintainers review auto-closed issues daily and reopen high-signal reports.
+3. **Approval Commands**: Maintainers approve contributors via issue comments:
+   - `lgtmi`: Your future issues will not be auto-closed.
+   - `lgtm`: Your future issues **and PRs** will not be auto-closed.
 
-### Why do some issues get no reply?
+*(Note: `lgtmi` does not grant rights to submit PRs. Only `lgtm` grants rights to submit PRs.)*
 
-A reply is maintenance work too. Low-signal issues, unclear reports, duplicates, and issues that do not follow this guide may be closed without discussion. This keeps time available for reproducible bugs, thoughtful requests, and contributors who have done the work to make their report actionable.
+4. **Triage Taxonomy**: Review [docs/TRIAGE_AND_LABELING.md](docs/TRIAGE_AND_LABELING.md) for package label mappings (`pkg:*`).
+5. **Weekend Triage**: Issues submitted Friday through Sunday are triaged on Mondays. For urgent questions, reach out on [Discord](https://discord.com/invite/3cU7Bz4UPx).
 
-### Why not let AI triage everything?
+---
 
-AI can help group duplicates, summarize reports, and spot missing information. It is not trusted to make final maintainer decisions. Polished AI-generated issues can still be wrong, misleading, or expensive to investigate. Human review remains the final gate.
+## 📋 Quality Bar for Issues
 
-### Is this hostile to contributors?
+When opening an issue, use the official GitHub issue templates and ensure your report is concise and actionable:
 
-No. It is a guardrail against burnout and tracker spam. Short, concrete, reproducible issues are welcome. Thoughtful contributions are welcome. Automated slop, entitlement, and large volumes of low-effort reports are not.
+- Keep it brief (must fit on a single screen).
+- Explain the problem, reproduction steps, expected behavior, and actual behavior.
+- Clarify why the fix or feature matters.
+- If you intend to implement the fix yourself, explicitly state so in the issue description.
 
-## Where can I learn about plans?
+---
 
-Earendil uses RFCs to discuss larger changes.  Not all of them are public, but
-quite a few are.  They can be found at [rfc.earendil.com](https://rfc.earendil.com/keyword/pi/).
+## 🛠️ Code Standards & Rules
+
+All code contributions must adhere to the following mandatory guidelines:
+
+1. **Erasable TypeScript Syntax**: Code must conform to Node strip-only mode (no `enum`, `namespace`, parameter properties, or non-standard TS emit features). Use explicit fields with constructor assignments.
+2. **Top-Level Imports Only**: Dynamic inline imports (`await import(...)` or `import("pkg").Type`) are strictly prohibited.
+3. **No `any` Types**: Avoid `any` unless strictly necessary for third-party dynamic interfaces.
+4. **Zero-GC Substrate Rules**: Code paths under `packages/broccolidb` must use pre-allocated slab allocators and avoid allocating objects inside hot loops.
+5. **No Editing `CHANGELOG.md`**: Maintainers manage changelog entries during release cycles. Do not add changelog edits to your PR.
+6. **Regression Tests**: For bug fixes, add issue-specific regression specs under `packages/coding-agent/test/suite/regressions/` named `<issue-number>-<short-slug>.test.ts`.
+
+---
+
+## 🧪 Testing Guidelines
+
+Before opening a PR, ensure all verification commands pass cleanly:
+
+```bash
+# Run complete verification gate
+npm run check
+
+# Run non-e2e test suite
+./test.sh
+
+# Run specific package tests
+node node_modules/vitest/dist/cli.js --run packages/coding-agent/test/suite/harness.ts
+```
+
+For interactive TUI manual testing, run inside a `tmux` session:
+
+```bash
+tmux new-session -d -s pi-test -x 80 -y 24
+tmux send-keys -t pi-test "./pi-test.sh" Enter
+sleep 3 && tmux capture-pane -t pi-test -p
+tmux kill-session -t pi-test
+```
+
+---
+
+## ❓ Frequently Asked Questions
+
+<details>
+<summary><strong>Why are new issues and PRs auto-closed?</strong></summary>
+<br/>
+LUMI receives a high volume of issue reports. Auto-closing creates a triage buffer so maintainers can review reports systematically and reopen actionable, high-quality issues.
+</details>
+
+<details>
+<summary><strong>Where can I learn about RFCs and architectural proposals?</strong></summary>
+<br/>
+Earendil maintains public RFC proposals at <a href="https://rfc.earendil.com/keyword/pi/">rfc.earendil.com</a>.
+</details>
+
+<details>
+<summary><strong>How do I report a security vulnerability?</strong></summary>
+<br/>
+Do not open a public issue. Review our <a href="SECURITY.md">SECURITY.md</a> policy and email <code>security@earendil.com</code> or submit a private GitHub Security Advisory.
+</details>
+
+---
+
+## 💬 Community & Communication
+
+- **Discord**: Join the developer discussion on [Discord](https://discord.com/invite/nKXTsAcmbT).
+- **Security**: Report vulnerabilities via `security@earendil.com`.

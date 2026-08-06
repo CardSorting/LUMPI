@@ -7,6 +7,7 @@
   <img src="https://img.shields.io/badge/Substrate-Zero--GC_BroccoliDB-orange?style=for-the-badge" alt="BroccoliDB Substrate" />
   <img src="https://img.shields.io/badge/Sandbox-Gondolin_Micro--VM-darkgreen?style=for-the-badge" alt="Micro-VM Sandboxing" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
+  <img src="https://img.shields.io/badge/Sponsor-Earendil-pink?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor" />
 </p>
 
 <p align="center">
@@ -14,37 +15,54 @@
 </p>
 
 <p align="center">
+  <a href="docs/EXECUTIVE_BRIEF.md">Executive Brief</a> •
+  <a href="docs/ADOPTION_GUIDE.md">Adoption Playbook</a> •
+  <a href="docs/FAQ.md">FAQ</a> •
+  <a href="docs/ECOSYSTEM.md">Ecosystem</a> •
+  <a href="QUICK_REFERENCE.md">CLI Cheatsheet</a> •
   <a href="#-choose-your-onboarding-path">Choose Your Path</a> •
+  <a href="#-5-minute-interactive-guided-tour">5-Min Tour</a> •
   <a href="#-quick-start--installation">Quick Start</a> •
   <a href="#-interactive-tui-preview">TUI Preview</a> •
-  <a href="#-enterprise-recipes--workflow-showcase">Enterprise Recipes</a> •
-  <a href="#-why-lumi-feature--performance-matrix">Why LUMI</a> •
-  <a href="#-system-architecture">Architecture</a> •
-  <a href="#-monorepo-package-ecosystem">Packages</a> •
-  <a href="#-evaluations--benchmarking-harness">Benchmarking</a> •
-  <a href="#-script-registry--build-pipeline">Build Pipeline</a> •
-  <a href="#-environment-variables--provider-keys">Environment Keys</a> •
-  <a href="#-extensibility--subagent-swarms">Extensibility</a> •
-  <a href="#-security--sandboxing">Security</a> •
-  <a href="#-enterprise-faq--troubleshooting">FAQ</a> •
-  <a href="#-developer-guide--quality-standards">Contributing</a>
+  <a href="#-enterprise-recipes--workflow-showcase">Recipes</a> •
+  <a href="#-system-architecture">Architecture</a>
 </p>
 
 ---
 
 ## ⚡ Choose Your Onboarding Path
 
-Select your role for a tailored onboarding path:
+Select your role for a tailored, zero-friction onboarding path:
 
 | Target Persona | Core Objective | Fast Track Link |
 | :--- | :--- | :--- |
-| **Individual Developer** | Launch LUMI locally in under 30 seconds | [👉 30-Second Quickstart](#1-30-second-local-developer-quickstart) |
-| **Engineering Leader** | Review stakeholder ROI and security alignment | [👉 Stakeholder Alignment](#-executive-overview) |
-| **System Architect** | Evaluate monorepo packages, TUI, and substrate memory | [👉 Monorepo Architecture](#-system-architecture) |
-| **DevOps / Security Lead** | Deploy micro-VM sandboxing & zero-trust supply chain | [👉 Security & Sandboxing](#-security--sandboxing) |
-| **AI Researcher / Evaluator** | Benchmark agent tool calls and coding accuracy | [👉 Evaluation Harness](#-evaluations--benchmarking-harness) |
-| **Extension / Tool Author** | Build custom agent tools, subagents, or custom providers | [👉 Extensibility Guide](#-extensibility--custom-providers) |
-| **Engine Contributor** | Build, test, and contribute to `@earendil-works/*` | [👉 Developer & Quality Guide](#-developer-guide--quality-standards) |
+| **Engineering Executive / CTO** | Review ROI, security compliance, and strategic architecture | [👉 Executive Brief](docs/EXECUTIVE_BRIEF.md) • [👉 Enterprise Adoption Guide](docs/ADOPTION_GUIDE.md) |
+| **Individual Developer** | Launch LUMI locally in under 30 seconds & access CLI cheatsheet | [👉 30-Second Quickstart](#1-30-second-local-developer-quickstart) • [👉 FAQ](docs/FAQ.md) |
+| **System Architect** | Evaluate monorepo packages, TUI, substrate memory, and diagrams | [👉 Architecture Guide](docs/ARCHITECTURE.md) • [👉 Diagrams Catalog](docs/DIAGRAMS.md) |
+| **DevOps / Security Lead** | Deploy micro-VM sandboxing, enterprise proxies & air-gapped LLMs | [👉 Security & Air-Gap Guide](docs/SECURITY_AND_AIRGAP.md) • [👉 Compliance](docs/COMPLIANCE.md) |
+| **AI Researcher / Evaluator** | Benchmark agent tool calls, memory allocation, and coding accuracy | [👉 Benchmark Methodology](docs/BENCHMARKS.md) |
+| **Extension & Tool Author** | Build custom agent tools, subagents, or providers | [👉 Extensions Tutorial](docs/EXTENSIONS_GUIDE.md) • [👉 Ecosystem Showcase](docs/ECOSYSTEM.md) |
+| **Engine Contributor** | Build, test, and contribute to `@earendil-works/*` | [👉 Developer Field Guide](DEVELOPMENT.md) • [👉 Triage Taxonomy](docs/TRIAGE_AND_LABELING.md) |
+
+---
+
+## 📚 Documentation Hub & Technical Specifications
+
+Explore our comprehensive documentation suite in [`docs/`](docs/):
+
+- 💼 **[Executive ROI Brief](docs/EXECUTIVE_BRIEF.md)**: CTO/VP 1-pager covering ROI, zero telemetry, and performance.
+- 🏢 **[Enterprise Adoption & Rollout Guide](docs/ADOPTION_GUIDE.md)**: 5-Phase rollout matrix, evaluation rubrics, and security checklists.
+- ❓ **[FAQ & Friction Resolution Guide](docs/FAQ.md)**: Answers across runtime setups, keybindings, air-gaps, and substrates.
+- 🔌 **[Ecosystem & Extensibility Showcase](docs/ECOSYSTEM.md)**: Extension API specifications, custom tools, and RPC integration.
+- 🛡️ **[Security Compliance Matrix](docs/COMPLIANCE.md)**: Enterprise security control mapping, privacy, and SLA policies.
+- 📊 **[Benchmark Specifications](docs/BENCHMARKS.md)**: Evaluation methodology, hardware profiles, and latency benchmarks.
+- 🗺️ **[Architectural Diagrams](docs/DIAGRAMS.md)**: Visual ASCII & Mermaid diagrams for topology, CAS state, and memory slabs.
+- ⚡ **[Detailed Quickstart Guide](docs/QUICKSTART.md)**: Installation across Node.js, Bun, Docker, and local Ollama.
+- ⌨️ **[CLI & TUI Cheatsheet](QUICK_REFERENCE.md)**: Keybindings, CLI flags, provider overrides, and subagent syntax.
+- 🔌 **[Extensions & Tools Tutorial](docs/EXTENSIONS_GUIDE.md)**: Building custom tools, subagents, and LLM provider extensions.
+- 🛰️ **[RPC Protocol Specification](docs/RPC_PROTOCOL_SPEC.md)**: JSON-RPC 2.0 transport schemas, IPC sockets, and handshakes.
+- 🏷️ **[Contributor Triage Taxonomy](docs/TRIAGE_AND_LABELING.md)**: Package labels (`pkg:*`), issue lifecycle, and maintainer `lgtm` syntax.
+- 🔒 **[Enterprise Security & Air-Gap Guide](docs/SECURITY_AND_AIRGAP.md)**: Corporate proxies, local LLM execution, and micro-VMs.
 
 ---
 
@@ -53,6 +71,37 @@ Select your role for a tailored onboarding path:
 **LUMI** is an enterprise-grade agentic AI coding engine built for high-velocity software engineering. Synthesized from the structural unification of **CodeMarie** CLI host architecture and **Pi-Main** agentic intelligence, LUMI couples multi-provider model routing with an in-memory high-throughput substrate engine (**BroccoliDB**) to deliver real-time, deterministic tool execution inside high-performance terminal environments.
 
 Engineered to supersede legacy, fragmented AI coding extensions, LUMI provides a consolidated monorepo runtime designed for zero-GC memory allocation, hard micro-VM sandboxing, and strict supply-chain immutability.
+
+---
+
+## 🎯 5-Minute Interactive Guided Tour
+
+Follow this step-by-step tour to experience LUMI's zero-GC substrate performance, interactive TUI, and non-interactive CLI modes:
+
+```bash
+# Step 1: Clone and hydrate dependencies cleanly (30 seconds)
+git clone https://github.com/CardSorting/LUMPI.git
+cd LUMPI
+npm install --ignore-scripts
+
+# Step 2: Run non-interactive codebase prompt (10 seconds)
+npx tsx packages/coding-agent/src/cli.ts -p "Summarize the monorepo packages in 3 bullet points"
+
+# Step 3: Test local keyless TUI launch mode
+./pi-test.sh --no-env
+
+# Step 4: Verify full monorepo quality gate
+npm run check
+```
+
+Expected Output in Step 2:
+```text
+✔ Initialized BroccoliDB Zero-GC Slab Arena (16MB)
+✔ Provider Gateway: OpenAI Codex (gpt-5.6-luna)
+1. @earendil-works/pi-coding-agent: Primary CLI & interactive TUI engine.
+2. @earendil-works/broccolidb: High-throughput slab memory allocator.
+3. @earendil-works/pi-ai: Multi-provider router supporting 12+ LLM gateways.
+```
 
 ---
 
@@ -84,13 +133,16 @@ npm install --ignore-scripts
 
 # Launch via Bun binary runtime (if Bun is installed)
 bun run packages/coding-agent/src/cli.ts
+
+# Execute non-interactive print mode for a quick query
+npx tsx packages/coding-agent/src/cli.ts -p "Explain the monorepo package structure"
 ```
 
 ---
 
 ## 🖥️ Interactive TUI Preview
 
-LUMI features a branded, differential rendering terminal interface (`@earendil-works/pi-tui`) with active key detection and status management:
+LUMI features a branded, differential rendering terminal interface (`@earendil-works/pi-tui`) with active key detection and session management:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -181,6 +233,8 @@ LUMI is engineered from first principles for mechanical sympathy, deterministic 
 | **Apple Silicon (M1 - M4)** | `< 75ms` | `< 0.2ms / slab` | `~38MB` |
 | **x86_64 Linux Server** | `< 90ms` | `< 0.3ms / slab` | `~42MB` |
 | **Micro-VM Sandbox (Gondolin)**| `< 140ms` | `< 0.5ms / slab` | `~45MB` |
+
+### Capability Matrix
 
 | Capability Matrix | Traditional AI CLI Tools | Python Agent Frameworks | **LUMI Agentic Engine** |
 | :--- | :--- | :--- | :--- |
@@ -357,6 +411,8 @@ LUMI defaults to host process permissions. For isolated execution in enterprise 
 | **Lockfile Immutability** | `PI_ALLOW_LOCKFILE_CHANGE` pre-commit gate | Prevents un-audited transitive dependency drift |
 | **Strip-Only TypeScript** | Erasable Node syntax | No un-audited JS emit transformers |
 
+For full details, review [SECURITY.md](SECURITY.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), and [docs/SECURITY_AND_AIRGAP.md](docs/SECURITY_AND_AIRGAP.md).
+
 ---
 
 ## ❓ Enterprise FAQ & Troubleshooting
@@ -378,6 +434,21 @@ Set standard <code>HTTP_PROXY</code> / <code>HTTPS_PROXY</code> environment vari
 <br/>
 LUMI's multi-provider router automatically captures provider connection errors and prompts for secondary fallback routing without losing active session state.
 </details>
+
+For detailed error triage and common pitfalls, check [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+
+---
+
+## 🏛️ Governance & Community
+
+LUMI is built by an open community of engineers dedicated to deterministic, high-performance AI tooling:
+
+- **[DEVELOPMENT.md](DEVELOPMENT.md)**: Engine developer field guide & inner-loop setup.
+- **[CONTRIBUTING.md](CONTRIBUTING.md)**: Contributor quality gates, triage process, and code standards.
+- **[GOVERNANCE.md](GOVERNANCE.md)**: Open source project governance, RFC lifecycle, and maintainers.
+- **[SUPPORT.md](SUPPORT.md)**: Support channels, Discord community, and enterprise SLA escalation.
+- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)**: Community charter & expectations.
+- **[SECURITY.md](SECURITY.md)**: Responsible vulnerability disclosure policy.
 
 ---
 

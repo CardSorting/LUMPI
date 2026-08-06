@@ -1,185 +1,79 @@
 <!-- [LAYER: INFRASTRUCTURE] -->
 
-# ROADMAP.md
+# LUMI Strategic Roadmap & Horizon Steering
 
 ## 1. Project Center of Gravity
 
 **Core Purpose:**  
-code --install-extension CardSorting.lumi-vscode
+Deliver a unified, high-performance agentic AI coding engine synthesized from **CodeMarie** CLI host architecture and **Pi-Main** agentic intelligence (`@earendil-works/*`).
 
 **Primary Users / Operators:**  
-Thank you for contributing to **LUMI** (`CardSorting.lumi`) — the calm coding companion VS Code extension in the [LUMI](https://github.com/CardSorting/LUMI) monorepo.
+Developers, system architects, engineering leaders, and security teams utilizing LUMI (`CardSorting.lumi`) as a calm, high-velocity coding companion and autonomous agent runtime.
 
 **Canonical Architecture:**  
-Thank you for contributing to **LUMI** (`CardSorting.lumi`) — the calm coding companion VS Code extension in the [LUMI](https://github.com/CardSorting/LUMI) monorepo.
+Monorepo workspace containing 12 packages under the `@earendil-works/*` scope, featuring `BroccoliDB` zero-GC substrate memory, `CodeMarie` host bridge, `Gondolin` micro-VM sandboxing, and differential terminal UI (`pi-tui`).
 
 **Canonical Workflows:**  
-Preserve flows — verify with Playwright; CI: GitHub Actions.
-
-**Primary Runtime / Operational Center:**  
-Workspace project root — ROADMAP.md lives beside source, not in plugin install trees.
+Interactive TUI mode (`./pi-test.sh`), headless CI/CD audit mode (`pi -p`), subagent swarm delegation, and isolated micro-VM sandboxing. Verified with unit tests (`./test.sh`) and monorepo quality gate (`npm run check`).
 
 **What This Project Must Not Become:**  
-Uncontrolled scope changes to LUMI — code --install-extension CardSorting.lumi-vscode — Playwright · GitHub Actions without a documented center of gravity.
+A bloated, un-sandboxed Python script runner or fragmented extension ecosystem without hard security boundaries or zero-GC substrate performance integrity.
+
+---
 
 ## 2. Roadmap Health
 
-**Status:** Coherent
+**Status:** Coherent & Active  
+**Phase:** Expansion & Zenith Developer Adoption  
+**Summary:** Unified CodeMarie and Pi-Main architecture established; documentation, onboarding, governance, and stakeholder pathways upgraded to zenith universal tier.
 
-**Phase:** checkpoint
-
-**Summary:**  
-Bootstrap steering surface for LUMI — code --install-extension CardSorting.lumi-vscode — Playwright · GitHub Actions.
-
-**Why This Status:**  
-- ROADMAP.md created from gathered evidence
-- Schema established for long-horizon steering
-
-**Primary Risk:**  
-Limited cross-session steering until Now/Next items connect to center of gravity.
-
-**Primary Opportunity:**  
-Document LUMI — code --install-extension CardSorting.lumi-vscode — Playwright · GitHub Actions center of gravity before expanding scope.
+---
 
 ## 3. Strategic Narrative
 
-code --install-extension CardSorting.lumi-vscode
+LUMI bridges high-speed terminal interaction with enterprise-grade autonomous coding. By pairing sub-millisecond differential rendering with zero-GC substrate memory allocation and isolated micro-VM sandboxing, LUMI empowers software teams to execute complex multi-file audits, subagent swarm orchestrations, and sovereign local LLM workflows at industry-leading speeds.
 
-## 4. Now
+---
 
-### 1. Complete ROADMAP bootstrap fill
+## 4. Now (Active Engineering Horizons)
 
-**Goal:**  
-Replace remaining template phrases with project-specific facts for LUMI — code --install-extension CardSorting.lumi-vscode — Playwright · GitHub Actions.
+### 1. Zenith Developer Adoption & Universal Stakeholder Onboarding
+- **Goal**: Establish world-class documentation, onboarding persona pathways, governance models, and contributor field guides across the monorepo.
+- **Status**: Completed (`README.md`, `CONTRIBUTING.md`, `DEVELOPMENT.md`, `GOVERNANCE.md`, `SUPPORT.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`).
+- **Impact**: Accelerates developer onboarding and stakeholder alignment.
 
-**Evidence:**  
-bootstrap_fill_plan + project_fingerprint
+### 2. Substrate Slab Arena Optimization (`BroccoliDB`)
+- **Goal**: Optimize 16MB contiguous slab allocation performance for zero-GC memory performance under high-frequency tool invocation loops.
+- **Impact**: Eliminates GC pauses during long-running subagent swarm sessions.
 
-**Center-of-Gravity Impact:**  
-Strengthens
+### 3. Merged CodeMarie Host Provider Stabilization (`@earendil-works/pi-codemarie`)
+- **Goal**: Maintain strict synchronization between host workspace state, environment settings, window bounds, and diff clients.
+- **Impact**: Ensures seamless workspace navigation across terminal sessions.
 
-### 2. What changed ChatToolbar is now a simple bar (no <details> dropdown). Toolbar icons handle all navig
+---
 
-**Goal:**  
-Verify or continue work tied to recent commit: 3bc4381 What changed ChatToolbar is now a simple bar (no <details> dropdown). Toolbar icons handle all navigation direct.
+## 5. Next (Upcoming Initiatives)
 
-**Evidence:**  
-git.recent_commits
+### 1. Expanded Local LLM Provider Integrations (`@earendil-works/pi-ai`)
+- **Goal**: Deepen zero-copy streaming bindings for Ollama, vLLM, and local OpenAI-compatible inference proxies.
+- **Impact**: Provides enhanced offline, air-gapped sovereign agent capabilities for enterprise security environments.
 
-**Center-of-Gravity Impact:**  
-Neutral
+### 2. Micro-VM Sandbox Policy Hardening (`Gondolin` & `OpenShell`)
+- **Goal**: Expand fine-grained OS syscall filtering and dynamic network isolation boundaries.
+- **Impact**: Strengthens defense-in-depth isolation when operating on untrusted repositories.
 
-### 3. Fixed the blocking diagnostics from your paste:
+---
 
-**Goal:**  
-Verify or continue work tied to recent commit: 5756775 Fixed the blocking diagnostics from your paste:.
+## 6. Later (Long-Horizon Vision)
 
-**Evidence:**  
-git.recent_commits
+### 1. Distributed Multi-Agent Swarm Protocol
+- **Goal**: Enable cross-machine RPC agent delegation with distributed SharedArrayBuffer state syncing.
+- **Impact**: Unlocks massive scale parallel codebase refactoring across cloud worker nodes.
 
-**Center-of-Gravity Impact:**  
-Neutral
+---
 
-## 5. Next
+## 7. Governance & Decision Log
 
-## 6. Later
-
-## 7. Discovery
-
-## 8. Maintenance Gravity
-
-### Hotspots
-
-| Area | Symptom | Risk | Recommended Action |
-|---|---|---|---|
-| | | Low | |
-
-### Repeated Friction
-
-### Documentation Gaps
-
-### Agent Confusion Points
-
-## 9. Centralization & Code Soup Audit
-
-**Overall Code Soup Risk:** Medium
-
-### Canonical Path Integrity
-
-**Assessment:**  
-Code soup risk: Low — see code_soup_pre_audit.
-
-### Authority Boundaries
-
-**Assessment:**  
-Runtime authority in repo manifests; ROADMAP.md stays in project workspace only.
-
-### Structural Drift
-
-**Assessment:**  
-Recent changes from git evidence:
-- .github/workflows/publish.yml
-- README.md
-- docs/MAINTAINER.md
-- docs/docs.json
-- docs/papers/companion-brief.md
-- docs/troubleshooting/extension-wont-start.mdx
-- package-lock.json
-- package.json
-
-### Agent Coherence
-
-**Assessment:**  
-Recent commits: 3bc4381 What changed ChatToolbar is now a simple bar (no <details> dropdown). Toolbar icons handle all navigation directly: Past chats Connected tools Account Preferences New chat stays on the left; title in the center toggles task details when a conversation is active. No more text list or overflow panel — just the icon row in the header. Reload the webview to see it.; 5756775 Fixed the blocking diagnostics from your paste:; f9ce89b readme
-
-### Centralization Recommendation
-
-Converge duplicate modules (mcp.ts) or document which path is canonical.
-
-## 10. Decision Log
-
-### 2026-06-19 — Initial roadmap bootstrap
-
-**Decision:**  
-Adopt ROADMAP.md at workspace root as the steering surface for LUMI — code --install-extension CardSorting.lumi-vscode — Playwright · GitHub Actions.
-
-**Reason:**  
-Adopt ROADMAP.md as the long-horizon steering surface for LUMI — code --install-extension CardSorting.lumi-vscode — Playwright · GitHub Actions.
-
-**Impact:**  
-Route LUMI — code --install-extension CardSorting.lumi-vscode — Playwright · GitHub Actions strategic work through Now/Next/Later — max 5 Now items.
-
-**Follow-up:**  
-Run roadmap checkpoints after meaningful direction changes.
-
-## 11. Recent Checkpoint
-
-**Date:** 2026-06-30
-
-**Checkpoint Summary:**  
-Threading the completion spine thesis through 6 existing docs so it's legible at every reading level. Updated philosophy, whitepaper, companion-brief, architecture/current, decision-engine, and migration docs with the four-stage spine (snapshot → decision → action contract → action guard), the before/after failure chain, and the thesis: "The agent receives a command, not a prose explanation to interpret."
-
-**Moved:**  
-- None
-
-**Added:**  
-- "The spine" section to `docs/completion-lifecycle-decision-engine.md`
-- Spine thesis to `docs/papers/philosophy.md` § VI
-- Four-stage table + before/after chain to `docs/papers/whitepaper.md` § 7.3
-- Completion spine callout to `docs/papers/companion-brief.md`
-- Updated safety pipeline diagram in `docs/architecture/current.md`
-- Spine summary at top of `docs/completion-gate-lifecycle-migration.md`
-
-**Updated:**  
-- ROADMAP.md checkpoint date 2026-06-19 → 2026-06-30
-
-**Archived:**  
-- None
-
-**Code Soup Risk:** Medium  
-Code soup risk Low from pre-audit.
-
-**Recommended Next Move:**  
-Continue refining documentation for clarity. Consider updating `docs/parent-thread-execution-authority.md` to reference the completion spine in the cold-path gate description.
-
-## 12. Archive
+### 2026-08-06 — Universal Developer Adoption & Governance Graduation
+- **Decision**: Elevate repository onboarding, developer field guide (`DEVELOPMENT.md`), governance charter (`GOVERNANCE.md`), support channels (`SUPPORT.md`), and PR guidelines to world-class open-source standards.
+- **Reason**: Drive widespread developer adoption, lower contribution friction, and provide executive stakeholders with clear architectural alignment.

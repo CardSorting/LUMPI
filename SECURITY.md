@@ -1,87 +1,67 @@
-# Security Policy
+# Security Policy & Enterprise Threat Model
 
-This document should guide you about understanding the security concept behind
-Pi and also where the boundaries are.
+This document outlines the security architecture, trust boundaries, vulnerability disclosure guidelines, and sandboxing isolation models for the **LUMI** agentic AI coding engine (`@earendil-works/*`).
 
-In general Pi is a coding agent that runs locally within the security boundary
-of the user that is running it.  It's the responsibiltiy of the user to monitor
-its operations or to contain it within a container, virtual machine or other
-Sandbox solution.
+---
 
-Pi treats the local user account and files writable by that account as inside
-the same trust boundary as the Pi process itself.  If an attacker can modify files
-under the user's home directory, workspace, shell startup files, environment, or
-Pi configuration, they can generally influence Pi or other local developer tools.
-Reports that depend on such prior local write access are not security
-vulnerabilities unless they demonstrate how Pi grants that write access or crosses
-an operating-system privilege boundary.
+## 🛡️ Security Model & Trust Boundaries
 
-Pi relies on users installing trustworthy extensions and loading trustworthy
-skills and only to use pi within trusted repositories.  This is because files
-like `AGENTS.md` or instructions in comments can be used to prompt inject the
-coding agent trivially and this cannot be protected against.
+By default, LUMI runs locally within the security boundary of the host user account executing the CLI or TUI session:
 
-## Reporting a Vulnerability
+- **Host Trust Boundary**: LUMI treats the local user account, environment variables, shell startup files, and writable files inside the user's workspace as inside the same trust boundary as the LUMI process itself.
+- **Local Write Access**: Reports that rely on prior local write access to the user's home directory (`~/.pi`), shell configuration, or local workspace files are not security vulnerabilities unless they demonstrate how LUMI grants unauthenticated write access or crosses an OS privilege boundary.
+- **Trusted Repositories & Extensions**: LUMI relies on users loading trustworthy extensions, skills, and working inside trusted repositories. Repository files like `AGENTS.md` or code instructions can cause prompt injections, which is an inherent property of local AI agents.
 
-If you believe you found a security vulnerability in pi or another package in
-this repository, please report it privately by either:
+---
 
-- Emailing `security@earendil.com`, or
-- Opening a private report through GitHub Security Advisories for this repository
+## 🔒 Security Sandboxing Layers
 
-Please include:
+For untrusted codebases or enterprise environments requiring isolated execution, LUMI supports three containerized sandboxing models:
 
-- A description of the issue and its impact
-- Steps to reproduce, proof of concept, or relevant logs
-- Affected package, version, commit, or configuration
-- Any known mitigations
+1. **Gondolin Micro-VM**: Routes tool execution into a lightweight, local Linux micro-VM while keeping host authentication intact.
+2. **Docker Containerization**: Runs the entire LUMI engine inside an isolated Docker container context.
+3. **OpenShell Policy Guard**: Enforces fine-grained OS syscall and network policy sandbox boundaries.
 
-Do not open a public issue for security-sensitive reports.  We will review
-reports and coordinate disclosure as appropriate.
+---
 
-## Scope
+## 🚨 Reporting a Vulnerability
 
-Security issues in the distributed packages, command-line tools, APIs, and
-repository code are in scope as well as earendil operated infrastricture
-on `pi.dev`.
+If you discover a potential security vulnerability in LUMI or any package in this repository, please report it privately:
 
-## Out Of Scope
+- **Email**: `security@earendil.com`
+- **GitHub Advisory**: Open a private report through GitHub Security Advisories for this repository.
 
-- Local code execution or sandboxing behavior (the Pi coding agent intentionally does not have a sandbox)
-- Behavior of pi extensions or skills installed by the user
-- Risks from working in untrusted repositories
-- Risks from installing untrusted extensions, skills, packages, or tools
-- Isuses caused by non trustworthy MITM proxies
-- Public internet exposure of a Pi installation
-- Prompt injection attacks
-- Exposed secrets that are third-party/user-controlled credentials
-- Reports requiring the ability to create, modify, delete, or replace files,
-  directories, symlinks, environment variables, shell configuration, or other
-  user-controlled local state on the target machine. This includes `~/.pi`,
-  `~/.pi/agent/models.json`, workspace files, `AGENTS.md`, skills, extensions,
-  extension configuration, dotfiles, and files synchronized through NFS, roaming
-  profiles, or dotfile managers, unless the report shows how Pi itself grants
-  that access.
-- Issues caused by intentionally weakened user configuration.
-- Resource/DOS claims that require trusted local input/config against the pi coding agent.
-- Reports about malicious model output.
-- User-approved or user-initiated local actions presented as vulnerabilities.
+### What to Include in Your Report
+- A clear description of the issue and its security impact.
+- Reproducible steps, proof of concept script, or relevant diagnostic logs.
+- Affected package name (`@earendil-works/*`), version, or commit SHA.
+- Any known mitigations or workarounds.
 
-## Notes for Reporters
+> [!CAUTION]
+> Do **NOT** open public GitHub issues or public Discord posts for security-sensitive reports. Maintainers will review reports and coordinate disclosure privately.
 
-The most useful reports show a current, reproducible security boundary bypass
-with demonstrated impact.  Reports that only show expected local-agent behavior,
-prompt injection, or a malicious trusted extension/skill are not security
-vulnerabilities under this model.
+---
 
-For example, a report showing that malicious contents written to a trusted Pi
-configuration file cause Pi to execute commands, load attacker-controlled tools,
-send credentials to an attacker-controlled endpoint, or otherwise change behavior
-is out of scope.
+## 🎯 Scope
 
-When possible, include the exact affected path, package version or commit SHA,
-configuration, and a proof of concept against the latest release or latest
-`main`.  For dependency reports, include evidence that the shipped dependency is
-affected and that the issue is reachable through Pi.  For exposed-secret reports,
-include evidence that the credential is owned by Earendil or grants access to
-Earendil-operated infrastructure or services.
+### In Scope
+- Vulnerabilities in distributed npm packages (`@earendil-works/*`), CLI binary tools, RPC protocol codecs, and core engine execution paths.
+- Earendil-operated cloud infrastructure on `pi.dev`.
+
+### Out of Scope
+- Local code execution or shell tool invocation performed on behalf of the user within host permissions.
+- Behavior of third-party user-installed extensions or skills.
+- Direct prompt injection attacks via repository files (`AGENTS.md`, source code comments).
+- Compromised third-party credentials or API keys managed by the user.
+- Security issues resulting from intentionally weakened user configuration or compromised local user accounts.
+
+---
+
+## 📜 Enterprise Governance & Security Controls
+
+| Security Control | Implementation Mechanism | Enforcement Standard |
+| :--- | :--- | :--- |
+| **Zero External Telemetry** | Default local execution | No code snippets transmitted to 3rd party servers |
+| **Lifecycle Script Block** | `--ignore-scripts` installation | Blocks dynamic post-install script execution |
+| **Lockfile Immutability** | `PI_ALLOW_LOCKFILE_CHANGE` pre-commit gate | Prevents un-audited transitive dependency drift |
+| **Strip-Only TypeScript** | Erasable Node syntax | No un-audited JS emit transformers |
