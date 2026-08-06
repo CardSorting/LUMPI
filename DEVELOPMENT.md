@@ -36,7 +36,7 @@ packages/
 │     └─ Edit source files in packages/* (strictly erasable TypeScript syntax) │
 │                                                                             │
 │  2. Local Interactive TUI Verification                                      │
-│     └─ Run `./pi-test.sh` or `./pi-test.sh --no-env` to test changes         │
+│     └─ Run `./lumi-test.sh` or `./lumi-test.sh --no-env` to test changes       │
 │                                                                             │
 │  3. Quality Verification Gate                                               │
 │     ├─ Run `npm run check` (Biome, pinned deps, imports, shrinkwrap)        │
@@ -92,10 +92,10 @@ To test changes to the CLI or TUI in real time from source:
 
 ```bash
 # Launch interactive TUI session with environment keys intact
-./pi-test.sh
+./lumi-test.sh
 
 # Launch keyless evaluation mode
-./pi-test.sh --no-env
+./lumi-test.sh --no-env
 ```
 
 ### Automated TUI Headless Testing via `tmux`

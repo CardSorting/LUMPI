@@ -20,9 +20,9 @@ Ensure your host environment meets the minimum requirements:
 
 | Operating System | Recommended Setup | Terminal Shell | Script Launcher |
 | :--- | :--- | :--- | :--- |
-| **macOS (Apple Silicon / Intel)** | Native Node.js / Bun | `zsh` / `bash` | `./pi-test.sh` |
-| **Linux (Ubuntu / Debian / RHEL)** | Native Node.js / Docker | `bash` | `./pi-test.sh` |
-| **Windows (WSL2)** | Native Node.js in WSL | `bash` | `./pi-test.sh` |
+| **macOS (Apple Silicon / Intel)** | Native Node.js / Bun | `zsh` / `bash` | `./lumi-test.sh` |
+| **Linux (Ubuntu / Debian / RHEL)** | Native Node.js / Docker | `bash` | `./lumi-test.sh` |
+| **Windows (WSL2)** | Native Node.js in WSL | `bash` | `./lumi-test.sh` |
 | **Windows (Native PowerShell)** | Native Node.js | PowerShell | `.\pi-test.ps1` or `.\pi-test.bat` |
 
 ---
@@ -72,7 +72,7 @@ $env:GEMINI_API_KEY="AIzaSy..."
 
 ```bash
 # macOS / Linux / WSL
-./pi-test.sh
+./lumi-test.sh
 
 # Windows PowerShell
 .\pi-test.ps1

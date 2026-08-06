@@ -8,10 +8,10 @@ Quick copy-pasteable reference for LUMI command-line flags, interactive TUI keyb
 
 ```bash
 # Launch interactive TUI session with environment keys intact
-./pi-test.sh
+./lumi-test.sh
 
 # Launch keyless evaluation mode (unsets API keys for setup verification)
-./pi-test.sh --no-env
+./lumi-test.sh --no-env
 
 # Execute non-interactive single-query print mode
 npx tsx packages/coding-agent/src/cli.ts -p "Explain the monorepo package structure"

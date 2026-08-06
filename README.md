@@ -95,7 +95,7 @@ npm install --ignore-scripts
 npx tsx packages/coding-agent/src/cli.ts -p "Summarize the monorepo packages in 3 bullet points"
 
 # Step 3: Test local keyless TUI launch mode
-./pi-test.sh --no-env
+./lumi-test.sh --no-env
 
 # Step 4: Verify full monorepo quality gate
 npm run check
@@ -129,14 +129,14 @@ cd LUMPI
 npm install --ignore-scripts
 
 # 3. Launch interactive LUMI TUI mode from source
-./pi-test.sh
+./lumi-test.sh
 ```
 
 ### 2. Alternative Runtime Quickstarts
 
 ```bash
 # Launch keyless evaluation mode (unsets API keys for setup testing)
-./pi-test.sh --no-env
+./lumi-test.sh --no-env
 
 # Launch via Bun binary runtime (if Bun is installed)
 bun run packages/coding-agent/src/cli.ts
