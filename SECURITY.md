@@ -1,6 +1,6 @@
 # Security Policy & Enterprise Threat Model
 
-This document outlines the security architecture, trust boundaries, vulnerability disclosure guidelines, and sandboxing isolation models for the **LUMI** agentic AI coding engine (`@earendil-works/*`).
+This document outlines the security architecture, trust boundaries, vulnerability disclosure guidelines, and sandboxing isolation models for the **LUMI** agentic AI coding engine (`@noorm/*`).
 
 ---
 
@@ -34,7 +34,7 @@ If you discover a potential security vulnerability in LUMI or any package in thi
 ### What to Include in Your Report
 - A clear description of the issue and its security impact.
 - Reproducible steps, proof of concept script, or relevant diagnostic logs.
-- Affected package name (`@earendil-works/*`), version, or commit SHA.
+- Affected package name (`@noorm/*`), version, or commit SHA.
 - Any known mitigations or workarounds.
 
 > [!CAUTION]
@@ -45,7 +45,7 @@ If you discover a potential security vulnerability in LUMI or any package in thi
 ## 🎯 Scope
 
 ### In Scope
-- Vulnerabilities in distributed npm packages (`@earendil-works/*`), CLI binary tools, RPC protocol codecs, and core engine execution paths.
+- Vulnerabilities in distributed npm packages (`@noorm/*`), CLI binary tools, RPC protocol codecs, and core engine execution paths.
 - Earendil-operated cloud infrastructure on `pi.dev`.
 
 ### Out of Scope

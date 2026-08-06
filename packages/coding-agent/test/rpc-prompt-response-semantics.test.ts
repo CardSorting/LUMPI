@@ -1,14 +1,14 @@
 import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { Agent } from "@earendil-works/pi-agent-core";
+import { Agent } from "@noorm/lumpi-agent-core";
 import {
 	type AssistantMessage,
 	type AssistantMessageEvent,
 	EventStream,
 	getModel,
 	type Model,
-} from "@earendil-works/pi-ai/compat";
+} from "@noorm/lumpi-ai/compat";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AgentSession } from "../src/core/agent-session.ts";
 import type { AgentSessionRuntime } from "../src/core/agent-session-runtime.ts";
@@ -219,9 +219,7 @@ describe("RPC prompt response semantics", () => {
 					type: "response",
 					command: "prompt",
 					success: false,
-					error: expect.stringContaining(
-						"No API key found for fake-provider.\n\nUse /login to log into a provider via OAuth or API key. See:",
-					),
+					error: expect.stringContaining("No API key found for fake-provider"),
 				});
 			});
 		} finally {

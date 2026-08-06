@@ -10,7 +10,7 @@ import type {
 	TelemetrySchemaSpanStartAttributes,
 	TelemetrySchemaSpanUnion,
 	TelemetrySpan,
-} from "@earendil-works/pi-telemetry";
+} from "@noorm/lumpi-telemetry";
 
 export type {
 	AttributeValue,
@@ -36,7 +36,7 @@ export type {
 	TelemetrySpan,
 	TelemetrySpanDefinition,
 	TelemetryStartAttributeDefinition,
-} from "@earendil-works/pi-telemetry";
+} from "@noorm/lumpi-telemetry";
 
 export const AI_TELEMETRY_SCHEMA = {
 	version: 1,

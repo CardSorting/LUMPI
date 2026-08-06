@@ -1,6 +1,6 @@
 # Architectural Visualizations & Diagram Catalog
 
-This document provides visual diagrams illustrating the component relationships, state transitions, memory layouts, and subagent orchestration topologies of **LUMI** (`@earendil-works/*`).
+This document provides visual diagrams illustrating the component relationships, state transitions, memory layouts, and subagent orchestration topologies of **LUMI** (`@noorm/*`).
 
 ---
 
@@ -11,19 +11,19 @@ This document provides visual diagrams illustrating the component relationships,
 |                           MONOREPO DEPENDENCY TOPOLOGY                            |
 +-----------------------------------------------------------------------------------+
 |                                                                                   |
-|    @earendil-works/pi-coding-agent (CLI Binary & Session TUI Host)               |
+|    @noorm/lumpi-coding-agent (CLI Binary & Session TUI Host)               |
 |            │                                                                      |
-|            ├───> @earendil-works/pi-agent-core (CAS State Machine)               |
-|            ├───> @earendil-works/pi-codemarie (Host Provider Bridge)             |
-|            ├───> @earendil-works/pi-ai (Multi-LLM Gateway Router)                 |
-|            ├───> @earendil-works/pi-tui (Differential Terminal UI)                |
-|            └───> @earendil-works/broccolidb (16MB Slab Arena Memory Substrate)   |
+|            ├───> @noorm/lumpi-agent-core (CAS State Machine)               |
+|            ├───> @noorm/lumpi-codemarie (Host Provider Bridge)             |
+|            ├───> @noorm/lumpi-ai (Multi-LLM Gateway Router)                 |
+|            ├───> @noorm/lumpi-tui (Differential Terminal UI)                |
+|            └───> @noorm/broccolidb (16MB Slab Arena Memory Substrate)   |
 |                                                                                   |
 |    Shared Packages:                                                               |
-|    - @earendil-works/pi-protocol (RPC Schemas)                                   |
-|    - @earendil-works/pi-telemetry (Metrics)                                      |
-|    - @earendil-works/pi-session-backends (Persistence Wrappers)                  |
-|    - @earendil-works/pi-evals (Benchmark Harness)                                |
+|    - @noorm/lumpi-protocol (RPC Schemas)                                   |
+|    - @noorm/lumpi-telemetry (Metrics)                                      |
+|    - @noorm/lumpi-session-backends (Persistence Wrappers)                  |
+|    - @noorm/lumpi-evals (Benchmark Harness)                                |
 +-----------------------------------------------------------------------------------+
 ```
 

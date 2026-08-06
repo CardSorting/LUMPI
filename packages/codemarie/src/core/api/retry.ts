@@ -29,10 +29,10 @@ export class RetriableError extends Error {
 export function withRetry(options: RetryOptions = {}) {
 	const { maxRetries, baseDelay, maxDelay, retryAllErrors } = { ...DEFAULT_OPTIONS, ...options };
 
-	return (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) => {
-		const originalMethod = descriptor.value;
+	return (target: any, _propertyKeyOrContext: any, descriptor?: PropertyDescriptor) => {
+		const originalMethod = descriptor ? descriptor.value : target;
 
-		descriptor.value = async function* (...args: any[]) {
+		const wrappedMethod = async function* (this: any, ...args: any[]) {
 			for (let attempt = 0; attempt < maxRetries; attempt++) {
 				try {
 					yield* originalMethod.apply(this, args);
@@ -65,8 +65,10 @@ export function withRetry(options: RetryOptions = {}) {
 							delay = retryValue * 1000;
 						}
 					} else {
-						// Use exponential backoff if no header
-						delay = Math.min(maxDelay, baseDelay * 2 ** attempt);
+						// Exponential backoff with jitter
+						delay = Math.min(baseDelay * Math.pow(2, attempt), maxDelay);
+						// Add 0-20% jitter
+						delay += Math.random() * 0.2 * delay;
 					}
 
 					const handlerInstance = this as any;
@@ -78,12 +80,15 @@ export function withRetry(options: RetryOptions = {}) {
 						}
 					}
 
-					await new Promise((resolve) => setTimeout(resolve, delay));
+					await new Promise((resolve) => setTimeout(resolve, Math.max(0, delay)));
 				}
 			}
 		};
-
-		return descriptor;
+		if (descriptor) {
+			descriptor.value = wrappedMethod;
+			return descriptor;
+		}
+		return wrappedMethod;
 	};
 }
 

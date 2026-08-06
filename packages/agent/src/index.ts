@@ -1,6 +1,6 @@
 // Core Agent
 
-export { uuidv7 } from "@earendil-works/pi-ai";
+export { uuidv7 } from "@noorm/lumpi-ai";
 export type {
 	AttributeValue,
 	ExactTelemetryAttributes,
@@ -30,8 +30,8 @@ export type {
 	TelemetrySpan,
 	TelemetrySpanDefinition,
 	TelemetryStartAttributeDefinition,
-} from "@earendil-works/pi-telemetry";
-export { defineTelemetrySchema, NOOP_TELEMETRY_CONTEXT } from "@earendil-works/pi-telemetry";
+} from "@noorm/lumpi-telemetry";
+export { defineTelemetrySchema, NOOP_TELEMETRY_CONTEXT } from "@noorm/lumpi-telemetry";
 export * from "./agent.ts";
 // Loop functions
 export * from "./agent-loop.ts";

@@ -2,7 +2,7 @@ import { chmodSync, existsSync, mkdirSync, readFileSync, realpathSync, rmSync, w
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ENV_AGENT_DIR, PACKAGE_NAME, VERSION } from "../src/config.ts";
+import { APP_NAME, ENV_AGENT_DIR, PACKAGE_NAME, VERSION } from "../src/config.ts";
 import { ModelRuntime } from "../src/core/model-runtime.ts";
 import type { ResolvedPaths } from "../src/core/package-manager.ts";
 import { InMemorySettingsStorage, SettingsManager } from "../src/core/settings-manager.ts";
@@ -365,7 +365,8 @@ describe("package commands", () => {
 
 			const stdout = logSpy.mock.calls.map(([message]) => String(message)).join("\n");
 			expect(stdout).toContain("Usage:");
-			expect(stdout).toContain("pi install <source> [-l]");
+			expect(stdout).toContain("Usage:");
+			expect(stdout).toContain(`${APP_NAME} install <source> [-l]`);
 			expect(errorSpy).not.toHaveBeenCalled();
 			expect(process.exitCode).toBeUndefined();
 		} finally {
@@ -450,7 +451,9 @@ describe("package commands", () => {
 
 			const stderr = errorSpy.mock.calls.map(([message]) => String(message)).join("\n");
 			expect(stderr).toContain('Unknown option --unknown for "install".');
-			expect(stderr).toContain('Use "pi --help" or "pi install <source> [-l] [--approve|--no-approve]".');
+			expect(stderr).toContain(
+				`Use "${APP_NAME} --help" or "${APP_NAME} install <source> [-l] [--approve|--no-approve]".`,
+			);
 			expect(process.exitCode).toBe(1);
 		} finally {
 			errorSpy.mockRestore();
@@ -465,7 +468,7 @@ describe("package commands", () => {
 
 			const stderr = errorSpy.mock.calls.map(([message]) => String(message)).join("\n");
 			expect(stderr).toContain("Missing install source.");
-			expect(stderr).toContain("Usage: pi install <source> [-l]");
+			expect(stderr).toContain(`Usage: ${APP_NAME} install <source> [-l]`);
 			expect(stderr).not.toContain("at ");
 			expect(process.exitCode).toBe(1);
 		} finally {
@@ -486,7 +489,7 @@ describe("package commands", () => {
 
 			expect(fetchMock).toHaveBeenCalledOnce();
 			expect(logSpy.mock.calls.map(([message]) => String(message)).join("\n")).toContain(
-				`pi is already up to date (v${VERSION})`,
+				`${APP_NAME} is already up to date (v${VERSION})`,
 			);
 			expect(errorSpy).not.toHaveBeenCalled();
 			expect(process.exitCode).toBeUndefined();
@@ -526,7 +529,7 @@ describe("package commands", () => {
 	it("uses the update check version for forced self updates even when current", async () => {
 		const globalPrefix = join(tempDir, "global-prefix");
 		const projectPrefix = join(tempDir, "project-prefix");
-		const selfPackageDir = join(globalPrefix, "lib", "node_modules", "@earendil-works", "pi-coding-agent");
+		const selfPackageDir = join(globalPrefix, "lib", "node_modules", "@noorm", "pi-coding-agent");
 		const fakeNpmPath = join(tempDir, "fake-npm.cjs");
 		const recordPath = join(tempDir, "self-update.json");
 		mkdirSync(selfPackageDir, { recursive: true });
@@ -569,7 +572,7 @@ else fs.writeFileSync(${JSON.stringify(recordPath)},JSON.stringify(args));
 			expect(recordedArgs).toContain(`${PACKAGE_NAME}@${VERSION}`);
 			expect(recordedArgs).not.toContain(PACKAGE_NAME);
 			expect(recordedArgs).not.toContain(projectPrefix);
-			expect(stdout).toContain(`Updated pi from ${VERSION} to ${VERSION}`);
+			expect(stdout).toContain(`Updated ${APP_NAME} from ${VERSION} to ${VERSION}`);
 		} finally {
 			logSpy.mockRestore();
 			errorSpy.mockRestore();
@@ -615,7 +618,7 @@ else fs.writeFileSync(${JSON.stringify(recordPath)},JSON.stringify(args));
 			const recordedArgs = JSON.parse(readFileSync(recordPath, "utf-8")) as string[];
 			expect(recordedArgs).toContain(`${PACKAGE_NAME}@${targetVersion}`);
 			expect(recordedArgs).not.toContain(PACKAGE_NAME);
-			expect(stdout).toContain(`Updated pi from ${VERSION} to ${targetVersion}`);
+			expect(stdout).toContain(`Updated ${APP_NAME} from ${VERSION} to ${targetVersion}`);
 		} finally {
 			logSpy.mockRestore();
 			errorSpy.mockRestore();
@@ -675,7 +678,7 @@ else {
 
 	it("prints a pnpm metadata hint when self-update fails", async () => {
 		const globalRoot = join(tempDir, "pnpm", "global", "v11");
-		const selfPackageDir = join(globalRoot, "node_modules", "@earendil-works", "pi-coding-agent");
+		const selfPackageDir = join(globalRoot, "node_modules", "@noorm", "pi-coding-agent");
 		const fakeBinDir = join(tempDir, "bin");
 		const fakePnpmPath = join(fakeBinDir, process.platform === "win32" ? "pnpm.cmd" : "pnpm");
 		mkdirSync(selfPackageDir, { recursive: true });
@@ -710,7 +713,7 @@ else {
 			expect(stdout).not.toContain("Updated pi");
 			expect(stderr).toContain("exited with code 23");
 			expect(stderr).toContain("If pnpm reports missing package versions");
-			expect(stderr).toContain("Run `pnpm store prune` and retry `pi update --self`.");
+			expect(stderr).toMatch(/Run `pnpm store prune` and retry `(pi|LUMI) update --self`\./);
 		} finally {
 			logSpy.mockRestore();
 			errorSpy.mockRestore();

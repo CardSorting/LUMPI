@@ -1,10 +1,10 @@
 {
   "validation_pending": true,
   "schema_valid": null,
-  "last_mutated_at": "2026-08-06T02:57:04.264Z",
+  "last_mutated_at": "2026-08-06T22:08:18.539Z",
   "last_mutation_tool": "external",
   "last_mutation_path": "ROADMAP.md",
-  "updated_at": "2026-08-06T02:57:04.268Z",
+  "updated_at": "2026-08-06T22:08:18.544Z",
   "lineage": [
     {
       "operation_id": "6a39e35c-0a8b-4e03-9cba-c6839ad0a279",
@@ -27,6 +27,28 @@
       "hash": "328b94ed4bb15ae3",
       "diff_summary": "",
       "causality_token": "4c076d8b33c6235a"
+    },
+    {
+      "operation_id": "fef4229c-f4b1-4e8e-88a7-1785f74be44d",
+      "timestamp": "2026-08-06T21:28:16.386Z",
+      "tool": "external",
+      "action": "file_mutated",
+      "schema_valid": null,
+      "health_status": null,
+      "hash": "786ad90cece88478",
+      "diff_summary": "",
+      "causality_token": "a8d5d458b7a1ac77"
+    },
+    {
+      "operation_id": "370ec7ff-4ac7-479e-a346-ed47cd5c91d8",
+      "timestamp": "2026-08-06T22:08:18.544Z",
+      "tool": "external",
+      "action": "file_mutated",
+      "schema_valid": null,
+      "health_status": null,
+      "hash": "516f1e59918f6e39",
+      "diff_summary": "",
+      "causality_token": "ed598360c3957427"
     }
   ]
 }

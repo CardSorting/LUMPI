@@ -6,8 +6,8 @@
  */
 
 import { createInterface } from "node:readline";
-import { type ImageContent, modelsAreEqual } from "@earendil-works/pi-ai";
-import { initializeCliHostProvider } from "@earendil-works/pi-codemarie";
+import { type ImageContent, modelsAreEqual } from "@noorm/lumpi-ai";
+import { initializeCliHostProvider } from "@noorm/lumpi-codemarie";
 import chalk from "chalk";
 import { type Args, type Mode, parseArgs, printHelp } from "./cli/args.ts";
 import {

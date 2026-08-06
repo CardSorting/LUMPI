@@ -27,7 +27,7 @@ export HTTPS_PROXY="http://proxy.enterprise.internal:8080"
 export NO_PROXY="localhost,127.0.0.1,.internal"
 ```
 
-LUMI's multi-provider router (`@earendil-works/pi-ai`) will automatically route HTTPS provider calls through your configured enterprise proxy.
+LUMI's multi-provider router (`@noorm/lumpi-ai`) will automatically route HTTPS provider calls through your configured enterprise proxy.
 
 ---
 

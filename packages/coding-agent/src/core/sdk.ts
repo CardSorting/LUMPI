@@ -1,6 +1,6 @@
 import { join } from "node:path";
-import { Agent, type AgentMessage, setDefaultStreamFn, type ThinkingLevel } from "@earendil-works/pi-agent-core";
-import { clampThinkingLevel, type Message, type Model, streamSimple } from "@earendil-works/pi-ai/compat";
+import { Agent, type AgentMessage, setDefaultStreamFn, type ThinkingLevel } from "@noorm/lumpi-agent-core";
+import { clampThinkingLevel, type Message, type Model, streamSimple } from "@noorm/lumpi-ai/compat";
 import { getAgentDir } from "../config.ts";
 import { resolvePath } from "../utils/paths.ts";
 import { AgentSession } from "./agent-session.ts";
@@ -143,7 +143,7 @@ function getDefaultAgentDir(): string {
  * const { session } = await createAgentSession();
  *
  * // With explicit model
- * import { getModel } from '@earendil-works/pi-ai';
+ * import { getModel } from '@noorm/lumpi-ai';
  * const { session } = await createAgentSession({
  *   model: getModel('anthropic', 'claude-opus-4-5'),
  *   thinkingLevel: 'high',

@@ -9,7 +9,7 @@ import {
 	type Model,
 	type Models,
 	type Usage,
-} from "@earendil-works/pi-ai";
+} from "@noorm/lumpi-ai";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
 	type CompactionPreparation,

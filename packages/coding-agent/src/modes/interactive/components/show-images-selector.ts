@@ -1,11 +1,4 @@
-import {
-	Container,
-	type SelectItem,
-	SelectList,
-	type SelectListLayoutOptions,
-	Spacer,
-	Text,
-} from "@earendil-works/pi-tui";
+import { Container, type SelectItem, SelectList, type SelectListLayoutOptions, Spacer, Text } from "@noorm/lumpi-tui";
 import { getSelectListTheme, theme } from "../theme/theme.ts";
 import { DynamicBorder } from "./dynamic-border.ts";
 import { rawKeyHint } from "./keybinding-hints.ts";

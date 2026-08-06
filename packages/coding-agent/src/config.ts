@@ -485,7 +485,7 @@ try {
 }
 
 const piConfigName: string | undefined = pkg.piConfig?.name;
-export const PACKAGE_NAME: string = pkg.name || "@earendil-works/pi-coding-agent";
+export const PACKAGE_NAME: string = pkg.name || "@noorm/lumpi-coding-agent";
 export const APP_NAME: string = piConfigName || "LUMI";
 export const APP_TITLE: string = piConfigName || "LUMI";
 export const CONFIG_DIR_NAME: string = pkg.piConfig?.configDir || ".pi";
@@ -513,7 +513,7 @@ export function getShareViewerUrl(gistId: string): string {
 
 /** Get the agent config directory (e.g., ~/.pi/agent/) */
 export function getAgentDir(): string {
-	const envDir = process.env[ENV_AGENT_DIR];
+	const envDir = process.env[ENV_AGENT_DIR] || process.env.PI_CODING_AGENT_DIR;
 	if (envDir) {
 		return expandTildePath(envDir);
 	}

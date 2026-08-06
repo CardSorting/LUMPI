@@ -2,7 +2,7 @@
 
 ## Codemarie Engine Bridge Access & Subsystem Re-Exports
 
-1. **Top-Level Monorepo Package Imports**: Import unified Codemarie engines directly from `@earendil-works/pi-codemarie` top-level exports (`import { CommandExecutor, SwarmMutexService, ... } from "@earendil-works/pi-codemarie"`).
+1. **Top-Level Monorepo Package Imports**: Import unified Codemarie engines directly from `@noorm/lumpi-codemarie` top-level exports (`import { CommandExecutor, SwarmMutexService, ... } from "@noorm/lumpi-codemarie"`).
 2. **Bridge Accessor Facade (`CodemarieBridge`)**: Instantiate or query `CodemarieBridge` in `packages/coding-agent/src/core/codemarie-bridge.ts` to access low-level subsystem engines without managing complex dependency setups.
 3. **Pre-Execution Shell Command Screening**: Call `bridge.validateCommand(command)` and `bridge.getSanitizerMode()` to pre-screen shell command injection boundaries before executing terminal tools.
 4. **Cognitive Freshness Verification**: Call `bridge.getContextStalenessTracker(cwd)` to verify file `mtime` and content signatures before constructing model prompts.

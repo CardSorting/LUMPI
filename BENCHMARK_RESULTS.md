@@ -97,7 +97,7 @@ Welch's $t$-test yields $t = 19.85$, $p = 0.00012 < 0.001$, Cohen's $d = 2.45$, 
 
 ### 3.2 Pi Coding Agent Harness Class-Based Micro-Benchmark Suite (`openai-codex` / `gpt-5.6-luna` OAuth)
 
-To evaluate the mechanical sympathy, latency, throughput, and stateful session management of `@earendil-works/pi-coding-agent` when running on the Pi Agent Harness backed by OpenAI Codex OAuth (`openai-codex`) and GPT-5.6 Luna (`gpt-5.6-luna`), 20 class-based benchmark test suites were implemented and executed.
+To evaluate the mechanical sympathy, latency, throughput, and stateful session management of `@noorm/lumpi-coding-agent` when running on the Pi Agent Harness backed by OpenAI Codex OAuth (`openai-codex`) and GPT-5.6 Luna (`gpt-5.6-luna`), 20 class-based benchmark test suites were implemented and executed.
 
 #### Table 2: Pi Agent Harness Class-Based Micro-Benchmark Results
 

@@ -1,6 +1,6 @@
 # Engine Developer Field Guide
 
-This document provides a comprehensive reference for core developers working directly on the **LUMI** engine codebase (`@earendil-works/*`).
+This document provides a comprehensive reference for core developers working directly on the **LUMI** engine codebase (`@noorm/*`).
 
 ---
 
@@ -10,18 +10,18 @@ LUMI is structured as an npm monorepo (`packages/*`):
 
 ```
 packages/
-├── agent/              # @earendil-works/pi-agent-core (State machine, prompt assembly, CAS history)
-├── ai/                 # @earendil-works/pi-ai (Multi-provider LLM gateway router)
-├── broccolidb/         # @earendil-works/broccolidb (Zero-GC 16MB slab arena memory engine)
-├── client/             # @earendil-works/pi-client (RPC client bindings)
-├── codemarie/          # @earendil-works/pi-codemarie (Merged CodeMarie host bridge provider)
-├── coding-agent/       # @earendil-works/pi-coding-agent (CLI binary, session CAS, TUI host)
-├── evals/              # @earendil-works/pi-evals (Benchmarking framework)
-├── protocol/           # @earendil-works/pi-protocol (Shared RPC protocol codecs & schemas)
-├── server/             # @earendil-works/pi-server (Multi-tenant IPC server broker)
-├── session-backends/   # @earendil-works/pi-session-backends (Persistence backends & SQLite wrappers)
-├── telemetry/          # @earendil-works/pi-telemetry (Vendor-neutral telemetry metrics)
-└── tui/                # @earendil-works/pi-tui (Differential terminal UI library)
+├── agent/              # @noorm/lumpi-agent-core (State machine, prompt assembly, CAS history)
+├── ai/                 # @noorm/lumpi-ai (Multi-provider LLM gateway router)
+├── broccolidb/         # @noorm/broccolidb (Zero-GC 16MB slab arena memory engine)
+├── client/             # @noorm/lumpi-client (RPC client bindings)
+├── codemarie/          # @noorm/lumpi-codemarie (Merged CodeMarie host bridge provider)
+├── coding-agent/       # @noorm/lumpi-coding-agent (CLI binary, session CAS, TUI host)
+├── evals/              # @noorm/lumpi-evals (Benchmarking framework)
+├── protocol/           # @noorm/lumpi-protocol (Shared RPC protocol codecs & schemas)
+├── server/             # @noorm/lumpi-server (Multi-tenant IPC server broker)
+├── session-backends/   # @noorm/lumpi-session-backends (Persistence backends & SQLite wrappers)
+├── telemetry/          # @noorm/lumpi-telemetry (Vendor-neutral telemetry metrics)
+└── tui/                # @noorm/lumpi-tui (Differential terminal UI library)
 ```
 
 ---
@@ -67,7 +67,7 @@ It executes the following verifications in sequence:
 1. **Biome Linter & Formatter**: Validates style and code rules.
 2. **Pinned External Dependencies**: Ensures direct dependencies remain pinned to exact versions.
 3. **TypeScript Relative Imports**: Verifies top-level relative import paths.
-4. **Shrinkwrap Consistency**: Verifies `npm-shrinkwrap.json` for `@earendil-works/pi-coding-agent`.
+4. **Shrinkwrap Consistency**: Verifies `npm-shrinkwrap.json` for `@noorm/lumpi-coding-agent`.
 5. **Browser & Package Smoke Tests**: Validates compilation targets.
 
 ### Running Non-E2E Unit & Integration Tests
@@ -124,7 +124,7 @@ tmux kill-session -t pi-test
 
 ## 🔄 AI Model Definition Generation
 
-AI provider specifications, model metadata, and context limits are maintained in `@earendil-works/pi-ai`:
+AI provider specifications, model metadata, and context limits are maintained in `@noorm/lumpi-ai`:
 
 > [!WARNING]
 > Do **NOT** edit `packages/ai/src/models.generated.ts` directly.
@@ -142,7 +142,7 @@ To add or update AI provider models:
 ## 🔐 Lockfile & Dependency Management
 
 - **Lockfile Changes**: Pushing changes to `package-lock.json` requires explicit approval via environment variable `PI_ALLOW_LOCKFILE_CHANGE=1`.
-- **Shrinkwrap Regeneration**: If new packages or dependencies are added to `@earendil-works/pi-coding-agent`, update shrinkwrap:
+- **Shrinkwrap Regeneration**: If new packages or dependencies are added to `@noorm/lumpi-coding-agent`, update shrinkwrap:
   ```bash
   node scripts/generate-coding-agent-shrinkwrap.mjs
   ```

@@ -1,6 +1,6 @@
 # 15-Minute Engine Contributor Onboarding Guide
 
-Welcome to the **LUMI** contributor team! This guide will get you from zero to submitting your first verified pull request across `@earendil-works/*` monorepo packages in under 15 minutes.
+Welcome to the **LUMI** contributor team! This guide will get you from zero to submitting your first verified pull request across `@noorm/*` monorepo packages in under 15 minutes.
 
 ---
 

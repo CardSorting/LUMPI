@@ -83,7 +83,7 @@ pi --extension packages/coding-agent/examples/extensions/gondolin
 ## 5. Substrate Memory & Architecture
 
 ### Q: What is BroccoliDB and why is it zero-GC?
-`BroccoliDB` (`@earendil-works/broccolidb`) is an in-memory high-throughput state substrate that allocates memory in pre-sized 16MB slab arenas. By reusing pre-allocated slab blocks instead of creating transient JS objects during execution turns, BroccoliDB eliminates Garbage Collection (GC) pauses during active TUI streaming.
+`BroccoliDB` (`@noorm/broccolidb`) is an in-memory high-throughput state substrate that allocates memory in pre-sized 16MB slab arenas. By reusing pre-allocated slab blocks instead of creating transient JS objects during execution turns, BroccoliDB eliminates Garbage Collection (GC) pauses during active TUI streaming.
 
 ---
 

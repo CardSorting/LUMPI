@@ -1,6 +1,6 @@
 # LUMI Ecosystem & Extensibility Guide
 
-**LUMI** is architected for maximum extensibility. The execution core (`@earendil-works/pi-agent-core`) is kept minimal, while specialized behaviors, tool integrations, model drivers, and terminal views are extended via modular packages and extensions.
+**LUMI** is architected for maximum extensibility. The execution core (`@noorm/lumpi-agent-core`) is kept minimal, while specialized behaviors, tool integrations, model drivers, and terminal views are extended via modular packages and extensions.
 
 ---
 
@@ -24,7 +24,7 @@
 Extensions in LUMI allow developers to attach new tools, intercept state events, or modify environment context dynamically:
 
 ```typescript
-import { createExtension } from "@earendil-works/pi-coding-agent";
+import { createExtension } from "@noorm/lumpi-coding-agent";
 
 export default createExtension({
   name: "custom-linter-tool",
@@ -52,7 +52,7 @@ For complete tutorial details, see [EXTENSIONS_GUIDE.md](EXTENSIONS_GUIDE.md).
 
 ## 🔌 2. RPC Daemon Protocol Integration
 
-LUMI provides a full JSON-RPC 2.0 server daemon (`@earendil-works/pi-server`) enabling external applications (IDEs, web interfaces, Slack bots) to control agent execution headlessly.
+LUMI provides a full JSON-RPC 2.0 server daemon (`@noorm/lumpi-server`) enabling external applications (IDEs, web interfaces, Slack bots) to control agent execution headlessly.
 
 ```json
 {

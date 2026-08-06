@@ -1,5 +1,5 @@
 {
-	"name": "@earendil-works/pi-protocol",
+	"name": "@noorm/lumpi-protocol",
 	"version": "0.83.0",
 	"description": "Transport-neutral CBOR protocol for remote pi sessions",
 	"type": "module",

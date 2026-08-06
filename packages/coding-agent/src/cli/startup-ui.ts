@@ -1,4 +1,4 @@
-import { ProcessTerminal, setKeybindings, type TUI, TuiMainScreen } from "@earendil-works/pi-tui";
+import { ProcessTerminal, setKeybindings, type TUI, TuiMainScreen } from "@noorm/lumpi-tui";
 import { existsSync } from "fs";
 import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR, getAgentDir, getSettingsPath, PACKAGE_NAME } from "../config.ts";
 import { KeybindingsManager } from "../core/keybindings.ts";
@@ -22,8 +22,8 @@ import {
 	type Theme,
 } from "../modes/interactive/theme/theme.ts";
 
-const OFFICIAL_PACKAGE_NAME = "@earendil-works/pi-coding-agent";
-const OFFICIAL_APP_NAME = "pi";
+const OFFICIAL_PACKAGE_NAME = "@noorm/lumpi-coding-agent";
+const OFFICIAL_APP_NAME = APP_NAME;
 const OFFICIAL_CONFIG_DIR_NAME = ".pi";
 
 interface DistributionMetadata {
@@ -112,6 +112,9 @@ async function clearStartupTui(ui: TUI): Promise<void> {
  * - setup was not completed before (settings.json does not exist)
  */
 export function shouldRunFirstTimeSetup(settingsPath: string = getSettingsPath()): boolean {
+	if (process.env.PI_EXPERIMENTAL !== "1" && process.env.PI_EXPERIMENTAL !== "true") {
+		return false;
+	}
 	if (
 		!isOfficialDistribution({
 			packageName: PACKAGE_NAME,

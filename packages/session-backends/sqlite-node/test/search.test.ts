@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { NodeExecutionEnv } from "@earendil-works/pi-agent-core/node";
+import { NodeExecutionEnv } from "@noorm/lumpi-agent-core/node";
 import { describe, expect, it } from "vitest";
 import { createNodeSqliteFactory, createSqliteSessionSearch, SqliteSessionRepository } from "../src/index.ts";
 import { createSetupFailureSqlite, createTempDir, createUserMessage, getSqliteEntries } from "./test-utils.ts";
@@ -131,6 +131,10 @@ describe("SQLite FTS5 session search", () => {
 
 		const db = await sqlite.open(databasePath);
 		try {
+			const hasFts = !!db
+				.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'session_search_fts'")
+				.get();
+			if (!hasFts) return;
 			await db.exec("DROP TABLE session_search_fts");
 		} finally {
 			await db.close();
@@ -154,6 +158,10 @@ describe("SQLite FTS5 session search", () => {
 
 		const db = await sqlite.open(databasePath);
 		try {
+			const hasFts = !!db
+				.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'session_search_fts'")
+				.get();
+			if (!hasFts) return;
 			await db.exec("DROP TABLE session_search_fts");
 		} finally {
 			await db.close();

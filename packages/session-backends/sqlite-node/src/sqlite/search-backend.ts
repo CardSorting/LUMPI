@@ -1,5 +1,5 @@
-import type { SessionSearch, SessionSearchHit, SessionSearchOptions } from "@earendil-works/pi-agent-core";
-import { getFileSystemResultOrThrow } from "@earendil-works/pi-agent-core";
+import type { SessionSearch, SessionSearchHit, SessionSearchOptions } from "@noorm/lumpi-agent-core";
+import { getFileSystemResultOrThrow } from "@noorm/lumpi-agent-core";
 import { applyMigrations } from "./migrations.ts";
 import { decodeSessionMetadata, type SessionRow } from "./storage/sessions.ts";
 import type {
@@ -35,9 +35,10 @@ function tableExists(db: SqliteDatabase, name: string): boolean {
 		.get<{ found: number }>(name);
 }
 
-function ensureSearchSchema(db: SqliteDatabase): void {
+function ensureSearchSchema(db: SqliteDatabase): boolean {
 	const ftsExists = tableExists(db, "session_search_fts");
-	db.exec(`
+	try {
+		db.exec(`
 CREATE VIRTUAL TABLE IF NOT EXISTS session_search_fts USING fts5(
   payload,
   content = 'entries',
@@ -55,7 +56,11 @@ CREATE TRIGGER IF NOT EXISTS session_search_fts_au AFTER UPDATE OF payload ON en
   INSERT INTO session_search_fts(rowid, payload) VALUES (new.rowid, new.payload);
 END;
 `);
-	if (!ftsExists) db.exec("INSERT INTO session_search_fts(session_search_fts) VALUES('rebuild')");
+		if (!ftsExists) db.exec("INSERT INTO session_search_fts(session_search_fts) VALUES('rebuild')");
+		return true;
+	} catch {
+		return false;
+	}
 }
 
 /** SQLite FTS search over a co-located canonical session database. */
@@ -88,7 +93,6 @@ class SqliteSessionSearch implements SessionSearch<SqliteSessionMetadata> {
 		try {
 			configureSqliteDatabase(db);
 			await applyMigrations(db);
-			ensureSearchSchema(db);
 			return db;
 		} catch (error) {
 			db.close();
@@ -101,15 +105,52 @@ class SqliteSessionSearch implements SessionSearch<SqliteSessionMetadata> {
 		if (!text) return [];
 		const db = await this.openDatabase();
 		try {
-			const query = `"${text.replaceAll('"', '""')}"`;
+			const hasFts = ensureSearchSchema(db);
+			const path = await this.getDatabasePath();
+			if (hasFts) {
+				const query = `"${text.replaceAll('"', '""')}"`;
+				const rows = db
+					.prepare(
+						`SELECT s.id, s.created_at, s.metadata, s.cwd, s.parent_session_id,
+							name_fact.seq IS NOT NULL AS has_session_name,
+							name_fact.value AS session_name,
+							se.id AS entry_id, se.timestamp, bm25(session_search_fts) AS score
+						FROM session_search_fts
+						JOIN entries AS se ON se.rowid = session_search_fts.rowid
+						JOIN sessions AS s ON s.id = se.session_id
+						LEFT JOIN facts AS name_fact
+							ON name_fact.session_id = s.id
+							AND name_fact.kind = 'name'
+							AND name_fact.key IS NULL
+							AND name_fact.seq = (
+								SELECT MAX(f.seq)
+								FROM facts AS f
+								WHERE f.session_id = s.id AND f.kind = 'name' AND f.key IS NULL
+							)
+						WHERE session_search_fts MATCH ? AND (? IS NULL OR s.cwd = ?)
+						ORDER BY score`,
+					)
+					.all<SessionRow & { entry_id: string; timestamp: string; score: number }>(
+						query,
+						options.cwd ?? null,
+						options.cwd ?? null,
+					);
+				return rows.map((row) => ({
+					metadata: decodeSessionMetadata(row, path),
+					entryId: row.entry_id,
+					timestamp: row.timestamp,
+					score: row.score,
+				}));
+			}
+
+			const query = `%${text.replaceAll("%", "\\%").replaceAll("_", "\\_")}%`;
 			const rows = db
 				.prepare(
 					`SELECT s.id, s.created_at, s.metadata, s.cwd, s.parent_session_id,
 						name_fact.seq IS NOT NULL AS has_session_name,
 						name_fact.value AS session_name,
-						se.id AS entry_id, se.timestamp, bm25(session_search_fts) AS score
-					FROM session_search_fts
-					JOIN entries AS se ON se.rowid = session_search_fts.rowid
+						se.id AS entry_id, se.timestamp, 0 AS score
+					FROM entries AS se
 					JOIN sessions AS s ON s.id = se.session_id
 					LEFT JOIN facts AS name_fact
 						ON name_fact.session_id = s.id
@@ -120,15 +161,14 @@ class SqliteSessionSearch implements SessionSearch<SqliteSessionMetadata> {
 							FROM facts AS f
 							WHERE f.session_id = s.id AND f.kind = 'name' AND f.key IS NULL
 						)
-					WHERE session_search_fts MATCH ? AND (? IS NULL OR s.cwd = ?)
-					ORDER BY score`,
+					WHERE se.payload LIKE ? ESCAPE '\\' AND (? IS NULL OR s.cwd = ?)
+					ORDER BY se.timestamp DESC`,
 				)
 				.all<SessionRow & { entry_id: string; timestamp: string; score: number }>(
 					query,
 					options.cwd ?? null,
 					options.cwd ?? null,
 				);
-			const path = await this.getDatabasePath();
 			return rows.map((row) => ({
 				metadata: decodeSessionMetadata(row, path),
 				entryId: row.entry_id,

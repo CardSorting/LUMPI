@@ -17,7 +17,7 @@ Unlike traditional, fragmented AI coding extensions or heavy Python-based agent 
 | ROI Pillar | Enterprise Benefit | Technical Enabler |
 | :--- | :--- | :--- |
 | **Engineering Velocity** | Up to 40% reduction in routine refactoring & audit turnarounds | Autonomous subagent swarm delegation with parallel context lanes |
-| **Mechanical Sympathy** | Instant sub-16ms differential terminal UI rendering without lag | High-efficiency `@earendil-works/pi-tui` differential screen buffer |
+| **Mechanical Sympathy** | Instant sub-16ms differential terminal UI rendering without lag | High-efficiency `@noorm/lumpi-tui` differential screen buffer |
 | **Infrastructure Costs** | Up to 60% lower memory footprint (`~38MB` total runtime footprint) | 16MB zero-GC slab arena memory allocator (`BroccoliDB`) |
 | **Vendor Independence** | Zero lock-in across AI model vendors | Dynamic multi-provider routing supporting 12+ native LLM providers |
 | **Zero-Trust Compliance** | Complete protection against un-audited dependency drift & scripts | Pinned external dependencies & `PI_ALLOW_LOCKFILE_CHANGE` gate |

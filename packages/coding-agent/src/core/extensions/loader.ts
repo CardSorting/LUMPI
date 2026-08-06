@@ -7,13 +7,13 @@ import * as fs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import * as _bundledPiAgentCore from "@earendil-works/pi-agent-core";
-import type { Provider } from "@earendil-works/pi-ai";
-import * as _bundledPiAiCompat from "@earendil-works/pi-ai/compat";
-import * as _bundledPiAiOauth from "@earendil-works/pi-ai/oauth";
-import * as _bundledPiAiProviders from "@earendil-works/pi-ai/providers/all";
-import type { KeyId } from "@earendil-works/pi-tui";
-import * as _bundledPiTui from "@earendil-works/pi-tui";
+import * as _bundledPiAgentCore from "@noorm/lumpi-agent-core";
+import type { Provider } from "@noorm/lumpi-ai";
+import * as _bundledPiAiCompat from "@noorm/lumpi-ai/compat";
+import * as _bundledPiAiOauth from "@noorm/lumpi-ai/oauth";
+import * as _bundledPiAiProviders from "@noorm/lumpi-ai/providers/all";
+import type { KeyId } from "@noorm/lumpi-tui";
+import * as _bundledPiTui from "@noorm/lumpi-tui";
 import { createJiti } from "jiti/static";
 // Static imports of packages that extensions may use.
 // These MUST be static so Bun bundles them into the compiled binary.
@@ -23,7 +23,7 @@ import * as _bundledTypeboxCompile from "typebox/compile";
 import * as _bundledTypeboxValue from "typebox/value";
 import { CONFIG_DIR_NAME, getAgentDir, isBunBinary } from "../../config.ts";
 // NOTE: This import works because loader.ts exports are NOT re-exported from index.ts,
-// avoiding a circular dependency. Extensions can import from @earendil-works/pi-coding-agent.
+// avoiding a circular dependency. Extensions can import from @noorm/lumpi-coding-agent.
 import * as _bundledPiCodingAgent from "../../index.ts";
 import { resolvePath } from "../../utils/paths.ts";
 import { createEventBus, type EventBus } from "../event-bus.ts";
@@ -54,16 +54,16 @@ const VIRTUAL_MODULES: Record<string, unknown> = {
 	"@sinclair/typebox": _bundledTypebox,
 	"@sinclair/typebox/compile": _bundledTypeboxCompile,
 	"@sinclair/typebox/value": _bundledTypeboxValue,
-	"@earendil-works/pi-agent-core": _bundledPiAgentCore,
-	"@earendil-works/pi-tui": _bundledPiTui,
+	"@noorm/lumpi-agent-core": _bundledPiAgentCore,
+	"@noorm/lumpi-tui": _bundledPiTui,
 	// Extensions resolve the pi-ai root to the compat entrypoint (a strict
 	// superset of the core entrypoint): existing extensions using the old
 	// global API keep working at runtime until compat is removed.
-	"@earendil-works/pi-ai": _bundledPiAiCompat,
-	"@earendil-works/pi-ai/compat": _bundledPiAiCompat,
-	"@earendil-works/pi-ai/oauth": _bundledPiAiOauth,
-	"@earendil-works/pi-ai/providers/all": _bundledPiAiProviders,
-	"@earendil-works/pi-coding-agent": _bundledPiCodingAgent,
+	"@noorm/lumpi-ai": _bundledPiAiCompat,
+	"@noorm/lumpi-ai/compat": _bundledPiAiCompat,
+	"@noorm/lumpi-ai/oauth": _bundledPiAiOauth,
+	"@noorm/lumpi-ai/providers/all": _bundledPiAiProviders,
+	"@noorm/lumpi-coding-agent": _bundledPiCodingAgent,
 	"@mariozechner/pi-agent-core": _bundledPiAgentCore,
 	"@mariozechner/pi-tui": _bundledPiTui,
 	"@mariozechner/pi-ai": _bundledPiAiCompat,
@@ -103,26 +103,23 @@ function getAliases(): Record<string, string> {
 	};
 
 	const piCodingAgentEntry = packageIndex;
-	const piAgentCoreEntry = resolveWorkspaceOrImport("agent/dist/index.js", "@earendil-works/pi-agent-core");
-	const piTuiEntry = resolveWorkspaceOrImport("tui/dist/index.js", "@earendil-works/pi-tui");
+	const piAgentCoreEntry = resolveWorkspaceOrImport("agent/dist/index.js", "@noorm/lumpi-agent-core");
+	const piTuiEntry = resolveWorkspaceOrImport("tui/dist/index.js", "@noorm/lumpi-tui");
 	// Extensions resolve the pi-ai root to the compat entrypoint (a strict
 	// superset of the core entrypoint): existing extensions using the old
 	// global API keep working at runtime until compat is removed.
-	const piAiCompatEntry = resolveWorkspaceOrImport("ai/dist/compat.js", "@earendil-works/pi-ai/compat");
-	const piAiOauthEntry = resolveWorkspaceOrImport("ai/dist/oauth.js", "@earendil-works/pi-ai/oauth");
-	const piAiProvidersEntry = resolveWorkspaceOrImport(
-		"ai/dist/providers/all.js",
-		"@earendil-works/pi-ai/providers/all",
-	);
+	const piAiCompatEntry = resolveWorkspaceOrImport("ai/dist/compat.js", "@noorm/lumpi-ai/compat");
+	const piAiOauthEntry = resolveWorkspaceOrImport("ai/dist/oauth.js", "@noorm/lumpi-ai/oauth");
+	const piAiProvidersEntry = resolveWorkspaceOrImport("ai/dist/providers/all.js", "@noorm/lumpi-ai/providers/all");
 
 	_aliases = {
-		"@earendil-works/pi-coding-agent": piCodingAgentEntry,
-		"@earendil-works/pi-agent-core": piAgentCoreEntry,
-		"@earendil-works/pi-tui": piTuiEntry,
-		"@earendil-works/pi-ai/providers/all": piAiProvidersEntry,
-		"@earendil-works/pi-ai/compat": piAiCompatEntry,
-		"@earendil-works/pi-ai/oauth": piAiOauthEntry,
-		"@earendil-works/pi-ai": piAiCompatEntry,
+		"@noorm/lumpi-coding-agent": piCodingAgentEntry,
+		"@noorm/lumpi-agent-core": piAgentCoreEntry,
+		"@noorm/lumpi-tui": piTuiEntry,
+		"@noorm/lumpi-ai/providers/all": piAiProvidersEntry,
+		"@noorm/lumpi-ai/compat": piAiCompatEntry,
+		"@noorm/lumpi-ai/oauth": piAiOauthEntry,
+		"@noorm/lumpi-ai": piAiCompatEntry,
 		"@mariozechner/pi-coding-agent": piCodingAgentEntry,
 		"@mariozechner/pi-agent-core": piAgentCoreEntry,
 		"@mariozechner/pi-tui": piTuiEntry,

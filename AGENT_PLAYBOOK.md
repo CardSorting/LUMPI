@@ -27,7 +27,7 @@ Last audited: 2026-08-06
 
 ## What Is Happening Right Now
 
-The active work now includes 11 wide-sweeping backend engine fusion passes, unifying Codemarie subsystems directly into `@earendil-works/pi-codemarie` exports and `CodemarieBridge` in `packages/coding-agent`:
+The active work now includes 11 wide-sweeping backend engine fusion passes, unifying Codemarie subsystems directly into `@noorm/lumpi-codemarie` exports and `CodemarieBridge` in `packages/coding-agent`:
 
 1. **Workspace Intelligence Engine**: `WorkspaceIntelligenceEngine` (structural indexing, file entropy, symbol graphs).
 2. **Spider Engine**: `SpiderEngine` (AST symbol extraction, dependency graph traversal).

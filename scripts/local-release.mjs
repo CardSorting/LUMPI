@@ -6,14 +6,14 @@ import { isAbsolute, join, relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const packages = [
-	{ directory: "packages/telemetry", name: "@earendil-works/pi-telemetry" },
-	{ directory: "packages/ai", name: "@earendil-works/pi-ai" },
-	{ directory: "packages/tui", name: "@earendil-works/pi-tui" },
-	{ directory: "packages/agent", name: "@earendil-works/pi-agent-core" },
-	{ directory: "packages/protocol", name: "@earendil-works/pi-protocol" },
-	{ directory: "packages/client", name: "@earendil-works/pi-client" },
-	{ directory: "packages/session-backends/sqlite-node", name: "@earendil-works/pi-session-backend-sqlite-node" },
-	{ directory: "packages/coding-agent", name: "@earendil-works/pi-coding-agent" },
+	{ directory: "packages/telemetry", name: "@noorm/lumpi-telemetry" },
+	{ directory: "packages/ai", name: "@noorm/lumpi-ai" },
+	{ directory: "packages/tui", name: "@noorm/lumpi-tui" },
+	{ directory: "packages/agent", name: "@noorm/lumpi-agent-core" },
+	{ directory: "packages/protocol", name: "@noorm/lumpi-protocol" },
+	{ directory: "packages/client", name: "@noorm/lumpi-client" },
+	{ directory: "packages/session-backends/sqlite-node", name: "@noorm/lumpi-session-backend-sqlite-node" },
+	{ directory: "packages/coding-agent", name: "@noorm/lumpi-coding-agent" },
 ];
 
 function printUsage() {

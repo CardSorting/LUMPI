@@ -1,6 +1,6 @@
 # Enterprise Security Compliance & Governance Matrix
 
-This document provides security officers, compliance auditors, and enterprise architects with an authoritative reference mapping **LUMI** (`@earendil-works/*`) security controls to enterprise governance frameworks.
+This document provides security officers, compliance auditors, and enterprise architects with an authoritative reference mapping **LUMI** (`@noorm/*`) security controls to enterprise governance frameworks.
 
 ---
 

@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { setKeybindings } from "@earendil-works/pi-tui";
+import { setKeybindings } from "@noorm/lumpi-tui";
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { KeybindingsManager } from "../src/core/keybindings.ts";
 import type { SessionInfo } from "../src/core/session-manager.ts";
@@ -212,8 +212,8 @@ describe("session selector path/delete interactions", () => {
 
 		expect(allLoadCalls).toBe(1);
 		const output = selector.render(120).join("\n");
-		expect(output).toContain("Resume Session (Current Folder)");
-		expect(output).not.toContain("Resume Session (All)");
+		expect(output).toMatch(/(Resume Session|LUMI Session Manager) \(Current Folder\)/);
+		expect(output).not.toMatch(/(Resume Session|LUMI Session Manager) \(All\)/);
 	});
 
 	it("does not start redundant All loads when toggling scopes while All is already loading", async () => {

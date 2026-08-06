@@ -5,13 +5,13 @@
 ## 1. Project Center of Gravity
 
 **Core Purpose:**  
-Deliver a unified, high-performance agentic AI coding engine synthesized from **CodeMarie** CLI host architecture and **Pi-Main** agentic intelligence (`@earendil-works/*`).
+Deliver a unified, high-performance agentic AI coding engine synthesized from **CodeMarie** CLI host architecture and **Pi-Main** agentic intelligence (`@noorm/*`).
 
 **Primary Users / Operators:**  
 Developers, system architects, engineering leaders, and security teams utilizing LUMI (`CardSorting.lumi`) as a calm, high-velocity coding companion and autonomous agent runtime.
 
 **Canonical Architecture:**  
-Monorepo workspace containing 12 packages under the `@earendil-works/*` scope, featuring `BroccoliDB` zero-GC substrate memory, `CodeMarie` host bridge, `Gondolin` micro-VM sandboxing, and differential terminal UI (`pi-tui`).
+Monorepo workspace containing 12 packages under the `@noorm/*` scope, featuring `BroccoliDB` zero-GC substrate memory, `CodeMarie` host bridge, `Gondolin` micro-VM sandboxing, and differential terminal UI (`pi-tui`).
 
 **Canonical Workflows:**  
 Interactive TUI mode (`./pi-test.sh`), headless CI/CD audit mode (`pi -p`), subagent swarm delegation, and isolated micro-VM sandboxing. Verified with unit tests (`./test.sh`) and monorepo quality gate (`npm run check`).
@@ -46,7 +46,7 @@ LUMI bridges high-speed terminal interaction with enterprise-grade autonomous co
 - **Goal**: Optimize 16MB contiguous slab allocation performance for zero-GC memory performance under high-frequency tool invocation loops.
 - **Impact**: Eliminates GC pauses during long-running subagent swarm sessions.
 
-### 3. Merged CodeMarie Host Provider Stabilization (`@earendil-works/pi-codemarie`)
+### 3. Merged CodeMarie Host Provider Stabilization (`@noorm/lumpi-codemarie`)
 - **Goal**: Maintain strict synchronization between host workspace state, environment settings, window bounds, and diff clients.
 - **Impact**: Ensures seamless workspace navigation across terminal sessions.
 
@@ -54,7 +54,7 @@ LUMI bridges high-speed terminal interaction with enterprise-grade autonomous co
 
 ## 5. Next (Upcoming Initiatives)
 
-### 1. Expanded Local LLM Provider Integrations (`@earendil-works/pi-ai`)
+### 1. Expanded Local LLM Provider Integrations (`@noorm/lumpi-ai`)
 - **Goal**: Deepen zero-copy streaming bindings for Ollama, vLLM, and local OpenAI-compatible inference proxies.
 - **Impact**: Provides enhanced offline, air-gapped sovereign agent capabilities for enterprise security environments.
 

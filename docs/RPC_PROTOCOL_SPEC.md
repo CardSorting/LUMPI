@@ -1,6 +1,6 @@
 # RPC Protocol & IPC Specification
 
-This document details the communication schemas, IPC transport protocols, and RPC codecs defined in `@earendil-works/pi-protocol` and implemented by `@earendil-works/pi-server` and `@earendil-works/pi-client`.
+This document details the communication schemas, IPC transport protocols, and RPC codecs defined in `@noorm/lumpi-protocol` and implemented by `@noorm/lumpi-server` and `@noorm/lumpi-client`.
 
 ---
 
@@ -15,7 +15,7 @@ LUMI supports multi-tenant remote agent communication via two IPC transport laye
 
 ## 📜 Message Format & Codecs
 
-All RPC messages use JSON-RPC 2.0 compatible structured payloads typed by `@earendil-works/pi-protocol`:
+All RPC messages use JSON-RPC 2.0 compatible structured payloads typed by `@noorm/lumpi-protocol`:
 
 ### 1. Request Message Frame
 
@@ -70,7 +70,7 @@ All RPC messages use JSON-RPC 2.0 compatible structured payloads typed by `@eare
 
 ## 🔑 Session State Sync Handshake
 
-When a client connects to `@earendil-works/pi-server`:
+When a client connects to `@noorm/lumpi-server`:
 
 1. **`client.hello`**: Client sends protocol version (`v1`) and active client capabilities.
 2. **`server.ack`**: Server responds with active sessions, registered tools, and supported provider gateways.

@@ -41,7 +41,7 @@ function runProbe(action: string): ProbeResult {
 		console.log(JSON.stringify({ loadedSpecifiers: [...new Set(loaded)] }));
 	`;
 
-	const result = spawnSync(process.execPath, ["--input-type=module", "--eval", script], {
+	const result = spawnSync(process.execPath, ["--import", "tsx/esm", "--input-type=module", "--eval", script], {
 		cwd: packageRoot,
 		encoding: "utf8",
 	});

@@ -1,6 +1,6 @@
 # Common Pitfalls
 
-- Do not import internal deep module paths from `@earendil-works/pi-codemarie` (e.g. `@earendil-works/pi-codemarie/dist/integrations/...`); use top-level re-exports in `@earendil-works/pi-codemarie` or `CodemarieBridge` accessors in `packages/coding-agent`.
+- Do not import internal deep module paths from `@noorm/lumpi-codemarie` (e.g. `@noorm/lumpi-codemarie/dist/integrations/...`); use top-level re-exports in `@noorm/lumpi-codemarie` or `CodemarieBridge` accessors in `packages/coding-agent`.
 - Do not pass outdated parameter counts to `callTextExtractionFunctions` or `processFilesIntoText`; check the exact exported signatures in `packages/codemarie/src/index.ts`.
 - Do not ignore `detectCodeOmission(originalContent, newContent)` warnings before applying file edit operations; doing so can allow AI-generated truncation comments (`// ... rest of file unchanged`) to overwrite actual code.
 - Do not describe a compact prompt projection as “zero loss.” Exact source bytes

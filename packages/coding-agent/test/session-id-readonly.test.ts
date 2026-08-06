@@ -73,7 +73,7 @@ async function runCli(
 
 	let stderr = "";
 	const code = await new Promise<number | null>((resolvePromise, reject) => {
-		const child = spawn(process.execPath, [cliPath, ...resolvedArgs], {
+		const child = spawn(process.execPath, ["--import", require.resolve("tsx/esm"), cliPath, ...resolvedArgs], {
 			cwd: dirs.projectDir,
 			env: {
 				...process.env,

@@ -1,4 +1,6 @@
-import { machineId } from "node-machine-id";
+import nodeMachineId from "node-machine-id";
+const machineId: (original?: boolean) => Promise<string> =
+	typeof nodeMachineId === "function" ? nodeMachineId : (nodeMachineId as { machineId: (original?: boolean) => Promise<string> }).machineId;
 import { v4 as uuidv4 } from "uuid";
 import { HostRegistryInfo } from "@/registry";
 import { Logger } from "@/shared/services/Logger";

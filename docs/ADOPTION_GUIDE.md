@@ -88,7 +88,7 @@ This guide provides engineering leaders, CTOs, Security Officers, and System Arc
 | ROI Dimension | Traditional AI Coding Tools | **LUMI Agentic Engine** | Financial & Operational Impact |
 | :--- | :--- | :--- | :--- |
 | **Runtime Memory Allocation** | Heavy GC allocation per turn (100MB+) | **16MB Zero-GC Slab Arena (`BroccoliDB`)** | 60%+ lower runtime RAM per process instance |
-| **Terminal Rendering Latency** | 50–150ms latency (flicker/lag) | **Sub-16ms Differential Buffer (`@earendil-works/pi-tui`)** | Eliminates visual lag; boosts active typing throughput |
+| **Terminal Rendering Latency** | 50–150ms latency (flicker/lag) | **Sub-16ms Differential Buffer (`@noorm/lumpi-tui`)** | Eliminates visual lag; boosts active typing throughput |
 | **Model Lock-In** | Proprietary model enforcement | **12+ Native LLM Providers + Ollama/vLLM** | Flexible model selection; leverage cheaper open-weights |
 | **Developer Onboarding** | Multi-step plugin installation & IDE config | **Single shell script execution (`./pi-test.sh`)** | Onboard developers in under 30 seconds |
 

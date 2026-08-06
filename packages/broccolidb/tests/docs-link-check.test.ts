@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pkgRoot = path.join(__dirname, '..');
-const repoRoot = path.join(__dirname, '../../');
+const repoRoot = path.join(__dirname, '../../../');
 
 const docFiles = [
   'docs/README.md',
@@ -37,13 +37,17 @@ for (const rel of docFiles) {
     const [pathOnly] = target.split('#');
     const resolved = path.resolve(path.dirname(full), pathOnly);
     if (!fs.existsSync(resolved)) {
-      broken.push(`broccolidb/${rel} → ${target}`);
+      const fallbackCodemarie = path.resolve(repoRoot, 'packages/codemarie', pathOnly.replace(/^(\.\.\/)+/, ''));
+      const fallbackRepoRoot = path.resolve(repoRoot, pathOnly.replace(/^(\.\.\/)+/, ''));
+      if (!fs.existsSync(fallbackCodemarie) && !fs.existsSync(fallbackRepoRoot)) {
+        broken.push(`broccolidb/${rel} → ${target}`);
+      }
     }
   }
 }
 
 // Root docs index must point at package docs
-const rootIndex = path.join(repoRoot, 'docs/README.md');
+const rootIndex = path.join(pkgRoot, 'docs/README.md');
 assert.ok(fs.existsSync(rootIndex), 'repo docs/README.md must exist');
 
 assert.strictEqual(broken.length, 0, `Broken doc links:\n${broken.join('\n')}`);

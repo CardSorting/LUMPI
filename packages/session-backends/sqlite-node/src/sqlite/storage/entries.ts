@@ -1,4 +1,4 @@
-import type { Entry, EntryOrder } from "@earendil-works/pi-agent-core";
+import type { Entry, EntryOrder } from "@noorm/lumpi-agent-core";
 import type { SqliteDatabase } from "../types.ts";
 
 export interface EntryRow {

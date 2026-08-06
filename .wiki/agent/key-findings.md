@@ -2,7 +2,7 @@
 
 ## 2026-08-06 Monorepo Subsystem Engine Fusion (`CodemarieBridge`)
 
-- **11 Wide-Sweeping Engine Fusion Passes**: Integrated 11 core Codemarie backend engine subsystems into `@earendil-works/pi-codemarie` re-exports and `CodemarieBridge` in `packages/coding-agent/src/core/codemarie-bridge.ts`.
+- **11 Wide-Sweeping Engine Fusion Passes**: Integrated 11 core Codemarie backend engine subsystems into `@noorm/lumpi-codemarie` re-exports and `CodemarieBridge` in `packages/coding-agent/src/core/codemarie-bridge.ts`.
 - **Workspace Intelligence & AST Spider Engine**: Re-exported `WorkspaceIntelligenceEngine` and `SpiderEngine` for deep workspace indexing, file entropy calculation, and AST symbol graph resolution.
 - **Persistent Subscription Hub**: Re-exported `PersistentSubscriptionHub` and `disposeAllPersistentSubscriptionHubs` for real-time task event streaming.
 - **Terminal Execution & Command Safety Sanitizer**: Re-exported `CommandExecutor`, `orchestrateCommandExecution`, `validateCommand`, `splitCommand`, and `getSanitizerMode` for pre-execution shell command injection pre-screening.

@@ -8,7 +8,7 @@ Last updated: 2026-08-06
 
 ## Current Task
 
-The 11 Wide-Sweeping Backend Engine Fusion Passes are complete. All major Codemarie subsystems have been re-exported from `@earendil-works/pi-codemarie` and wired to `CodemarieBridge` in `packages/coding-agent`:
+The 11 Wide-Sweeping Backend Engine Fusion Passes are complete. All major Codemarie subsystems have been re-exported from `@noorm/lumpi-codemarie` and wired to `CodemarieBridge` in `packages/coding-agent`:
 
 1. **Workspace Intelligence Engine**: `WorkspaceIntelligenceEngine`
 2. **Spider Engine & AST Forensic Audit**: `SpiderEngine`

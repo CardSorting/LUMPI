@@ -1,7 +1,7 @@
 {
-	"name": "@earendil-works/pi-session-backend-sqlite-node",
+	"name": "@noorm/lumpi-session-backend-sqlite-node",
 	"version": "0.83.0",
-	"description": "Node sqlite session backend for @earendil-works/pi-agent-core sessions",
+	"description": "Node sqlite session backend for @noorm/lumpi-agent-core sessions",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -34,8 +34,8 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@earendil-works/pi-ai": "^0.83.0",
-		"@earendil-works/pi-agent-core": "^0.83.0"
+		"@noorm/lumpi-ai": "^0.83.0",
+		"@noorm/lumpi-agent-core": "^0.83.0"
 	},
 	"devDependencies": {
 		"@vitest/coverage-v8": "4.1.9",

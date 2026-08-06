@@ -14,7 +14,6 @@ export default defineConfig({
 		reporters: process.env.GITHUB_ACTIONS ? ["dot", "github-actions"] : ["dot"],
 		coverage: {
 			provider: "v8",
-			all: true,
 			include: ["src/**/*.ts"],
 			exclude: ["src/**/*.d.ts"],
 			reporter: ["text", "html", "lcov"],
@@ -23,11 +22,11 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: [
-			{ find: /^@earendil-works\/pi-telemetry$/, replacement: telemetryIndex },
-			{ find: /^@earendil-works\/pi-agent-core\/session\/testing$/, replacement: agentSessionTesting },
-			{ find: /^@earendil-works\/pi-agent-core\/node$/, replacement: agentNode },
-			{ find: /^@earendil-works\/pi-agent-core$/, replacement: agentIndex },
-			{ find: /^@earendil-works\/pi-ai$/, replacement: aiIndex },
+			{ find: /^@noorm\/pi-telemetry$/, replacement: telemetryIndex },
+			{ find: /^@noorm\/pi-agent-core\/session\/testing$/, replacement: agentSessionTesting },
+			{ find: /^@noorm\/pi-agent-core\/node$/, replacement: agentNode },
+			{ find: /^@noorm\/pi-agent-core$/, replacement: agentIndex },
+			{ find: /^@noorm\/pi-ai$/, replacement: aiIndex },
 		],
 	},
 });

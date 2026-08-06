@@ -54,8 +54,8 @@ const SubagentSwarmOrchestrationJudge = createJudge<PiCodingAgentInput, Subagent
 		if (output.swarmSource === null) {
 			failures.push("subagent-swarm-orchestrator extension file was not created");
 		} else {
-			if (!output.swarmSource.includes("@earendil-works/pi-coding-agent")) {
-				failures.push("subagent-swarm-orchestrator missing canonical @earendil-works/pi-coding-agent import");
+			if (!output.swarmSource.includes("@noorm/lumpi-coding-agent")) {
+				failures.push("subagent-swarm-orchestrator missing canonical @noorm/lumpi-coding-agent import");
 			}
 			if (output.swarmSource.includes("@mariozechner/")) {
 				failures.push("ADVERSARIAL SUBAGENT TRAP TRIGGERED: Extension imported legacy namespace!");

@@ -1,4 +1,4 @@
-# @earendil-works/pi-protocol
+# @noorm/lumpi-protocol
 
 Runtime-neutral schemas, types, CBOR encoding, and byte-stream framing for the experimental pi protocol.
 
@@ -19,7 +19,7 @@ import {
   createServerMessageDecoder,
   encodeClientMessage,
   type ClientHello,
-} from "@earendil-works/pi-protocol";
+} from "@noorm/lumpi-protocol";
 
 const hello: ClientHello = {
   type: "hello",

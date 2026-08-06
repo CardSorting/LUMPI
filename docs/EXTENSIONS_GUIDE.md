@@ -11,7 +11,7 @@ Over 70 reference implementations are available in [`packages/coding-agent/examp
 To build a custom tool, export a default module created via `defineTool`:
 
 ```typescript
-import { defineTool } from "@earendil-works/pi-coding-agent";
+import { defineTool } from "@noorm/lumpi-coding-agent";
 
 export default defineTool({
   name: "query_substrate_metrics",
@@ -44,7 +44,7 @@ export default defineTool({
 Subagents allow delegating tasks to isolated sub-turns with separate context windows:
 
 ```typescript
-import { defineExtension } from "@earendil-works/pi-coding-agent";
+import { defineExtension } from "@noorm/lumpi-coding-agent";
 
 export default defineExtension({
   name: "subagent-auditor",

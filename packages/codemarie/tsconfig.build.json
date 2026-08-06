@@ -3,7 +3,13 @@
 	"compilerOptions": {
 		"outDir": "./dist",
 		"rootDir": "./src",
+		"experimentalDecorators": true,
+		"erasableSyntaxOnly": false,
+		"skipLibCheck": true,
+		"declaration": false,
+		"declarationMap": false,
 		"paths": {
+			"vscode": ["./src/hosts/vscode/stub.ts"],
 			"@/*": ["./src/*"],
 			"@api/*": ["./src/core/api/*"],
 			"@core/*": ["./src/core/*"],

@@ -1,6 +1,6 @@
 # Benchmarks & Hardware Performance Specifications
 
-This document outlines the benchmarking methodology, hardware execution profiles, latency metrics, and memory substrate performance of the **LUMI** agentic AI engine (`@earendil-works/*`).
+This document outlines the benchmarking methodology, hardware execution profiles, latency metrics, and memory substrate performance of the **LUMI** agentic AI engine (`@noorm/*`).
 
 ---
 
@@ -100,6 +100,6 @@ Summary of latest Zenith Tier Quad-Harness empirical evaluation results (see [`B
 
 ## 🔬 Substrate Memory Benchmark Methodology
 
-1. **Allocations**: Tests pre-allocate 16MB slab buffers (`ArenaAllocator`) in `@earendil-works/broccolidb`.
+1. **Allocations**: Tests pre-allocate 16MB slab buffers (`ArenaAllocator`) in `@noorm/broccolidb`.
 2. **Ring Buffer Throughput**: Tests measure atomic reader/writer performance on `SharedArrayBuffer` ring buffers across worker threads.
 3. **Differential UI Renders**: Measures screen buffer diff calculations to verify rendering updates complete under 16ms (60 FPS threshold).

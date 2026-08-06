@@ -21,8 +21,8 @@ import {
 	openAIResponsesApi,
 	type SimpleStreamOptions,
 	type ThinkingLevelMap,
-} from "@earendil-works/pi-ai/compat";
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+} from "@noorm/lumpi-ai/compat";
+import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
 
 // =============================================================================
 // Constants

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { NOOP_TELEMETRY_CONTEXT, type TelemetryContext } from "@earendil-works/pi-telemetry";
+import { NOOP_TELEMETRY_CONTEXT, type TelemetryContext } from "@noorm/lumpi-telemetry";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { renderAgentTelemetrySchemaMarkdown } from "../../scripts/generate-telemetry-docs.ts";
 import {

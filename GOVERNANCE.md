@@ -26,7 +26,7 @@ Contributors who have demonstrated high-signal contributions to the codebase.
 - **`lgtm`**: Approved to open both issues and pull requests.
 
 ### Maintainers
-Maintainers have commit and release authority across the `@earendil-works/*` monorepo. They are responsible for:
+Maintainers have commit and release authority across the `@noorm/*` monorepo. They are responsible for:
 - Triaging issues and pull requests daily.
 - Reviewing RFC design proposals.
 - Overseeing lockstep release publishing (`release:patch`, `release:minor`).
@@ -39,7 +39,7 @@ Maintainers have commit and release authority across the `@earendil-works/*` mon
 For significant changes affecting core architecture, public APIs, substrate memory models, or host integration contracts, an RFC is required before implementation begins.
 
 ### When is an RFC Required?
-- Major API contract changes in `@earendil-works/pi-agent-core` or `@earendil-works/pi-ai`.
+- Major API contract changes in `@noorm/lumpi-agent-core` or `@noorm/lumpi-ai`.
 - Modifications to `BroccoliDB` substrate memory layouts or zero-GC ring buffer protocols.
 - Introducing new host client provider bridges or sandbox execution engines.
 - Deprecating existing tools, flags, or provider integrations.
@@ -64,7 +64,7 @@ flowchart LR
 ## 🚀 Release Cadence & Versioning
 
 LUMI follows **lockstep versioning**:
-- All 12 packages under `@earendil-works/*` share a unified version number.
+- All 12 packages under `@noorm/*` share a unified version number.
 - Releases are tagged as `vX.Y.Z`.
 - **`patch` releases**: Bug fixes, dependency updates, and non-breaking additions.
 - **`minor` releases**: Breaking API changes or major feature additions.

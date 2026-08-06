@@ -130,7 +130,7 @@ Register custom tools dynamically via TypeScript extension modules:
 
 ```typescript
 // example-extension.ts
-import { createExtension } from "@earendil-works/pi-coding-agent";
+import { createExtension } from "@noorm/lumpi-coding-agent";
 
 export default createExtension({
   name: "workspace-health-checker",

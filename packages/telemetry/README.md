@@ -1,4 +1,4 @@
-# @earendil-works/pi-telemetry
+# @noorm/lumpi-telemetry
 
 Vendor-neutral telemetry contracts and typed schema utilities for pi packages.
 

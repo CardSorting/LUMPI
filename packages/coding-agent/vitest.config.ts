@@ -23,31 +23,31 @@ export default mergeConfig(
 		resolve: {
 			alias: [
 				{
-					find: /^@earendil-works\/pi-codemarie$/,
+					find: /^@noorm\/lumpi-codemarie$/,
 					replacement: fileURLToPath(new URL("../codemarie/src/index.ts", import.meta.url)),
 				},
 				{
-					find: /^@earendil-works\/pi-codemarie\/db$/,
+					find: /^@noorm\/lumpi-codemarie\/db$/,
 					replacement: fileURLToPath(new URL("../codemarie/src/infrastructure/db/SQLiteMaintenanceEngine.ts", import.meta.url)),
 				},
 				{
-					find: /^@earendil-works\/pi-codemarie\/disk$/,
+					find: /^@noorm\/lumpi-codemarie\/disk$/,
 					replacement: fileURLToPath(new URL("../codemarie/src/core/storage/disk.ts", import.meta.url)),
 				},
 				{
-					find: /^@earendil-works\/pi-codemarie\/storage$/,
+					find: /^@noorm\/lumpi-codemarie\/storage$/,
 					replacement: fileURLToPath(new URL("../codemarie/src/services/storage/StorageManager.ts", import.meta.url)),
 				},
 				{
-					find: /^@earendil-works\/pi-codemarie\/transform$/,
+					find: /^@noorm\/lumpi-codemarie\/transform$/,
 					replacement: fileURLToPath(new URL("../codemarie/src/core/api/transform/token-buffer-engine.ts", import.meta.url)),
 				},
 				{
-					find: /^@earendil-works\/pi-client$/,
+					find: /^@noorm\/lumpi-client$/,
 					replacement: fileURLToPath(new URL("../client/src/index.ts", import.meta.url)),
 				},
 				{
-					find: /^@earendil-works\/pi-protocol$/,
+					find: /^@noorm\/lumpi-protocol$/,
 					replacement: fileURLToPath(new URL("../protocol/src/index.ts", import.meta.url)),
 				},
 				{ find: /^@mariozechner\/pi-ai$/, replacement: workspaceSourcePaths.aiIndex },

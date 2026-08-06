@@ -1,5 +1,5 @@
-import type { AgentMessage } from "@earendil-works/pi-agent-core";
-import type { AssistantMessage, Model } from "@earendil-works/pi-ai";
+import type { AgentMessage } from "@noorm/lumpi-agent-core";
+import type { AssistantMessage, Model } from "@noorm/lumpi-ai";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	type CompactionPreparation,
@@ -12,8 +12,8 @@ const { completeSimpleMock } = vi.hoisted(() => ({
 	completeSimpleMock: vi.fn(),
 }));
 
-vi.mock("@earendil-works/pi-ai/compat", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("@earendil-works/pi-ai/compat")>();
+vi.mock("@noorm/lumpi-ai/compat", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@noorm/lumpi-ai/compat")>();
 	return {
 		...actual,
 		completeSimple: completeSimpleMock,

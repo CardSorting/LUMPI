@@ -10,11 +10,11 @@ First things first: **LUMI's core is minimal and extensible**.
 
 LUMI is structured around an event-driven architecture that keeps the execution core lean while enabling rich extensibility through extensions, custom tools, and subagents:
 
-- **Core Engine (`@earendil-works/pi-agent-core`)**: Enforces state machine transitions, CAS history tracking, and prompt assembly.
-- **Host Integration (`@earendil-works/pi-codemarie`)**: Merges host workspace navigation, environment variables, window state, and diff clients.
-- **Substrate Storage (`@earendil-works/broccolidb`)**: Provides high-throughput 16MB zero-GC slab memory allocation.
-- **Multi-LLM Gateway (`@earendil-works/pi-ai`)**: Routes inference requests across OpenAI Codex, Anthropic Claude, Gemini, and local providers.
-- **Terminal UI (`@earendil-works/pi-tui`)**: Renders differential terminal screen buffers at sub-16ms latencies.
+- **Core Engine (`@noorm/lumpi-agent-core`)**: Enforces state machine transitions, CAS history tracking, and prompt assembly.
+- **Host Integration (`@noorm/lumpi-codemarie`)**: Merges host workspace navigation, environment variables, window state, and diff clients.
+- **Substrate Storage (`@noorm/broccolidb`)**: Provides high-throughput 16MB zero-GC slab memory allocation.
+- **Multi-LLM Gateway (`@noorm/lumpi-ai`)**: Routes inference requests across OpenAI Codex, Anthropic Claude, Gemini, and local providers.
+- **Terminal UI (`@noorm/lumpi-tui`)**: Renders differential terminal screen buffers at sub-16ms latencies.
 
 If your proposed feature does not belong in the core, it should be built as an **extension**. PRs that add unneeded complexity to the core will be rejected.
 

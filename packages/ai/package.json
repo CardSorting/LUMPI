@@ -1,5 +1,5 @@
 {
-	"name": "@earendil-works/pi-ai",
+	"name": "@noorm/lumpi-ai",
 	"version": "0.83.0",
 	"description": "Unified LLM API with automatic model discovery and provider configuration",
 	"type": "module",
@@ -49,11 +49,11 @@
 	],
 	"scripts": {
 		"clean": "shx rm -rf dist",
-		"generate-models": "node scripts/generate-models.ts --strict",
-		"hydrate-model-data": "node scripts/generate-models.ts --strict --data-only",
-		"generate-model-catalog": "node scripts/generate-models.ts --strict --json-only --json-output ../../.artifacts/model-catalog",
-		"generate-image-models": "node scripts/generate-image-models.ts --strict",
-		"check:model-data": "node scripts/check-model-data.ts",
+		"generate-models": "node --import tsx/esm scripts/generate-models.ts --strict",
+		"hydrate-model-data": "node --import tsx/esm scripts/generate-models.ts --strict --data-only",
+		"generate-model-catalog": "node --import tsx/esm scripts/generate-models.ts --strict --json-only --json-output ../../.artifacts/model-catalog",
+		"generate-image-models": "node --import tsx/esm scripts/generate-image-models.ts --strict",
+		"check:model-data": "node --import tsx/esm scripts/check-model-data.ts",
 		"build": "npm run generate-models && npm run build:offline",
 		"build:offline": "npm run check:model-data && tsgo -p tsconfig.build.json && shx rm -rf dist/providers/data && shx cp -r src/providers/data dist/providers/data",
 		"test": "vitest --run",
@@ -62,7 +62,7 @@
 	"dependencies": {
 		"@anthropic-ai/sdk": "0.91.1",
 		"@aws-sdk/client-bedrock-runtime": "3.1048.0",
-		"@earendil-works/pi-telemetry": "^0.83.0",
+		"@noorm/lumpi-telemetry": "^0.83.0",
 		"@google/genai": "1.52.0",
 		"@mistralai/mistralai": "2.2.6",
 		"@opentelemetry/api": "1.9.0",

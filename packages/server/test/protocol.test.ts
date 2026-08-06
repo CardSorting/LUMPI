@@ -1,5 +1,5 @@
-import type { Api, AssistantMessage, Model, ToolCall, ToolResultMessage, UserMessage } from "@earendil-works/pi-ai";
-import { encodeServerMessage, PROTOCOL_VERSION } from "@earendil-works/pi-protocol";
+import type { Api, AssistantMessage, Model, ToolCall, ToolResultMessage, UserMessage } from "@noorm/lumpi-ai";
+import { encodeServerMessage, PROTOCOL_VERSION } from "@noorm/lumpi-protocol";
 import { describe, expect, test } from "vitest";
 import {
 	sanitizeProtocolDetails,

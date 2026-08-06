@@ -1,4 +1,4 @@
-import type { Model } from "@earendil-works/pi-ai";
+import type { Model } from "@noorm/lumpi-ai";
 import { describe, expect, test, vi } from "vitest";
 import {
 	defaultModelPerProvider,
@@ -696,7 +696,7 @@ describe("resolveCliModel", () => {
 describe("default model selection", () => {
 	test("openai defaults track current models", () => {
 		expect(defaultModelPerProvider.openai).toBe("gpt-5.5");
-		expect(defaultModelPerProvider["openai-codex"]).toBe("gpt-5.5");
+		expect(defaultModelPerProvider["openai-codex"]).toBe("gpt-5.6-luna");
 	});
 
 	test("zai, minimax, cerebras, and ant-ling defaults track current models", () => {
