@@ -37,6 +37,10 @@
 			"types": "./src/core/storage/disk.ts",
 			"import": "./src/core/storage/disk.ts"
 		},
+		"./providers": {
+			"types": "./src/core/api/providers/cerebras.ts",
+			"import": "./src/core/api/providers/cerebras.ts"
+		},
 		"./package.json": "./package.json"
 	},
 

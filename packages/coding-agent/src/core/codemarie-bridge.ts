@@ -2,6 +2,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import {
+	ApcStableIngestionEngine,
 	AUTO_GOVERNANCE,
 	BASE_SLASH_COMMANDS,
 	BroccoliContextCompactionStore,
@@ -9,10 +10,12 @@ import {
 	broccoliFencePath,
 	buildGateStateFromInputs,
 	buildSteeringContext,
+	CerebrasHandler,
 	ContextPruner,
 	ContextStalenessTracker,
 	Controller,
 	createLockAuthority,
+	defaultApcStableEngine,
 	detectWorkspaceArchitectureProfile,
 	EnvironmentIntegrity,
 	type EnvironmentLease,
@@ -40,6 +43,7 @@ import {
 	PlanModeEnforcer,
 	parseLayerTag,
 	parsePartialArrayString,
+	prepareCerebrasMessages,
 	REQUIRED_SECTIONS,
 	ROADMAP_DIAGNOSTIC_SLASH_COMMANDS,
 	readBroccoliFence,
@@ -96,7 +100,11 @@ import {
 	storeReusableCommandResult,
 } from "@earendil-works/pi-codemarie/joyride";
 import { StorageManager, type StorageOptimizationResult } from "@earendil-works/pi-codemarie/storage";
-import { defaultTokenBufferEngine, type TokenIngestionBufferEngine } from "@earendil-works/pi-codemarie/transform";
+import {
+	defaultTokenBufferEngine,
+	type LifetimeTelemetryStats,
+	type TokenIngestionBufferEngine,
+} from "@earendil-works/pi-codemarie/transform";
 import { URI } from "vscode-uri";
 
 export interface CodemarieBridgeOptions {
@@ -117,6 +125,7 @@ export class CodemarieBridge {
 	private environmentIntegrity: EnvironmentIntegrity | undefined;
 	private contextPruner: ContextPruner | undefined;
 	private tokenBufferEngine: TokenIngestionBufferEngine | undefined;
+	private apcStableEngine: ApcStableIngestionEngine | undefined;
 	private storageManager: StorageManager | undefined;
 	private sqliteMaintenanceEngine: SQLiteMaintenanceEngine | undefined;
 
@@ -771,5 +780,74 @@ export class CodemarieBridge {
 			tagCoveragePercentage,
 			violationsCount,
 		};
+	}
+
+	// ============================================================================
+	// Specialized Cerebras Optimization & Token Saturation Flow API
+	// ============================================================================
+
+	public getApcStableEngine(options?: {
+		maxToolOutputLength?: number;
+		activeVisionWindow?: number;
+	}): ApcStableIngestionEngine {
+		if (!this.apcStableEngine) {
+			this.apcStableEngine = options ? new ApcStableIngestionEngine(options) : defaultApcStableEngine;
+		}
+		return this.apcStableEngine;
+	}
+
+	public prepareCerebrasMessages(
+		messages: Parameters<typeof prepareCerebrasMessages>[0],
+	): ReturnType<typeof prepareCerebrasMessages> {
+		return prepareCerebrasMessages(messages);
+	}
+
+	public createCerebrasHandler(options: { cerebrasApiKey?: string; apiModelId?: string }): CerebrasHandler {
+		return new CerebrasHandler(options);
+	}
+
+	public processCerebrasTokenSaturationFlow<T extends { role?: string; content?: unknown }>(
+		systemPrompt: string,
+		messages: T[],
+		options: {
+			maxAllowedTokens?: number;
+			activeVisionWindow?: number;
+			keepFullToolTurns?: number;
+		} = {},
+	): {
+		normalizedSystemPrompt: string;
+		apcStableMessages: T[];
+		estimatedTokenCount: number;
+	} {
+		const apcEngine = this.getApcStableEngine({
+			activeVisionWindow: options.activeVisionWindow ?? 1,
+		});
+		const normalizedSystemPrompt = apcEngine.normalizeSystemPrompt(systemPrompt);
+		const sanitizedMessages = messages.map((msg) => {
+			if (msg.role === "assistant" && typeof msg.content === "string") {
+				return { ...msg, content: apcEngine.sanitizeAssistantContent(msg.content) };
+			}
+			return msg;
+		});
+
+		const processed = this.getTokenBufferEngine().optimizeMessagesPipeline({
+			systemPrompt: normalizedSystemPrompt,
+			messages: sanitizedMessages as never,
+			maxAllowedTokens: options.maxAllowedTokens ?? 100_000,
+		});
+
+		const estTokens = apcEngine.estimateTokenCount(
+			normalizedSystemPrompt + JSON.stringify(processed.optimizedMessages),
+		);
+
+		return {
+			normalizedSystemPrompt,
+			apcStableMessages: processed.optimizedMessages as unknown as T[],
+			estimatedTokenCount: estTokens,
+		};
+	}
+
+	public getCerebrasCacheTelemetryReport(): LifetimeTelemetryStats {
+		return this.getTokenBufferEngine().getLifetimeTelemetryReport();
 	}
 }

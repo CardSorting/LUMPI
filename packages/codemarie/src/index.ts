@@ -12,7 +12,21 @@ export {
 	TokenIngestionBufferEngine,
 	TokenBufferProfiles,
 	defaultTokenBufferEngine,
+	type LifetimeTelemetryStats,
+	type CompressionReport,
 } from "./core/api/transform/token-buffer-engine.js";
+export {
+	ApcStableIngestionEngine,
+	defaultApcStableEngine,
+	type ApcStableEngineOptions,
+	type ApcTelemetryStats,
+} from "./core/api/transform/apc-stable-engine.js";
+export {
+	CerebrasHandler,
+	prepareCerebrasMessages,
+	pruneHistoricalVisionPayloads,
+	compactHistoricalToolOutputs,
+} from "./core/api/providers/cerebras.js";
 
 // Infrastructure Storage & Maintenance Engines
 export { WriteCoalescer } from "./core/storage/WriteCoalescer.js";
