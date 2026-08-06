@@ -46,6 +46,13 @@ import {
 	WorkspaceIntelligenceEngine,
 	WriteCoalescer,
 } from "@earendil-works/pi-codemarie";
+import { type SQLiteMaintenanceEngine, sqliteMaintenanceEngine } from "@earendil-works/pi-codemarie/db";
+import {
+	atomicWriteFile,
+	calculateFileChecksum,
+	cleanStaleTempFiles,
+	verifyIntegrity,
+} from "@earendil-works/pi-codemarie/disk";
 import {
 	buildJoyRideWorkspaceSnapshot,
 	bumpTaskGeneration,
@@ -70,6 +77,8 @@ import {
 	storeCommandDiagnostic,
 	storeReusableCommandResult,
 } from "@earendil-works/pi-codemarie/joyride";
+import { StorageManager, type StorageOptimizationResult } from "@earendil-works/pi-codemarie/storage";
+import { defaultTokenBufferEngine, type TokenIngestionBufferEngine } from "@earendil-works/pi-codemarie/transform";
 import { URI } from "vscode-uri";
 
 export interface CodemarieBridgeOptions {
@@ -89,6 +98,9 @@ export class CodemarieBridge {
 	private eventHub: PersistentSubscriptionHub<unknown> | undefined;
 	private environmentIntegrity: EnvironmentIntegrity | undefined;
 	private contextPruner: ContextPruner | undefined;
+	private tokenBufferEngine: TokenIngestionBufferEngine | undefined;
+	private storageManager: StorageManager | undefined;
+	private sqliteMaintenanceEngine: SQLiteMaintenanceEngine | undefined;
 
 	private cachedSteeringDirectives = "";
 
@@ -144,6 +156,9 @@ export class CodemarieBridge {
 			this.eventHub = new PersistentSubscriptionHub<unknown>("pi-agent-events");
 			this.environmentIntegrity = new EnvironmentIntegrity(cwd);
 			this.contextPruner = new ContextPruner();
+			this.tokenBufferEngine = defaultTokenBufferEngine;
+			this.storageManager = StorageManager.getInstance();
+			this.sqliteMaintenanceEngine = sqliteMaintenanceEngine;
 			if (this.controller.stateManager) {
 				this.guard = new UniversalGuard(cwd, "task-pi", this.controller.stateManager);
 			}
@@ -497,5 +512,87 @@ export class CodemarieBridge {
 
 	public shutdownJoyRideCache(reason = "workspace_closed"): number {
 		return shutdownJoyRideCache();
+	}
+
+	// ============================================================================
+	// Custom 10-Stage DSL Compression & Token Ingestion Buffer API
+	// ============================================================================
+
+	public getTokenBufferEngine(): TokenIngestionBufferEngine {
+		if (!this.tokenBufferEngine) {
+			this.tokenBufferEngine = defaultTokenBufferEngine;
+		}
+		return this.tokenBufferEngine;
+	}
+
+	public compressDslText(text: string): string {
+		return this.getTokenBufferEngine().compressDslText(text);
+	}
+
+	public pruneHistoricalVisionPayloads<T extends { role?: string; content?: unknown }>(messages: T[]): T[] {
+		return this.getTokenBufferEngine().pruneHistoricalVisionPayloads(messages as never) as T[];
+	}
+
+	public compactHistoricalToolOutputs<T extends { role?: string; content?: unknown }>(messages: T[]): T[] {
+		return this.getTokenBufferEngine().compactHistoricalToolOutputs(messages);
+	}
+
+	public sanitizeAssistantContent(content: string): string {
+		return this.getTokenBufferEngine().sanitizeAssistantContent(content);
+	}
+
+	public normalizeSystemPrompt(prompt: string): string {
+		return this.getTokenBufferEngine().normalizeSystemPrompt(prompt);
+	}
+
+	// ============================================================================
+	// Preventative Disk Erosion & Storage Maintenance API
+	// ============================================================================
+
+	public getStorageManager(): StorageManager {
+		if (!this.storageManager) {
+			this.storageManager = StorageManager.getInstance();
+		}
+		return this.storageManager;
+	}
+
+	public getSQLiteMaintenanceEngine(): SQLiteMaintenanceEngine {
+		if (!this.sqliteMaintenanceEngine) {
+			this.sqliteMaintenanceEngine = sqliteMaintenanceEngine;
+		}
+		return this.sqliteMaintenanceEngine;
+	}
+
+	public async cleanStaleTempFiles(dirPath: string, maxAgeMs = 10 * 60 * 1000): Promise<number> {
+		return await cleanStaleTempFiles(dirPath, maxAgeMs);
+	}
+
+	public async atomicWriteFile(
+		filePath: string,
+		data: string,
+		updateChecksum = false,
+		createBackup = false,
+	): Promise<void> {
+		await atomicWriteFile(filePath, data, updateChecksum, createBackup);
+	}
+
+	public async calculateFileChecksum(filePath: string): Promise<string> {
+		return await calculateFileChecksum(filePath);
+	}
+
+	public async verifyDiskIntegrity(dirPath: string): Promise<{ ok: boolean; mismatched: string[] }> {
+		return await verifyIntegrity(dirPath);
+	}
+
+	public async optimizeStorage(validTaskIds?: string[]): Promise<StorageOptimizationResult> {
+		return await this.getStorageManager().optimizeStorage(validTaskIds);
+	}
+
+	public startBackgroundStorageMaintenance(validTaskIds?: string[]): void {
+		this.getStorageManager().startBackgroundMaintenance(validTaskIds);
+	}
+
+	public stopBackgroundStorageMaintenance(): void {
+		this.getStorageManager().stopBackgroundMaintenance();
 	}
 }

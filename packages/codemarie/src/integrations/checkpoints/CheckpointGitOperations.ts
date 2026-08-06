@@ -1,4 +1,4 @@
-import { fileExistsAtPath } from "@utils/fs";
+import { fileExistsAtPath } from "../../utils/fs.js";
 import fs from "fs/promises";
 import { globby } from "globby";
 import * as path from "path";

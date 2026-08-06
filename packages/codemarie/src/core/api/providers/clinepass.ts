@@ -1,6 +1,6 @@
 import { setTimeout as setTimeoutPromise } from "node:timers/promises";
 import { clinePassDefaultModelId, clinePassModels, type ModelInfo } from "@shared/api";
-import { shouldSkipReasoningForModel } from "@utils/model-utils";
+import { shouldSkipReasoningForModel } from "../../../utils/model-utils.js";
 import axios from "axios";
 import type OpenAI from "openai";
 import type { ChatCompletionTool as OpenAITool } from "openai/resources/chat/completions";

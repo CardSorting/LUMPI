@@ -7,6 +7,20 @@ export {
 	CliDiffClient,
 } from "./hosts/cli/cli-host-provider.js";
 
+// Token Ingestion & 10-Stage Custom DSL Compression Engine
+export {
+	TokenIngestionBufferEngine,
+	TokenBufferProfiles,
+	defaultTokenBufferEngine,
+} from "./core/api/transform/token-buffer-engine.js";
+
+// Infrastructure Storage & Maintenance Engines
+export { WriteCoalescer } from "./core/storage/WriteCoalescer.js";
+export { StorageManager, type StorageBreakdown, type StorageOptimizationResult } from "./services/storage/StorageManager.js";
+export { SQLiteMaintenanceEngine, sqliteMaintenanceEngine } from "./infrastructure/db/SQLiteMaintenanceEngine.js";
+export { cleanStaleTempFiles, atomicWriteFile, calculateFileChecksum, verifyIntegrity } from "./core/storage/disk.js";
+export { TaskLatencyTracker, type TaskLatencySnapshot } from "./core/task/latency/TaskLatencyTracker.js";
+
 // Core Controller & Task Engine
 export { Controller } from "./core/controller/index.js";
 
@@ -57,9 +71,6 @@ export { createLockAuthority, type LockAuthority } from "./core/governance/LockA
 // Roadmap Diagnostics
 export { runDoctorChecks } from "./services/roadmap/RoadmapDoctor.js";
 
-// Infrastructure Storage & Maintenance Engines
-export { WriteCoalescer } from "./core/storage/WriteCoalescer.js";
-export { TaskLatencyTracker, type TaskLatencySnapshot } from "./core/task/latency/TaskLatencyTracker.js";
 
 // Context Staleness & Swarm Mutex
 export { ContextStalenessTracker } from "./core/context/ContextStalenessTracker.js";

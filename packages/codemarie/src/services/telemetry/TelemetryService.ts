@@ -1,4 +1,4 @@
-import { HostProvider } from "@hosts/host-provider";
+import { HostProvider } from "../../hosts/host-provider.js";
 import type { BrowserSettings } from "@shared/BrowserSettings";
 import { type ApiFormat, apiFormatToJSON } from "@shared/proto/dietcode/models";
 import { ShowMessageType } from "@shared/proto/host/window";

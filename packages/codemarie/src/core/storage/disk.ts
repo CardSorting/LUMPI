@@ -1,11 +1,11 @@
 import type { Anthropic } from "@anthropic-ai/sdk";
 import type { EnvironmentMetadataEntry, TaskMetadata } from "@core/context/context-tracking/ContextTrackerTypes";
-import { execa } from "@packages/execa";
+import { execa } from "execa";
 import type { DietCodeMessage } from "@shared/ExtensionMessage";
 import type { HistoryItem } from "@shared/HistoryItem";
 import type { RemoteConfig } from "@shared/remote-config/schema";
 import type { GlobalState, Settings } from "@shared/storage/state-keys";
-import { fileExistsAtPath, isDirectory } from "@utils/fs";
+import { fileExistsAtPath, isDirectory } from "../../utils/fs.js";
 import * as crypto from "crypto";
 import fs from "fs/promises";
 import os from "os";
@@ -39,7 +39,7 @@ import { writeCoalescer } from "./WriteCoalescer";
  * @param filePath - The target file path
  * @param data - The data to write
  */
-async function atomicWriteFile(
+export async function atomicWriteFile(
 	filePath: string,
 	data: string,
 	updateChecksum = false,

@@ -1,4 +1,4 @@
-import { fileExistsAtPath } from "@utils/fs";
+import { fileExistsAtPath } from "../../utils/fs.js";
 import fs from "fs/promises";
 import { join } from "path";
 import { Logger } from "@/shared/services/Logger";

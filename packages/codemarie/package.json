@@ -10,16 +10,32 @@
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
+			"types": "./src/index.ts",
+			"import": "./src/index.ts"
 		},
 		"./hosts": {
-			"types": "./dist/hosts/index.d.ts",
-			"import": "./dist/hosts/index.js"
+			"types": "./src/hosts/index.ts",
+			"import": "./src/hosts/index.ts"
 		},
 		"./joyride": {
 			"types": "./src/core/joyride/index.ts",
 			"import": "./src/core/joyride/index.ts"
+		},
+		"./storage": {
+			"types": "./src/services/storage/StorageManager.ts",
+			"import": "./src/services/storage/StorageManager.ts"
+		},
+		"./transform": {
+			"types": "./src/core/api/transform/token-buffer-engine.ts",
+			"import": "./src/core/api/transform/token-buffer-engine.ts"
+		},
+		"./db": {
+			"types": "./src/infrastructure/db/SQLiteMaintenanceEngine.ts",
+			"import": "./src/infrastructure/db/SQLiteMaintenanceEngine.ts"
+		},
+		"./disk": {
+			"types": "./src/core/storage/disk.ts",
+			"import": "./src/core/storage/disk.ts"
 		},
 		"./package.json": "./package.json"
 	},
