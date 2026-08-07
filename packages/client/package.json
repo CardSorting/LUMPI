@@ -1,6 +1,6 @@
 {
 	"name": "@noorm/lumpi-client",
-	"version": "0.83.1",
+	"version": "0.83.2",
 	"description": "Transport-neutral client for remote pi sessions over framed CBOR bytes",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -40,14 +40,14 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/earendil-works/pi.git",
+		"url": "git+https://github.com/CardSorting/LUMPI.git",
 		"directory": "packages/client"
 	},
 	"engines": {
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@noorm/lumpi-protocol": "^0.83.1"
+		"@noorm/lumpi-protocol": "^0.83.2"
 	},
 	"devDependencies": {
 		"shx": "0.4.0",

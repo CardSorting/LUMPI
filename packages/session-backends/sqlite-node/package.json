@@ -1,6 +1,6 @@
 {
 	"name": "@noorm/lumpi-session-backend-sqlite-node",
-	"version": "0.83.1",
+	"version": "0.83.2",
 	"description": "Node sqlite session backend for @noorm/lumpi-agent-core sessions",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -27,15 +27,15 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/earendil-works/pi.git",
+		"url": "git+https://github.com/CardSorting/LUMPI.git",
 		"directory": "packages/session-backends/sqlite-node"
 	},
 	"engines": {
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@noorm/lumpi-ai": "^0.83.1",
-		"@noorm/lumpi-agent-core": "^0.83.1"
+		"@noorm/lumpi-ai": "^0.83.2",
+		"@noorm/lumpi-agent-core": "^0.83.2"
 	},
 	"devDependencies": {
 		"@vitest/coverage-v8": "4.1.9",

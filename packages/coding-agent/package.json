@@ -1,6 +1,6 @@
 {
 	"name": "@noorm/lumpi",
-	"version": "0.83.1",
+	"version": "0.83.2",
 	"description": "Coding agent CLI with read, bash, edit, write tools and session management",
 	"type": "module",
 	"piConfig": {
@@ -27,6 +27,7 @@
 		}
 	},
 	"files": [
+		"README.md",
 		"dist",
 		"docs",
 		"examples",
@@ -45,12 +46,12 @@
 		"prepublishOnly": "npm run clean && npm run build && npm run shrinkwrap"
 	},
 	"dependencies": {
-		"@noorm/lumpi-agent-core": "^0.83.1",
-		"@noorm/lumpi-ai": "^0.83.1",
-		"@noorm/lumpi-client": "^0.83.1",
-		"@noorm/lumpi-codemarie": "^0.83.1",
-		"@noorm/lumpi-protocol": "^0.83.1",
-		"@noorm/lumpi-tui": "^0.83.1",
+		"@noorm/lumpi-agent-core": "^0.83.2",
+		"@noorm/lumpi-ai": "^0.83.2",
+		"@noorm/lumpi-client": "^0.83.2",
+		"@noorm/lumpi-codemarie": "^0.83.2",
+		"@noorm/lumpi-protocol": "^0.83.2",
+		"@noorm/lumpi-tui": "^0.83.2",
 		"@silvia-odwyer/photon-node": "0.3.4",
 		"chalk": "5.6.2",
 		"cross-spawn": "7.0.6",
@@ -102,7 +103,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/earendil-works/pi.git",
+		"url": "git+https://github.com/CardSorting/LUMPI.git",
 		"directory": "packages/coding-agent"
 	},
 	"engines": {

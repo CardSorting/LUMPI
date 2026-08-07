@@ -1,7 +1,7 @@
 # LUMI - High-Velocity Agentic AI Coding Engine
 
 <p align="center">
-  <img src="docs/assets/lumi_mascot_header.png" alt="LUMI AI Coding Engine - Tech-Mascot" width="720" />
+  <img src="https://raw.githubusercontent.com/CardSorting/LUMPI/main/docs/assets/lumi_mascot_header.png" alt="LUMI AI Coding Engine - Tech-Mascot" width="720" />
 </p>
 
 <p align="center">

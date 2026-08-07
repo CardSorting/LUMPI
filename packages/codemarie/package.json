@@ -2,7 +2,7 @@
 	"name": "@noorm/lumpi-codemarie",
 	"private": true,
 	"publisher": "earendil-works",
-	"version": "0.83.1",
+	"version": "0.83.2",
 	"description": "Codemarie / LUMI agent core controller, task lifecycle, state persistence, and MoD prompt steering",
 	"license": "Apache-2.0",
 	"type": "module",

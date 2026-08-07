@@ -1,6 +1,6 @@
 {
 	"name": "@noorm/lumpi-telemetry",
-	"version": "0.83.1",
+	"version": "0.83.2",
 	"description": "Vendor-neutral telemetry contracts and typed schema utilities for pi",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -30,7 +30,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/earendil-works/pi.git",
+		"url": "git+https://github.com/CardSorting/LUMPI.git",
 		"directory": "packages/telemetry"
 	},
 	"engines": {

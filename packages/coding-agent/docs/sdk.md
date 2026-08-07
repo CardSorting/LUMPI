@@ -16,7 +16,7 @@ See [examples/sdk/](../examples/sdk/) for working examples from minimal to full 
 ## Quick Start
 
 ```typescript
-import { createAgentSession, ModelRuntime, SessionManager } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, ModelRuntime, SessionManager } from "@noorm/lumpi";
 
 const modelRuntime = await ModelRuntime.create();
 const { session } = await createAgentSession({
@@ -36,7 +36,7 @@ await session.prompt("What files are in the current directory?");
 ## Installation
 
 ```bash
-npm install @noorm/lumpi-coding-agent
+npm install @noorm/lumpi
 ```
 
 The SDK is included in the main package. No separate installation needed.
@@ -50,7 +50,7 @@ The main factory function for a single `AgentSession`.
 `createAgentSession()` uses a `ResourceLoader` to supply extensions, skills, prompt templates, themes, and context files. If you do not provide one, it uses `DefaultResourceLoader` with standard discovery.
 
 ```typescript
-import { createAgentSession, SessionManager } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, SessionManager } from "@noorm/lumpi";
 
 // Minimal: defaults with DefaultResourceLoader
 const { session } = await createAgentSession();
@@ -128,7 +128,7 @@ import {
   createAgentSessionServices,
   getAgentDir,
   SessionManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });
@@ -368,7 +368,7 @@ When you pass a custom `ResourceLoader`, `cwd` and `agentDir` no longer control 
 
 ```typescript
 import { getModel } from "@noorm/lumpi-ai";
-import { ModelRuntime } from "@noorm/lumpi-coding-agent";
+import { ModelRuntime } from "@noorm/lumpi";
 
 const modelRuntime = await ModelRuntime.create();
 
@@ -408,7 +408,7 @@ To match CLI model parsing, use the exported resolver helpers:
 import {
   resolveCliModel,
   resolveModelScopeWithDiagnostics,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const cliModel = resolveCliModel({
   cliModel: "anthropic/claude-opus-4-5:high",
@@ -440,7 +440,7 @@ Authentication resolution priority (handled by `ModelRuntime`):
 
 ```typescript
 import { InMemoryCredentialStore } from "@noorm/lumpi-ai";
-import { createAgentSession, ModelRuntime } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, ModelRuntime } from "@noorm/lumpi";
 
 // Default: uses ~/.pi/agent/auth.json and ~/.pi/agent/models.json
 const modelRuntime = await ModelRuntime.create();
@@ -494,7 +494,7 @@ A failed or timed-out network refresh does not undo a successful credential oper
 Use a `ResourceLoader` to override the system prompt:
 
 ```typescript
-import { createAgentSession, DefaultResourceLoader } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, DefaultResourceLoader } from "@noorm/lumpi";
 
 const loader = new DefaultResourceLoader({
   systemPromptOverride: () => "You are a helpful assistant.",
@@ -519,7 +519,7 @@ Specify which built-in tools to enable:
 The `edit` tool returns `details.diff` for Pi's TUI display and `details.patch` as a standard unified patch for SDK consumers.
 
 ```typescript
-import { createAgentSession } from "@noorm/lumpi-coding-agent";
+import { createAgentSession } from "@noorm/lumpi";
 
 // Read-only mode
 const { session } = await createAgentSession({
@@ -542,7 +542,7 @@ const { session } = await createAgentSession({
 When you pass a custom `cwd`, `createAgentSession()` builds selected built-in tools for that cwd.
 
 ```typescript
-import { createAgentSession, SessionManager } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, SessionManager } from "@noorm/lumpi";
 
 const cwd = "/path/to/project";
 
@@ -566,7 +566,7 @@ const { session } = await createAgentSession({
 
 ```typescript
 import { Type } from "typebox";
-import { createAgentSession, defineTool } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, defineTool } from "@noorm/lumpi";
 
 // Inline custom tool
 const myTool = defineTool({
@@ -601,7 +601,7 @@ If you pass `tools`, include each custom or extension tool name you want enabled
 Extensions are loaded by the `ResourceLoader`. `DefaultResourceLoader` discovers extensions from `~/.pi/agent/extensions/`, `.pi/extensions/`, and settings.json extension sources.
 
 ```typescript
-import { createAgentSession, DefaultResourceLoader } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, DefaultResourceLoader } from "@noorm/lumpi";
 
 const loader = new DefaultResourceLoader({
   additionalExtensionPaths: ["/path/to/my-extension.ts"],
@@ -623,7 +623,7 @@ Extensions can register tools, subscribe to events, add commands, and more. See 
 **Named inline extensions:** By default, inline factories display as `<inline:1>`, `<inline:2>`, etc. in the startup Extensions list. To show a descriptive name instead, wrap the factory:
 
 ```typescript
-import type { InlineExtension } from "@noorm/lumpi-coding-agent";
+import type { InlineExtension } from "@noorm/lumpi";
 
 const myProvider: InlineExtension = {
   name: "my-provider",
@@ -644,7 +644,7 @@ This displays as `<inline:my-provider>` instead of `<inline:1>`. Bare factory fu
 **Event Bus:** Extensions can communicate via `pi.events`. Pass a shared `eventBus` to `DefaultResourceLoader` if you need to emit or listen from outside:
 
 ```typescript
-import { createEventBus, DefaultResourceLoader } from "@noorm/lumpi-coding-agent";
+import { createEventBus, DefaultResourceLoader } from "@noorm/lumpi";
 
 const eventBus = createEventBus();
 const loader = new DefaultResourceLoader({
@@ -664,7 +664,7 @@ import {
   createAgentSession,
   DefaultResourceLoader,
   type Skill,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const customSkill: Skill = {
   name: "my-skill",
@@ -690,7 +690,7 @@ const { session } = await createAgentSession({ resourceLoader: loader });
 ### Context Files
 
 ```typescript
-import { createAgentSession, DefaultResourceLoader } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, DefaultResourceLoader } from "@noorm/lumpi";
 
 const loader = new DefaultResourceLoader({
   agentsFilesOverride: (current) => ({
@@ -714,7 +714,7 @@ import {
   createAgentSession,
   DefaultResourceLoader,
   type PromptTemplate,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const customCommand: PromptTemplate = {
   name: "deploy",
@@ -749,7 +749,7 @@ import {
   createAgentSessionServices,
   getAgentDir,
   SessionManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 // In-memory (no persistence)
 const { session } = await createAgentSession({
@@ -843,7 +843,7 @@ sm.createBranchedSession(leafId);       // Extract path to new file
 ### Settings Management
 
 ```typescript
-import { createAgentSession, SettingsManager, SessionManager } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, SettingsManager, SessionManager } from "@noorm/lumpi";
 
 // Default: loads from files (global + project merged)
 const { session } = await createAgentSession({
@@ -899,7 +899,7 @@ Use `DefaultResourceLoader` to discover extensions, skills, prompts, themes, and
 import {
   DefaultResourceLoader,
   getAgentDir,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const loader = new DefaultResourceLoader({
   cwd,
@@ -949,7 +949,7 @@ import {
   ModelRuntime,
   SessionManager,
   SettingsManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const modelRuntime = await ModelRuntime.create({
   authPath: "/custom/agent/auth.json",
@@ -1030,7 +1030,7 @@ import {
   getAgentDir,
   InteractiveMode,
   SessionManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });
@@ -1070,7 +1070,7 @@ import {
   getAgentDir,
   runPrintMode,
   SessionManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });
@@ -1107,7 +1107,7 @@ import {
   getAgentDir,
   runRpcMode,
   SessionManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });

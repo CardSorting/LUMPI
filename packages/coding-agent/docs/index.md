@@ -1,45 +1,39 @@
-# Pi Documentation
+# LUMI Documentation
 
-Pi is a minimal terminal coding harness. It is designed to stay small at the core while being extended through TypeScript extensions, skills, prompt templates, themes, and pi packages.
+LUMI is a high-velocity agentic AI coding engine synthesized from CodeMarie and Pi-Main. It is designed for maximum speed, mechanical sympathy, and enterprise governance, while remaining extensible through TypeScript extensions, skills, prompt templates, themes, and packages.
 
 ## Quick start
 
-Install Pi with npm:
+Install LUMI with npm:
 
 ```bash
-npm install -g --ignore-scripts @noorm/lumpi-coding-agent
+npm install -g --ignore-scripts @noorm/lumpi
 ```
 
-`--ignore-scripts` disables dependency lifecycle scripts during install. Pi does not require install scripts for normal npm installs.
+`--ignore-scripts` disables dependency lifecycle scripts during install. LUMI does not require install scripts for normal npm installs.
 
-On Linux or macOS, you can also use the installer:
+To uninstall LUMI:
 
 ```bash
-curl -fsSL https://pi.dev/install.sh | sh
+npm uninstall -g @noorm/lumpi
 ```
 
-To uninstall pi itself, use npm for curl and npm installs:
-
-```bash
-npm uninstall -g @noorm/lumpi-coding-agent
-```
-
-For pnpm, Yarn, or Bun installs, use the matching global remove command: `pnpm remove -g @noorm/lumpi-coding-agent`, `yarn global remove @noorm/lumpi-coding-agent`, or `bun uninstall -g @noorm/lumpi-coding-agent`.
+For pnpm, Yarn, or Bun installs, use the matching global remove command: `pnpm remove -g @noorm/lumpi`, `yarn global remove @noorm/lumpi`, or `bun uninstall -g @noorm/lumpi`.
 
 Then run it in a project directory:
 
 ```bash
-pi
+lumpi
 ```
 
-Authenticate with `/login` for subscription providers, or set an API key such as `ANTHROPIC_API_KEY` before starting pi.
+Authenticate with `/login` for subscription providers, or set an API key such as `ANTHROPIC_API_KEY` before starting lumpi.
 
 For the full first-run flow, see [Quickstart](quickstart.md).
 
 ## Start here
 
 - [Quickstart](quickstart.md) - install, authenticate, and run a first session.
-- [Using Pi](usage.md) - interactive mode, slash commands, context files, and CLI reference.
+- [Using LUMI](usage.md) - interactive mode, slash commands, context files, and CLI reference.
 - [Providers](providers.md) - subscription and API-key setup for built-in providers.
 - [llama.cpp](llama-cpp.md) - run a local router and manage models with `/llama`.
 - [Security](security.md) - project trust, sandbox boundaries, and vulnerability reporting.

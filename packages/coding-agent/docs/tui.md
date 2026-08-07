@@ -4,7 +4,7 @@
 
 Extensions and custom tools can render custom TUI components for interactive user interfaces. This page covers the component system and available building blocks.
 
-**Source:** [`@noorm/lumpi-tui`](https://github.com/earendil-works/pi-mono/tree/main/packages/tui)
+**Source:** [`@noorm/lumpi-tui`](https://github.com/earendil-works/lumpi/tree/main/packages/tui)
 
 ## Component Interface
 
@@ -449,7 +449,7 @@ renderResult(result, options, theme, context) {
 **For Markdown**, use `getMarkdownTheme()`:
 
 ```typescript
-import { getMarkdownTheme } from "@noorm/lumpi-coding-agent";
+import { getMarkdownTheme } from "@noorm/lumpi";
 import { Markdown } from "@noorm/lumpi-tui";
 
 renderResult(result, options, theme, context) {
@@ -614,8 +614,8 @@ These patterns cover the most common UI needs in extensions. **Copy these patter
 For letting users pick from a list of options. Use `SelectList` from `@noorm/lumpi-tui` with `DynamicBorder` for framing.
 
 ```typescript
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { DynamicBorder } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI } from "@noorm/lumpi";
+import { DynamicBorder } from "@noorm/lumpi";
 import { Container, type SelectItem, SelectList, Text } from "@noorm/lumpi-tui";
 
 pi.registerCommand("pick", {
@@ -674,7 +674,7 @@ pi.registerCommand("pick", {
 For operations that take time and should be cancellable. `BorderedLoader` shows a spinner and handles escape to cancel.
 
 ```typescript
-import { BorderedLoader } from "@noorm/lumpi-coding-agent";
+import { BorderedLoader } from "@noorm/lumpi";
 
 pi.registerCommand("fetch", {
   handler: async (_args, ctx) => {
@@ -706,7 +706,7 @@ pi.registerCommand("fetch", {
 For toggling multiple settings. Use `SettingsList` from `@noorm/lumpi-tui` with `getSettingsListTheme()`.
 
 ```typescript
-import { getSettingsListTheme } from "@noorm/lumpi-coding-agent";
+import { getSettingsListTheme } from "@noorm/lumpi";
 import { Container, type SettingItem, SettingsList, Text } from "@noorm/lumpi-tui";
 
 pi.registerCommand("settings", {
@@ -846,7 +846,7 @@ Token stats available via `ctx.sessionManager.getBranch()` and `ctx.model`.
 Replace the main input editor with a custom implementation. Useful for modal editing (vim), different keybindings (emacs), or specialized input handling.
 
 ```typescript
-import { CustomEditor, type ExtensionAPI } from "@noorm/lumpi-coding-agent";
+import { CustomEditor, type ExtensionAPI } from "@noorm/lumpi";
 import { matchesKey, truncateToWidth } from "@noorm/lumpi-tui";
 
 type Mode = "normal" | "insert";

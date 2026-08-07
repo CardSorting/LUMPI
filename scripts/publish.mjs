@@ -72,7 +72,6 @@ function isPublished(name, version) {
 	}
 	const result = spawnSync(commandForPlatform("npm"), ["view", `${name}@${version}`, "version", "--json"], {
 		encoding: "utf8",
-		stdio: ["inherit", "pipe", "pipe"],
 		env,
 	});
 

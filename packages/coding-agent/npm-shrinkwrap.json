@@ -1,20 +1,20 @@
 {
 	"name": "@noorm/lumpi",
-	"version": "0.83.1",
+	"version": "0.83.2",
 	"lockfileVersion": 3,
 	"requires": true,
 	"packages": {
 		"": {
 			"name": "@noorm/lumpi",
-			"version": "0.83.1",
+			"version": "0.83.2",
 			"license": "MIT",
 			"dependencies": {
-				"@noorm/lumpi-agent-core": "^0.83.1",
-				"@noorm/lumpi-ai": "^0.83.1",
-				"@noorm/lumpi-client": "^0.83.1",
-				"@noorm/lumpi-codemarie": "^0.83.1",
-				"@noorm/lumpi-protocol": "^0.83.1",
-				"@noorm/lumpi-tui": "^0.83.1",
+				"@noorm/lumpi-agent-core": "^0.83.2",
+				"@noorm/lumpi-ai": "^0.83.2",
+				"@noorm/lumpi-client": "^0.83.2",
+				"@noorm/lumpi-codemarie": "^0.83.2",
+				"@noorm/lumpi-protocol": "^0.83.2",
+				"@noorm/lumpi-tui": "^0.83.2",
 				"@silvia-odwyer/photon-node": "0.3.4",
 				"chalk": "5.6.2",
 				"cross-spawn": "7.0.6",
@@ -1110,8 +1110,8 @@
 			}
 		},
 		"node_modules/@noorm/broccolidb": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/broccolidb/-/broccolidb-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/broccolidb/-/broccolidb-0.83.2.tgz",
 			"license": "Apache-2.0",
 			"dependencies": {
 				"@modelcontextprotocol/sdk": "1.30.0",
@@ -1132,12 +1132,12 @@
 			}
 		},
 		"node_modules/@noorm/lumpi-agent-core": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/lumpi-agent-core/-/lumpi-agent-core-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/lumpi-agent-core/-/lumpi-agent-core-0.83.2.tgz",
 			"license": "MIT",
 			"dependencies": {
-				"@noorm/lumpi-ai": "^0.83.1",
-				"@noorm/lumpi-telemetry": "^0.83.1",
+				"@noorm/lumpi-ai": "^0.83.2",
+				"@noorm/lumpi-telemetry": "^0.83.2",
 				"diff": "8.0.4",
 				"ignore": "7.0.5",
 				"typebox": "1.3.7",
@@ -1148,13 +1148,13 @@
 			}
 		},
 		"node_modules/@noorm/lumpi-ai": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/lumpi-ai/-/lumpi-ai-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/lumpi-ai/-/lumpi-ai-0.83.2.tgz",
 			"license": "MIT",
 			"dependencies": {
 				"@anthropic-ai/sdk": "0.91.1",
 				"@aws-sdk/client-bedrock-runtime": "3.1048.0",
-				"@noorm/lumpi-telemetry": "^0.83.1",
+				"@noorm/lumpi-telemetry": "^0.83.2",
 				"@google/genai": "1.52.0",
 				"@mistralai/mistralai": "2.2.6",
 				"@opentelemetry/api": "1.9.0",
@@ -1173,19 +1173,19 @@
 			}
 		},
 		"node_modules/@noorm/lumpi-client": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/lumpi-client/-/lumpi-client-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/lumpi-client/-/lumpi-client-0.83.2.tgz",
 			"license": "MIT",
 			"dependencies": {
-				"@noorm/lumpi-protocol": "^0.83.1"
+				"@noorm/lumpi-protocol": "^0.83.2"
 			},
 			"engines": {
 				"node": ">=22.19.0"
 			}
 		},
 		"node_modules/@noorm/lumpi-codemarie": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/lumpi-codemarie/-/lumpi-codemarie-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/lumpi-codemarie/-/lumpi-codemarie-0.83.2.tgz",
 			"license": "Apache-2.0",
 			"dependencies": {
 				"@anthropic-ai/sdk": "0.91.1",
@@ -1282,8 +1282,8 @@
 			}
 		},
 		"node_modules/@noorm/lumpi-protocol": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/lumpi-protocol/-/lumpi-protocol-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/lumpi-protocol/-/lumpi-protocol-0.83.2.tgz",
 			"license": "MIT",
 			"dependencies": {
 				"typebox": "1.3.7"
@@ -1293,16 +1293,16 @@
 			}
 		},
 		"node_modules/@noorm/lumpi-telemetry": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/lumpi-telemetry/-/lumpi-telemetry-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/lumpi-telemetry/-/lumpi-telemetry-0.83.2.tgz",
 			"license": "MIT",
 			"engines": {
 				"node": ">=22.19.0"
 			}
 		},
 		"node_modules/@noorm/lumpi-tui": {
-			"version": "0.83.1",
-			"resolved": "https://registry.npmjs.org/@noorm/lumpi-tui/-/lumpi-tui-0.83.1.tgz",
+			"version": "0.83.2",
+			"resolved": "https://registry.npmjs.org/@noorm/lumpi-tui/-/lumpi-tui-0.83.2.tgz",
 			"license": "MIT",
 			"dependencies": {
 				"get-east-asian-width": "1.6.0",
