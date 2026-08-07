@@ -105,7 +105,7 @@ Expected Output in Step 2:
 ```text
 ✔ Initialized BroccoliDB Zero-GC Slab Arena (16MB)
 ✔ Provider Gateway: OpenAI Codex (gpt-5.6-luna)
-1. @noorm/lumpi-coding-agent: Primary CLI & interactive TUI engine.
+1. @noorm/lumpi: Primary CLI & interactive TUI engine.
 2. @noorm/broccolidb: High-throughput slab memory allocator.
 3. @noorm/lumpi-ai: Multi-provider router supporting 12+ LLM gateways.
 ```
@@ -265,7 +265,7 @@ LUMI processes developer interactions through a multi-layered pipeline connectin
 +-----------------------------------------------------------------------------------+
 |  [Developer Interface]  --> @noorm/lumpi-tui (Differential Terminal UI)     |
 |                                     |                                             |
-|  [Agent Core Engine]   --> @noorm/lumpi-coding-agent (Session State CAS)   |
+|  [Agent Core Engine]   --> @noorm/lumpi (Session State CAS & CLI)           |
 |                                     |                                             |
 |  [Host Integration]    --> @noorm/lumpi-codemarie (CodemarieBridge Provider)|
 |                                     |                                             |
@@ -309,7 +309,7 @@ LUMI is structured as a unified monorepo under the `@noorm/*` scope.
 
 | Package | Location | Description |
 | :--- | :--- | :--- |
-| **`@noorm/lumpi-coding-agent`** | [`packages/coding-agent`](packages/coding-agent) | Primary CLI binary engine, TUI session manager, tool execution runtime, and extension loaders. |
+| **`@noorm/lumpi`** | [`packages/coding-agent`](packages/coding-agent) | Primary CLI binary engine, TUI session manager, tool execution runtime, and extension loaders. |
 | **`@noorm/lumpi-codemarie`** | [`packages/codemarie`](packages/codemarie) | Merged CodeMarie CLI Host Provider (`HostProvider`, workspace/env/window/diff clients). |
 | **`@noorm/broccolidb`** | [`packages/broccolidb`](packages/broccolidb) | Substrate storage engine with 16MB contiguous zero-GC slab allocators (`ArenaAllocator`) and SharedArrayBuffer ring buffers. |
 | **`@noorm/lumpi-agent-core`** | [`packages/agent`](packages/agent) | Core agent runtime enforcing CAS state transitions, prompt assembly, and tool invocations. |
