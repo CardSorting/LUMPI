@@ -124,6 +124,10 @@ for (const pkg of packageStates) {
 		continue;
 	}
 
-	run("npm", ["publish", "--access", "public", "--provenance", "--ignore-scripts"], { cwd: pkg.directory });
+	const publishArgs = ["publish", "--access", "public", "--ignore-scripts"];
+	if (process.env.GITHUB_ACTIONS) {
+		publishArgs.push("--provenance");
+	}
+	run("npm", publishArgs, { cwd: pkg.directory });
 	console.log();
 }

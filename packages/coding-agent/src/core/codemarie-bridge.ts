@@ -457,7 +457,7 @@ export class CodemarieBridge {
 	// JoyRide Execution Caching & Diagnostics API
 	// ============================================================================
 
-	public getJoyRideCache() {
+	public getJoyRideCache(): any {
 		return getJoyRideCache();
 	}
 

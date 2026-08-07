@@ -8,7 +8,8 @@
 			"@noorm/lumpi-ai": ["../ai/dist/index.d.ts"],
 			"@noorm/lumpi-ai/*": ["../ai/dist/*.d.ts", "../ai/dist/providers/*.d.ts"],
 			"@noorm/lumpi-client": ["../client/dist/index.d.ts"],
-			"@noorm/lumpi-codemarie": ["../codemarie/src/index.ts"],
+			"@noorm/lumpi-codemarie": ["../codemarie/dist/index.d.ts"],
+			"@noorm/lumpi-codemarie/*": ["../codemarie/dist/index.d.ts"],
 			"@noorm/lumpi-protocol": ["../protocol/dist/index.d.ts"],
 			"@noorm/lumpi-tui": ["../tui/dist/index.d.ts"],
 			"@noorm/lumpi-tui/*": ["../tui/dist/*.d.ts", "../tui/dist/components/*.d.ts"]
