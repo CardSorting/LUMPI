@@ -40,7 +40,21 @@
 			"@noorm/lumpi-codemarie/*": ["./packages/codemarie/dist/index.d.ts"],
 
 			"@noorm/broccolidb": ["./packages/broccolidb/src/index.ts"],
-			"@noorm/broccolidb/*": ["./packages/broccolidb/src/*"]
+			"@noorm/broccolidb/*": ["./packages/broccolidb/src/*"],
+			"@oh-my-pi/pi-utils": ["./packages/utils/src/index.ts"],
+			"@oh-my-pi/pi-utils/worker-host": ["./packages/utils/src/worker-host.ts"],
+			"@oh-my-pi/pi-utils/worker-host.js": ["./packages/utils/src/worker-host.ts"],
+			"@oh-my-pi/pi-utils/*": ["./packages/utils/src/*.ts", "./packages/utils/src/*"],
+			"@oh-my-pi/pi-natives": ["./packages/natives/native/index.js"],
+			"@oh-my-pi/pi-natives/*": ["./packages/natives/*"],
+			"@oh-my-pi/omptype": ["./packages/omptype/src/index.ts"],
+			"@oh-my-pi/omptype/*": ["./packages/omptype/src/*.ts"],
+			"@oh-my-pi/hashline": ["./packages/hashline/src/index.ts"],
+			"@oh-my-pi/hashline/*": ["./packages/hashline/src/*.ts"],
+			"@oh-my-pi/snapcompact": ["./packages/snapcompact/src/index.ts"],
+			"@oh-my-pi/snapcompact/*": ["./packages/snapcompact/src/*.ts"],
+			"@oh-my-pi/pi-catalog": ["./packages/catalog/src/index.ts"],
+			"@oh-my-pi/pi-catalog/*": ["./packages/catalog/src/*.ts"]
 		}
 	},
 	"include": [

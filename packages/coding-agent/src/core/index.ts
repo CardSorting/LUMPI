@@ -77,4 +77,18 @@ export {
 	type TurnStartEvent,
 	type WorkingIndicatorOptions,
 } from "./extensions/index.ts";
+export { AutoThinkingController, type ThinkingBudgetConfig, type ThinkingEffort } from "./harness/auto-thinking.ts";
+export {
+	AutoLearnEngine,
+	type AutoLearnStateSnapshot,
+	type DiscoveredSkill,
+	type LearnedLesson,
+	type SkillValidationResult,
+} from "./harness/autolearn.ts";
+export { type RecoveryContext, StructuredRecoveryEngine } from "./harness/structured-recovery.ts";
+export { VibeModeManager, type VibeSessionConfig, type WorkerTaskState } from "./harness/vibe-mode.ts";
+export { MnemopiBroccoliStore, type StoredMemory } from "./memory/mnemopi-broccolidb.ts";
 export { createSyntheticSourceInfo } from "./source-info.ts";
+export { TaskWorktreeManager, type WorktreeConfig, type WorktreeResult } from "./task-worktree.ts";
+export { type HashlineOp, HashlinePatcher, type HashlineSection, type PatchApplyResult } from "./tools/hashline.ts";
+export { type StreamMatch, type StreamRule, TTSRCoordinator } from "./ttsr-coordinator.ts";

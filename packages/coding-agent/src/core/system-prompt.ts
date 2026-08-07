@@ -22,6 +22,8 @@ export interface BuildSystemPromptOptions {
 	contextFiles?: Array<{ path: string; content: string }>;
 	/** Pre-loaded skills. */
 	skills?: Skill[];
+	/** Optional AutoLearn discovered skills section string. */
+	autoLearnSkillsSection?: string;
 	/** Optional CodeMarie MoD steering directives string. */
 	codemarieSteeringDirectives?: string;
 }
@@ -160,6 +162,10 @@ ${APP_NAME} documentation (read only when the user asks about ${APP_NAME} itself
 	// Append skills section (only if read tool is available)
 	if (hasRead && skills.length > 0) {
 		prompt += formatSkillsForPrompt(skills);
+	}
+
+	if (options.autoLearnSkillsSection) {
+		prompt += `\n\n${options.autoLearnSkillsSection}`;
 	}
 
 	prompt += `\nCurrent working directory: ${promptCwd}`;

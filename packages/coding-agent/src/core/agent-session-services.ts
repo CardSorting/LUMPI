@@ -4,6 +4,7 @@ import type { Model } from "@noorm/lumpi-ai";
 import { getAgentDir } from "../config.ts";
 import { resolvePath } from "../utils/paths.ts";
 import type { SessionStartEvent, ToolDefinition } from "./extensions/index.ts";
+import { AutoLearnEngine } from "./harness/autolearn.ts";
 import { ModelRuntime } from "./model-runtime.ts";
 import {
 	DefaultResourceLoader,
@@ -77,6 +78,7 @@ export interface AgentSessionServices {
 	modelRuntime: ModelRuntime;
 	settingsManager: SettingsManager;
 	resourceLoader: ResourceLoader;
+	autoLearnEngine?: AutoLearnEngine;
 	diagnostics: AgentSessionRuntimeDiagnostic[];
 }
 
@@ -189,6 +191,7 @@ export async function createAgentSessionServices(
 		modelRuntime,
 		settingsManager,
 		resourceLoader,
+		autoLearnEngine: new AutoLearnEngine(),
 		diagnostics,
 	};
 }

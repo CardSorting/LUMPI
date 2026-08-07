@@ -20,6 +20,6 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"useDefineForClassFields": false,
-		"types": ["node"]
+		"types": ["node", "@types/bun"]
 	}
 }

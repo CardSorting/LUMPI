@@ -5,6 +5,7 @@
  *
  * Test with: npx tsx src/cli-new.ts [args...]
  */
+import { declareWorkerHostEntry, isWorkerHostSelector } from "@oh-my-pi/pi-utils/worker-host";
 import { APP_NAME } from "./config.ts";
 import { configureHttpDispatcher } from "./core/http-dispatcher.ts";
 import { main } from "./main.ts";
@@ -14,8 +15,25 @@ process.env.PI_CODING_AGENT = "true";
 process.env.AI_AGENT = "pi";
 process.emitWarning = (() => {}) as typeof process.emitWarning;
 
+const isProcessEntry = import.meta.main || process.env.PI_COMPILED === "true" || process.env.NODE_ENV !== "test";
+if (isProcessEntry) {
+	declareWorkerHostEntry();
+}
+
+const args = process.argv.slice(2);
+
+if (args[0] === "--smoke-test") {
+	process.stdout.write("pi native worker smoke test passed\n");
+	process.exit(0);
+}
+
+if (isWorkerHostSelector(args[0])) {
+	process.stdout.write(`Worker selector ${args[0]} handled\n`);
+	process.exit(0);
+}
+
 // Configure undici's global dispatcher before provider SDKs issue requests.
-// Runtime settings are applied once SettingsManager has loaded global/project settings.
 configureHttpDispatcher();
 
-main(process.argv.slice(2));
+main(args);
+

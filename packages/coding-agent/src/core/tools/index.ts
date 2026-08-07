@@ -34,6 +34,7 @@ export {
 	type GrepToolInput,
 	type GrepToolOptions,
 } from "./grep.ts";
+export { createHashlineToolDefinition, type HashlineToolDetails, type HashlineToolInput } from "./hashline-tool.ts";
 export {
 	createLsTool,
 	createLsToolDefinition,
@@ -42,6 +43,7 @@ export {
 	type LsToolInput,
 	type LsToolOptions,
 } from "./ls.ts";
+export { createMemoryToolDefinition, type MemoryToolInput, type MemoryToolResult } from "./memory-tool.ts";
 export {
 	createReadTool,
 	createReadToolDefinition,
@@ -60,6 +62,7 @@ export {
 	truncateLine,
 	truncateTail,
 } from "./truncate.ts";
+export { createVFSToolDefinition, type VFSToolInput, type VFSToolResult } from "./vfs-tool.ts";
 export {
 	createWriteTool,
 	createWriteToolDefinition,
