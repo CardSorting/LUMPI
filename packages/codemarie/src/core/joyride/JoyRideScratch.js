@@ -1,0 +1,96 @@
+/**
+ * [LAYER: CORE]
+ * Scratch artifact admission helpers — safe path only.
+ */
+import { createHash } from "crypto";
+import { canJoyRideRetainScratch } from "./JoyRideConfig.js";
+import { buildJoyRideWorkspaceSnapshot } from "./JoyRideContext.js";
+import { recordJoyRideDecision } from "./JoyRideDecisionLog.js";
+import { diagnosticOnlyDecision, rejectedDecision } from "./JoyRideDecisions.js";
+import { JOYRIDE_REASON } from "./JoyRideReasonCodes.js";
+import { createScratchArtifactCacheKey } from "./keys.js";
+export function createScratchArtifactEntry(spec, value) {
+    return {
+        kind: spec.artifactKind,
+        value,
+        ownerTaskId: spec.ownerTaskId,
+        createdAt: Date.now(),
+    };
+}
+export function explainScratchRejection(reasonCode, reasonMessage) {
+    return rejectedDecision(reasonCode, reasonMessage);
+}
+export function rejectUnsafeArtifact(reasonCode, reasonMessage) {
+    const decision = explainScratchRejection(reasonCode, reasonMessage);
+    recordJoyRideDecision(decision);
+    return decision;
+}
+export async function storeScratchArtifactWithCleanup(cache, spec, value, scope) {
+    if (!canJoyRideRetainScratch()) {
+        return rejectUnsafeArtifact(JOYRIDE_REASON.REJECT_SCRATCH_CACHE_DISABLED, "Scratch cache disabled via config");
+    }
+    if (!spec.ownerTaskId) {
+        return rejectUnsafeArtifact(JOYRIDE_REASON.REJECT_MISSING_OWNER_TASK, "Scratch artifact requires ownerTaskId");
+    }
+    if (!spec.ttlMs || spec.ttlMs <= 0) {
+        return rejectUnsafeArtifact(JOYRIDE_REASON.REJECT_MISSING_TTL, "Scratch artifact requires positive TTL");
+    }
+    if (!spec.cleanupHandler) {
+        return rejectUnsafeArtifact(JOYRIDE_REASON.REJECT_MISSING_CLEANUP_HANDLER, "Scratch artifact requires cleanup handler");
+    }
+    if (!spec.estimatedBytes || spec.estimatedBytes <= 0) {
+        return rejectUnsafeArtifact(JOYRIDE_REASON.REJECT_OVERSIZED, "Scratch artifact requires estimated size");
+    }
+    try {
+        const snapshot = await buildJoyRideWorkspaceSnapshot(scope.cwd, scope.terminalMode);
+        const contentHash = createHash("sha256").update(JSON.stringify(value)).digest("hex").slice(0, 16);
+        const key = createScratchArtifactCacheKey({
+            taskId: spec.ownerTaskId,
+            artifactKind: spec.artifactKind,
+            contentHash,
+            generation: scope.generation,
+            cleanupPolicy: "task-scoped",
+        });
+        const entry = createScratchArtifactEntry(spec, value);
+        const metadata = {
+            cacheKind: "scratchArtifact",
+            scope: { type: "scratch", id: spec.ownerTaskId },
+            ownerTaskId: spec.ownerTaskId,
+            ttlMs: spec.ttlMs,
+            fingerprint: key.fingerprint,
+            workspaceFingerprint: snapshot.workspaceFingerprint,
+            approvalBoundaryId: scope.approvalBoundaryId,
+            durability: spec.durability ?? "memoryOnly",
+            invalidationReason: ["ttl_expired", "task_completed", "task_cancelled", "manual_flush"],
+            admissionReason: "scratch artifact with cleanup",
+            safetyClassification: "taskLocal",
+            generation: scope.generation,
+            environmentFingerprint: snapshot.environmentFingerprint,
+            gitHead: snapshot.gitHead,
+            dependencyFingerprint: snapshot.dependencyFingerprint,
+            lockfileFingerprint: snapshot.lockfileFingerprint,
+            runtimeVersion: process.version,
+            cleanupHandler: spec.cleanupHandler,
+            estimatedBytes: spec.estimatedBytes,
+        };
+        const result = cache.trySet(key.key, entry, metadata);
+        if (!result.accepted) {
+            return rejectUnsafeArtifact(JOYRIDE_REASON.REJECT_UNSCOPED_ENTRY, result.reason ?? "scratch admission rejected");
+        }
+        const decision = diagnosticOnlyDecision(JOYRIDE_REASON.CLEANUP_SUCCESS, "scratch stored", {
+            keySummary: key.key.slice(0, 48),
+        });
+        recordJoyRideDecision(decision);
+        return decision;
+    }
+    catch (error) {
+        return rejectUnsafeArtifact(JOYRIDE_REASON.REJECT_CACHE_INTERNAL_ERROR, `Scratch admission failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+}
+export function flushScratchForTask(cache, taskId) {
+    return cache.flushTask(taskId, "task_completed");
+}
+export function disposeScratchArtifact(cache, key) {
+    return cache.dispose(key);
+}
+//# sourceMappingURL=JoyRideScratch.js.map
