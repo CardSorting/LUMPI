@@ -7,9 +7,9 @@ import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import type { AuthEvent, AuthPrompt } from "@noorm/lumpi-ai";
-import type { AssistantMessage, ImageContent, Message, Model } from "@noorm/lumpi-ai/compat";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { AuthEvent, AuthPrompt } from "@noorm/lumi-ai";
+import type { AssistantMessage, ImageContent, Message, Model } from "@noorm/lumi-ai/compat";
 import type {
 	AutocompleteItem,
 	AutocompleteProvider,
@@ -22,8 +22,8 @@ import type {
 	SlashCommand,
 	Terminal,
 	TuiMainScreenRenderState,
-} from "@noorm/lumpi-tui";
-import * as TuiLayouts from "@noorm/lumpi-tui";
+} from "@noorm/lumi-tui";
+import * as TuiLayouts from "@noorm/lumi-tui";
 import {
 	CombinedAutocompleteProvider,
 	type Component,
@@ -42,7 +42,7 @@ import {
 	TuiAltScreen,
 	TuiMainScreen,
 	visibleWidth,
-} from "@noorm/lumpi-tui";
+} from "@noorm/lumi-tui";
 import chalk from "chalk";
 import { spawn, spawnSync } from "child_process";
 import {
@@ -3518,6 +3518,10 @@ export class InteractiveMode {
 			}
 			case "toolResult": {
 				// Tool results are rendered inline with tool calls, handled separately
+				break;
+			}
+			case "fileMention": {
+				// File mentions are auto-read contents injected for context, handled separately
 				break;
 			}
 			default: {
