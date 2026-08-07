@@ -16,10 +16,11 @@ const packages = [
 ];
 
 const dryRun = process.argv.includes("--dry-run");
-const unknownArgs = process.argv.slice(2).filter((arg) => arg !== "--dry-run");
+const otpArg = process.argv.find((arg) => arg.startsWith("--otp="));
+const unknownArgs = process.argv.slice(2).filter((arg) => arg !== "--dry-run" && !arg.startsWith("--otp="));
 
 if (unknownArgs.length > 0) {
-	console.error(`Usage: node scripts/publish.mjs [--dry-run]`);
+	console.error(`Usage: node scripts/publish.mjs [--dry-run] [--otp=<code>]`);
 	process.exit(1);
 }
 
@@ -125,6 +126,9 @@ for (const pkg of packageStates) {
 	}
 
 	const publishArgs = ["publish", "--access", "public", "--ignore-scripts"];
+	if (otpArg) {
+		publishArgs.push(otpArg);
+	}
 	if (process.env.GITHUB_ACTIONS) {
 		publishArgs.push("--provenance");
 	}
