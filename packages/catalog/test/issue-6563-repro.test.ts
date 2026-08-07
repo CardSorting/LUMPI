@@ -71,7 +71,7 @@ describe("issue #6563 — anthropic discovery base URL missing /v1", () => {
 		expect(requestedUrls).not.toContain(`${PROVIDER_BASE_URL}/models`);
 		expect(models).not.toBeNull();
 
-		const opus5 = models?.find(m => m.id === "claude-opus-5");
+		const opus5 = models?.find((m) => m.id === "claude-opus-5");
 		expect(opus5?.input).toContain("image");
 		// Rows keep the provider base, not the /v1 discovery URL, so refreshed
 		// rows merge against bundled models instead of registering an endpoint
@@ -79,7 +79,7 @@ describe("issue #6563 — anthropic discovery base URL missing /v1", () => {
 		expect(opus5?.baseUrl).toBe(PROVIDER_BASE_URL);
 
 		// A model absent from the bundled catalog picks up vision from stencil.so.
-		const unbundled = models?.find(m => m.id === "claude-test-vision-1");
+		const unbundled = models?.find((m) => m.id === "claude-test-vision-1");
 		expect(unbundled?.input).toContain("image");
 		expect(unbundled?.baseUrl).toBe(PROVIDER_BASE_URL);
 	});

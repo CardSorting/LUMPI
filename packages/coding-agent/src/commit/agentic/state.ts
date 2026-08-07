@@ -1,4 +1,4 @@
-import type { CommitType, ConventionalAnalysis, ConventionalDetail, NumstatEntry } from "../../commit/types";
+import type { CommitType, ConventionalAnalysis, ConventionalDetail, NumstatEntry } from "../../commit/types.ts";
 
 export interface GitOverviewSnapshot {
 	files: string[];

@@ -1,27 +1,31 @@
-import { type } from "@oh-my-pi/omptype";
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, ApiKey, AssistantMessage, Model } from "@oh-my-pi/pi-ai";
-import { completeSimple, validateToolCall } from "@oh-my-pi/pi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, AssistantMessage, Model, Tool } from "@noorm/lumi-ai";
+import { completeSimple, validateToolCall } from "@noorm/lumi-ai/compat";
 import { prompt } from "@oh-my-pi/pi-utils";
+import { Type } from "typebox";
 import summarySystemPrompt from "../../commit/prompts/summary-system.md" with { type: "text" };
 import summaryUserPrompt from "../../commit/prompts/summary-user.md" with { type: "text" };
-import type { CommitSummary } from "../../commit/types";
-import { toReasoningEffort } from "../../thinking";
-import { extractTextContent, extractToolCall } from "../utils";
+import type { CommitSummary } from "../../commit/types.ts";
+import { toReasoningEffort } from "../../thinking.ts";
+import { extractTextContent, extractToolCall } from "../utils.ts";
 
-const SummaryToolSchema = type({
-	summary: "string",
+const SummaryToolSchema = Type.Object({
+	summary: Type.String(),
 });
 
 const SummaryTool = {
 	name: "create_commit_summary",
 	description: "Generate the summary line for a conventional commit message.",
 	parameters: SummaryToolSchema,
-};
+} satisfies Tool<typeof SummaryToolSchema>;
+
+interface SummaryToolParameters {
+	summary: string;
+}
 
 export interface SummaryInput {
 	model: Model<Api>;
-	apiKey: ApiKey;
+	apiKey: string;
 	thinkingLevel?: ThinkingLevel;
 	commitType: string;
 	scope: string | null;
@@ -55,7 +59,7 @@ export async function generateSummary({
 	const response = await completeSimple(
 		model,
 		{
-			systemPrompt: [systemPrompt],
+			systemPrompt,
 			messages: [{ role: "user", content: userPrompt, timestamp: Date.now() }],
 			tools: [SummaryTool],
 		},
@@ -85,7 +89,7 @@ function renderSummaryPrompt({
 function parseSummaryFromResponse(message: AssistantMessage, commitType: string, scope: string | null): CommitSummary {
 	const toolCall = extractToolCall(message, "create_commit_summary");
 	if (toolCall) {
-		const parsed = validateToolCall([SummaryTool], toolCall) as (typeof SummaryToolSchema)["infer"];
+		const parsed = validateToolCall([SummaryTool], toolCall) as unknown as SummaryToolParameters;
 		return { summary: stripTypePrefix(parsed.summary, commitType, scope) };
 	}
 	const text = extractTextContent(message);

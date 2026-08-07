@@ -1,8 +1,8 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { ImageContent } from "@oh-my-pi/pi-ai";
-import { type AutocompleteProvider, matchesKey, type SlashCommand } from "@oh-my-pi/pi-tui";
+import { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { ImageContent } from "@noorm/lumi-ai";
+import { type AutocompleteProvider, matchesKey, type SlashCommand } from "@noorm/lumi-tui";
 import { isEnoent, logger, sanitizeText } from "@oh-my-pi/pi-utils";
 import { isSettingsInitialized, settings } from "../../config/settings";
 import { resolveLocalRoot } from "../../internal-urls";
@@ -23,9 +23,9 @@ import type { InteractiveModeContext } from "../../modes/types";
 import manualContinuePrompt from "../../prompts/system/manual-continue.md" with { type: "text" };
 import { USER_INTERRUPT_LABEL } from "../../session/messages";
 import { executeBuiltinSlashCommand } from "../../slash-commands/builtin-registry";
-import { isTinyTitleLocalModelKey } from "../../tiny/models";
-import { tinyTitleClient } from "../../tiny/title-client";
-import type { TinyTitleProgressEvent } from "../../tiny/title-protocol";
+import { isTinyTitleLocalModelKey } from "../../tiny/models.ts";
+import { tinyTitleClient } from "../../tiny/title-client.ts";
+import type { TinyTitleProgressEvent } from "../../tiny/title-protocol.ts";
 import { shortenPath, TRUNCATE_LENGTHS, truncateToWidth } from "../../tools/render-utils";
 import { vocalizer } from "../../tts/vocalizer";
 import {
@@ -33,11 +33,11 @@ import {
 	readImageFromClipboard,
 	readMacFileUrlsFromClipboard,
 	readTextFromClipboard,
-} from "../../utils/clipboard";
-import { EnhancedPasteController } from "../../utils/enhanced-paste";
+} from "../../utils/clipboard.ts";
+import { EnhancedPasteController } from "../../utils/enhanced-paste.ts";
 import { getEditorCommand, openInEditor } from "../../utils/external-editor";
 import { ensureSupportedImageInput, ImageInputTooLargeError, loadImageInput } from "../../utils/image-loading";
-import { resizeImage } from "../../utils/image-resize";
+import { resizeImage } from "../../utils/image-resize.ts";
 
 /**
  * Slash commands that may carry secrets in their arguments should never be
@@ -240,7 +240,7 @@ export class InputController {
 		this.ctx.editor.setActionKeys("app.interrupt", this.ctx.keybindings.getKeys("app.interrupt"));
 		if (!this.#focusedLeftTapListenerInstalled) {
 			this.#focusedLeftTapListenerInstalled = true;
-			this.ctx.ui.addInputListener(data => {
+			this.ctx.ui.addInputListener((data) => {
 				if (!this.ctx.focusedAgentId) return undefined;
 				if (!matchesKey(data, "left")) return undefined;
 				if (this.ctx.editor.getText().trim()) return undefined;
@@ -250,7 +250,7 @@ export class InputController {
 		}
 		if (!this.#btwBranchListenerInstalled) {
 			this.#btwBranchListenerInstalled = true;
-			this.ctx.ui.addInputListener(data => {
+			this.ctx.ui.addInputListener((data) => {
 				if (!matchesKey(data, "b")) return undefined;
 				if (!this.ctx.handlesBtwBranchKey()) return undefined;
 				if (this.ctx.ui.getFocused() !== this.ctx.editor) return undefined;
@@ -261,7 +261,7 @@ export class InputController {
 		}
 		if (!this.#btwCopyListenerInstalled) {
 			this.#btwCopyListenerInstalled = true;
-			this.ctx.ui.addInputListener(data => {
+			this.ctx.ui.addInputListener((data) => {
 				if (!matchesKey(data, "c")) return undefined;
 				if (!this.ctx.canCopyBtw()) return undefined;
 				if (this.ctx.ui.getFocused() !== this.ctx.editor) return undefined;
@@ -272,7 +272,7 @@ export class InputController {
 		}
 		if (!this.#focusedPasteListenerInstalled) {
 			this.#focusedPasteListenerInstalled = true;
-			this.ctx.ui.addInputListener(data => {
+			this.ctx.ui.addInputListener((data) => {
 				const focused = this.ctx.ui.getFocused();
 				if (!focused || focused === this.ctx.editor || !hasPasteText(focused)) return undefined;
 				if (!this.ctx.keybindings.matches(data, "app.clipboard.pasteImage")) return undefined;
@@ -289,7 +289,7 @@ export class InputController {
 			// surface (a fullscreen/anchored overlay — agent hub, transcript
 			// viewer, log viewer, model picker) or when the focused component
 			// rebinds Ctrl+O for its own use (the tree selector's filter cycle).
-			this.ctx.ui.addInputListener(data => {
+			this.ctx.ui.addInputListener((data) => {
 				if (!this.ctx.keybindings.matches(data, "app.tools.expand")) return undefined;
 				if (this.ctx.ui.hasOverlay()) return undefined;
 				if (this.ctx.ui.getFocused() instanceof TreeSelectorComponent && matchesKey(data, "ctrl+o"))
@@ -464,7 +464,7 @@ export class InputController {
 			this.ctx.keybindings.getKeys("app.clipboard.pasteImage"),
 		);
 		this.ctx.editor.onPasteImage = () => this.handleImagePaste();
-		this.ctx.editor.onPasteImagePath = path => this.handleImagePathPaste(path);
+		this.ctx.editor.onPasteImagePath = (path) => this.handleImagePathPaste(path);
 		this.ctx.editor.setActionKeys(
 			"app.clipboard.pasteTextRaw",
 			this.ctx.keybindings.getKeys("app.clipboard.pasteTextRaw"),
@@ -600,8 +600,8 @@ export class InputController {
 		if (this.#enhancedPaste) return;
 
 		this.#enhancedPaste = new EnhancedPasteController({
-			write: data => this.ctx.ui.terminal.write(data),
-			pasteText: text => {
+			write: (data) => this.ctx.ui.terminal.write(data),
+			pasteText: (text) => {
 				// Route enhanced-paste text to the currently focused component when it
 				// exposes a `pasteText` hook (modal Input prompts: OAuth API-key entry,
 				// Perplexity OTP, GitHub Enterprise URL, manual redirect URL). Falling
@@ -612,7 +612,7 @@ export class InputController {
 				target.pasteText(text);
 				this.ctx.ui.requestRender();
 			},
-			pasteImage: async image => {
+			pasteImage: async (image) => {
 				// Images can only land in the main editor — when a modal Input is
 				// focused, refuse rather than dump the binary blob in a hidden buffer.
 				const focused = this.ctx.ui.getFocused();
@@ -622,9 +622,9 @@ export class InputController {
 				}
 				await this.#normalizeAndInsertPastedImage(image, `Unsupported pasted image format: ${image.mimeType}`);
 			},
-			showStatus: message => this.ctx.showStatus(message),
+			showStatus: (message) => this.ctx.showStatus(message),
 		});
-		this.ctx.ui.addInputListener(data => (this.#enhancedPaste?.handleInput(data) ? { consume: true } : undefined));
+		this.ctx.ui.addInputListener((data) => (this.#enhancedPaste?.handleInput(data) ? { consume: true } : undefined));
 		this.ctx.ui.addStartListener(() => this.#enhancedPaste?.enable());
 	}
 
@@ -1407,9 +1407,9 @@ export class InputController {
 		this.ctx.compactionQueuedMessages = [];
 		const allQueued = [
 			...steering,
-			...compactionQueued.filter(e => e.mode === "steer").map(e => ({ text: e.text, images: e.images })),
+			...compactionQueued.filter((e) => e.mode === "steer").map((e) => ({ text: e.text, images: e.images })),
 			...followUp,
-			...compactionQueued.filter(e => e.mode === "followUp").map(e => ({ text: e.text, images: e.images })),
+			...compactionQueued.filter((e) => e.mode === "followUp").map((e) => ({ text: e.text, images: e.images })),
 		];
 		if (allQueued.length === 0) {
 			this.ctx.updatePendingMessagesDisplay();
@@ -1427,7 +1427,7 @@ export class InputController {
 		// running offset keeps the merged text aligned with the merged
 		// `pendingImages` order; draft markers stay valid because draft images
 		// keep their original positions.
-		const queuedImages = allQueued.flatMap(e => e.images ?? []);
+		const queuedImages = allQueued.flatMap((e) => e.images ?? []);
 		let queuedText: string;
 		if (queuedImages.length > 0) {
 			const parts: string[] = [];
@@ -1438,10 +1438,10 @@ export class InputController {
 			}
 			queuedText = parts.join("\n\n");
 		} else {
-			queuedText = allQueued.map(e => e.text).join("\n\n");
+			queuedText = allQueued.map((e) => e.text).join("\n\n");
 		}
 		const currentText = options?.currentText ?? this.ctx.editor.getText();
-		const combinedText = [queuedText, currentText].filter(t => t.trim()).join("\n\n");
+		const combinedText = [queuedText, currentText].filter((t) => t.trim()).join("\n\n");
 		this.ctx.editor.setText(combinedText);
 		// Hand queued images back to the pending-image buffer (links are
 		// re-materialized lazily; the restored text already carries the
@@ -1800,7 +1800,7 @@ export class InputController {
 			keybindings: this.ctx.keybindings,
 			copyCurrentLine: () => this.handleCopyCurrentLine(),
 			copyPrompt: () => this.handleCopyPrompt(),
-			undo: prefix => this.ctx.editor.undoPastTransientText(prefix),
+			undo: (prefix) => this.ctx.editor.undoPastTransientText(prefix),
 			moveCursorToMessageEnd: () => this.ctx.editor.moveToMessageEnd(),
 			moveCursorToMessageStart: () => this.ctx.editor.moveToMessageStart(),
 			moveCursorToLineStart: () => this.ctx.editor.moveToLineStart(),
@@ -1878,7 +1878,7 @@ export class InputController {
 			// own anchored container above the editor (cleared+rebuilt each cycle),
 			// so it updates in place instead of stacking duplicates in the scrollback.
 			const track = renderSegmentTrack(
-				cycleOrder.map(role => ({ label: role })),
+				cycleOrder.map((role) => ({ label: role })),
 				cycleOrder.indexOf(result.role),
 			);
 			this.ctx.showModelCycleTrack(track);

@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
-import { CompactionCancelledError, type CompactionOutcome } from "@oh-my-pi/pi-agent-core/compaction";
+import { CompactionCancelledError, type CompactionOutcome } from "@noorm/lumi-agent-core/compaction";
 import {
 	getEnvApiKey,
 	getProviderDetails,
@@ -9,8 +9,8 @@ import {
 	resolveUsedFraction,
 	type UsageLimit,
 	type UsageReport,
-} from "@oh-my-pi/pi-ai";
-import { Loader, Markdown, padding, Spacer, Text, visibleWidth } from "@oh-my-pi/pi-tui";
+} from "@noorm/lumi-ai";
+import { Loader, Markdown, padding, Spacer, Text, visibleWidth } from "@noorm/lumi-tui";
 import { formatDuration, Snowflake, sanitizeText } from "@oh-my-pi/pi-utils";
 import { shouldEnableAppendOnlyContext } from "../../config/append-only-context-mode";
 import { type BashResult, isPersistentShellCdCommand } from "../../exec/bash-executor";
@@ -54,10 +54,10 @@ import {
 	parseChangelog,
 	RECENT_CHANGELOG_ENTRY_LIMIT,
 	renderChangelogEntries,
-} from "../../utils/changelog";
-import { copyToClipboard } from "../../utils/clipboard";
+} from "../../utils/changelog.ts";
+import { copyToClipboard } from "../../utils/clipboard.ts";
 import { openPath } from "../../utils/open";
-import { setSessionTerminalTitle } from "../../utils/title-generator";
+import { setSessionTerminalTitle } from "../../utils/title-generator.ts";
 
 function showMarkdownPanel(ctx: InteractiveModeContext, title: string, markdown: string): void {
 	const block = new TranscriptBlock();
@@ -144,7 +144,7 @@ export class CommandController {
 	async handleDebugTranscriptCommand(): Promise<void> {
 		try {
 			const width = Math.max(1, this.ctx.ui.terminal.columns);
-			const renderedLines = this.ctx.chatContainer.render(width).map(line => replaceTabs(Bun.stripANSI(line)));
+			const renderedLines = this.ctx.chatContainer.render(width).map((line) => replaceTabs(Bun.stripANSI(line)));
 			const rendered = renderedLines.join("\n").trimEnd();
 			if (!rendered) {
 				this.ctx.showError("No messages to dump yet.");
@@ -555,7 +555,7 @@ export class CommandController {
 			theme,
 			Date.now(),
 			availableWidth,
-			provider => (provider === currentProvider ? activeAccount : undefined),
+			(provider) => (provider === currentProvider ? activeAccount : undefined),
 			usageModelSelectors,
 		);
 		this.ctx.presentCommandOutput([new Spacer(1), new Text(output, 1, 0)]);
@@ -785,7 +785,7 @@ export class CommandController {
 					this.ctx.showStatus(`No mental models on bank ${state.bankId}.`);
 					return;
 				}
-				const targets = items.filter(m => m.trigger?.refresh_after_consolidation === true);
+				const targets = items.filter((m) => m.trigger?.refresh_after_consolidation === true);
 				const skipped = items.length - targets.length;
 				if (targets.length === 0) {
 					this.ctx.showStatus(
@@ -1156,7 +1156,7 @@ export class CommandController {
 		try {
 			const result = await this.ctx.session.executeBash(
 				command,
-				chunk => {
+				(chunk) => {
 					if (this.ctx.bashComponent) {
 						this.ctx.bashComponent.appendOutput(chunk);
 					}
@@ -1230,7 +1230,7 @@ export class CommandController {
 		try {
 			const result = await this.ctx.session.executePython(
 				code,
-				chunk => {
+				(chunk) => {
 					if (this.ctx.pythonComponent) {
 						this.ctx.pythonComponent.appendOutput(chunk);
 					}
@@ -1263,7 +1263,7 @@ export class CommandController {
 		internalGuidance?: string,
 	): Promise<CompactionOutcome> {
 		const entries = this.ctx.sessionManager.getEntries();
-		const messageCount = entries.filter(e => e.type === "message").length;
+		const messageCount = entries.filter((e) => e.type === "message").length;
 
 		if (messageCount < 2) {
 			this.ctx.showWarning("Nothing to compact (no messages yet)");
@@ -1321,8 +1321,8 @@ export class CommandController {
 		const label = isAuto ? "Auto-compacting context... (esc to cancel)" : "Compacting context... (esc to cancel)";
 		const compactingLoader = new Loader(
 			this.ctx.ui,
-			spinner => theme.fg("accent", spinner),
-			text => theme.fg("muted", text),
+			(spinner) => theme.fg("accent", spinner),
+			(text) => theme.fg("muted", text),
 			label,
 			getSymbolTheme().spinnerFrames,
 		);
@@ -1388,7 +1388,7 @@ export class CommandController {
 		}
 
 		const entries = this.ctx.sessionManager.getEntries();
-		const messageCount = entries.filter(e => e.type === "message").length;
+		const messageCount = entries.filter((e) => e.type === "message").length;
 
 		if (messageCount < 2) {
 			this.ctx.showWarning("Nothing to hand off (no messages yet)");
@@ -1403,8 +1403,8 @@ export class CommandController {
 
 		const handoffLoader = new Loader(
 			this.ctx.ui,
-			spinner => theme.fg("accent", spinner),
-			text => theme.fg("muted", text),
+			(spinner) => theme.fg("accent", spinner),
+			(text) => theme.fg("muted", text),
 			"Generating handoff… (esc to cancel)",
 			getSymbolTheme().spinnerFrames,
 		);
@@ -1482,7 +1482,7 @@ function truncateJobLabel(label: string, maxWidth: number): string {
 function formatProviderName(provider: string): string {
 	return provider
 		.split(/[-_]/g)
-		.map(part => (part ? part[0].toUpperCase() + part.slice(1) : ""))
+		.map((part) => (part ? part[0].toUpperCase() + part.slice(1) : ""))
 		.join(" ");
 }
 
@@ -1517,8 +1517,8 @@ export function renderProviderSection(details: ProviderDetails, uiTheme: Pick<ty
 
 function resolveProviderUsageTotal(reports: UsageReport[]): number {
 	return reports
-		.flatMap(report => report.limits)
-		.map(limit => resolveUsedFraction(limit) ?? 0)
+		.flatMap((report) => report.limits)
+		.map((limit) => resolveUsedFraction(limit) ?? 0)
 		.reduce((sum, value) => sum + value, 0);
 }
 
@@ -1606,14 +1606,14 @@ function formatAccountHeaderRow(
 
 	// If suffix can't share the cell with at least `x…`, fall back to whole-label truncation.
 	if (prefixBudget < 2) {
-		return parts.map(p => {
+		return parts.map((p) => {
 			const full = p.suffix ? `${p.label} ${p.suffix}` : p.label;
 			const cell = padColumn(truncateJobLabel(full, columnWidth), columnWidth);
 			return p.active ? uiTheme.fg("accent", cell) : cell;
 		});
 	}
 
-	return parts.map(p => {
+	return parts.map((p) => {
 		const prefix = truncateJobLabel(p.label, prefixBudget);
 		const prefixCell = prefix + " ".repeat(prefixBudget - visibleWidth(prefix));
 		const styledPrefix = p.active ? uiTheme.fg("accent", prefixCell) : prefixCell;
@@ -1645,9 +1645,9 @@ function isUsedOnlyAbsoluteAmount(limit: UsageLimit): boolean {
 }
 
 function resolveAggregateStatus(limits: UsageLimit[]): AggregateDisplayStatus {
-	const hasOk = limits.some(limit => limit.status === "ok");
-	const hasWarning = limits.some(limit => limit.status === "warning");
-	const hasExhausted = limits.some(limit => limit.status === "exhausted");
+	const hasOk = limits.some((limit) => limit.status === "ok");
+	const hasWarning = limits.some((limit) => limit.status === "warning");
+	const hasExhausted = limits.some((limit) => limit.status === "exhausted");
 	if (!hasOk && !hasWarning && !hasExhausted) {
 		return limits.length > 0 && limits.every(isUsedOnlyAbsoluteAmount) ? "neutral" : "unknown";
 	}
@@ -1660,7 +1660,7 @@ function resolveAggregateStatus(limits: UsageLimit[]): AggregateDisplayStatus {
 
 function formatAggregateAmount(limits: UsageLimit[]): string {
 	const fractions = limits
-		.map(limit => resolveUsedFraction(limit))
+		.map((limit) => resolveUsedFraction(limit))
 		.filter((value): value is number => value !== undefined);
 	if (fractions.length === limits.length && fractions.length > 0) {
 		const sum = fractions.reduce((total, value) => total + value, 0);
@@ -1669,8 +1669,8 @@ function formatAggregateAmount(limits: UsageLimit[]): string {
 	}
 
 	const amounts = limits
-		.map(limit => limit.amount)
-		.filter(amount => amount.used !== undefined && amount.limit !== undefined && amount.limit > 0);
+		.map((limit) => limit.amount)
+		.filter((amount) => amount.used !== undefined && amount.limit !== undefined && amount.limit > 0);
 	if (amounts.length === limits.length && amounts.length > 0) {
 		const totalUsed = amounts.reduce((sum, amount) => sum + (amount.used ?? 0), 0);
 		const totalLimit = amounts.reduce((sum, amount) => sum + (amount.limit ?? 0), 0);
@@ -1682,7 +1682,9 @@ function formatAggregateAmount(limits: UsageLimit[]): string {
 
 	// Count unique accounts from limit scopes — not limits.length.
 	const uniqueAccountIds = new Set(
-		limits.map(limit => limit.scope.accountId).filter((id): id is string => typeof id === "string" && id.length > 0),
+		limits
+			.map((limit) => limit.scope.accountId)
+			.filter((id): id is string => typeof id === "string" && id.length > 0),
 	);
 	if (uniqueAccountIds.size > 0) return `${uniqueAccountIds.size} ${uniqueAccountIds.size === 1 ? "acct" : "accts"}`;
 	// No account IDs available — keep the pre-existing fallback so providers
@@ -1692,7 +1694,7 @@ function formatAggregateAmount(limits: UsageLimit[]): string {
 
 function resolveResetRange(limits: UsageLimit[], nowMs: number): string | null {
 	const windows = limits
-		.map(limit => limit.window)
+		.map((limit) => limit.window)
 		.filter(
 			(window): window is NonNullable<UsageLimit["window"]> =>
 				window?.resetsAt !== undefined && Number.isFinite(window.resetsAt) && window.resetsAt > nowMs,
@@ -1700,9 +1702,9 @@ function resolveResetRange(limits: UsageLimit[], nowMs: number): string | null {
 	if (windows.length === 0) return null;
 	// Use the shared verb when every contributing window agrees (e.g. all "tick");
 	// mixed or absent labels fall back to the generic "resets".
-	const labels = new Set(windows.map(window => window.resetLabel ?? "resets"));
+	const labels = new Set(windows.map((window) => window.resetLabel ?? "resets"));
 	const verb = labels.size === 1 ? [...labels][0]! : "resets";
-	const offsets = windows.map(window => window.resetsAt! - nowMs);
+	const offsets = windows.map((window) => window.resetsAt! - nowMs);
 	const minReset = Math.min(...offsets);
 	const maxReset = Math.max(...offsets);
 	if (maxReset - minReset > 60_000) {
@@ -1723,7 +1725,7 @@ export function formatCompactQuota(
 	nowMs: number,
 	activeAccount?: OAuthAccountIdentity,
 ): string | null {
-	const providerReports = reports.filter(r => r.provider === provider);
+	const providerReports = reports.filter((r) => r.provider === provider);
 	if (providerReports.length === 0) return null;
 	// Group limits by window id so we show BOTH the 5-hour and 7-day windows
 	// (or any other distinct windows the provider exposes). Within each window,
@@ -1826,7 +1828,7 @@ export function renderUsageReports(
 	usageModelSelectors: readonly string[] = [],
 ): string {
 	const lines: string[] = [];
-	const latestFetchedAt = Math.max(...reports.map(report => report.fetchedAt ?? 0));
+	const latestFetchedAt = Math.max(...reports.map((report) => report.fetchedAt ?? 0));
 	const headerSuffix = latestFetchedAt ? ` (${formatDuration(nowMs - latestFetchedAt)} ago)` : "";
 	lines.push(uiTheme.bold(uiTheme.fg("accent", `Usage${headerSuffix}`)));
 	const grouped = new Map<string, UsageReport[]>();
@@ -1877,7 +1879,7 @@ export function renderUsageReports(
 		if (activeAccountLabel) {
 			lines.push(`  ${uiTheme.fg("accent", "in use by this session:")} ${activeAccountLabel}`);
 		}
-		const reportingModels = usageModelSelectors.filter(selector => selector.startsWith(`${provider}/`));
+		const reportingModels = usageModelSelectors.filter((selector) => selector.startsWith(`${provider}/`));
 		if (reportingModels.length > 0) {
 			lines.push(`  ${uiTheme.fg("accent", "Models with usage data")}`);
 			for (const selector of reportingModels) {
@@ -1887,10 +1889,10 @@ export function renderUsageReports(
 
 		// Provider-wide disclaimers (e.g. "OMP-observed spend only") render once
 		// above the per-account sections instead of duplicating onto every limit.
-		const providerNotes = [...new Set(providerReports.flatMap(report => report.notes ?? []))];
+		const providerNotes = [...new Set(providerReports.flatMap((report) => report.notes ?? []))];
 		if (providerNotes.length > 0) {
 			lines.push(
-				`  ${uiTheme.fg("dim", replaceTabs(truncateToWidth(sanitizeText(providerNotes.map(n => n.replace(/[\r\n]+/g, " ")).join(" • ")), 110)))}`.trimEnd(),
+				`  ${uiTheme.fg("dim", replaceTabs(truncateToWidth(sanitizeText(providerNotes.map((n) => n.replace(/[\r\n]+/g, " ")).join(" • ")), 110)))}`.trimEnd(),
 			);
 		}
 
@@ -1954,7 +1956,7 @@ export function renderUsageReports(
 			accountRank.set(report, -worst * 1000 + position);
 		});
 
-		const renderableGroups = Array.from(limitGroups.values()).map(group => {
+		const renderableGroups = Array.from(limitGroups.values()).map((group) => {
 			const entries = group.limits.map((limit, index) => ({
 				limit,
 				report: group.reports[index],
@@ -1966,8 +1968,8 @@ export function renderUsageReports(
 				if (aRank !== bRank) return aRank - bRank;
 				return a.index - b.index;
 			});
-			const sortedLimits = entries.map(entry => entry.limit);
-			const sortedReports = entries.map(entry => entry.report);
+			const sortedLimits = entries.map((entry) => entry.limit);
+			const sortedReports = entries.map((entry) => entry.report);
 			return { group, sortedLimits, sortedReports, amountText: formatAggregateAmount(sortedLimits) };
 		});
 
@@ -1991,7 +1993,7 @@ export function renderUsageReports(
 				activeAccount,
 			);
 			lines.push(`  ${accountLabels.join(" ")}`.trimEnd());
-			const bars = sortedLimits.map(limit =>
+			const bars = sortedLimits.map((limit) =>
 				padColumn(renderUsageBar(limit, uiTheme, sectionBarWidth), sectionColumnWidth),
 			);
 			lines.push(`  ${bars.join(" ")} ${amountText}`.trimEnd());
@@ -1999,16 +2001,16 @@ export function renderUsageReports(
 			if (resetText) {
 				lines.push(`  ${uiTheme.fg("dim", resetText)}`.trimEnd());
 			}
-			const notes = [...new Set(sortedLimits.flatMap(limit => limit.notes ?? []))];
+			const notes = [...new Set(sortedLimits.flatMap((limit) => limit.notes ?? []))];
 			if (notes.length > 0) {
 				lines.push(
-					`  ${uiTheme.fg("dim", replaceTabs(truncateToWidth(sanitizeText(notes.map(n => n.replace(/[\r\n]+/g, " ")).join(" • ")), 110)))}`.trimEnd(),
+					`  ${uiTheme.fg("dim", replaceTabs(truncateToWidth(sanitizeText(notes.map((n) => n.replace(/[\r\n]+/g, " ")).join(" • ")), 110)))}`.trimEnd(),
 				);
 			}
 		}
 
 		// Render accounts with no rate limits (e.g. business/enterprise plans).
-		const unlimitedReports = providerReports.filter(report => report.limits.length === 0);
+		const unlimitedReports = providerReports.filter((report) => report.limits.length === 0);
 		for (const report of unlimitedReports) {
 			const label = formatUnlimitedReportLabel(report, 0);
 			const tier = report.metadata?.planType;

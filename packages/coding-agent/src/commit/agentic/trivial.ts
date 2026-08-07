@@ -1,4 +1,4 @@
-import type { CommitType } from "../../commit/types";
+import type { CommitType } from "../../commit/types.ts";
 
 export interface TrivialChangeResult {
 	isTrivial: true;
@@ -12,9 +12,9 @@ const EMPTY_LINE_PATTERN = /^[-+]\s*$/;
 
 export function detectTrivialChange(diff: string): TrivialChangeResult | null {
 	const lines = diff.split("\n");
-	const changeLines = lines.filter(line => line.startsWith("+") || line.startsWith("-"));
+	const changeLines = lines.filter((line) => line.startsWith("+") || line.startsWith("-"));
 	const contentLines = changeLines.filter(
-		line => !line.startsWith("+++") && !line.startsWith("---") && !line.startsWith("@@"),
+		(line) => !line.startsWith("+++") && !line.startsWith("---") && !line.startsWith("@@"),
 	);
 
 	if (contentLines.length === 0) return null;

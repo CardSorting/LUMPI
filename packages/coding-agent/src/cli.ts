@@ -36,4 +36,3 @@ if (isWorkerHostSelector(args[0])) {
 configureHttpDispatcher();
 
 main(args);
-

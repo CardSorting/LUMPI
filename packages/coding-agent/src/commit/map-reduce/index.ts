@@ -1,12 +1,12 @@
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, ApiKey, Model } from "@oh-my-pi/pi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, Model } from "@noorm/lumi-ai";
 import { $env } from "@oh-my-pi/pi-utils";
-import { parseFileDiffs } from "../../commit/git/diff";
-import type { ConventionalAnalysis } from "../../commit/types";
-import { isExcludedFile } from "../../commit/utils/exclusions";
-import { runMapPhase } from "./map-phase";
-import { runReducePhase } from "./reduce-phase";
-import { estimateTokens } from "./utils";
+import { parseFileDiffs } from "../../commit/git/diff.ts";
+import type { ConventionalAnalysis } from "../../commit/types.ts";
+import { isExcludedFile } from "../../commit/utils/exclusions.ts";
+import { runMapPhase } from "./map-phase.ts";
+import { runReducePhase } from "./reduce-phase.ts";
+import { estimateTokens } from "./utils.ts";
 
 const MIN_FILES_FOR_MAP_REDUCE = 4;
 const MAX_FILE_TOKENS = 50_000;
@@ -21,10 +21,10 @@ export interface MapReduceSettings {
 
 export interface MapReduceInput {
 	model: Model<Api>;
-	apiKey: ApiKey;
+	apiKey: string;
 	thinkingLevel?: ThinkingLevel;
 	smolModel: Model<Api>;
-	smolApiKey: ApiKey;
+	smolApiKey: string;
 	smolThinkingLevel?: ThinkingLevel;
 	diff: string;
 	stat: string;
@@ -38,10 +38,10 @@ export function shouldUseMapReduce(diff: string, settings?: MapReduceSettings): 
 	if (settings?.enabled === false) return false;
 	const minFiles = settings?.minFiles ?? MIN_FILES_FOR_MAP_REDUCE;
 	const maxFileTokens = settings?.maxFileTokens ?? MAX_FILE_TOKENS;
-	const files = parseFileDiffs(diff).filter(file => !isExcludedFile(file.filename));
+	const files = parseFileDiffs(diff).filter((file) => !isExcludedFile(file.filename));
 	const fileCount = files.length;
 	if (fileCount >= minFiles) return true;
-	return files.some(file => estimateTokens(file.content) > maxFileTokens);
+	return files.some((file) => estimateTokens(file.content) > maxFileTokens);
 }
 
 /**
@@ -49,7 +49,7 @@ export function shouldUseMapReduce(diff: string, settings?: MapReduceSettings): 
  */
 
 export async function runMapReduceAnalysis(input: MapReduceInput): Promise<ConventionalAnalysis> {
-	const fileDiffs = parseFileDiffs(input.diff).filter(file => !isExcludedFile(file.filename));
+	const fileDiffs = parseFileDiffs(input.diff).filter((file) => !isExcludedFile(file.filename));
 	const observations = await runMapPhase({
 		model: input.smolModel,
 		apiKey: input.smolApiKey,

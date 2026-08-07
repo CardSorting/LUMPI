@@ -8,7 +8,7 @@
 import * as path from "node:path";
 import * as zlib from "node:zlib";
 import { formatBytes } from "@oh-my-pi/pi-utils";
-import { ToolError } from "../tools/tool-errors";
+import { ToolError } from "../tools/tool-errors.ts";
 
 /** A ZIP archive decoded to a `path → bytes` map of its file members. */
 export type Unzipped = Record<string, Uint8Array>;
@@ -253,12 +253,12 @@ export function archiveFormatFromPath(filePath: string): ArchiveFormat | undefin
 	if (normalized.endsWith(".tar.gz") || normalized.endsWith(".tgz")) return "tar.gz";
 	if (normalized.endsWith(".tar")) return "tar";
 	if (normalized.endsWith(".zip")) return "zip";
-	if (ZIP_ALIAS_EXTENSIONS.some(ext => normalized.endsWith(`.${ext}`))) return "zip";
+	if (ZIP_ALIAS_EXTENSIONS.some((ext) => normalized.endsWith(`.${ext}`))) return "zip";
 	return undefined;
 }
 
 export function formatArchiveEntryLines(entries: readonly ArchiveDirectoryEntry[]): string[] {
-	return entries.map(entry => {
+	return entries.map((entry) => {
 		if (entry.isDirectory) return `${entry.name}/`;
 
 		const sizeSuffix = entry.size > 0 ? ` (${formatBytes(entry.size)})` : "";

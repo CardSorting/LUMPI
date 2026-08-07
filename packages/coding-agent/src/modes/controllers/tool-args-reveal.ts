@@ -1,6 +1,6 @@
-import type { Component } from "@oh-my-pi/pi-tui";
+import type { Component } from "@noorm/lumi-tui";
 import { parseStreamingJson, parseStreamingJsonThrottled, STREAMING_JSON_PARSE_MIN_GROWTH } from "@oh-my-pi/pi-utils";
-import { nextStep, STREAMING_REVEAL_FRAME_MS } from "./streaming-reveal";
+import { nextStep, STREAMING_REVEAL_FRAME_MS } from "./streaming-reveal.ts";
 
 /** Minimal component surface the reveal pushes frames into. */
 type ToolArgsRevealComponent = Component & {

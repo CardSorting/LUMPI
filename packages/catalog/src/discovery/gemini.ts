@@ -8,13 +8,13 @@ const GOOGLE_GENERATIVE_AI_BASE_URL = "https://generativelanguage.googleapis.com
 const DEFAULT_PAGE_SIZE = 100;
 const DEFAULT_MAX_PAGES = 25;
 
-const resilientString = type("unknown").pipe(val => {
+const resilientString = type("unknown").pipe((val) => {
 	if (val === undefined) return undefined;
 	const out = type("string")(val);
 	return out instanceof type.errors ? undefined : out;
 });
 
-const resilientNumber = type("unknown").pipe(val => {
+const resilientNumber = type("unknown").pipe((val) => {
 	if (val === undefined) return undefined;
 	const out = type("number")(val);
 	return out instanceof type.errors ? undefined : out;
@@ -31,7 +31,7 @@ const geminiModelListItemSchema = type({
 type GeminiModelListItem = typeof geminiModelListItemSchema.infer;
 
 const modelsSchema = type("unknown[]")
-	.pipe(items => {
+	.pipe((items) => {
 		const parsedItems: GeminiModelListItem[] = [];
 		for (const item of items) {
 			const parsed = geminiModelListItemSchema(item);
@@ -84,7 +84,7 @@ export async function fetchGeminiModels(
 	const maxPages = normalizePositiveInt(options.maxPages, DEFAULT_MAX_PAGES);
 
 	const bundledById = new Map(
-		getBundledModels("google").map(model => [model.id, toModelSpec(model as Model<"google-generative-ai">)]),
+		getBundledModels("google").map((model) => [model.id, toModelSpec(model as Model<"google-generative-ai">)]),
 	);
 	const modelsById = new Map<string, ModelSpec<"google-generative-ai">>();
 	const seenTokens = new Set<string>();
@@ -237,7 +237,7 @@ function supportsTextGeneration(methods: string[] | undefined): boolean {
 	if (!methods || methods.length === 0) {
 		return false;
 	}
-	return methods.some(method => method === "generateContent");
+	return methods.some((method) => method === "generateContent");
 }
 
 function inferReasoningFromGeminiId(id: string): boolean {

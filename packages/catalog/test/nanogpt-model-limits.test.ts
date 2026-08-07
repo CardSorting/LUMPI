@@ -40,7 +40,7 @@ describe("nanogpt model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "gpt-5.4-mini");
+		const model = models.find((candidate) => candidate.id === "gpt-5.4-mini");
 		expect(model).toBeDefined();
 		expect(model?.api).toBe("openai-completions");
 		expect(model?.provider).toBe("nanogpt");

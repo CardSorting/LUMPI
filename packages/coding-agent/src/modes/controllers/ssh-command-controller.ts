@@ -17,7 +17,7 @@ import {
 	readScopeFlag,
 	type ScopeValue,
 	showCommandMessage,
-} from "./command-controller-shared";
+} from "./command-controller-shared.ts";
 
 export class SSHCommandController {
 	constructor(private ctx: InteractiveModeContext) {}
@@ -260,7 +260,7 @@ export class SSHCommandController {
 			let discoveredHosts: SSHHost[] = [];
 			try {
 				const result = await loadCapability<SSHHost>(sshCapability.id, { cwd });
-				discoveredHosts = result.items.filter(h => !configHostNames.has(h.name));
+				discoveredHosts = result.items.filter((h) => !configHostNames.has(h.name));
 			} catch {
 				// Ignore discovery errors
 			}
@@ -304,7 +304,7 @@ export class SSHCommandController {
 
 			// Show discovered hosts (from ssh.json, .ssh.json in project root, etc.)
 			if (discoveredHosts.length > 0) {
-				for (const { providerName, shortPath, items: hosts } of groupBySource(discoveredHosts, h => h._source)) {
+				for (const { providerName, shortPath, items: hosts } of groupBySource(discoveredHosts, (h) => h._source)) {
 					lines.push(
 						theme.fg("accent", "Discovered") +
 							theme.fg("muted", ` (${providerName}: ${shortPath}):`) +

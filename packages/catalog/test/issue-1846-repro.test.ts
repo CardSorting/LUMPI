@@ -63,9 +63,9 @@ describe("issue #1846: Xiaomi Token Plan provider support", () => {
 	it("registers regional Xiaomi Token Plan login providers", () => {
 		const providers = getOAuthProviders();
 
-		expect(providers.some(provider => provider.id === "xiaomi-token-plan-sgp")).toBe(true);
-		expect(providers.some(provider => provider.id === "xiaomi-token-plan-ams")).toBe(true);
-		expect(providers.some(provider => provider.id === "xiaomi-token-plan-cn")).toBe(true);
+		expect(providers.some((provider) => provider.id === "xiaomi-token-plan-sgp")).toBe(true);
+		expect(providers.some((provider) => provider.id === "xiaomi-token-plan-ams")).toBe(true);
+		expect(providers.some((provider) => provider.id === "xiaomi-token-plan-cn")).toBe(true);
 	});
 
 	it("logs into the selected Token Plan region and stores that provider key", async () => {
@@ -80,7 +80,7 @@ describe("issue #1846: Xiaomi Token Plan provider support", () => {
 		await storage.reload();
 
 		await storage.login("xiaomi-token-plan-sgp", {
-			onAuth: info => {
+			onAuth: (info) => {
 				authUrl = info.url;
 			},
 			onPrompt: async () => TP_KEY,
@@ -132,7 +132,7 @@ describe("issue #1846: Xiaomi Token Plan provider support", () => {
 		};
 
 		const messages = convertMessages(model, { messages: [assistantToolCall(model, [thinking, toolCall])] }, compat);
-		const assistant = messages.find(message => message.role === "assistant");
+		const assistant = messages.find((message) => message.role === "assistant");
 
 		expect(compat.thinkingFormat).toBe("zai");
 		expect(compat.requiresReasoningContentForToolCalls).toBe(true);

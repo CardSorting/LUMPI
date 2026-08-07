@@ -1,4 +1,4 @@
-import type { SessionSnapshot } from "@noorm/lumpi-protocol";
+import type { SessionSnapshot } from "@noorm/lumi-protocol";
 import { describe, expect, test } from "vitest";
 import {
 	applyTranscriptProgress,

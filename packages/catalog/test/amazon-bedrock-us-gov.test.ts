@@ -37,14 +37,14 @@ const BEDROCK_CLAUDE_FIXTURE = {
 describe("Amazon Bedrock GovCloud (us-gov) catalog mapping", () => {
 	test("bare Claude foundation ids emit a us-gov geo inference-profile selector", () => {
 		const mapped = mapModelsDevToModels(BEDROCK_CLAUDE_FIXTURE, MODELS_DEV_PROVIDER_DESCRIPTORS).filter(
-			model => model.provider === "amazon-bedrock",
+			(model) => model.provider === "amazon-bedrock",
 		);
-		const ids = mapped.map(model => model.id);
+		const ids = mapped.map((model) => model.id);
 
 		expect(ids).toContain(`us-gov.${CLAUDE_FOUNDATION_ID}`);
 		expect(ids).toContain(`eu.${CLAUDE_FOUNDATION_ID}`);
 
-		const gov = mapped.find(model => model.id === `us-gov.${CLAUDE_FOUNDATION_ID}`);
+		const gov = mapped.find((model) => model.id === `us-gov.${CLAUDE_FOUNDATION_ID}`);
 		expect(gov).toBeDefined();
 		expect(gov?.api).toBe("bedrock-converse-stream");
 		expect(gov?.name).toContain("GovCloud");
@@ -52,11 +52,11 @@ describe("Amazon Bedrock GovCloud (us-gov) catalog mapping", () => {
 
 	test("non-Claude Bedrock models do not receive synthesized us-gov variants", () => {
 		const mapped = mapModelsDevToModels(BEDROCK_CLAUDE_FIXTURE, MODELS_DEV_PROVIDER_DESCRIPTORS).filter(
-			model => model.provider === "amazon-bedrock",
+			(model) => model.provider === "amazon-bedrock",
 		);
-		const ids = mapped.map(model => model.id);
+		const ids = mapped.map((model) => model.id);
 
-		expect(ids.some(id => id.startsWith("us-gov.amazon."))).toBe(false);
+		expect(ids.some((id) => id.startsWith("us-gov.amazon."))).toBe(false);
 		expect(ids).not.toContain("us-gov.amazon.nova-pro-v1:0");
 	});
 });

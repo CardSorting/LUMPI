@@ -8,7 +8,7 @@ import {
 	type ResponseEnvelope,
 	type ServerMessage,
 	ServerMessageDecoder,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import { Deferred } from "./service.ts";
 
 interface MessageWaiter {

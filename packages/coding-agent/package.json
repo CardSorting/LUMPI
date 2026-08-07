@@ -1,5 +1,5 @@
 {
-	"name": "@noorm/lumpi",
+	"name": "@noorm/lumi",
 	"version": "0.83.2",
 	"description": "Coding agent CLI with read, bash, edit, write tools and session management",
 	"type": "module",
@@ -46,12 +46,12 @@
 		"prepublishOnly": "npm run clean && npm run build && npm run shrinkwrap"
 	},
 	"dependencies": {
-		"@noorm/lumpi-agent-core": "^0.83.2",
-		"@noorm/lumpi-ai": "^0.83.2",
-		"@noorm/lumpi-client": "^0.83.2",
-		"@noorm/lumpi-codemarie": "^0.83.2",
-		"@noorm/lumpi-protocol": "^0.83.2",
-		"@noorm/lumpi-tui": "^0.83.2",
+		"@noorm/lumi-agent-core": "^0.83.2",
+		"@noorm/lumi-ai": "^0.83.2",
+		"@noorm/lumi-client": "^0.83.2",
+		"@noorm/lumi-codemarie": "^0.83.2",
+		"@noorm/lumi-protocol": "^0.83.2",
+		"@noorm/lumi-tui": "^0.83.2",
 		"@oh-my-pi/pi-natives": "*",
 		"@oh-my-pi/omptype": "*",
 		"@oh-my-pi/hashline": "*",

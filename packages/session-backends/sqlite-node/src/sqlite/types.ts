@@ -1,4 +1,4 @@
-import type { FileSystem, SessionCreateOptions, SessionMetadata } from "@noorm/lumpi-agent-core";
+import type { FileSystem, SessionCreateOptions, SessionMetadata } from "@noorm/lumi-agent-core";
 
 /** Result of a prepared SQLite statement execution. */
 export interface SqliteRunResult {

@@ -1,5 +1,5 @@
 {
-	"name": "@noorm/lumpi-evals",
+	"name": "@noorm/lumi-evals",
 	"version": "0.83.2",
 	"private": true,
 	"type": "module",
@@ -9,8 +9,8 @@
 		"test": "vitest run --config vitest.test.config.ts"
 	},
 	"devDependencies": {
-		"@noorm/lumpi-ai": "^0.83.2",
-		"@noorm/lumpi": "0.83.2",
+		"@noorm/lumi-ai": "^0.83.2",
+		"@noorm/lumi": "^0.83.2",
 		"@types/node": "24.12.4",
 		"shx": "0.4.0",
 		"typescript": "5.9.3",

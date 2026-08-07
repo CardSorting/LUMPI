@@ -35,13 +35,13 @@ async function discoverKimiK3(): Promise<ModelSpec<"openai-completions">> {
 	const fetchMock = (async (_input: string | URL | Request): Promise<Response> =>
 		moonshotModelsResponse()) as typeof fetch;
 	const models = await moonshotModelManagerOptions({ apiKey: "test-key", fetch: fetchMock }).fetchDynamicModels?.();
-	const k3 = models?.find(m => m.id === "kimi-k3");
+	const k3 = models?.find((m) => m.id === "kimi-k3");
 	if (!k3) throw new Error("kimi-k3 not discovered");
 	return k3;
 }
 
 function encodeSseChunks(chunks: ReadonlyArray<Record<string, unknown>>): string {
-	return `${chunks.map(c => `data: ${JSON.stringify(c)}\n\n`).join("")}data: [DONE]\n\n`;
+	return `${chunks.map((c) => `data: ${JSON.stringify(c)}\n\n`).join("")}data: [DONE]\n\n`;
 }
 
 describe("issue #5756 — moonshot kimi-k3 pricing and wire format", () => {

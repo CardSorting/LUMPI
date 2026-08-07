@@ -1,20 +1,21 @@
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, Model } from "@oh-my-pi/pi-ai";
-import { Markdown } from "@oh-my-pi/pi-tui";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, Model } from "@noorm/lumi-ai";
+import { INTENT_FIELD } from "@noorm/lumi-protocol";
+import { Markdown } from "@noorm/lumi-tui";
 import { prompt } from "@oh-my-pi/pi-utils";
 import chalk from "@oh-my-pi/pi-utils/chalk";
-import { INTENT_FIELD } from "@oh-my-pi/pi-wire";
-import typesDescriptionPrompt from "../../commit/prompts/types-description.md" with { type: "text" };
-import type { ModelRegistry } from "../../config/model-registry";
-import type { Settings } from "../../config/settings";
-import { getMarkdownTheme } from "../../modes/theme/theme";
-import { createAgentSession } from "../../sdk";
-import type { AgentSessionEvent } from "../../session/agent-session";
-import type { AuthStorage } from "../../session/auth-storage";
+import type { AgentSessionEvent } from "../../core/agent-session.ts";
+import type { AuthStorage } from "../../core/auth-storage.ts";
+import type { ModelRegistry } from "../../core/model-registry.ts";
+import type { ModelRuntime } from "../../core/model-runtime.ts";
+import { createAgentSession } from "../../core/sdk.ts";
+import type { Settings, SettingsManager } from "../../core/settings-manager.ts";
+import { getMarkdownTheme } from "../../modes/interactive/theme/theme.ts";
+import typesDescriptionPrompt from "../prompts/types-description.md" with { type: "text" };
 import agentUserPrompt from "./prompts/session-user.md" with { type: "text" };
 import agentSystemPrompt from "./prompts/system.md" with { type: "text" };
-import type { CommitAgentState } from "./state";
-import { createCommitTools } from "./tools";
+import type { CommitAgentState } from "./state.ts";
+import { createCommitTools } from "./tools/index.ts";
 
 export interface CommitAgentInput {
 	cwd: string;
@@ -23,6 +24,8 @@ export interface CommitAgentInput {
 	settings: Settings;
 	modelRegistry: ModelRegistry;
 	authStorage: AuthStorage;
+	modelRuntime: ModelRuntime;
+	settingsManager: SettingsManager;
 	userContext?: string;
 	contextFiles?: Array<{ path: string; content: string }>;
 	changelogTargets: string[];
@@ -57,24 +60,14 @@ export async function runCommitAgentSession(input: CommitAgentInput): Promise<Co
 
 	const { session } = await createAgentSession({
 		cwd: input.cwd,
-		authStorage: input.authStorage,
-		modelRegistry: input.modelRegistry,
-		settings: input.settings,
+		modelRuntime: input.modelRuntime,
+		settingsManager: input.settingsManager,
 		model: input.model,
 		thinkingLevel: input.thinkingLevel,
-		systemPrompt: [systemPrompt],
+		noTools: "all",
 		customTools: tools,
-		enableLsp: false,
-		enableMCP: false,
-		hasUI: false,
-		spawns,
-		toolNames: ["__none__"],
-		contextFiles: input.contextFiles,
-		disableExtensionDiscovery: true,
-		skills: [],
-		promptTemplates: [],
-		slashCommands: [],
 	});
+	session.setSystemPrompt(systemPrompt);
 	let toolCalls = 0;
 	let messageCount = 0;
 	let isThinking = false;
@@ -129,7 +122,7 @@ export async function runCommitAgentSession(input: CommitAgentInput): Promise<Co
 				break;
 			}
 			case "tool_execution_end": {
-				const stored = toolArgsById.get(event.toolCallId) ?? { name: event.toolName };
+				const stored = toolArgsById.get(event.toolCallId) ?? { name: String(event.toolName), args: undefined };
 				toolArgsById.delete(event.toolCallId);
 				clearThinkingLine();
 				const toolLabel = formatToolLabel(stored.name);
@@ -162,18 +155,11 @@ export async function runCommitAgentSession(input: CommitAgentInput): Promise<Co
 		let retryCount = 0;
 		const needsChangelog = input.requireChangelog && input.changelogTargets.length > 0;
 
-		await session.prompt(agentUserMessage, {
-			attribution: "agent",
-			expandPromptTemplates: false,
-		});
+		await session.prompt(agentUserMessage, { source: "extension", expandPromptTemplates: false });
 		while (retryCount < MAX_RETRIES && !isProposalComplete(state, needsChangelog)) {
 			retryCount += 1;
 			const reminder = buildReminderMessage(state, needsChangelog, retryCount, MAX_RETRIES);
-			await session.prompt(reminder, {
-				attribution: "agent",
-				expandPromptTemplates: false,
-				synthetic: true,
-			});
+			await session.prompt(reminder, { source: "extension", expandPromptTemplates: false });
 		}
 
 		if (input.onComplete) {
@@ -188,8 +174,8 @@ export async function runCommitAgentSession(input: CommitAgentInput): Promise<Co
 
 function extractMessagePreview(content: Array<{ type: string; text?: string }>): string | null {
 	const textBlocks = content
-		.filter(block => block.type === "text" && typeof block.text === "string")
-		.map(block => block.text?.trim())
+		.filter((block) => block.type === "text" && typeof block.text === "string")
+		.map((block) => block.text?.trim())
 		.filter((value): value is string => Boolean(value));
 	if (textBlocks.length === 0) return null;
 	const combined = textBlocks.join(" ").replace(/\s+/g, " ").trim();
@@ -198,9 +184,9 @@ function extractMessagePreview(content: Array<{ type: string; text?: string }>):
 
 function extractMessageText(content: Array<{ type: string; text?: string }>): string | null {
 	const textBlocks = content
-		.filter(block => block.type === "text" && typeof block.text === "string")
-		.map(block => block.text ?? "")
-		.filter(value => value.trim().length > 0);
+		.filter((block) => block.type === "text" && typeof block.text === "string")
+		.map((block) => block.text ?? "")
+		.filter((value) => value.trim().length > 0);
 	if (textBlocks.length === 0) return null;
 	return textBlocks.join("\n").trim();
 }
@@ -208,7 +194,7 @@ function extractMessageText(content: Array<{ type: string; text?: string }>): st
 function writeAssistantMessage(message: string): void {
 	const lines = renderMarkdownLines(message);
 	if (lines.length === 0) return;
-	let firstContentIndex = lines.findIndex(line => line.trim().length > 0);
+	let firstContentIndex = lines.findIndex((line) => line.trim().length > 0);
 	if (firstContentIndex === -1) {
 		firstContentIndex = 0;
 	}
@@ -227,7 +213,7 @@ function renderMarkdownLines(message: string): readonly string[] {
 function formatToolLabel(toolName: string): string {
 	const displayName = toolName
 		.split(/[_-]/)
-		.map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
+		.map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
 		.join("");
 	return displayName;
 }
@@ -239,7 +225,7 @@ function formatToolArgs(args?: Record<string, unknown>): string[] {
 		if (value === null || value === undefined) return;
 		if (Array.isArray(value)) {
 			if (value.length === 0) return;
-			const rendered = value.map(item => renderPrimitive(item)).filter(Boolean);
+			const rendered = value.map((item) => renderPrimitive(item)).filter(Boolean);
 			if (rendered.length > 0) {
 				lines.push(`${keyPath}: ${rendered.join(", ")}`);
 			}

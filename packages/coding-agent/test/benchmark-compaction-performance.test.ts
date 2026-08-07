@@ -1,5 +1,5 @@
-import { Agent } from "@noorm/lumpi-agent-core";
-import { getModel, streamSimple, type Usage } from "@noorm/lumpi-ai/compat";
+import { Agent } from "@noorm/lumi-agent-core";
+import { getModel, streamSimple, type Usage } from "@noorm/lumi-ai/compat";
 import { describe, expect, it } from "vitest";
 import { AgentSession } from "../src/core/agent-session.ts";
 import { AuthStorage } from "../src/core/auth-storage.ts";

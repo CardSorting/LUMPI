@@ -29,20 +29,20 @@ test("synchronizes private dependencies without touching registry aliases, gener
 	const root = await mkdtemp(join(tmpdir(), "pi-sync-versions-"));
 	try {
 		await writeManifest(root, "packages/ai", {
-			name: "@noorm/lumpi-ai",
+			name: "@noorm/lumi-ai",
 			version: "2.0.0",
 		});
 		await writeManifest(root, "packages/coding-agent", {
-			name: "@noorm/lumpi-coding-agent",
+			name: "@noorm/lumi-coding-agent",
 			version: "2.0.0",
 		});
 		await writeManifest(root, "packages/evals", {
-			name: "@noorm/lumpi-evals",
+			name: "@noorm/lumi-evals",
 			version: "9.9.9",
 			private: true,
 			dependencies: {
-				"@noorm/lumpi-coding-agent": "^1.0.0",
-				"@mariozechner/pi-ai": "npm:@noorm/lumpi-ai@1.0.0",
+				"@noorm/lumi-coding-agent": "^1.0.0",
+				"@mariozechner/pi-ai": "npm:@noorm/lumi-ai@1.0.0",
 			},
 		});
 		await writeManifest(root, "packages/coding-agent/install-lock", {
@@ -50,7 +50,7 @@ test("synchronizes private dependencies without touching registry aliases, gener
 			version: "0.0.0",
 			private: true,
 			dependencies: {
-				"@noorm/lumpi-coding-agent": "^1.0.0",
+				"@noorm/lumi-coding-agent": "^1.0.0",
 			},
 		});
 
@@ -58,13 +58,13 @@ test("synchronizes private dependencies without touching registry aliases, gener
 		assert.equal(result.status, 0, result.stderr);
 
 		const evalsManifest = await readManifest(root, "packages/evals");
-		assert.equal(evalsManifest.dependencies["@noorm/lumpi-coding-agent"], "^2.0.0");
-		assert.equal(evalsManifest.dependencies["@mariozechner/pi-ai"], "npm:@noorm/lumpi-ai@1.0.0");
+		assert.equal(evalsManifest.dependencies["@noorm/lumi-coding-agent"], "^2.0.0");
+		assert.equal(evalsManifest.dependencies["@mariozechner/pi-ai"], "npm:@noorm/lumi-ai@1.0.0");
 		const generatedManifest = await readManifest(root, "packages/coding-agent/install-lock");
-		assert.equal(generatedManifest.dependencies["@noorm/lumpi-coding-agent"], "^1.0.0");
+		assert.equal(generatedManifest.dependencies["@noorm/lumi-coding-agent"], "^1.0.0");
 
 		await writeManifest(root, "packages/ai", {
-			name: "@noorm/lumpi-ai",
+			name: "@noorm/lumi-ai",
 			version: "3.0.0",
 		});
 		const lockstepFailure = runSyncVersions(root);

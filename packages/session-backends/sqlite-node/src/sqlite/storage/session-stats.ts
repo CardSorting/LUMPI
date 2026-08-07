@@ -1,5 +1,5 @@
-import { SessionError, type SessionStats } from "@noorm/lumpi-agent-core";
-import type { Usage } from "@noorm/lumpi-ai";
+import { SessionError, type SessionStats } from "@noorm/lumi-agent-core";
+import type { Usage } from "@noorm/lumi-ai";
 import type { SqliteDatabase } from "../types.ts";
 
 export interface SessionStatsRow {

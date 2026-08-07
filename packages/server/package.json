@@ -1,5 +1,5 @@
 {
-	"name": "@noorm/lumpi-server",
+	"name": "@noorm/lumi-server",
 	"version": "0.83.2",
 	"description": "experimental server package for pi",
 	"type": "module",
@@ -47,8 +47,8 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@noorm/lumpi-ai": "^0.83.2",
-		"@noorm/lumpi-protocol": "^0.83.2"
+		"@noorm/lumi-ai": "^0.83.2",
+		"@noorm/lumi-protocol": "^0.83.2"
 	},
 	"devDependencies": {
 		"shx": "0.4.0",

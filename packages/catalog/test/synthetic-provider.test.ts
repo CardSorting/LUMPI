@@ -87,7 +87,7 @@ describe("Synthetic provider discovery", () => {
 		// `syn:*` router aliases ship a bundled reference baked from the era when
 		// this mapper read field names Synthetic never sends: `reasoning: false`,
 		// no thinking, `maxTokens: 8192`, zero cost. The advertised metadata wins.
-		const large = models?.find(model => model.id === "syn:large:text");
+		const large = models?.find((model) => model.id === "syn:large:text");
 		expect(large).toMatchObject({
 			provider: "synthetic",
 			api: "openai-completions",
@@ -111,7 +111,7 @@ describe("Synthetic provider discovery", () => {
 		const { fetch } = syntheticModelsFetch();
 		const models = await syntheticModelManagerOptions({ apiKey: "syn-test-key", fetch }).fetchDynamicModels?.();
 
-		const kimi = models?.find(model => model.id === "hf:moonshotai/Kimi-K3");
+		const kimi = models?.find((model) => model.id === "hf:moonshotai/Kimi-K3");
 		expect(kimi).toMatchObject({
 			provider: "synthetic",
 			reasoning: true,
@@ -128,7 +128,7 @@ describe("Synthetic provider discovery", () => {
 		const { fetch } = syntheticModelsFetch();
 		const models = await syntheticModelManagerOptions({ apiKey: "syn-test-key", fetch }).fetchDynamicModels?.();
 
-		const plain = models?.find(model => model.id === "hf:example/plain-completions");
+		const plain = models?.find((model) => model.id === "hf:example/plain-completions");
 		expect(plain).toMatchObject({
 			provider: "synthetic",
 			reasoning: false,
@@ -161,7 +161,7 @@ describe("Synthetic provider discovery", () => {
 		// `none` alone is the router's off state, not a reasoning dial: reporting
 		// `reasoning: true` here would let identity inference fabricate an
 		// unadvertised low/medium/high ladder for the request layer.
-		const offOnly = models?.find(model => model.id === "hf:example/off-switch-only");
+		const offOnly = models?.find((model) => model.id === "hf:example/off-switch-only");
 		expect(offOnly?.reasoning).toBe(false);
 		expect(offOnly?.thinking).toEqual({
 			mode: "effort",
@@ -189,7 +189,7 @@ describe("Synthetic provider discovery", () => {
 		]);
 		const models = await syntheticModelManagerOptions({ apiKey: "syn-test-key", fetch }).fetchDynamicModels?.();
 
-		const glmSpec = models?.find(model => model.id === "hf:zai-org/GLM-5.2");
+		const glmSpec = models?.find((model) => model.id === "hf:zai-org/GLM-5.2");
 		expect(glmSpec?.reasoning).toBe(false);
 		expect(glmSpec?.thinking).toEqual({
 			mode: "effort",
@@ -221,7 +221,7 @@ describe("Synthetic provider discovery", () => {
 		]);
 		const models = await syntheticModelManagerOptions({ apiKey: "syn-test-key", fetch }).fetchDynamicModels?.();
 
-		const single = models?.find(model => model.id === "hf:example/single-tier");
+		const single = models?.find((model) => model.id === "hf:example/single-tier");
 		expect(single?.reasoning).toBe(true);
 		expect(single?.thinking).toEqual({ mode: "effort", efforts: [Effort.High] });
 		expect(buildModel(single!).thinking).toEqual({ mode: "effort", efforts: [Effort.High] });
@@ -243,7 +243,7 @@ describe("Synthetic provider discovery", () => {
 		]);
 		const models = await syntheticModelManagerOptions({ apiKey: "syn-test-key", fetch }).fetchDynamicModels?.();
 
-		const bare = models?.find(model => model.id === "hf:example/no-features");
+		const bare = models?.find((model) => model.id === "hf:example/no-features");
 		expect(bare?.supportsTools).toBe(false);
 		expect(bare?.reasoning).toBe(false);
 	});
@@ -269,7 +269,7 @@ describe("Synthetic provider discovery", () => {
 		const manager = createModelManager(syntheticModelManagerOptions({ apiKey: "syn-test-key", fetch }));
 		const { models } = await manager.refresh("online");
 
-		const glm = models.find(model => model.id === "hf:zai-org/GLM-5.2");
+		const glm = models.find((model) => model.id === "hf:zai-org/GLM-5.2");
 		expect(glm?.reasoning).toBe(false);
 		expect(glm?.thinking).toBeUndefined();
 	});

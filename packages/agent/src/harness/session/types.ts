@@ -1,4 +1,4 @@
-import type { StopReason, Usage } from "@noorm/lumpi-ai";
+import type { StopReason, Usage } from "@noorm/lumi-ai";
 import "../messages.ts";
 import type { AgentMessage } from "../../types.ts";
 import type { Session } from "./session.ts";

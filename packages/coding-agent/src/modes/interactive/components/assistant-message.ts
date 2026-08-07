@@ -1,5 +1,5 @@
-import type { AssistantMessage } from "@noorm/lumpi-ai";
-import { Container, Markdown, type MarkdownTheme, Spacer, Text } from "@noorm/lumpi-tui";
+import type { AssistantMessage } from "@noorm/lumi-ai";
+import { Container, Markdown, type MarkdownTheme, Spacer, Text } from "@noorm/lumi-tui";
 import type { MarkdownTransformer } from "../../../core/extensions/types.ts";
 import { getMarkdownTheme, theme } from "../theme/theme.ts";
 import { createMarkdownTransform } from "./markdown-transform.ts";

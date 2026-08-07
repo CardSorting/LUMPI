@@ -12,10 +12,10 @@
  * - Progress tracking widget during execution
  */
 
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import type { AssistantMessage, TextContent } from "@noorm/lumpi-ai";
-import type { ExtensionAPI, ExtensionContext } from "@noorm/lumpi-coding-agent";
-import { Key } from "@noorm/lumpi-tui";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { AssistantMessage, TextContent } from "@noorm/lumi-ai";
+import type { ExtensionAPI, ExtensionContext } from "@noorm/lumi-coding-agent";
+import { Key } from "@noorm/lumi-tui";
 import { extractTodoItems, isSafeCommand, markCompletedSteps, type TodoItem } from "./utils.ts";
 
 // Tools

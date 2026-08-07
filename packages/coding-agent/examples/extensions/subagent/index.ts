@@ -16,17 +16,17 @@ import { spawn } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import type { AgentToolResult } from "@noorm/lumpi-agent-core";
-import type { Message } from "@noorm/lumpi-ai";
-import { StringEnum } from "@noorm/lumpi-ai";
+import type { AgentToolResult } from "@noorm/lumi-agent-core";
+import type { Message } from "@noorm/lumi-ai";
+import { StringEnum } from "@noorm/lumi-ai";
 import {
 	CONFIG_DIR_NAME,
 	type ExtensionAPI,
 	getAgentDir,
 	getMarkdownTheme,
 	withFileMutationQueue,
-} from "@noorm/lumpi-coding-agent";
-import { Container, Markdown, Spacer, Text } from "@noorm/lumpi-tui";
+} from "@noorm/lumi-coding-agent";
+import { Container, Markdown, Spacer, Text } from "@noorm/lumi-tui";
 import { Type } from "typebox";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.ts";
 

@@ -1,5 +1,5 @@
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import type { AssistantMessage } from "@noorm/lumpi-ai";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { AssistantMessage } from "@noorm/lumi-ai";
 import { describe, expect, it } from "vitest";
 import { buildSessionContext } from "../../../src/harness/session/context.ts";
 import type { Entry } from "../../../src/harness/session/types.ts";

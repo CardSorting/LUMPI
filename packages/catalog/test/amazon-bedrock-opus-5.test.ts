@@ -44,7 +44,7 @@ const OPUS_5_MODELS_DEV_FIXTURE = {
 					"au.anthropic.claude-opus-5",
 					"global.anthropic.claude-opus-5",
 					"jp.anthropic.claude-opus-5",
-				].map(id => [
+				].map((id) => [
 					id,
 					{
 						name: "Claude Opus 5",
@@ -77,11 +77,11 @@ describe("Amazon Bedrock Claude Opus 5", () => {
 		const allMapped = mapModelsDevToModels(OPUS_5_MODELS_DEV_FIXTURE, MODELS_DEV_PROVIDER_DESCRIPTORS);
 		// The descriptor's `tool_call !== true` filter must drop the non-tool row
 		// (and never emit a derived `eu.` variant for it) before any policy runs.
-		expect(allMapped.some(model => model.id.includes(NO_TOOL_ROW_ID))).toBe(false);
+		expect(allMapped.some((model) => model.id.includes(NO_TOOL_ROW_ID))).toBe(false);
 		const mapped = allMapped.filter(
-			model => model.provider === "amazon-bedrock" && model.id.endsWith("anthropic.claude-opus-5"),
+			(model) => model.provider === "amazon-bedrock" && model.id.endsWith("anthropic.claude-opus-5"),
 		);
-		const opus5Ids = dropUnsupportedBedrockGeoIds(mapped).map(model => model.id);
+		const opus5Ids = dropUnsupportedBedrockGeoIds(mapped).map((model) => model.id);
 
 		// Set semantics: the descriptor also derives `eu.` and `us-gov.` variants
 		// from the bare `anthropic.` row, so `eu.` legitimately arrives from both
@@ -116,7 +116,7 @@ describe("Amazon Bedrock Claude Opus 5", () => {
 			bareSpec("some-other-provider", "jp.anthropic.claude-opus-5"),
 		];
 
-		expect(dropUnsupportedBedrockGeoIds(input).map(model => model.id)).toEqual([
+		expect(dropUnsupportedBedrockGeoIds(input).map((model) => model.id)).toEqual([
 			"us.anthropic.claude-opus-5",
 			"jp.anthropic.claude-opus-4-8",
 			"jp.anthropic.claude-opus-5",

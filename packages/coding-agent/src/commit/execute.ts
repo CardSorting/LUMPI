@@ -4,7 +4,7 @@
  * wrapper that keeps a requested `--push` honest.
  */
 
-import * as git from "../utils/git";
+import * as git from "../utils/git.ts";
 
 /**
  * A commit or push failure that has already been reported to the user with a
@@ -33,7 +33,7 @@ export function abortOnGitFailure(context: string, error: git.GitCommandError, n
 	const detail = error.result.stderr.trim() || error.result.stdout.trim() || error.message;
 	const body = detail
 		.split("\n")
-		.map(line => `    ${line}`)
+		.map((line) => `    ${line}`)
 		.join("\n");
 	process.stderr.write(`✗ ${context}:\n${body}\n`);
 	if (note) process.stderr.write(`  ${note}\n`);

@@ -1,5 +1,5 @@
-import type { ApiKeyAuth, AuthCheck, OAuthAuth } from "@noorm/lumpi-ai";
-import { Container, type Focusable, fuzzyFilter, getKeybindings, Input, Spacer, TruncatedText } from "@noorm/lumpi-tui";
+import type { ApiKeyAuth, AuthCheck, OAuthAuth } from "@noorm/lumi-ai";
+import { Container, type Focusable, fuzzyFilter, getKeybindings, Input, Spacer, TruncatedText } from "@noorm/lumi-tui";
 import { theme } from "../theme/theme.ts";
 import { DynamicBorder } from "./dynamic-border.ts";
 import { rawKeyHint } from "./keybinding-hints.ts";

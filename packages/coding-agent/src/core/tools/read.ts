@@ -1,7 +1,7 @@
 import { basename, dirname, isAbsolute, relative, resolve as resolvePath, sep } from "node:path";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import type { Api, ImageContent, Model, TextContent } from "@noorm/lumpi-ai";
-import { Text } from "@noorm/lumpi-tui";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import type { Api, ImageContent, Model, TextContent } from "@noorm/lumi-ai";
+import { Text } from "@noorm/lumi-tui";
 import { constants } from "fs";
 import { access as fsAccess, readFile as fsReadFile } from "fs/promises";
 import { type Static, Type } from "typebox";

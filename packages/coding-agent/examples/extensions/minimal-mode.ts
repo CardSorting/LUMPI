@@ -16,7 +16,7 @@
  * Then use ctrl+o to toggle between minimal (collapsed) and full (expanded) views.
  */
 
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
 import {
 	createBashTool,
 	createEditTool,
@@ -25,8 +25,8 @@ import {
 	createLsTool,
 	createReadTool,
 	createWriteTool,
-} from "@noorm/lumpi-coding-agent";
-import { Text } from "@noorm/lumpi-tui";
+} from "@noorm/lumi-coding-agent";
+import { Text } from "@noorm/lumi-tui";
 import { homedir } from "os";
 
 /**

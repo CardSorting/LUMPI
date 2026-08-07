@@ -1,5 +1,5 @@
-import type { Component, Terminal, TUI } from "@noorm/lumpi-tui";
-import { Container, isViewportTUI, Text } from "@noorm/lumpi-tui";
+import type { Component, Terminal, TUI } from "@noorm/lumi-tui";
+import { Container, isViewportTUI, Text } from "@noorm/lumi-tui";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { VirtualTerminal } from "../../tui/test/virtual-terminal.ts";
 import type { TuiMode } from "../src/core/settings-manager.ts";

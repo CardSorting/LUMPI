@@ -1,4 +1,4 @@
-import type { Model } from "@noorm/lumpi-ai";
+import type { Model } from "@noorm/lumi-ai";
 import { describe, expect, test, vi } from "vitest";
 import {
 	defaultModelPerProvider,

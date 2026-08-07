@@ -9,7 +9,7 @@ import {
 import type { FetchImpl } from "@oh-my-pi/pi-catalog/types";
 
 const COREWEAVE_ENV_KEYS = ["COREWEAVE_PROJECT", "WANDB_INFERENCE_PROJECT", "WANDB_ENTITY", "WANDB_PROJECT"] as const;
-const ORIGINAL_ENV = new Map(COREWEAVE_ENV_KEYS.map(key => [key, Bun.env[key]]));
+const ORIGINAL_ENV = new Map(COREWEAVE_ENV_KEYS.map((key) => [key, Bun.env[key]]));
 
 function restoreCoreWeaveEnv(): void {
 	for (const key of COREWEAVE_ENV_KEYS) {
@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe("CoreWeave Serverless Inference provider support", () => {
 	test("registers descriptor, default model, environment key, and bundled models", () => {
-		const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === "coreweave");
+		const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "coreweave");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.defaultModel).toBe("openai/gpt-oss-120b");
 		expect(descriptor?.catalogDiscovery?.label).toBe("CoreWeave Serverless Inference");
@@ -37,7 +37,7 @@ describe("CoreWeave Serverless Inference provider support", () => {
 		expect(DEFAULT_MODEL_PER_PROVIDER.coreweave).toBe("openai/gpt-oss-120b");
 
 		const bundled = getBundledModels("coreweave");
-		expect(bundled.find(model => model.id === "openai/gpt-oss-120b")).toMatchObject({
+		expect(bundled.find((model) => model.id === "openai/gpt-oss-120b")).toMatchObject({
 			api: "openai-completions",
 			provider: "coreweave",
 			baseUrl: "https://api.inference.wandb.ai/v1",
@@ -80,7 +80,7 @@ describe("CoreWeave Serverless Inference provider support", () => {
 				project: "team/project",
 			},
 		]);
-		expect(models?.find(model => model.id === "openai/gpt-oss-120b")).toMatchObject({
+		expect(models?.find((model) => model.id === "openai/gpt-oss-120b")).toMatchObject({
 			id: "openai/gpt-oss-120b",
 			name: "GPT OSS 120B",
 			api: "openai-completions",
@@ -109,7 +109,7 @@ describe("CoreWeave Serverless Inference provider support", () => {
 			MODELS_DEV_PROVIDER_DESCRIPTORS,
 		);
 
-		expect(mapped.find(model => model.provider === "coreweave")).toMatchObject({
+		expect(mapped.find((model) => model.provider === "coreweave")).toMatchObject({
 			id: "openai/gpt-oss-120b",
 			name: "GPT OSS 120B",
 			api: "openai-completions",

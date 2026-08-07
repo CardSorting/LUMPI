@@ -7,7 +7,7 @@ LUMI is a high-velocity agentic AI coding engine synthesized from CodeMarie and 
 Install LUMI with npm:
 
 ```bash
-npm install -g --ignore-scripts @noorm/lumpi
+npm install -g --ignore-scripts @noorm/lumi
 ```
 
 `--ignore-scripts` disables dependency lifecycle scripts during install. LUMI does not require install scripts for normal npm installs.
@@ -15,10 +15,10 @@ npm install -g --ignore-scripts @noorm/lumpi
 To uninstall LUMI:
 
 ```bash
-npm uninstall -g @noorm/lumpi
+npm uninstall -g @noorm/lumi
 ```
 
-For pnpm, Yarn, or Bun installs, use the matching global remove command: `pnpm remove -g @noorm/lumpi`, `yarn global remove @noorm/lumpi`, or `bun uninstall -g @noorm/lumpi`.
+For pnpm, Yarn, or Bun installs, use the matching global remove command: `pnpm remove -g @noorm/lumi`, `yarn global remove @noorm/lumi`, or `bun uninstall -g @noorm/lumi`.
 
 Then run it in a project directory:
 

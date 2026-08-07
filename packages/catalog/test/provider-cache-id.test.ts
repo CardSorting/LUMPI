@@ -17,7 +17,7 @@ test("lightweight cache resolver matches scoped descriptor inputs", () => {
 		{ providerId: "vllm", baseUrl: "http://vllm.example:8000/v1" },
 	] as const;
 	for (const { providerId, baseUrl } of cases) {
-		const descriptor = PROVIDER_DESCRIPTORS.find(candidate => candidate.providerId === providerId);
+		const descriptor = PROVIDER_DESCRIPTORS.find((candidate) => candidate.providerId === providerId);
 		if (!descriptor) throw new Error(`Missing descriptor for ${providerId}`);
 		const config = { apiKey: "cache-test-key", baseUrl };
 		const options = descriptor.createModelManagerOptions(config);

@@ -5,7 +5,7 @@
  * from cwd and ~/.pi/agent. Model chosen from settings or first available.
  */
 
-import { createAgentSession } from "@noorm/lumpi-coding-agent";
+import { createAgentSession } from "@noorm/lumi-coding-agent";
 
 const { session } = await createAgentSession();
 

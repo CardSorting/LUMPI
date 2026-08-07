@@ -13,9 +13,9 @@
  *   pi --extension examples/extensions/custom-compaction.ts
  */
 
-import { uuidv7 } from "@noorm/lumpi-ai";
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { convertToLlm, serializeConversation } from "@noorm/lumpi-coding-agent";
+import { uuidv7 } from "@noorm/lumi-ai";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { convertToLlm, serializeConversation } from "@noorm/lumi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
 	pi.on("session_before_compact", async (event, ctx) => {

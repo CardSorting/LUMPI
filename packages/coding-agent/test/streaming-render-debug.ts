@@ -4,8 +4,8 @@
  * Run with: npx tsx test/streaming-render-debug.ts
  */
 
-import type { AssistantMessage } from "@noorm/lumpi-ai";
-import { ProcessTerminal, type TUI, TuiMainScreen } from "@noorm/lumpi-tui";
+import type { AssistantMessage } from "@noorm/lumi-ai";
+import { ProcessTerminal, type TUI, TuiMainScreen } from "@noorm/lumi-tui";
 import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";

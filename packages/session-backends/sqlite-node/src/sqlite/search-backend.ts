@@ -1,5 +1,5 @@
-import type { SessionSearch, SessionSearchHit, SessionSearchOptions } from "@noorm/lumpi-agent-core";
-import { getFileSystemResultOrThrow } from "@noorm/lumpi-agent-core";
+import type { SessionSearch, SessionSearchHit, SessionSearchOptions } from "@noorm/lumi-agent-core";
+import { getFileSystemResultOrThrow } from "@noorm/lumi-agent-core";
 import { applyMigrations } from "./migrations.ts";
 import { decodeSessionMetadata, type SessionRow } from "./storage/sessions.ts";
 import type {

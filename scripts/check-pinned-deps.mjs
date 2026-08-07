@@ -22,11 +22,11 @@ function collectPackageJsonFiles(directory) {
 }
 
 function isInternalWorkspaceDependency(name) {
-	return name.startsWith("@noorm/lumpi-") || name === "@noorm/broccolidb";
+	return name.startsWith("@noorm/") || name.startsWith("@oh-my-pi/");
 }
 
 function isNonRegistrySpecifier(specifier) {
-	return /^(?:workspace:|file:|link:|portal:|git\+|github:|git:|https?:|ssh:|git:\/\/)/.test(specifier);
+	return /^(?:workspace:|catalog:|file:|link:|portal:|git\+|github:|git:|https?:|ssh:|git:\/\/)/.test(specifier);
 }
 
 function getVersionSpecifier(specifier) {

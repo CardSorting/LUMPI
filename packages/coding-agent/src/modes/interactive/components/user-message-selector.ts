@@ -1,4 +1,4 @@
-import { type Component, Container, getKeybindings, Spacer, Text, truncateToWidth } from "@noorm/lumpi-tui";
+import { type Component, Container, getKeybindings, Spacer, Text, truncateToWidth } from "@noorm/lumi-tui";
 import { theme } from "../theme/theme.ts";
 import { DynamicBorder } from "./dynamic-border.ts";
 

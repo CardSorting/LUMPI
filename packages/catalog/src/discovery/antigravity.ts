@@ -57,34 +57,34 @@ export interface AntigravityDiscoveryApiResponse {
 	agentModelSorts?: AntigravityDiscoveryAgentModelSort[];
 }
 const AntigravityDiscoveryApiModelSchema = type({
-	"displayName?": type("unknown").pipe(value => (typeof value === "string" ? value : undefined)),
-	"supportsImages?": type("unknown").pipe(value => (typeof value === "boolean" ? value : undefined)),
-	"supportsThinking?": type("unknown").pipe(value => (typeof value === "boolean" ? value : undefined)),
-	"thinkingBudget?": type("unknown").pipe(value =>
+	"displayName?": type("unknown").pipe((value) => (typeof value === "string" ? value : undefined)),
+	"supportsImages?": type("unknown").pipe((value) => (typeof value === "boolean" ? value : undefined)),
+	"supportsThinking?": type("unknown").pipe((value) => (typeof value === "boolean" ? value : undefined)),
+	"thinkingBudget?": type("unknown").pipe((value) =>
 		typeof value === "number" && Number.isFinite(value) ? value : undefined,
 	),
-	"recommended?": type("unknown").pipe(value => (typeof value === "boolean" ? value : undefined)),
-	"maxTokens?": type("unknown").pipe(value =>
+	"recommended?": type("unknown").pipe((value) => (typeof value === "boolean" ? value : undefined)),
+	"maxTokens?": type("unknown").pipe((value) =>
 		typeof value === "number" && Number.isFinite(value) ? value : undefined,
 	),
-	"maxOutputTokens?": type("unknown").pipe(value =>
+	"maxOutputTokens?": type("unknown").pipe((value) =>
 		typeof value === "number" && Number.isFinite(value) ? value : undefined,
 	),
-	"model?": type("unknown").pipe(value => (typeof value === "string" ? value : undefined)),
-	"apiProvider?": type("unknown").pipe(value => (typeof value === "string" ? value : undefined)),
-	"modelProvider?": type("unknown").pipe(value => (typeof value === "string" ? value : undefined)),
-	"isInternal?": type("unknown").pipe(value => (typeof value === "boolean" ? value : undefined)),
-	"supportsVideo?": type("unknown").pipe(value => (typeof value === "boolean" ? value : undefined)),
+	"model?": type("unknown").pipe((value) => (typeof value === "string" ? value : undefined)),
+	"apiProvider?": type("unknown").pipe((value) => (typeof value === "string" ? value : undefined)),
+	"modelProvider?": type("unknown").pipe((value) => (typeof value === "string" ? value : undefined)),
+	"isInternal?": type("unknown").pipe((value) => (typeof value === "boolean" ? value : undefined)),
+	"supportsVideo?": type("unknown").pipe((value) => (typeof value === "boolean" ? value : undefined)),
 });
 
 const AntigravityDiscoveryAgentModelGroupSchema = type({
-	"modelIds?": type("unknown").pipe(value =>
+	"modelIds?": type("unknown").pipe((value) =>
 		Array.isArray(value) ? value.filter((modelId): modelId is string => typeof modelId === "string") : undefined,
 	),
 });
 
 const AntigravityDiscoveryAgentModelSortSchema = type({
-	"groups?": type("unknown").pipe(value => {
+	"groups?": type("unknown").pipe((value) => {
 		if (!Array.isArray(value)) return undefined;
 		const result: AntigravityDiscoveryAgentModelGroup[] = [];
 		for (const group of value) {
@@ -98,7 +98,7 @@ const AntigravityDiscoveryAgentModelSortSchema = type({
 });
 
 const AntigravityDiscoveryApiResponseSchema = type({
-	"models?": type("unknown").pipe(value => {
+	"models?": type("unknown").pipe((value) => {
 		if (typeof value !== "object" || value === null) {
 			return undefined;
 		}
@@ -114,7 +114,7 @@ const AntigravityDiscoveryApiResponseSchema = type({
 		}
 		return normalized;
 	}),
-	"agentModelSorts?": type("unknown").pipe(value => {
+	"agentModelSorts?": type("unknown").pipe((value) => {
 		if (!Array.isArray(value)) {
 			return undefined;
 		}

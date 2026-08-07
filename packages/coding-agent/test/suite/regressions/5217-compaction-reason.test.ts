@@ -1,4 +1,4 @@
-import { fauxAssistantMessage } from "@noorm/lumpi-ai";
+import { fauxAssistantMessage } from "@noorm/lumi-ai";
 import { afterEach, describe, expect, it } from "vitest";
 import type { ExtensionFactory } from "../../../src/index.ts";
 import { createHarness, type Harness } from "../harness.ts";

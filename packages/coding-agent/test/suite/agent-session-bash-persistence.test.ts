@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumpi-ai";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
 import type { BashOperations } from "../../src/core/tools/bash.ts";

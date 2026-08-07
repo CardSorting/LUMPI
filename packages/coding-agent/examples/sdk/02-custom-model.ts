@@ -4,7 +4,7 @@
  * Shows how to select a specific model and thinking level.
  */
 
-import { createAgentSession, ModelRuntime } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, ModelRuntime } from "@noorm/lumi-coding-agent";
 
 const modelRuntime = await ModelRuntime.create();
 

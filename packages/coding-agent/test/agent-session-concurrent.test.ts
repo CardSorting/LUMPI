@@ -6,7 +6,7 @@ import { createModelRegistry, getModelRuntime } from "./model-runtime-test-utils
 import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { Agent } from "@noorm/lumpi-agent-core";
+import { Agent } from "@noorm/lumi-agent-core";
 import {
 	type AssistantMessage,
 	type AssistantMessageEvent,
@@ -14,7 +14,7 @@ import {
 	getModel,
 	type ImageContent,
 	type TextContent,
-} from "@noorm/lumpi-ai/compat";
+} from "@noorm/lumi-ai/compat";
 import { Type } from "typebox";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { AgentSession } from "../src/core/agent-session.ts";

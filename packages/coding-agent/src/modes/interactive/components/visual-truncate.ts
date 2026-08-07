@@ -3,7 +3,7 @@
  * Used by both tool-execution.ts and bash-execution.ts for consistent behavior.
  */
 
-import { Text } from "@noorm/lumpi-tui";
+import { Text } from "@noorm/lumi-tui";
 
 export interface VisualTruncateResult {
 	/** The visual lines to display */

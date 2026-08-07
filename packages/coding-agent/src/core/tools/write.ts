@@ -1,5 +1,5 @@
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { Container, Text } from "@noorm/lumpi-tui";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { Container, Text } from "@noorm/lumi-tui";
 import { mkdir as fsMkdir, writeFile as fsWriteFile } from "fs/promises";
 import { dirname } from "path";
 import { type Static, Type } from "typebox";

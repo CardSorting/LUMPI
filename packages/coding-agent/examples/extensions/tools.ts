@@ -9,9 +9,9 @@
  * 2. Use /tools to open the tool selector
  */
 
-import type { ExtensionAPI, ExtensionContext, ToolInfo } from "@noorm/lumpi-coding-agent";
-import { getSettingsListTheme } from "@noorm/lumpi-coding-agent";
-import { Container, type SettingItem, SettingsList } from "@noorm/lumpi-tui";
+import type { ExtensionAPI, ExtensionContext, ToolInfo } from "@noorm/lumi-coding-agent";
+import { getSettingsListTheme } from "@noorm/lumi-coding-agent";
+import { Container, type SettingItem, SettingsList } from "@noorm/lumi-tui";
 
 // State persisted to session
 interface ToolsState {

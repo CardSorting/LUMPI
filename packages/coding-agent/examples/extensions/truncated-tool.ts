@@ -15,7 +15,7 @@
  */
 
 import { mkdtemp, writeFile } from "node:fs/promises";
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
 import {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
@@ -23,8 +23,8 @@ import {
 	type TruncationResult,
 	truncateHead,
 	withFileMutationQueue,
-} from "@noorm/lumpi-coding-agent";
-import { Text } from "@noorm/lumpi-tui";
+} from "@noorm/lumi-coding-agent";
+import { Text } from "@noorm/lumi-tui";
 import { execSync } from "child_process";
 import { tmpdir } from "os";
 import { join } from "path";

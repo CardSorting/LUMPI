@@ -1,4 +1,4 @@
-import type { RequestEnvelope } from "@noorm/lumpi-protocol";
+import type { RequestEnvelope } from "@noorm/lumi-protocol";
 import { describe, expect, test } from "vitest";
 import { collectRequests, connectClient, MemoryServer, openRemoteSession, sessionSnapshot } from "./support.ts";
 

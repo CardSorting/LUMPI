@@ -6,8 +6,8 @@ import type {
 	Provider,
 	ProviderStreamOptions,
 	RefreshModelsContext,
-} from "@noorm/lumpi-ai";
-import { stream, streamSimple } from "@noorm/lumpi-ai/compat";
+} from "@noorm/lumi-ai";
+import { stream, streamSimple } from "@noorm/lumi-ai/compat";
 import { LlamaClient, type LlamaModelInfo, llamaInferenceUrl, normalizeLlamaServerUrl } from "./client.ts";
 
 export const LLAMA_PROVIDER_ID = "llama.cpp";

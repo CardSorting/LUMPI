@@ -1,5 +1,5 @@
-import type { Api, AssistantMessage, Model, ToolCall, ToolResultMessage, UserMessage } from "@noorm/lumpi-ai";
-import { encodeServerMessage, PROTOCOL_VERSION } from "@noorm/lumpi-protocol";
+import type { Api, AssistantMessage, Model, ToolCall, ToolResultMessage, UserMessage } from "@noorm/lumi-ai";
+import { encodeServerMessage, PROTOCOL_VERSION } from "@noorm/lumi-protocol";
 import { describe, expect, test } from "vitest";
 import {
 	sanitizeProtocolDetails,

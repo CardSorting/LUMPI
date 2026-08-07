@@ -1,4 +1,4 @@
-# @noorm/lumpi-protocol
+# @noorm/lumi-protocol
 
 Runtime-neutral schemas, types, CBOR encoding, and byte-stream framing for the experimental pi protocol.
 
@@ -19,7 +19,7 @@ import {
   createServerMessageDecoder,
   encodeClientMessage,
   type ClientHello,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 
 const hello: ClientHello = {
   type: "hello",

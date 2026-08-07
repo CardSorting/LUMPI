@@ -53,8 +53,8 @@ describe("ollama provider context window discovery (issue #847)", () => {
 		const options = ollamaModelManagerOptions({ fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
 
-		const deepseek = models?.find(m => m.id === "deepseek-v4-flash:cloud");
-		const llama = models?.find(m => m.id === "llama3.2:3b");
+		const deepseek = models?.find((m) => m.id === "deepseek-v4-flash:cloud");
+		const llama = models?.find((m) => m.id === "llama3.2:3b");
 		expect(deepseek?.contextWindow).toBe(1048576);
 		expect(llama?.contextWindow).toBe(131072);
 		expect(showCalls.sort()).toEqual(["deepseek-v4-flash:cloud", "llama3.2:3b"]);
@@ -91,7 +91,7 @@ describe("ollama provider context window discovery (issue #847)", () => {
 	});
 
 	test("falls back to 128k when /api/show is unavailable", async () => {
-		const fetchMock: FetchImpl = vi.fn(async input => {
+		const fetchMock: FetchImpl = vi.fn(async (input) => {
 			const url = String(input);
 			if (url === "http://127.0.0.1:11434/v1/models") {
 				return new Response(JSON.stringify({ object: "list", data: [{ id: "mystery:1b", object: "model" }] }), {
@@ -107,7 +107,7 @@ describe("ollama provider context window discovery (issue #847)", () => {
 
 		const options = ollamaModelManagerOptions({ fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
-		const mystery = models?.find(m => m.id === "mystery:1b");
+		const mystery = models?.find((m) => m.id === "mystery:1b");
 		expect(mystery?.contextWindow).toBe(128000);
 	});
 });

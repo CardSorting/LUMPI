@@ -5,10 +5,10 @@
  * a summary of the branch being left so context isn't lost.
  */
 
-import type { AgentMessage, StreamFn } from "@noorm/lumpi-agent-core";
-import type { RetryCallbacks, RetryPolicy } from "@noorm/lumpi-ai";
-import { contentText } from "@noorm/lumpi-ai";
-import type { Model, SimpleStreamOptions, Usage } from "@noorm/lumpi-ai/compat";
+import type { AgentMessage, StreamFn } from "@noorm/lumi-agent-core";
+import type { RetryCallbacks, RetryPolicy } from "@noorm/lumi-ai";
+import { contentText } from "@noorm/lumi-ai";
+import type { Model, SimpleStreamOptions, Usage } from "@noorm/lumi-ai/compat";
 import {
 	convertToLlm,
 	createBranchSummaryMessage,

@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Renamed the package from `@noorm/lumpi-storage-sqlite-node` to `@noorm/lumpi-session-backend-sqlite-node`.
+- Renamed the package from `@noorm/lumi-storage-sqlite-node` to `@noorm/lumi-session-backend-sqlite-node`.
 - Replaced the legacy SQLite session schema and repository with the v4 lane-based `SessionRepo` contract. Existing work-in-progress databases are not migrated.
 
 ### Added

@@ -1,6 +1,6 @@
-import { Agent } from "@noorm/lumpi-agent-core";
-import { createModels } from "@noorm/lumpi-ai";
-import { anthropicProvider } from "@noorm/lumpi-ai/providers/anthropic";
+import { Agent } from "@noorm/lumi-agent-core";
+import { createModels } from "@noorm/lumi-ai";
+import { anthropicProvider } from "@noorm/lumi-ai/providers/anthropic";
 
 const models = createModels();
 models.setProvider(anthropicProvider());

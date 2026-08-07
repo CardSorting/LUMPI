@@ -5,7 +5,7 @@ import type { FetchImpl } from "@oh-my-pi/pi-catalog/types";
 describe("lm studio local provider discovery", () => {
 	test("marks native VLM models as image-capable", async () => {
 		const requestedUrls: string[] = [];
-		const fetchMock: FetchImpl = vi.fn(async input => {
+		const fetchMock: FetchImpl = vi.fn(async (input) => {
 			const url = String(input);
 			requestedUrls.push(url);
 			if (url === "http://127.0.0.1:1234/api/v0/models") {
@@ -39,8 +39,8 @@ describe("lm studio local provider discovery", () => {
 		});
 
 		const models = await lmStudioModelManagerOptions({ fetch: fetchMock }).fetchDynamicModels?.();
-		const vision = models?.find(model => model.id === "qwen/qwen3.6-27b");
-		const text = models?.find(model => model.id === "plain-llm");
+		const vision = models?.find((model) => model.id === "qwen/qwen3.6-27b");
+		const text = models?.find((model) => model.id === "plain-llm");
 
 		expect(requestedUrls).toContain("http://127.0.0.1:1234/api/v0/models");
 		expect(vision?.input).toEqual(["text", "image"]);
@@ -49,7 +49,7 @@ describe("lm studio local provider discovery", () => {
 	});
 
 	test("prefers the loaded context window over the architectural maximum", async () => {
-		const fetchMock: FetchImpl = vi.fn(async input => {
+		const fetchMock: FetchImpl = vi.fn(async (input) => {
 			const url = String(input);
 			if (url === "http://127.0.0.1:1234/api/v0/models") {
 				return new Response(
@@ -89,8 +89,8 @@ describe("lm studio local provider discovery", () => {
 		});
 
 		const models = await lmStudioModelManagerOptions({ fetch: fetchMock }).fetchDynamicModels?.();
-		const loaded = models?.find(model => model.id === "loaded-small");
-		const unloaded = models?.find(model => model.id === "unloaded");
+		const loaded = models?.find((model) => model.id === "loaded-small");
+		const unloaded = models?.find((model) => model.id === "unloaded");
 
 		expect(loaded?.contextWindow).toBe(81920);
 		expect(unloaded?.contextWindow).toBe(262144);
@@ -131,6 +131,6 @@ describe("lm studio local provider discovery", () => {
 
 		expect(openAiCatalogStartedBeforeAbort).toBe(true);
 		expect(nativeAborted).toBe(true);
-		expect(models?.find(model => model.id === "omlx-model")?.input).toEqual(["text"]);
+		expect(models?.find((model) => model.id === "omlx-model")?.input).toEqual(["text"]);
 	});
 });

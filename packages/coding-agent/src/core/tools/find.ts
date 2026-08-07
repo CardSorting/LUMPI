@@ -1,6 +1,6 @@
 import { createInterface } from "node:readline";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { Text } from "@noorm/lumpi-tui";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { Text } from "@noorm/lumi-tui";
 import { spawn } from "child_process";
 import path from "path";
 import { type Static, Type } from "typebox";

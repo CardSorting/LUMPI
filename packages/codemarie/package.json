@@ -1,5 +1,5 @@
 {
-	"name": "@noorm/lumpi-codemarie",
+	"name": "@noorm/lumi-codemarie",
 	"private": true,
 	"publisher": "earendil-works",
 	"version": "0.83.2",
@@ -55,7 +55,7 @@
 		"@anthropic-ai/sdk": "0.91.1",
 		"@google/genai": "1.52.0",
 		"@modelcontextprotocol/sdk": "1.30.0",
-		"@noorm/broccolidb": "^0.83.1",
+		"@noorm/broccolidb": "^0.83.2",
 		"@bufbuild/protobuf": "2.2.5",
 		"better-sqlite3": "12.8.0",
 		"kysely": "0.28.14",

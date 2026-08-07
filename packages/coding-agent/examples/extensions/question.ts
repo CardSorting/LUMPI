@@ -4,8 +4,8 @@
  * Escape in editor returns to options, Escape in options cancels
  */
 
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { Editor, type EditorTheme, Key, matchesKey, Text, visibleWidth, wrapTextWithAnsi } from "@noorm/lumpi-tui";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { Editor, type EditorTheme, Key, matchesKey, Text, visibleWidth, wrapTextWithAnsi } from "@noorm/lumi-tui";
 import { Type } from "typebox";
 
 interface OptionWithDesc {

@@ -4,7 +4,7 @@ import {
 	PROTOCOL_VERSION,
 	type ServerSnapshot,
 	type SessionSummary,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import type { ConnectionState } from "./connection.ts";
 import type { PiServerService } from "./types.ts";
 

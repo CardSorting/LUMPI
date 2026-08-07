@@ -42,21 +42,21 @@ describe("ai& provider support", () => {
 	});
 
 	test("registers descriptor, default model, bundled seed, and login provider", () => {
-		const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === "aiand");
+		const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "aiand");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.defaultModel).toBe("moonshotai/kimi-k2.7-code");
 		expect(descriptor?.dynamicModelsAuthoritative).toBe(true);
 		expect(DEFAULT_MODEL_PER_PROVIDER.aiand).toBe("moonshotai/kimi-k2.7-code");
 
 		const bundled = getBundledModels("aiand");
-		const defaultModel = bundled.find(model => model.id === "moonshotai/kimi-k2.7-code");
+		const defaultModel = bundled.find((model) => model.id === "moonshotai/kimi-k2.7-code");
 		expect(defaultModel).toBeDefined();
 		for (const model of bundled) {
 			expect(model.api).toBe("openai-completions");
 			expect(model.baseUrl).toBe("https://api.aiand.com/v1");
 		}
 
-		const provider = getOAuthProviders().find(item => item.id === "aiand");
+		const provider = getOAuthProviders().find((item) => item.id === "aiand");
 		expect(provider?.name).toBe("ai&");
 	});
 
@@ -101,7 +101,7 @@ describe("ai& provider support", () => {
 			}),
 		);
 
-		const gptOss = models?.find(model => model.id === "openai/gpt-oss-120b");
+		const gptOss = models?.find((model) => model.id === "openai/gpt-oss-120b");
 		expect(gptOss?.name).toBe("OpenAI GPT OSS 120B");
 		expect(gptOss?.reasoning).toBe(true);
 		expect(gptOss?.thinking?.efforts).toEqual([Effort.Low, Effort.Medium, Effort.High]);
@@ -110,7 +110,7 @@ describe("ai& provider support", () => {
 		expect(gptOss?.cost).toEqual({ input: 0.15, output: 0.6, cacheRead: 0, cacheWrite: 0 });
 		expect(gptOss?.input).toEqual(["text"]);
 
-		const gemma = models?.find(model => model.id === "google/gemma-4-31b-it");
+		const gemma = models?.find((model) => model.id === "google/gemma-4-31b-it");
 		expect(gemma?.reasoning).toBe(false);
 		expect(gemma?.thinking).toBeUndefined();
 		expect(gemma?.input).toEqual(["text", "image"]);

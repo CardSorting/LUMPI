@@ -1,4 +1,4 @@
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
 
 export default function widgetPlacementExtension(pi: ExtensionAPI) {
 	pi.on("session_start", (_event, ctx) => {

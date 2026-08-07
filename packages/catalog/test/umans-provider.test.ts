@@ -17,7 +17,7 @@ const bundledModels = modelsJson;
 describe("umans provider catalog", () => {
 	it("discovers Anthropic-route models from the public models info endpoint", async () => {
 		const requestedUrls: string[] = [];
-		const fetchImpl: FetchImpl = async input => {
+		const fetchImpl: FetchImpl = async (input) => {
 			requestedUrls.push(String(input));
 			return new Response(
 				JSON.stringify({
@@ -72,7 +72,7 @@ describe("umans provider catalog", () => {
 
 		expect(requestedUrls).toEqual(["https://api.code.umans.ai/v1/models/info"]);
 		expect(models).not.toBeNull();
-		const model = models?.find(item => item.id === "umans-coder");
+		const model = models?.find((item) => item.id === "umans-coder");
 		expect(model).toMatchObject({
 			id: "umans-coder",
 			name: "Umans Coder",
@@ -87,7 +87,7 @@ describe("umans provider catalog", () => {
 			thinking: { defaultLevel: "medium" },
 			compat: { escapeBuiltinToolNames: true },
 		});
-		const mandatoryReasoningModel = models?.find(item => item.id === "umans-kimi-k2.7");
+		const mandatoryReasoningModel = models?.find((item) => item.id === "umans-kimi-k2.7");
 		expect(mandatoryReasoningModel).toMatchObject({
 			id: "umans-kimi-k2.7",
 			reasoning: true,
@@ -95,7 +95,7 @@ describe("umans provider catalog", () => {
 			thinking: { defaultLevel: "medium", requiresEffort: true },
 			compat: { escapeBuiltinToolNames: true },
 		});
-		const glm52 = models?.find(item => item.id === "umans-glm-5.2");
+		const glm52 = models?.find((item) => item.id === "umans-glm-5.2");
 		expect(glm52).toMatchObject({
 			id: "umans-glm-5.2",
 			reasoning: true,
@@ -155,8 +155,8 @@ describe("umans provider catalog", () => {
 		if (!fetchDynamicModels) throw new Error("Umans dynamic discovery is not configured");
 
 		const models = await fetchDynamicModels();
-		const glm = models?.find(item => item.id === "umans-glm-5.2");
-		const coder = models?.find(item => item.id === "umans-coder");
+		const glm = models?.find((item) => item.id === "umans-glm-5.2");
+		const coder = models?.find((item) => item.id === "umans-coder");
 
 		expect(glm?.input).toEqual(["text"]);
 		expect(coder?.input).toEqual(["text", "image"]);
@@ -221,7 +221,7 @@ describe("umans provider catalog", () => {
 				"offline",
 			);
 
-			const model = offline.models.find(item => item.id === "umans-glm-5.2");
+			const model = offline.models.find((item) => item.id === "umans-glm-5.2");
 			expect(model?.input).toEqual(["text"]);
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });
@@ -257,7 +257,7 @@ describe("umans provider catalog", () => {
 				},
 			},
 			MODELS_DEV_PROVIDER_DESCRIPTORS,
-		).filter(model => model.provider === "umans");
+		).filter((model) => model.provider === "umans");
 
 		expect(models).toHaveLength(1);
 		expect(models[0]).toMatchObject({

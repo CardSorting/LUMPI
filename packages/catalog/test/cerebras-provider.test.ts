@@ -31,11 +31,11 @@ describe("Cerebras provider discovery", () => {
 				authorization: "Bearer cerebras-test-key",
 			},
 		]);
-		expect(models?.find(model => model.id === "gemma-4-31b")).toMatchObject({
+		expect(models?.find((model) => model.id === "gemma-4-31b")).toMatchObject({
 			provider: "cerebras",
 			api: "openai-completions",
 			input: ["text", "image"],
 		});
-		expect(models?.find(model => model.id === "llama3.1-8b")?.input).toEqual(["text"]);
+		expect(models?.find((model) => model.id === "llama3.1-8b")?.input).toEqual(["text"]);
 	});
 });

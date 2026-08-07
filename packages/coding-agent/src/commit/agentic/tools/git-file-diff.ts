@@ -1,7 +1,7 @@
-import { type } from "@oh-my-pi/omptype";
-import type { CommitAgentState } from "../../../commit/agentic/state";
-import type { CustomTool } from "../../../extensibility/custom-tools/types";
-import * as git from "../../../utils/git";
+import { Type } from "typebox";
+import { defineTool, type ToolDefinition } from "../../../core/extensions/types.ts";
+import * as git from "../../../utils/git.ts";
+import type { CommitAgentState } from "../state.ts";
 
 const TARGET_TOKENS = 30000;
 const CHARS_PER_TOKEN = 4;
@@ -131,13 +131,13 @@ function processDiffs(files: string[], diffs: Map<string, string>): { result: st
 	return { result: parts.join("\n\n"), truncatedFiles };
 }
 
-const gitFileDiffSchema = type({
-	files: type("string").describe("file to diff").array().atLeastLength(1).atMostLength(10),
-	"staged?": type("boolean").describe("use staged changes (default true)"),
+const gitFileDiffSchema = Type.Object({
+	files: Type.Array(Type.String({ description: "file to diff" }), { minItems: 1, maxItems: 10 }),
+	staged: Type.Optional(Type.Boolean({ description: "use staged changes (default true)" })),
 });
 
-export function createGitFileDiffTool(cwd: string, state: CommitAgentState): CustomTool<typeof gitFileDiffSchema> {
-	return {
+export function createGitFileDiffTool(cwd: string, state: CommitAgentState): ToolDefinition<typeof gitFileDiffSchema> {
+	return defineTool({
 		name: "git_file_diff",
 		label: "Git File Diff",
 		description: "Return the diff for specific files.",
@@ -187,5 +187,5 @@ export function createGitFileDiffTool(cwd: string, state: CommitAgentState): Cus
 				},
 			};
 		},
-	};
+	});
 }

@@ -3,9 +3,9 @@ export { Type } from "typebox";
 
 // Core only, side-effect free: no generated catalogs, no provider factories,
 // no api-registry, no OAuth implementations, no compat. Provider factories
-// live under "@noorm/lumpi-ai/providers/*", API implementations under
-// "@noorm/lumpi-ai/api/*", the old global API under
-// "@noorm/lumpi-ai/compat".
+// live under "@noorm/lumi-ai/providers/*", API implementations under
+// "@noorm/lumi-ai/api/*", the old global API under
+// "@noorm/lumi-ai/compat".
 export type { AnthropicEffort, AnthropicOptions, AnthropicThinkingDisplay } from "./api/anthropic-messages.ts";
 export type { AzureOpenAIResponsesOptions } from "./api/azure-openai-responses.ts";
 export type { BedrockOptions, BedrockThinkingDisplay } from "./api/bedrock-converse-stream.ts";

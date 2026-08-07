@@ -18,7 +18,7 @@ const cloudModel: Model<"ollama-chat"> = {
 };
 
 function createNdjsonResponse(lines: unknown[]): Response {
-	const body = `${lines.map(line => JSON.stringify(line)).join("\n")}\n`;
+	const body = `${lines.map((line) => JSON.stringify(line)).join("\n")}\n`;
 	return new Response(body, { status: 200, headers: { "Content-Type": "application/x-ndjson" } });
 }
 
@@ -42,7 +42,7 @@ test("ollama-cloud discovery does not inherit unsafe cross-provider maxTokens", 
 
 	const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 	const models = await options.fetchDynamicModels?.();
-	const model = models?.find(candidate => candidate.id === "kimi-k2.5");
+	const model = models?.find((candidate) => candidate.id === "kimi-k2.5");
 
 	expect(model?.contextWindow).toBe(128000);
 	expect(model?.maxTokens).toBe(8192);
@@ -68,7 +68,7 @@ test("ollama-cloud discovery caps discovered max-output at the enforced ceiling 
 
 	const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 	const models = await options.fetchDynamicModels?.();
-	const model = models?.find(candidate => candidate.id === "deepseek-v4-flash:0731");
+	const model = models?.find((candidate) => candidate.id === "deepseek-v4-flash:0731");
 
 	expect(model?.contextWindow).toBe(1048576);
 	// Ollama Cloud rejects output budgets above 65536, so the 1M context window
@@ -96,7 +96,7 @@ test("ollama-cloud discovery caps a capped model by its context window when belo
 
 	const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 	const models = await options.fetchDynamicModels?.();
-	const model = models?.find(candidate => candidate.id === "deepseek-v4-flash:mini");
+	const model = models?.find((candidate) => candidate.id === "deepseek-v4-flash:mini");
 
 	expect(model?.contextWindow).toBe(32768);
 	expect(model?.maxTokens).toBe(32768);
@@ -128,7 +128,7 @@ test("ollama-cloud discovery always omits max output tokens", async () => {
 
 	const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 	const models = await options.fetchDynamicModels?.();
-	const model = models?.find(candidate => candidate.id === "deepseek-v4-flash");
+	const model = models?.find((candidate) => candidate.id === "deepseek-v4-flash");
 
 	expect(model?.provider).toBe("ollama-cloud");
 	expect(model?.contextWindow).toBe(1048576);

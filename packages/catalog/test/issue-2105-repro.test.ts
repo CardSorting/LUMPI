@@ -8,7 +8,7 @@ import {
 
 describe("AIML API built-in provider (issue #2105)", () => {
 	test("registers built-in runtime descriptor with AIMLAPI_API_KEY discovery", () => {
-		const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === "aimlapi");
+		const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "aimlapi");
 
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.defaultModel).toBe("gpt-5.5-2026-04-23");
@@ -49,14 +49,14 @@ describe("AIML API built-in provider (issue #2105)", () => {
 				authorization: "Bearer aiml-test-key",
 			},
 		]);
-		expect(models?.find(model => model.id === "gpt-4o")).toMatchObject({
+		expect(models?.find((model) => model.id === "gpt-4o")).toMatchObject({
 			id: "gpt-4o",
 			name: "GPT-4o",
 			api: "openai-completions",
 			provider: "aimlapi",
 			baseUrl: "https://api.aimlapi.com/v1",
 		});
-		expect(models?.map(model => model.id)).toEqual(["claude-sonnet-4-5", "gpt-4o"]);
+		expect(models?.map((model) => model.id)).toEqual(["claude-sonnet-4-5", "gpt-4o"]);
 	});
 
 	test("filters AIML API discovery to chat-compatible model IDs", () => {

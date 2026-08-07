@@ -9,7 +9,7 @@ import {
 	type ServerEvent,
 	type ServerSnapshot,
 	type SessionSummary,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import { Connection } from "./connection.ts";
 import {
 	PiClientDisposedError,

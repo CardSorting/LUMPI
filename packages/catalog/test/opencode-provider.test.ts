@@ -22,14 +22,14 @@ const LIVE_PAID_MODEL_IDS = ["claude-opus-4-8", "gpt-5.5"] as const;
 function modelListResponse(ids: readonly string[]): Response {
 	return Response.json({
 		object: "list",
-		data: ids.map(id => ({ id, object: "model", owned_by: "opencode" })),
+		data: ids.map((id) => ({ id, object: "model", owned_by: "opencode" })),
 	});
 }
 
 describe("OpenCode provider discovery", () => {
 	test("treats the OpenCode model endpoints as authoritative catalogs", () => {
 		for (const providerId of ["opencode-go", "opencode-zen"]) {
-			const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === providerId);
+			const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === providerId);
 			expect(descriptor?.dynamicModelsAuthoritative).toBe(true);
 		}
 		expect(opencodeGoModelManagerOptions().dynamicModelsAuthoritative).toBe(true);
@@ -67,9 +67,9 @@ describe("OpenCode provider discovery", () => {
 
 			expect(freeOptions.cacheProviderId).not.toBe(paidOptions.cacheProviderId);
 			expect(freeResult.stale).toBe(false);
-			expect(freeResult.models.map(model => model.id).sort()).toEqual([...LIVE_FREE_MODEL_IDS].sort());
+			expect(freeResult.models.map((model) => model.id).sort()).toEqual([...LIVE_FREE_MODEL_IDS].sort());
 			expect(paidResult.stale).toBe(false);
-			expect(paidResult.models.map(model => model.id).sort()).toEqual([...LIVE_PAID_MODEL_IDS].sort());
+			expect(paidResult.models.map((model) => model.id).sort()).toEqual([...LIVE_PAID_MODEL_IDS].sort());
 			expect([freeFetches, paidFetches]).toEqual([1, 1]);
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });

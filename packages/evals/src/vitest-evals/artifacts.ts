@@ -30,13 +30,13 @@ export interface SourceAttachment extends TestAttachment {
 }
 
 interface PiSessionArtifact extends TestArtifactBase {
-	type: "@noorm/lumpi-evals:session";
+	type: "@noorm/lumi-evals:session";
 	runId: string;
 	attachments: [PiSessionAttachment] | [];
 }
 
 interface SourceArtifact extends TestArtifactBase {
-	type: "@noorm/lumpi-evals:source";
+	type: "@noorm/lumi-evals:source";
 	runId: string;
 	attachments: [SourceAttachment] | [];
 }
@@ -59,7 +59,7 @@ export async function recordEvalSessionArtifact(
 		throw new TypeError("Pi eval session artifact metadata is invalid.");
 	}
 	await recordArtifact(task, {
-		type: "@noorm/lumpi-evals:session",
+		type: "@noorm/lumi-evals:session",
 		runId,
 		attachments: [
 			{
@@ -78,7 +78,7 @@ export async function recordEvalSourceArtifact(
 	attachment: SourceAttachment,
 ): Promise<void> {
 	await recordArtifact(task, {
-		type: "@noorm/lumpi-evals:source",
+		type: "@noorm/lumi-evals:source",
 		runId,
 		attachments: [attachment],
 	});
@@ -92,12 +92,12 @@ export async function persistEvalArtifactReferences(
 	const references: Array<{ name: string; path: string }> = [];
 	for (const artifact of artifacts) {
 		if (
-			(artifact.type !== "@noorm/lumpi-evals:session" && artifact.type !== "@noorm/lumpi-evals:source") ||
+			(artifact.type !== "@noorm/lumi-evals:session" && artifact.type !== "@noorm/lumi-evals:source") ||
 			artifact.runId !== runId
 		) {
 			continue;
 		}
-		const category = artifact.type === "@noorm/lumpi-evals:session" ? "sessions" : "sources";
+		const category = artifact.type === "@noorm/lumi-evals:session" ? "sessions" : "sources";
 		for (const attachment of artifact.attachments) {
 			const name = basename(attachment.name);
 			if (name !== attachment.name) throw new TypeError(`Invalid eval artifact name: ${attachment.name}`);

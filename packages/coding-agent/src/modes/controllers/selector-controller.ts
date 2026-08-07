@@ -1,10 +1,10 @@
-import { type AgentToolResult, ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { CompactionOutcome } from "@oh-my-pi/pi-agent-core/compaction";
-import { PASTE_CODE_LOGIN_PROVIDERS } from "@oh-my-pi/pi-ai";
-import { getOAuthProviders } from "@oh-my-pi/pi-ai/oauth";
-import type { OAuthProvider } from "@oh-my-pi/pi-ai/oauth/types";
-import type { Component, OverlayHandle } from "@oh-my-pi/pi-tui";
-import { Loader, Spacer, setTuiTight, Text } from "@oh-my-pi/pi-tui";
+import { type AgentToolResult, ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { CompactionOutcome } from "@noorm/lumi-agent-core/compaction";
+import { PASTE_CODE_LOGIN_PROVIDERS } from "@noorm/lumi-ai";
+import { getOAuthProviders } from "@noorm/lumi-ai/oauth";
+import type { OAuthProvider } from "@noorm/lumi-ai/oauth/types";
+import type { Component, OverlayHandle } from "@noorm/lumi-tui";
+import { Loader, Spacer, setTuiTight, Text } from "@noorm/lumi-tui";
 import { getAgentDbPath, getAgentDir, getProjectDir, normalizePathForComparison } from "@oh-my-pi/pi-utils";
 import {
 	type AdvisorConfigScope,
@@ -75,10 +75,10 @@ import {
 } from "../../tools";
 import { AskTool, type AskToolDetails, type AskToolInput } from "../../tools/ask";
 import { shortenPath } from "../../tools/render-utils";
-import { ToolAbortError } from "../../tools/tool-errors";
-import { copyToClipboard } from "../../utils/clipboard";
-import { repo } from "../../utils/git";
-import { setSessionTerminalTitle } from "../../utils/title-generator";
+import { ToolAbortError } from "../../tools/tool-errors.ts";
+import { copyToClipboard } from "../../utils/clipboard.ts";
+import { repo } from "../../utils/git.ts";
+import { setSessionTerminalTitle } from "../../utils/title-generator.ts";
 import { type AdvisorConfigDeps, AdvisorConfigOverlayComponent } from "../components/advisor-config";
 import { AgentDashboard } from "../components/agent-dashboard";
 import { AgentHubOverlayComponent } from "../components/agent-hub";
@@ -140,7 +140,7 @@ export class SelectorController {
 	async #refreshOAuthProviderAuthState(): Promise<void> {
 		const oauthProviders = getOAuthProviders();
 		await Promise.all(
-			oauthProviders.map(provider =>
+			oauthProviders.map((provider) =>
 				this.ctx.session.modelRegistry
 					.getApiKeyForProvider(provider.id, this.ctx.session.sessionId)
 					.catch(() => undefined),
@@ -181,7 +181,7 @@ export class SelectorController {
 	}
 
 	showSettingsSelector(): void {
-		getAvailableThemes().then(availableThemes => {
+		getAvailableThemes().then((availableThemes) => {
 			// Fullscreen settings editor on the alternate screen: the overlay
 			// enables mouse tracking (click/hover/wheel) for its lifetime and
 			// the transcript stays untouched underneath.
@@ -196,7 +196,7 @@ export class SelectorController {
 					availableThinkingLevels: [...this.ctx.session.getAvailableThinkingLevels()],
 					thinkingLevel: this.ctx.session.thinkingLevel,
 					availableThemes,
-					providers: [...new Set(this.ctx.session.getAvailableModels().map(model => model.provider))].sort(
+					providers: [...new Set(this.ctx.session.getAvailableModels().map((model) => model.provider))].sort(
 						(a, b) => a.localeCompare(b),
 					),
 					cwd: getProjectDir(),
@@ -206,7 +206,7 @@ export class SelectorController {
 				},
 				{
 					onChange: (id, value) => this.handleSettingChange(id, value),
-					onThemePreview: async themeName => {
+					onThemePreview: async (themeName) => {
 						const result = await previewTheme(themeName);
 						if (result.success) {
 							this.ctx.statusLine.invalidate();
@@ -214,7 +214,7 @@ export class SelectorController {
 							this.ctx.ui.requestRender();
 						}
 					},
-					onStatusLinePreview: previewSettings => {
+					onStatusLinePreview: (previewSettings) => {
 						// Update status line with preview settings
 						this.ctx.statusLine.updateSettings({
 							preset: settings.get("statusLine.preset"),
@@ -303,7 +303,7 @@ export class SelectorController {
 					: undefined,
 			};
 			const overlay = new AdvisorConfigOverlayComponent(this.ctx.ui, deps, initialScope, initialDoc, {
-				loadDoc: async scope => loadWatchdogConfigFile(await resolveAdvisorConfigEditPath(scope, dirs)),
+				loadDoc: async (scope) => loadWatchdogConfigFile(await resolveAdvisorConfigEditPath(scope, dirs)),
 				save: async (scope, doc) => {
 					await saveWatchdogConfigFile(await resolveAdvisorConfigEditPath(scope, dirs), doc);
 					// Re-discover the merged roster (project + user) so the live advisors
@@ -320,7 +320,7 @@ export class SelectorController {
 				},
 				close: done,
 				requestRender: () => this.ctx.ui.requestRender(),
-				notify: message => this.ctx.showStatus(message),
+				notify: (message) => this.ctx.showStatus(message),
 				getAdvisorStats: () => this.ctx.session.getAdvisorStats().advisors,
 				getUsageReports: async () => this.ctx.session.fetchUsageReports?.() ?? null,
 				resolveActiveAccount: (provider, sessionId) =>
@@ -345,10 +345,10 @@ export class SelectorController {
 		const historyStorage = this.ctx.historyStorage;
 		if (!historyStorage) return;
 
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const component = new HistorySearchComponent(
 				historyStorage,
-				prompt => {
+				(prompt) => {
 					done();
 					this.ctx.editor.setText(prompt);
 					this.ctx.ui.requestRender();
@@ -460,22 +460,22 @@ export class SelectorController {
 				this.ctx.updateEditorBorderColor();
 				break;
 			case "personality":
-				void this.ctx.session.refreshBaseSystemPrompt().catch(err => {
+				void this.ctx.session.refreshBaseSystemPrompt().catch((err) => {
 					this.ctx.showError(`Failed to apply personality: ${err}`);
 				});
 				break;
 			case "tools.xdevDocs":
-				void this.ctx.session.refreshBaseSystemPrompt().catch(err => {
+				void this.ctx.session.refreshBaseSystemPrompt().catch((err) => {
 					this.ctx.showError(`Failed to apply xd:// prompt docs setting: ${err}`);
 				});
 				break;
 			case "memory.backend":
-				void this.ctx.session.applyMemoryBackend().catch(err => {
+				void this.ctx.session.applyMemoryBackend().catch((err) => {
 					this.ctx.showError(`Failed to apply memory backend: ${err}`);
 				});
 				break;
 			case "inspect_image.mode":
-				void this.ctx.session.applyInspectImageModeChange().catch(err => {
+				void this.ctx.session.applyInspectImageModeChange().catch((err) => {
 					this.ctx.showError(`Failed to apply vision mode: ${err}`);
 				});
 				break;
@@ -567,7 +567,7 @@ export class SelectorController {
 
 			case "tui.renderMermaid":
 				setMarkdownMermaidRendering(value as boolean);
-				this.ctx.session.refreshBaseSystemPrompt().catch(err => {
+				this.ctx.session.refreshBaseSystemPrompt().catch((err) => {
 					this.ctx.showError(`Failed to apply Mermaid rendering setting: ${err}`);
 				});
 				this.ctx.rebuildChatFromMessages();
@@ -575,7 +575,7 @@ export class SelectorController {
 				break;
 
 			case "theme": {
-				setTheme(value as string, true).then(result => {
+				setTheme(value as string, true).then((result) => {
 					this.ctx.statusLine.invalidate();
 					this.ctx.ui.requestRender();
 					this.ctx.ui.invalidate();
@@ -763,14 +763,14 @@ export class SelectorController {
 						this.ctx.showError(error instanceof Error ? error.message : String(error));
 					}
 				},
-				onPickRole: async entry => {
+				onPickRole: async (entry) => {
 					try {
 						await this.ctx.session.applyRoleModel(entry);
 						this.ctx.statusLine.invalidate();
 						this.ctx.updateEditorBorderColor();
 						this.ctx.showModelCycleTrack(
 							renderSegmentTrack(
-								quickRoleOrder.map(role => ({ label: role })),
+								quickRoleOrder.map((role) => ({ label: role })),
 								quickRoleOrder.indexOf(entry.role),
 							),
 						);
@@ -946,7 +946,7 @@ export class SelectorController {
 								fallbackRoleValue !== previousEffectiveRoleValue &&
 								exposesPersistedFallback
 							) {
-								const scopedModels = this.ctx.session.scopedModels.map(sm => sm.model);
+								const scopedModels = this.ctx.session.scopedModels.map((sm) => sm.model);
 								const availableModels =
 									scopedModels.length > 0 ? scopedModels : this.ctx.session.getAvailableModels();
 								const resolved = resolveModelRoleValue(fallbackRoleValue, availableModels, {
@@ -1012,11 +1012,11 @@ export class SelectorController {
 					}
 				},
 
-				onLoginRequest: providerId => {
+				onLoginRequest: (providerId) => {
 					done();
 					void this.#loginThenReopenModelHub(providerId);
 				},
-				onCycleOrderChange: order => {
+				onCycleOrderChange: (order) => {
 					try {
 						this.ctx.settings.set("cycleOrder", order);
 						this.ctx.showStatus(
@@ -1054,11 +1054,11 @@ export class SelectorController {
 		});
 
 		const [marketplaces, installed] = await Promise.all([mgr.listMarketplaces(), mgr.listInstalledPlugins()]);
-		const installedIds = new Set(installed.map(p => p.id));
+		const installedIds = new Set(installed.map((p) => p.id));
 
 		if (mode === "uninstall") {
 			// Show only installed plugins for uninstall
-			const items = installed.map(p => {
+			const items = installed.map((p) => {
 				const entry = p.entries[0];
 				const atIdx = p.id.lastIndexOf("@");
 				const pluginName = atIdx > 0 ? p.id.slice(0, atIdx) : p.id;
@@ -1069,7 +1069,7 @@ export class SelectorController {
 					scope: p.scope,
 				};
 			});
-			this.showSelector(done => {
+			this.showSelector((done) => {
 				const selector = new PluginSelectorComponent(marketplaces.length, items, new Set(), {
 					onSelect: async (name, marketplace, scope) => {
 						done();
@@ -1106,7 +1106,7 @@ export class SelectorController {
 			}
 		}
 
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const selector = new PluginSelectorComponent(marketplaces.length, allPlugins, installedIds, {
 				onSelect: async (name, marketplace) => {
 					done();
@@ -1138,10 +1138,10 @@ export class SelectorController {
 			return;
 		}
 
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const selector = new UserMessageSelectorComponent(
-				userMessages.map(m => ({ id: m.entryId, text: m.text })),
-				async entryId => {
+				userMessages.map((m) => ({ id: m.entryId, text: m.text })),
+				async (entryId) => {
 					const result = await this.ctx.session.branch(entryId);
 					if (result.cancelled) {
 						// Hook cancelled the branch
@@ -1177,7 +1177,7 @@ export class SelectorController {
 			this.ctx.ui.requestRender();
 		};
 		const selector = new CopySelectorComponent(targets, {
-			onPick: target => {
+			onPick: (target) => {
 				done();
 				if (target.content === undefined) return;
 				void copyToClipboard(target.content);
@@ -1205,7 +1205,7 @@ export class SelectorController {
 			return;
 		}
 
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const selector = new TreeSelectorComponent(
 				tree,
 				realLeafId,
@@ -1277,8 +1277,8 @@ export class SelectorController {
 						this.ctx.chatContainer.addChild(new Spacer(1));
 						summaryLoader = new Loader(
 							this.ctx.ui,
-							spinner => theme.fg("accent", spinner),
-							text => theme.fg("muted", text),
+							(spinner) => theme.fg("accent", spinner),
+							(text) => theme.fg("muted", text),
 							"Summarizing branch... (esc to cancel)",
 							getSymbolTheme().spinnerFrames,
 						);
@@ -1428,9 +1428,9 @@ export class SelectorController {
 				this.ctx.showWarning(`No ${sourceName} sessions found`);
 				return;
 			}
-			const foreignByPath = new Map(foreignSessions.map(session => [session.path, session]));
+			const foreignByPath = new Map(foreignSessions.map((session) => [session.path, session]));
 			sessions = foreignSessions.map(foreignSessionInfoToSessionInfo);
-			onSelectSession = async session => {
+			onSelectSession = async (session) => {
 				try {
 					await this.ctx.settings.flush();
 				} catch (error) {
@@ -1464,7 +1464,7 @@ export class SelectorController {
 			const historyMatcher = historyStorage
 				? (query: string) => historyStorage.matchingSessionIds(query)
 				: undefined;
-			onSelectSession = session => this.handleResumeSession(session.path);
+			onSelectSession = (session) => this.handleResumeSession(session.path);
 			selectorOptions = {
 				onDelete: async (session: SessionInfo) => {
 					if (!(await this.#detachActiveSessionBeforeDeletion(session.path))) {
@@ -1778,7 +1778,7 @@ export class SelectorController {
 			);
 			return;
 		}
-		const provider = getOAuthProviders().find(candidate => candidate.id === providerId);
+		const provider = getOAuthProviders().find((candidate) => candidate.id === providerId);
 		const accounts = toLogoutAccounts(providerId, authStorage.listStoredCredentials(providerId), {
 			activeIdentity: authStorage.getOAuthAccountIdentity(providerId, this.ctx.session.sessionId),
 			activeApiKey: authStorage.getCredentialOrigin(providerId)?.kind === "api_key",
@@ -1790,11 +1790,11 @@ export class SelectorController {
 			return;
 		}
 
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const selector = new LogoutAccountSelectorComponent(
 				provider?.name ?? providerId,
 				accounts,
-				account => {
+				(account) => {
 					done();
 					void this.#handleCredentialLogout(providerId, account);
 				},
@@ -1820,7 +1820,7 @@ export class SelectorController {
 		if (mode === "logout") {
 			await this.#refreshOAuthProviderAuthState();
 			const oauthProviders = getOAuthProviders();
-			const loggedInProviders = oauthProviders.filter(provider =>
+			const loggedInProviders = oauthProviders.filter((provider) =>
 				this.ctx.session.modelRegistry.authStorage.has(provider.id),
 			);
 			if (loggedInProviders.length === 0) {
@@ -1829,7 +1829,7 @@ export class SelectorController {
 			}
 		}
 
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			let selector: OAuthSelectorComponent;
 			selector = new OAuthSelectorComponent(
 				mode,
@@ -1885,7 +1885,7 @@ export class SelectorController {
 			this.ctx.showStatus("Select a model before pinning a provider account.");
 			return;
 		}
-		const provider = getOAuthProviders().find(candidate => candidate.id === accountList.provider);
+		const provider = getOAuthProviders().find((candidate) => candidate.id === accountList.provider);
 		const providerName = provider?.name ?? accountList.provider;
 		const accounts = toSessionPinAccounts(accountList.accounts);
 		if (accounts.length === 0) {
@@ -1901,11 +1901,11 @@ export class SelectorController {
 			return;
 		}
 
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const selector = new SessionAccountSelectorComponent(
 				providerName,
 				accounts,
-				account => {
+				(account) => {
 					done();
 					if (!session.pinCurrentProviderOAuthAccount(account.credentialId)) {
 						this.ctx.showWarning(`${account.label} is no longer available to pin.`);
@@ -1939,18 +1939,18 @@ export class SelectorController {
 			this.ctx.showStatus("No Codex accounts found. Use /login to add one.");
 			return;
 		}
-		if (!accounts.some(account => account.availableCount > 0)) {
+		if (!accounts.some((account) => account.availableCount > 0)) {
 			this.ctx.showStatus(
-				accounts.some(account => account.error)
+				accounts.some((account) => account.error)
 					? "No saved resets available — some accounts couldn't be reached (try /login)."
 					: "No saved rate-limit resets available to spend right now.",
 			);
 			return;
 		}
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const selector = new ResetUsageSelectorComponent(
 				accounts,
-				account => {
+				(account) => {
 					done();
 					void this.#redeemReset(account);
 				},
@@ -1987,7 +1987,7 @@ export class SelectorController {
 
 	async showDebugSelector(): Promise<void> {
 		const { DebugSelectorComponent } = await import("../../debug");
-		this.showSelector(done => {
+		this.showSelector((done) => {
 			const selector = new DebugSelectorComponent(this.ctx, done);
 			return { component: selector, focus: selector };
 		});
@@ -2025,13 +2025,13 @@ export class SelectorController {
 			registry: this.ctx.collabGuest?.agentRegistry,
 			remote: this.ctx.collabGuest?.hubRemote,
 			ui: this.ctx.ui,
-			getTool: name => this.ctx.session.getToolByName(name),
-			isBuiltInTool: name => this.ctx.session.hasBuiltInTool(name),
-			getMessageRenderer: type => this.ctx.session.extensionRunner?.getMessageRenderer(type),
+			getTool: (name) => this.ctx.session.getToolByName(name),
+			isBuiltInTool: (name) => this.ctx.session.hasBuiltInTool(name),
+			getMessageRenderer: (type) => this.ctx.session.extensionRunner?.getMessageRenderer(type),
 			cwd: this.ctx.sessionManager.getCwd(),
 			hideThinkingBlock: () => this.ctx.effectiveHideThinkingBlock,
 			proseOnlyThinking: () => this.ctx.proseOnlyThinking,
-			focusAgent: id => this.ctx.focusAgentSession(id),
+			focusAgent: (id) => this.ctx.focusAgentSession(id),
 			sessionFile: this.ctx.sessionManager.getSessionFile() ?? null,
 		});
 

@@ -94,7 +94,7 @@ function toInputCapabilities(value: unknown): ("text" | "image")[] {
 	if (!Array.isArray(value)) {
 		return ["text"];
 	}
-	const supportsImage = value.some(item => item === "image");
+	const supportsImage = value.some((item) => item === "image");
 	return supportsImage ? ["text", "image"] : ["text"];
 }
 
@@ -495,7 +495,7 @@ function createOllamaMetadataResolver(
 	fetchImpl?: FetchImpl,
 ): (modelId: string) => Promise<OllamaResolvedMetadata> {
 	const cache = new Map<string, Promise<OllamaResolvedMetadata>>();
-	return modelId => {
+	return (modelId) => {
 		const cached = cache.get(modelId);
 		if (cached) return cached;
 		const pending = (async () => {
@@ -536,7 +536,7 @@ function isLikelyOpenAIResponsesModelId(id: string, references: Map<string, Mode
 		return true;
 	}
 	const normalized = trimmed.toLowerCase();
-	if (OPENAI_NON_RESPONSES_PREFIXES.some(prefix => normalized.startsWith(prefix))) {
+	if (OPENAI_NON_RESPONSES_PREFIXES.some((prefix) => normalized.startsWith(prefix))) {
 		return false;
 	}
 	if (normalized.includes("embedding")) {
@@ -575,7 +575,7 @@ function isLikelyNanoGptTextModelId(id: string): boolean {
 	if (NANO_GPT_THINKING_SUFFIX_RE.test(normalized)) {
 		return false;
 	}
-	return !NANO_GPT_NON_TEXT_MODEL_TOKENS.some(token => normalized.includes(token));
+	return !NANO_GPT_NON_TEXT_MODEL_TOKENS.some((token) => normalized.includes(token));
 }
 
 type SimpleProviderDiscoveryHeaders = Record<string, string> | (() => Record<string, string> | undefined);
@@ -929,8 +929,8 @@ function isGeneratedOpenAIProReasoningAlias(model: ModelSpec<Api>): boolean {
  * upstream model that occupies an alias id wins and suppresses the projection.
  */
 export function projectOpenAIProReasoningAliases(models: readonly ModelSpec<Api>[]): ModelSpec<Api>[] {
-	const kept = models.filter(model => !isGeneratedOpenAIProReasoningAlias(model));
-	const ids = new Set(kept.map(model => `${model.provider}/${model.id}`));
+	const kept = models.filter((model) => !isGeneratedOpenAIProReasoningAlias(model));
+	const ids = new Set(kept.map((model) => `${model.provider}/${model.id}`));
 	const out = [...kept];
 	for (const model of kept) {
 		if (model.provider !== "openai") continue;
@@ -1103,7 +1103,7 @@ export interface NovitaModelManagerConfig {
 }
 
 function novitaArrayIncludes(value: unknown, expected: string): boolean {
-	return Array.isArray(value) && value.some(item => item === expected);
+	return Array.isArray(value) && value.some((item) => item === expected);
 }
 
 function isPublicNovitaModelId(id: string): boolean {
@@ -1375,9 +1375,9 @@ function mergeCuratedIntoModel(
  * in original order.
  */
 function applyXAIOAuthCuration(dynamic: readonly ModelSpec<"openai-responses">[]): ModelSpec<"openai-responses">[] {
-	const filtered = dynamic.filter(e => !XAI_NON_CHAT_PREFIXES.some(p => e.id.startsWith(p)));
+	const filtered = dynamic.filter((e) => !XAI_NON_CHAT_PREFIXES.some((p) => e.id.startsWith(p)));
 
-	const byId = new Map<string, ModelSpec<"openai-responses">>(filtered.map(e => [e.id, e]));
+	const byId = new Map<string, ModelSpec<"openai-responses">>(filtered.map((e) => [e.id, e]));
 	for (const curated of XAI_OAUTH_CURATED_MODELS) {
 		const existing = byId.get(curated.id);
 		if (existing) {
@@ -1398,11 +1398,11 @@ function applyXAIOAuthCuration(dynamic: readonly ModelSpec<"openai-responses">[]
 		}
 	}
 
-	const curatedIds = new Set(XAI_OAUTH_CURATED_MODELS.map(c => c.id));
-	const curatedFirst = XAI_OAUTH_CURATED_MODELS.map(c => byId.get(c.id)).filter(
+	const curatedIds = new Set(XAI_OAUTH_CURATED_MODELS.map((c) => c.id));
+	const curatedFirst = XAI_OAUTH_CURATED_MODELS.map((c) => byId.get(c.id)).filter(
 		(e): e is ModelSpec<"openai-responses"> => e !== undefined,
 	);
-	const rest = filtered.filter(e => !curatedIds.has(e.id)).map(withXaiOAuthCompatDefaults);
+	const rest = filtered.filter((e) => !curatedIds.has(e.id)).map(withXaiOAuthCompatDefaults);
 	return [...curatedFirst, ...rest];
 }
 
@@ -1426,7 +1426,7 @@ function applyXAIOAuthCuration(dynamic: readonly ModelSpec<"openai-responses">[]
  */
 export function buildXaiOAuthStaticSeed(baseUrl?: string): ModelSpec<"openai-responses">[] {
 	const resolvedBaseUrl = baseUrl ?? "https://api.x.ai/v1";
-	return XAI_OAUTH_CURATED_MODELS.map(curated => {
+	return XAI_OAUTH_CURATED_MODELS.map((curated) => {
 		// Synthesise a bare base then layer curated metadata via the same helper
 		// the dynamic overlay/inject paths use. `name: curated.id` is a sentinel
 		// the helper rewrites to `curated.name ?? base.name`, so curated.name
@@ -1497,7 +1497,7 @@ export function isLikelyAimlApiChatModelId(id: string): boolean {
 	if (!normalized) return false;
 	return (
 		!AIML_API_NON_CHAT_MODEL_ID_PATTERN.test(normalized) &&
-		!AIML_API_NON_CHAT_MODEL_ID_SUBSTRINGS.some(token => normalized.includes(token))
+		!AIML_API_NON_CHAT_MODEL_ID_SUBSTRINGS.some((token) => normalized.includes(token))
 	);
 }
 
@@ -1594,7 +1594,7 @@ export function isLikelySiliconFlowChatModelId(id: string): boolean {
 	if (!normalized) {
 		return false;
 	}
-	return !SILICONFLOW_NON_CHAT_MODEL_TOKENS.some(token => normalized.includes(token));
+	return !SILICONFLOW_NON_CHAT_MODEL_TOKENS.some((token) => normalized.includes(token));
 }
 
 /**
@@ -1621,14 +1621,14 @@ async function loadSiliconFlowModelsDevReferences(
 	providerId: "siliconflow" | "siliconflow-cn",
 	fetchImpl?: FetchImpl,
 ): Promise<Map<string, ModelSpec<"openai-completions">>> {
-	const descriptor = SILICONFLOW_MODELS_DEV_DESCRIPTORS.find(d => d.providerId === providerId);
+	const descriptor = SILICONFLOW_MODELS_DEV_DESCRIPTORS.find((d) => d.providerId === providerId);
 	if (!descriptor) {
 		return new Map();
 	}
 	try {
 		// Bounded: this enrichment is optional, so a stalled models.dev must not
 		// hold back the authoritative endpoint request that runs after it.
-		const payload = await withCatalogDiscoveryTimeout(SILICONFLOW_MODELS_DEV_REFERENCE_TIMEOUT_MS, signal =>
+		const payload = await withCatalogDiscoveryTimeout(SILICONFLOW_MODELS_DEV_REFERENCE_TIMEOUT_MS, (signal) =>
 			fetchWellKnownModels(fetchImpl, signal),
 		);
 		return createModelsDevReferenceMap<"openai-completions">(
@@ -2111,7 +2111,7 @@ export function fireworksModelManagerOptions(
 				return fetchFireworksServerlessModels({
 					baseUrl,
 					apiKey,
-					resolveReference: publicModelId =>
+					resolveReference: (publicModelId) =>
 						modelsDevReferences.get(publicModelId) ?? bundledReferences(publicModelId),
 					fetch: config?.fetch,
 				});
@@ -2433,7 +2433,7 @@ export function ollamaModelManagerOptions(config?: OllamaModelManagerConfig): Mo
 			});
 			if (openAiCompatible && openAiCompatible.length > 0) {
 				await Promise.all(
-					openAiCompatible.map(async model => {
+					openAiCompatible.map(async (model) => {
 						const metadata = await resolveMetadata(model.id);
 						model.contextWindow = metadata.contextWindow;
 						if (metadata.reasoning !== undefined) {
@@ -2471,11 +2471,11 @@ function mapOpenRouterThinking(entry: OpenAICompatibleModelRecord): ThinkingConf
 	if (!isRecord(reasoning)) return undefined;
 	const supportedEfforts = reasoning.supported_efforts;
 	if (!Array.isArray(supportedEfforts)) return undefined;
-	const efforts = THINKING_EFFORTS.filter(effort => supportedEfforts.includes(effort));
+	const efforts = THINKING_EFFORTS.filter((effort) => supportedEfforts.includes(effort));
 	if (efforts.length === 0) return undefined;
 	const defaultLevel =
 		typeof reasoning.default_effort === "string"
-			? THINKING_EFFORTS.find(effort => effort === reasoning.default_effort)
+			? THINKING_EFFORTS.find((effort) => effort === reasoning.default_effort)
 			: undefined;
 	return {
 		mode: "effort",
@@ -2904,7 +2904,8 @@ const ALIBABA_TOKEN_PLAN_NON_CHAT_MODEL_PREFIXES = [
 function isAlibabaTokenPlanChatModelId(id: string): boolean {
 	const normalized = id.trim().toLowerCase();
 	return (
-		normalized.length > 0 && !ALIBABA_TOKEN_PLAN_NON_CHAT_MODEL_PREFIXES.some(prefix => normalized.startsWith(prefix))
+		normalized.length > 0 &&
+		!ALIBABA_TOKEN_PLAN_NON_CHAT_MODEL_PREFIXES.some((prefix) => normalized.startsWith(prefix))
 	);
 }
 
@@ -2936,7 +2937,7 @@ export function alibabaTokenPlanModelManagerOptions(
 					apiKey,
 					filterModel: (_entry, model) => isAlibabaTokenPlanChatModelId(model.id),
 					mapModel: (_entry, defaults) => {
-						const reference = ALIBABA_TOKEN_PLAN_STATIC_MODELS.find(model => model.id === defaults.id);
+						const reference = ALIBABA_TOKEN_PLAN_STATIC_MODELS.find((model) => model.id === defaults.id);
 						if (reference) {
 							return {
 								...reference,
@@ -3055,7 +3056,7 @@ function mapKimiThinking(entry: OpenAICompatibleModelRecord): ThinkingConfig | u
 	if (!isRecord(raw) || raw.support !== true) return undefined;
 	const validEfforts = raw.valid_efforts;
 	if (!Array.isArray(validEfforts)) return undefined;
-	const efforts = THINKING_EFFORTS.filter(effort => validEfforts.includes(effort));
+	const efforts = THINKING_EFFORTS.filter((effort) => validEfforts.includes(effort));
 	if (efforts.length === 0) return undefined;
 
 	const thinking: ThinkingConfig = { mode: "effort", efforts };
@@ -3063,7 +3064,7 @@ function mapKimiThinking(entry: OpenAICompatibleModelRecord): ThinkingConfig | u
 		thinking.requiresEffort = true;
 	}
 	if (typeof raw.default_effort === "string") {
-		const defaultLevel = THINKING_EFFORTS.find(effort => effort === raw.default_effort);
+		const defaultLevel = THINKING_EFFORTS.find((effort) => effort === raw.default_effort);
 		if (defaultLevel !== undefined && efforts.includes(defaultLevel)) {
 			thinking.defaultLevel = defaultLevel;
 		}
@@ -3193,7 +3194,7 @@ function getLmStudioCapabilityNames(value: unknown): string[] {
 	if (!Array.isArray(value)) {
 		return [];
 	}
-	return value.flatMap(item => (typeof item === "string" ? [item.toLowerCase()] : []));
+	return value.flatMap((item) => (typeof item === "string" ? [item.toLowerCase()] : []));
 }
 
 function getLmStudioNativeInput(entry: Record<string, unknown>): ("text" | "image")[] {
@@ -3300,7 +3301,7 @@ export function lmStudioModelManagerOptions(
 			if (!nativeMetadata) {
 				return models;
 			}
-			return models.map(model => {
+			return models.map((model) => {
 				const metadata = nativeMetadata.get(model.id);
 				if (!metadata) {
 					return model;
@@ -3362,7 +3363,7 @@ function toSyntheticStringList(value: unknown): readonly string[] {
  * leak any stale reference ladder past the wire vocabulary.
  */
 function resolveSyntheticThinking(wireEfforts: readonly string[]): ThinkingConfig | undefined {
-	const efforts = THINKING_EFFORTS.filter(effort => wireEfforts.includes(effort));
+	const efforts = THINKING_EFFORTS.filter((effort) => wireEfforts.includes(effort));
 	const wireHasNone = wireEfforts.includes(SYNTHETIC_WIRE_EFFORT_NONE);
 	if (efforts.length === 0) {
 		return wireHasNone
@@ -3416,7 +3417,7 @@ export function syntheticModelManagerOptions(
 	const apiKey = config?.apiKey;
 	const baseUrl = config?.baseUrl ?? "https://api.synthetic.new/openai/v1";
 	const references = new Map(
-		(getBundledModels("synthetic") as Model<"openai-completions">[]).map(model => [model.id, toModelSpec(model)]),
+		(getBundledModels("synthetic") as Model<"openai-completions">[]).map((model) => [model.id, toModelSpec(model)]),
 	);
 	return {
 		providerId: "synthetic",
@@ -3789,7 +3790,7 @@ export const BEDROCK_MANTLE_STATIC_MODELS: readonly ModelSpec<"openai-responses"
 ];
 
 const BEDROCK_MANTLE_MODEL_BY_ID: Partial<Record<string, ModelSpec<"openai-responses">>> = Object.fromEntries(
-	BEDROCK_MANTLE_STATIC_MODELS.map(model => [model.id, model]),
+	BEDROCK_MANTLE_STATIC_MODELS.map((model) => [model.id, model]),
 );
 
 export function bedrockMantleModelManagerOptions(
@@ -3988,8 +3989,8 @@ export const SAKANA_FUGU_STATIC_MODELS: readonly ModelSpec<"openai-responses">[]
 	),
 ];
 
-const SAKANA_FUGU_STATIC_MODEL_BY_ID = new Map(SAKANA_FUGU_STATIC_MODELS.map(model => [model.id, model] as const));
-const SAKANA_FUGU_STATIC_MODEL_IDS = SAKANA_FUGU_STATIC_MODELS.map(model => model.id);
+const SAKANA_FUGU_STATIC_MODEL_BY_ID = new Map(SAKANA_FUGU_STATIC_MODELS.map((model) => [model.id, model] as const));
+const SAKANA_FUGU_STATIC_MODEL_IDS = SAKANA_FUGU_STATIC_MODELS.map((model) => model.id);
 
 export interface SakanaModelManagerConfig {
 	apiKey?: string;
@@ -4109,11 +4110,11 @@ export const AIAND_STATIC_MODELS: readonly ModelSpec<"openai-completions">[] = [
 	createAiandStaticModel("zai-org/glm-5.1", "GLM 5.1", { input: 1.4, output: 4.4 }, 202_752, ["text"]),
 ];
 
-const AIAND_STATIC_MODEL_IDS = AIAND_STATIC_MODELS.map(model => model.id);
+const AIAND_STATIC_MODEL_IDS = AIAND_STATIC_MODELS.map((model) => model.id);
 
 function mapAiandThinking(entry: OpenAICompatibleModelRecord): ThinkingConfig | undefined {
 	const efforts = Array.isArray(entry.reasoning_efforts)
-		? entry.reasoning_efforts.flatMap(value =>
+		? entry.reasoning_efforts.flatMap((value) =>
 				typeof value === "string" && AIAND_EFFORT_BY_WIRE_VALUE[value] ? [AIAND_EFFORT_BY_WIRE_VALUE[value]] : [],
 			)
 		: [];
@@ -4459,7 +4460,7 @@ function toNonEmptyString(value: unknown): string | undefined {
 
 function extractLiteLLMRichEntries(payload: unknown): LiteLLMRichModelEntry[] | null {
 	if (Array.isArray(payload)) {
-		return payload.flatMap(entry => (isRecord(entry) ? [entry] : []));
+		return payload.flatMap((entry) => (isRecord(entry) ? [entry] : []));
 	}
 	if (!isRecord(payload)) {
 		return null;
@@ -4528,7 +4529,7 @@ function getSupportedOpenAIParams(entry: LiteLLMRichModelEntry): string[] | unde
 	if (!Array.isArray(value)) {
 		return undefined;
 	}
-	return value.flatMap(item => (typeof item === "string" ? [item] : []));
+	return value.flatMap((item) => (typeof item === "string" ? [item] : []));
 }
 
 function isLiteLLMUnusableSentinelPlaceholder(entry: LiteLLMRichModelEntry): boolean {
@@ -4608,7 +4609,7 @@ function mapLiteLLMRichEntry<TApi extends Api>(
 			: supportsFunctionCalling === false
 				? false
 				: supportedOpenAIParams !== undefined
-					? supportedOpenAIParams.some(param =>
+					? supportedOpenAIParams.some((param) =>
 							["tools", "tool_choice", "functions", "function_call"].includes(param),
 						)
 					: reference?.supportsTools;
@@ -4792,7 +4793,7 @@ export async function fetchLiteLLMRichModels<TApi extends Api>(
 			return null;
 		}
 		return Array.from(deduped.values())
-			.map(entry => entry.model)
+			.map((entry) => entry.model)
 			.sort((left, right) => left.id.localeCompare(right.id));
 	};
 	if (options.signal !== undefined) {
@@ -5276,7 +5277,7 @@ export function githubCopilotModelManagerOptions(config?: GithubCopilotModelMana
 				}
 				// Append synthesized tiers; a real upstream id always wins over a
 				// local variant with the same id.
-				const takenIds = new Set(models.map(model => model.id));
+				const takenIds = new Set(models.map((model) => model.id));
 				for (const variant of longContextVariants) {
 					if (takenIds.has(variant.id)) {
 						continue;
@@ -5314,12 +5315,12 @@ export function anthropicModelManagerOptions(
 		providerId: "anthropic",
 		modelsDev: {
 			fetch: () => fetchWellKnownModels(config?.fetch),
-			map: payload => mapAnthropicModelsDev(payload, baseUrl),
+			map: (payload) => mapAnthropicModelsDev(payload, baseUrl),
 		},
 		...(apiKey && {
 			fetchDynamicModels: async () => {
 				const modelsDevModels = await fetchWellKnownModels(config?.fetch)
-					.then(payload => mapAnthropicModelsDev(payload, baseUrl))
+					.then((payload) => mapAnthropicModelsDev(payload, baseUrl))
 					.catch(() => []);
 				const references = buildAnthropicReferenceMap(modelsDevModels);
 				return (
@@ -5493,8 +5494,8 @@ const BEDROCK_US_PREFIXES = [
 ];
 
 function bedrockCrossRegionId(id: string): string {
-	if (BEDROCK_GLOBAL_PREFIXES.some(p => id.startsWith(p))) return `global.${id}`;
-	if (BEDROCK_US_PREFIXES.some(p => id.startsWith(p))) return `us.${id}`;
+	if (BEDROCK_GLOBAL_PREFIXES.some((p) => id.startsWith(p))) return `global.${id}`;
+	if (BEDROCK_US_PREFIXES.some((p) => id.startsWith(p))) return `us.${id}`;
 	return id;
 }
 
@@ -5528,7 +5529,7 @@ function createOpenCodeApiResolution(
 	// - anthropic-messages → bare basePath (the Anthropic client appends /v1/messages)
 	const baseUrlForApi = (api: Api): string => (api === "anthropic-messages" ? basePath : completionsBaseUrl);
 	const overrideRules: ApiResolutionRule[] = Object.entries(idOverrides).map(([id, api]) => ({
-		matches: modelId => modelId === id,
+		matches: (modelId) => modelId === id,
 		resolved: { api, baseUrl: baseUrlForApi(api) },
 	}));
 	return {
@@ -5592,7 +5593,7 @@ const COPILOT_DEFAULT_RESOLUTION = {
 
 const COPILOT_API_RESOLUTION_RULES: readonly ApiResolutionRule[] = [
 	{
-		matches: modelId => COPILOT_ANTHROPIC_MODEL_PATTERN.test(modelId),
+		matches: (modelId) => COPILOT_ANTHROPIC_MODEL_PATTERN.test(modelId),
 		resolved: { api: "anthropic-messages", baseUrl: COPILOT_BASE_URL },
 	},
 	{
@@ -5734,7 +5735,7 @@ const MODELS_DEV_PROVIDER_DESCRIPTORS_CORE: readonly ModelsDevProviderDescriptor
 	openAiCompletionsDescriptor("togetherai", "together", "https://api.together.xyz/v1"),
 	// --- CoreWeave Serverless Inference ---
 	openAiCompletionsDescriptor("wandb", "coreweave", "https://api.inference.wandb.ai/v1", {
-		transformModel: model => {
+		transformModel: (model) => {
 			if (!model.id.startsWith("openai/gpt-oss-")) {
 				return model;
 			}
@@ -5911,7 +5912,7 @@ const MODELS_DEV_PROVIDER_DESCRIPTORS_SPECIALIZED: readonly ModelsDevProviderDes
 		filterModel: filterActiveToolCallModels,
 		resolveApi: (modelId, raw) =>
 			resolveApiByRules(modelId, raw, COPILOT_API_RESOLUTION_RULES, COPILOT_DEFAULT_RESOLUTION),
-		transformModel: model => {
+		transformModel: (model) => {
 			// compat only applies to openai-completions models
 			if (model.api === "openai-completions") {
 				return {
@@ -5941,7 +5942,7 @@ const MODELS_DEV_PROVIDER_DESCRIPTORS_SPECIALIZED: readonly ModelsDevProviderDes
 	openAiCompletionsDescriptor("synthetic", "synthetic", "https://api.synthetic.new/openai/v1"),
 	// --- Venice AI ---
 	openAiCompletionsDescriptor("venice", "venice", "https://api.venice.ai/api/v1", {
-		transformModel: model => {
+		transformModel: (model) => {
 			const maxTokens = clampKimiK27CodeMaxTokens(model.id, model.maxTokens);
 			return maxTokens === model.maxTokens ? model : { ...model, maxTokens };
 		},
@@ -5973,7 +5974,7 @@ const MODELS_DEV_PROVIDER_DESCRIPTORS_SPECIALIZED: readonly ModelsDevProviderDes
 	// --- ZenMux ---
 	openAiCompletionsDescriptor("zenmux", "zenmux", ZENMUX_OPENAI_BASE_URL, {
 		filterModel: filterActiveToolCallModels,
-		resolveApi: modelId => {
+		resolveApi: (modelId) => {
 			if (modelId.startsWith("anthropic/")) {
 				return { api: "anthropic-messages" as const, baseUrl: ZENMUX_ANTHROPIC_BASE_URL };
 			}

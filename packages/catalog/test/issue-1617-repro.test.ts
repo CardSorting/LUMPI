@@ -26,8 +26,8 @@ const OPENCODE_ZEN_BASE = "https://opencode.ai/zen/v1";
 const OPENCODE_GO_BASE = "https://opencode.ai/zen/go/v1";
 
 describe("opencode-zen/-go resolver routes MiniMax M3 to openai-completions (issue #1617)", () => {
-	const zenDescriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find(d => d.providerId === "opencode-zen");
-	const goDescriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find(d => d.providerId === "opencode-go");
+	const zenDescriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find((d) => d.providerId === "opencode-zen");
+	const goDescriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find((d) => d.providerId === "opencode-go");
 
 	// Per upstream stencil.so (verified 2026-06-02 against
 	// https://stencil.so/api.json["opencode"].models and
@@ -40,7 +40,7 @@ describe("opencode-zen/-go resolver routes MiniMax M3 to openai-completions (iss
 	describe("opencode-zen", () => {
 		test.each([["minimax-m3"], ["minimax-m3-free"]])(
 			"%s resolves to openai-completions on /v1/chat/completions",
-			modelId => {
+			(modelId) => {
 				const resolved = zenDescriptor?.resolveApi?.(modelId, npmAnthropic);
 				expect(resolved).toEqual({ api: "openai-completions", baseUrl: OPENCODE_ZEN_BASE });
 			},
@@ -50,7 +50,7 @@ describe("opencode-zen/-go resolver routes MiniMax M3 to openai-completions (iss
 	describe("opencode-go", () => {
 		test.each([["minimax-m3"], ["minimax-m3-free"]])(
 			"%s resolves to openai-completions on /v1/chat/completions",
-			modelId => {
+			(modelId) => {
 				const resolved = goDescriptor?.resolveApi?.(modelId, npmAnthropic);
 				expect(resolved).toEqual({ api: "openai-completions", baseUrl: OPENCODE_GO_BASE });
 			},
@@ -80,7 +80,7 @@ describe("opencode-zen/-go resolver routes MiniMax M3 to openai-completions (iss
 
 		const options = opencodeZenModelManagerOptions({ apiKey: "opencode-test-key", fetch: mockFetch });
 		const models = await options.fetchDynamicModels?.();
-		const m3 = models?.find(model => model.id === "minimax-m3-free");
+		const m3 = models?.find((model) => model.id === "minimax-m3-free");
 
 		expect(requestedUrl).toBe("https://opencode.ai/zen/v1/models");
 		expect(m3?.api).toBe("openai-completions");
@@ -110,7 +110,7 @@ describe("opencode-zen/-go resolver routes MiniMax M3 to openai-completions (iss
 
 		const options = opencodeGoModelManagerOptions({ apiKey: "opencode-test-key", fetch: mockFetch });
 		const models = await options.fetchDynamicModels?.();
-		const m3 = models?.find(model => model.id === "minimax-m3");
+		const m3 = models?.find((model) => model.id === "minimax-m3");
 
 		expect(requestedUrl).toBe("https://opencode.ai/zen/go/v1/models");
 		expect(m3?.api).toBe("openai-completions");

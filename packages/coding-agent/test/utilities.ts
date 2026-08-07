@@ -6,10 +6,10 @@ import { createModelRegistry, getModelRuntime } from "./model-runtime-test-utils
 import { chmodSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { Agent } from "@noorm/lumpi-agent-core";
-import type { OAuthCredentials } from "@noorm/lumpi-ai";
-import { getModel, streamSimple } from "@noorm/lumpi-ai/compat";
-import { builtinProviders } from "@noorm/lumpi-ai/providers/all";
+import { Agent } from "@noorm/lumi-agent-core";
+import type { OAuthCredentials } from "@noorm/lumi-ai";
+import { getModel, streamSimple } from "@noorm/lumi-ai/compat";
+import { builtinProviders } from "@noorm/lumi-ai/providers/all";
 import { AgentSession } from "../src/core/agent-session.ts";
 import { AuthStorage } from "../src/core/auth-storage.ts";
 import { createEventBus } from "../src/core/event-bus.ts";

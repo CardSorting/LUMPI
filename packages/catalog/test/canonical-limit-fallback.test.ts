@@ -24,7 +24,7 @@ function spec(overrides: {
 }
 
 function find(models: ModelSpec<Api>[], provider: Provider, id: string): ModelSpec<Api> {
-	const model = models.find(m => m.provider === provider && m.id === id);
+	const model = models.find((m) => m.provider === provider && m.id === id);
 	if (!model) throw new Error(`missing ${provider}/${id}`);
 	return model;
 }

@@ -2,8 +2,8 @@
  * Hello Tool - Minimal custom tool example
  */
 
-import { Type } from "@noorm/lumpi-ai";
-import { defineTool, type ExtensionAPI } from "@noorm/lumpi-coding-agent";
+import { Type } from "@noorm/lumi-ai";
+import { defineTool, type ExtensionAPI } from "@noorm/lumi-coding-agent";
 
 const helloTool = defineTool({
 	name: "hello",

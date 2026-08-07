@@ -1,6 +1,6 @@
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import type { AssistantMessage, Usage } from "@noorm/lumpi-ai/compat";
-import { getModel } from "@noorm/lumpi-ai/compat";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { AssistantMessage, Usage } from "@noorm/lumi-ai/compat";
+import { getModel } from "@noorm/lumi-ai/compat";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { beforeEach, describe, expect, it } from "vitest";

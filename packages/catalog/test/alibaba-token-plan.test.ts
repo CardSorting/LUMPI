@@ -11,7 +11,7 @@ import { serializeAlibabaTokenPlanCredential } from "@oh-my-pi/pi-catalog/wire/a
 
 describe("QwenCloud Token Plan provider", () => {
 	test("ships the documented Individual text-model allowlist", () => {
-		expect(ALIBABA_TOKEN_PLAN_STATIC_MODELS.map(model => model.id)).toEqual([
+		expect(ALIBABA_TOKEN_PLAN_STATIC_MODELS.map((model) => model.id)).toEqual([
 			"qwen3.8-max-preview",
 			"qwen3.7-max",
 			"qwen3.7-plus",
@@ -37,7 +37,7 @@ describe("QwenCloud Token Plan provider", () => {
 			},
 		});
 
-		expect(ALIBABA_TOKEN_PLAN_STATIC_MODELS.find(model => model.id === "glm-5.2")?.thinking?.efforts).toEqual([
+		expect(ALIBABA_TOKEN_PLAN_STATIC_MODELS.find((model) => model.id === "glm-5.2")?.thinking?.efforts).toEqual([
 			Effort.Minimal,
 			Effort.Low,
 			Effort.Medium,
@@ -91,7 +91,7 @@ describe("QwenCloud Token Plan provider", () => {
 
 		expect(requestedUrl).toBe(`${ALIBABA_TOKEN_PLAN_BASE_URL}/models`);
 		expect(authorization).toBe("Bearer sk-sp-test");
-		expect(models?.map(model => model.id)).toEqual([
+		expect(models?.map((model) => model.id)).toEqual([
 			"deepseek-v3.2",
 			"deepseek-v4-flash",
 			"deepseek-v4-flash-0731",
@@ -120,10 +120,10 @@ describe("QwenCloud Token Plan provider", () => {
 			["MiniMax-M2.5", 196_608, 32_768],
 		] as const;
 		for (const [id, contextWindow, maxTokens] of expectedLimits) {
-			expect(models?.find(model => model.id === id)).toMatchObject({ contextWindow, maxTokens });
+			expect(models?.find((model) => model.id === id)).toMatchObject({ contextWindow, maxTokens });
 		}
 		for (const id of ["deepseek-v4-flash", "deepseek-v4-flash-0731"]) {
-			expect(models?.find(model => model.id === id)).toMatchObject({
+			expect(models?.find((model) => model.id === id)).toMatchObject({
 				reasoning: true,
 				thinking: {
 					mode: "effort",
@@ -131,12 +131,12 @@ describe("QwenCloud Token Plan provider", () => {
 				},
 			});
 		}
-		expect(models?.find(model => model.id === "future-chat-model")).toMatchObject({
+		expect(models?.find((model) => model.id === "future-chat-model")).toMatchObject({
 			id: "future-chat-model",
 			contextWindow: null,
 			maxTokens: null,
 		});
-		expect(models?.find(model => model.id === "qwen3.7-plus")).toMatchObject({
+		expect(models?.find((model) => model.id === "qwen3.7-plus")).toMatchObject({
 			id: "qwen3.7-plus",
 			provider: "alibaba-token-plan",
 			name: "Qwen3.7 Plus",
@@ -148,7 +148,7 @@ describe("QwenCloud Token Plan provider", () => {
 
 	test("routes discovery to the credential's region when it is China (Beijing)", async () => {
 		let requestedUrl = "";
-		const fetchMock: FetchImpl = input => {
+		const fetchMock: FetchImpl = (input) => {
 			requestedUrl = String(input);
 			return Promise.resolve(Response.json({ data: [{ id: "qwen3.7-plus", owned_by: "qwencloud" }] }));
 		};
@@ -184,7 +184,7 @@ describe("QwenCloud Token Plan provider", () => {
 	});
 
 	test("uses Token Plan-specific environment keys and authoritative discovery", () => {
-		const descriptor = CATALOG_PROVIDERS.find(provider => provider.id === "alibaba-token-plan");
+		const descriptor = CATALOG_PROVIDERS.find((provider) => provider.id === "alibaba-token-plan");
 		expect(descriptor).toMatchObject({
 			defaultModel: "qwen3.7-plus",
 			envVars: ["ALIBABA_TOKEN_PLAN_API_KEY", "BAILIAN_TOKEN_PLAN_API_KEY"],

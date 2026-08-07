@@ -1,4 +1,4 @@
-import type { JsonValue, ProtocolErrorCode } from "@noorm/lumpi-protocol";
+import type { JsonValue, ProtocolErrorCode } from "@noorm/lumi-protocol";
 
 export type PiServerOperationErrorCode = Extract<
 	ProtocolErrorCode,

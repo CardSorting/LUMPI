@@ -1,5 +1,5 @@
-import { SessionError } from "@noorm/lumpi-agent-core";
-import { uuidv7 } from "@noorm/lumpi-ai";
+import { SessionError } from "@noorm/lumi-agent-core";
+import { uuidv7 } from "@noorm/lumi-ai";
 import {
 	copyBranchEntriesThroughSeq,
 	deleteBranchEntries,

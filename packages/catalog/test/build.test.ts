@@ -646,7 +646,7 @@ describe("OpenRouter model discovery", () => {
 				"online",
 			);
 
-			const model = online.models.find(candidate => candidate.id === staticModel.id);
+			const model = online.models.find((candidate) => candidate.id === staticModel.id);
 			expect(model?.api).toBe("openrouter");
 			expect(model?.provider).toBe("openrouter");
 			expect(model?.compat.isOpenRouterHost).toBe(true);
@@ -675,7 +675,7 @@ describe("OpenRouter model discovery", () => {
 				}),
 		});
 		const specs = await options.fetchDynamicModels?.();
-		const spec = specs?.find(model => model.id === "deepseek/deepseek-v4-flash-0731");
+		const spec = specs?.find((model) => model.id === "deepseek/deepseek-v4-flash-0731");
 		if (!spec) throw new Error("Expected discovered DeepSeek V4 Flash 0731 model");
 
 		expect(buildModel(spec).thinking).toEqual({
@@ -754,7 +754,7 @@ describe("model cache spec round trip", () => {
 				},
 				"offline",
 			);
-			const model = offline.models.find(candidate => candidate.id === spec.id);
+			const model = offline.models.find((candidate) => candidate.id === spec.id);
 			expect(model?.compat.supportsDeveloperRole).toBe(true);
 			expect(model?.compat.isOpenRouterHost).toBe(false);
 			expect(model?.compatConfig).toEqual(sparse);
@@ -841,16 +841,16 @@ describe("model cache spec round trip", () => {
 				.get("computer-use-cache-test");
 			db.close();
 			const persisted = JSON.parse(row?.models ?? "[]") as Array<Record<string, unknown>>;
-			expect(persisted.find(model => model.id === direct.id)).not.toHaveProperty("supportsComputerUse");
-			expect(persisted.find(model => model.id === proxy.id)).not.toHaveProperty("supportsComputerUse");
-			expect(persisted.find(model => model.id === explicitTrue.id)?.supportsComputerUse).toBe(true);
-			expect(persisted.find(model => model.id === explicitFalse.id)?.supportsComputerUse).toBe(false);
+			expect(persisted.find((model) => model.id === direct.id)).not.toHaveProperty("supportsComputerUse");
+			expect(persisted.find((model) => model.id === proxy.id)).not.toHaveProperty("supportsComputerUse");
+			expect(persisted.find((model) => model.id === explicitTrue.id)?.supportsComputerUse).toBe(true);
+			expect(persisted.find((model) => model.id === explicitFalse.id)?.supportsComputerUse).toBe(false);
 
 			const offline = await resolveProviderModels<"openai-responses">(
 				{ providerId: "computer-use-cache-test", staticModels: [], cacheDbPath: dbPath },
 				"offline",
 			);
-			const byId = new Map(offline.models.map(model => [model.id, model]));
+			const byId = new Map(offline.models.map((model) => [model.id, model]));
 			const cachedDirect = byId.get(direct.id);
 			const cachedProxy = byId.get(proxy.id);
 			const cachedExplicitTrue = byId.get(explicitTrue.id);
@@ -916,11 +916,11 @@ describe("model cache spec round trip", () => {
 				"offline",
 			);
 
-			const sameId = offline.models.find(candidate => candidate.id === updatedStatic.id);
+			const sameId = offline.models.find((candidate) => candidate.id === updatedStatic.id);
 			expect(sameId?.contextWindow).toBe(256_000);
 			expect(sameId?.maxTokens).toBe(32_000);
 
-			const cacheOnly = offline.models.find(candidate => candidate.id === cachedOnly.id);
+			const cacheOnly = offline.models.find((candidate) => candidate.id === cachedOnly.id);
 			expect(cacheOnly?.contextWindow).toBe(96_000);
 			expect(cacheOnly?.maxTokens).toBe(6_000);
 		} finally {
@@ -968,13 +968,13 @@ describe("model cache spec round trip", () => {
 
 			currentTime++;
 			const recovered = await resolveProviderModels(options, "online-if-uncached");
-			expect(recovered.models.map(model => model.id)).toEqual([recoveredModel.id]);
+			expect(recovered.models.map((model) => model.id)).toEqual([recoveredModel.id]);
 			expect(recovered.stale).toBe(false);
 			expect(fetches).toBe(2);
 
 			currentTime++;
 			const cached = await resolveProviderModels(options, "online-if-uncached");
-			expect(cached.models.map(model => model.id)).toEqual([recoveredModel.id]);
+			expect(cached.models.map((model) => model.id)).toEqual([recoveredModel.id]);
 			expect(cached.stale).toBe(false);
 			expect(fetches).toBe(2);
 		} finally {
@@ -995,7 +995,7 @@ describe("model cache spec round trip", () => {
 		};
 		try {
 			const populated = await resolveProviderModels(options, "online");
-			expect(populated.models.map(candidate => candidate.id)).toEqual([model.id]);
+			expect(populated.models.map((candidate) => candidate.id)).toEqual([model.id]);
 			expect(populated.stale).toBe(false);
 
 			discoveredModels = [];
@@ -1114,16 +1114,16 @@ describe("model cache spec round trip", () => {
 				{ ...options, fetchDynamicModels: async () => [base, variant] },
 				"online",
 			);
-			expect(online.models.find(candidate => candidate.id === "sol-1m")).toBeDefined();
+			expect(online.models.find((candidate) => candidate.id === "sol-1m")).toBeDefined();
 
 			const offline = await resolveProviderModels<"openai-completions">(
 				{ ...options, fetchDynamicModels: async () => null },
 				"offline",
 			);
-			const restored = offline.models.find(candidate => candidate.id === "sol-1m");
+			const restored = offline.models.find((candidate) => candidate.id === "sol-1m");
 			expect(restored).toBeDefined();
 			expect(restored?.headers).toEqual(headers);
-			expect(offline.models.find(candidate => candidate.id === "sol")?.headers).toEqual(headers);
+			expect(offline.models.find((candidate) => candidate.id === "sol")?.headers).toEqual(headers);
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });
 		}
@@ -1157,10 +1157,10 @@ describe("model cache spec round trip", () => {
 
 			const refreshed = await resolveProviderModels<"openai-completions">(options, "online-if-uncached");
 			expect(fetches).toBe(1);
-			expect(refreshed.models.find(candidate => candidate.id === alias.id)?.headers).toEqual(customHeaders);
+			expect(refreshed.models.find((candidate) => candidate.id === alias.id)?.headers).toEqual(customHeaders);
 
 			const offline = await resolveProviderModels<"openai-completions">(options, "offline");
-			expect(offline.models.find(candidate => candidate.id === alias.id)).toBeUndefined();
+			expect(offline.models.find((candidate) => candidate.id === alias.id)).toBeUndefined();
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });
 		}
@@ -1195,7 +1195,7 @@ describe("model cache spec round trip", () => {
 				{ providerId: "variant-cache-test", staticModels: [base], cacheDbPath: dbPath },
 				"offline",
 			);
-			const restored = offline.models.find(candidate => candidate.id === "sol-1m");
+			const restored = offline.models.find((candidate) => candidate.id === "sol-1m");
 			expect(restored).toBeDefined();
 			expect(restored?.headers).toEqual(headers);
 		} finally {

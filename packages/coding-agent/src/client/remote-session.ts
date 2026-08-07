@@ -1,4 +1,4 @@
-import type { ConnectionState, ConnectionStateChange, PiClient, SessionLease, Unsubscribe } from "@noorm/lumpi-client";
+import type { ConnectionState, ConnectionStateChange, PiClient, SessionLease, Unsubscribe } from "@noorm/lumi-client";
 import type {
 	ModelMetadata,
 	ModelRef,
@@ -8,7 +8,7 @@ import type {
 	SessionSummary,
 	ThinkingLevel,
 	TranscriptItem,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import {
 	applyTranscriptProgress,
 	applyTranscriptSnapshot,

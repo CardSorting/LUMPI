@@ -1,7 +1,7 @@
 import { join } from "node:path";
-import type { SessionMetadata, SessionRepo } from "@noorm/lumpi-agent-core";
-import { NodeExecutionEnv } from "@noorm/lumpi-agent-core/node";
-import { createSessionBackendConformance, type SessionBackendFixture } from "@noorm/lumpi-agent-core/session/testing";
+import type { SessionMetadata, SessionRepo } from "@noorm/lumi-agent-core";
+import { NodeExecutionEnv } from "@noorm/lumi-agent-core/node";
+import { createSessionBackendConformance, type SessionBackendFixture } from "@noorm/lumi-agent-core/session/testing";
 import { describe, it } from "vitest";
 import { createNodeSqliteFactory, type SqliteSessionMetadata, SqliteSessionRepository } from "../src/index.ts";
 import { createTempDir } from "./test-utils.ts";

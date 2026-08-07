@@ -1,4 +1,4 @@
-import type { Api, Model, ProviderHeaders } from "@noorm/lumpi-ai";
+import type { Api, Model, ProviderHeaders } from "@noorm/lumi-ai";
 import type { SettingsManager } from "./settings-manager.ts";
 import { isInstallTelemetryEnabled } from "./telemetry.ts";
 

@@ -1,7 +1,7 @@
-import type { AssistantMessage } from "@oh-my-pi/pi-ai";
+import type { AssistantMessage } from "@noorm/lumi-ai";
 import { prompt } from "@oh-my-pi/pi-utils";
 import btwUserPrompt from "../../prompts/system/btw-user.md" with { type: "text" };
-import { copyToClipboard } from "../../utils/clipboard";
+import { copyToClipboard } from "../../utils/clipboard.ts";
 import { BtwPanelComponent } from "../components/btw-panel";
 import type { InteractiveModeContext } from "../types";
 
@@ -182,7 +182,7 @@ export class BtwController {
 			const promptText = prompt.render(btwUserPrompt, { question: request.question });
 			const { replyText, assistantMessage } = await this.ctx.session.runEphemeralTurn({
 				promptText,
-				onTextDelta: delta => {
+				onTextDelta: (delta) => {
 					if (this.#isActiveRequest(request)) {
 						request.component.appendText(delta);
 					}

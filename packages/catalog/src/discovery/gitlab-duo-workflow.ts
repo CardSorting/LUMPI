@@ -54,13 +54,13 @@ const ProjectRootNamespaceQuery = `query omp_gitlabDuoWorkflowProjectRootNamespa
   }
 }`;
 
-const resilientString = type("unknown").pipe(value => {
+const resilientString = type("unknown").pipe((value) => {
 	if (value === undefined) return undefined;
 	const parsed = type("string")(value);
 	return parsed instanceof type.errors ? undefined : parsed;
 });
 
-const resilientUnknownArray = type("unknown").pipe(value => {
+const resilientUnknownArray = type("unknown").pipe((value) => {
 	if (value === undefined || value === null) return value;
 	const parsed = type("unknown[]")(value);
 	return parsed instanceof type.errors ? [] : parsed;
@@ -166,7 +166,7 @@ export async function fetchGitLabDuoWorkflowModels(
 	if (modelRefs.length === 0) {
 		return null;
 	}
-	return modelRefs.map(model => buildGitLabDuoWorkflowModelSpec(model, baseUrl, selection.rootNamespaceId));
+	return modelRefs.map((model) => buildGitLabDuoWorkflowModelSpec(model, baseUrl, selection.rootNamespaceId));
 }
 
 export function buildGitLabDuoWorkflowModelSpec(
@@ -206,7 +206,7 @@ async function selectGitLabDuoWorkflowNamespace(
 	config: GitLabDuoWorkflowDiscoveryConfig,
 ): Promise<GitLabDuoWorkflowNamespaceSelectionWithModels> {
 	const baseUrl = normalizeGitLabBaseUrl(config.baseUrl);
-	const selection = await selectGitLabDuoWorkflowCandidate(config, baseUrl, candidate =>
+	const selection = await selectGitLabDuoWorkflowCandidate(config, baseUrl, (candidate) =>
 		validateNamespaceCandidate(config, baseUrl, candidate),
 	);
 	if (selection) {
@@ -509,7 +509,7 @@ async function fetchTopLevelGroupNamespaceCandidates(
 		nextPage = nonEmptyHeader(response.headers.get("x-next-page"));
 	}
 	candidates.sort((left, right) => Number(right.preferred) - Number(left.preferred));
-	return candidates.map(candidate => ({
+	return candidates.map((candidate) => ({
 		rootNamespaceId: candidate.rootNamespaceId,
 		...(candidate.namespacePath ? { namespacePath: candidate.namespacePath } : {}),
 		source: candidate.source,
@@ -552,7 +552,7 @@ function parseAvailability(value: unknown): GitLabDuoWorkflowAvailability | null
 	if (parsed instanceof type.errors) return null;
 	return {
 		defaultModel: parseModelRef(parsed.defaultModel),
-		selectableModels: (parsed.selectableModels ?? []).flatMap(model => {
+		selectableModels: (parsed.selectableModels ?? []).flatMap((model) => {
 			const parsedModel = parseModelRef(model);
 			return parsedModel ? [parsedModel] : [];
 		}),

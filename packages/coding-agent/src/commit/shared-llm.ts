@@ -1,11 +1,18 @@
-import type { AssistantMessage } from "@oh-my-pi/pi-ai";
-import { type as t, validateToolCall } from "@oh-my-pi/pi-ai";
-import type { ChangelogCategory, ConventionalAnalysis } from "./types";
-import { extractTextContent, extractToolCall, normalizeAnalysis, parseJsonPayload } from "./utils";
+import type { AssistantMessage, Tool } from "@noorm/lumi-ai";
+import { validateToolCall } from "@noorm/lumi-ai/compat";
+import { Type } from "typebox";
+import type { ChangelogCategory, ConventionalAnalysis } from "./types.ts";
+import { extractTextContent, extractToolCall, normalizeAnalysis, parseJsonPayload } from "./utils.ts";
 
-const changelogCategoryLiteral = t(
-	"'Added' | 'Changed' | 'Fixed' | 'Deprecated' | 'Removed' | 'Security' | 'Breaking Changes'",
-);
+const changelogCategoryLiteral = Type.Union([
+	Type.Literal("Added"),
+	Type.Literal("Changed"),
+	Type.Literal("Fixed"),
+	Type.Literal("Deprecated"),
+	Type.Literal("Removed"),
+	Type.Literal("Security"),
+	Type.Literal("Breaking Changes"),
+]);
 
 /**
  * Shared arktype schema for the `create_conventional_analysis` tool used by
@@ -13,24 +20,34 @@ const changelogCategoryLiteral = t(
  * are identical across phases — only the surrounding tool `description`
  * differs to reflect the input the phase is summarizing.
  */
-const detailItem = t({
-	text: "string",
-	"changelog_category?": changelogCategoryLiteral,
-	"user_visible?": "boolean",
+const detailItem = Type.Object({
+	text: Type.String(),
+	changelog_category: Type.Optional(changelogCategoryLiteral),
+	user_visible: Type.Optional(Type.Boolean()),
 });
 
-export const conventionalAnalysisParameters = t({
-	type: "'feat' | 'fix' | 'refactor' | 'docs' | 'test' | 'chore' | 'style' | 'perf' | 'build' | 'ci' | 'revert'",
-	scope: t("string").or("null"),
-	details: detailItem.array(),
-	issue_refs: "string[]",
+export const conventionalAnalysisParameters = Type.Object({
+	type: Type.Union([
+		Type.Literal("feat"),
+		Type.Literal("fix"),
+		Type.Literal("refactor"),
+		Type.Literal("docs"),
+		Type.Literal("test"),
+		Type.Literal("chore"),
+		Type.Literal("style"),
+		Type.Literal("perf"),
+		Type.Literal("build"),
+		Type.Literal("ci"),
+		Type.Literal("revert"),
+	]),
+	scope: Type.Union([Type.String(), Type.Null()]),
+	details: Type.Array(detailItem),
+	issue_refs: Type.Array(Type.String()),
 });
 
-export interface ConventionalAnalysisTool {
+export type ConventionalAnalysisTool = Tool<typeof conventionalAnalysisParameters> & {
 	name: "create_conventional_analysis";
-	description: string;
-	parameters: typeof conventionalAnalysisParameters;
-}
+};
 
 /**
  * Build a `create_conventional_analysis` tool descriptor. Phase-specific
@@ -61,7 +78,7 @@ export function parseConventionalAnalysisResponse(
 ): ConventionalAnalysis {
 	const toolCall = extractToolCall(message, tool.name);
 	if (toolCall) {
-		const parsed = validateToolCall([tool], toolCall) as any;
+		const parsed = validateToolCall([tool], toolCall) as unknown as ParsedConventionalAnalysis;
 		return normalizeAnalysis(parsed);
 	}
 	const text = extractTextContent(message);

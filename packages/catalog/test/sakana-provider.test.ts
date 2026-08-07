@@ -46,7 +46,7 @@ describe("Sakana AI provider support", () => {
 	});
 
 	test("registers descriptor, default model, bundled Fugu models, and login provider", () => {
-		const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === "sakana");
+		const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "sakana");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.defaultModel).toBe("fugu");
 		expect(descriptor?.catalogDiscovery?.envVars).toEqual(["SAKANA_API_KEY", "FUGU_API_KEY"]);
@@ -54,10 +54,10 @@ describe("Sakana AI provider support", () => {
 		expect(DEFAULT_MODEL_PER_PROVIDER.sakana).toBe("fugu");
 
 		const bundled = getBundledModels("sakana");
-		expect(bundled.map(model => model.id).sort()).toEqual(["fugu", "fugu-ultra", "fugu-ultra-20260615"]);
-		expect(bundled.find(model => model.id === "fugu")?.contextWindow).toBe(1_000_000);
-		expect(bundled.find(model => model.id === "fugu-ultra")?.contextWindow).toBe(1_000_000);
-		expect(bundled.find(model => model.id === "fugu-ultra-20260615")?.contextWindow).toBe(1_000_000);
+		expect(bundled.map((model) => model.id).sort()).toEqual(["fugu", "fugu-ultra", "fugu-ultra-20260615"]);
+		expect(bundled.find((model) => model.id === "fugu")?.contextWindow).toBe(1_000_000);
+		expect(bundled.find((model) => model.id === "fugu-ultra")?.contextWindow).toBe(1_000_000);
+		expect(bundled.find((model) => model.id === "fugu-ultra-20260615")?.contextWindow).toBe(1_000_000);
 		for (const model of bundled) {
 			expect(model.api).toBe("openai-responses");
 			expect(model.thinking?.efforts).toEqual([Effort.High, Effort.Max]);
@@ -66,7 +66,7 @@ describe("Sakana AI provider support", () => {
 			expect((model.compat as ResolvedOpenAIResponsesCompat).streamIdleTimeoutMs).toBe(0);
 		}
 
-		const provider = getOAuthProviders().find(item => item.id === "sakana");
+		const provider = getOAuthProviders().find((item) => item.id === "sakana");
 		expect(provider?.name).toBe("Sakana AI");
 	});
 
@@ -92,8 +92,8 @@ describe("Sakana AI provider support", () => {
 				headers: expect.objectContaining({ Authorization: "Bearer sakana-key" }),
 			}),
 		);
-		expect(models?.map(model => model.id)).toEqual(["fugu", "fugu-next", "fugu-ultra"]);
-		const fuguNext = models?.find(model => model.id === "fugu-next");
+		expect(models?.map((model) => model.id)).toEqual(["fugu", "fugu-next", "fugu-ultra"]);
+		const fuguNext = models?.find((model) => model.id === "fugu-next");
 		expect(fuguNext?.reasoning).toBe(true);
 		expect(fuguNext?.thinking?.efforts).toEqual([Effort.High, Effort.Max]);
 		expect(fuguNext?.thinking?.effortMap).toBeUndefined();
@@ -141,7 +141,7 @@ describe("Sakana AI provider support", () => {
 				"offline",
 			);
 
-			expect(offline.models.find(model => model.id === "fugu")?.contextWindow).toBe(1_000_000);
+			expect(offline.models.find((model) => model.id === "fugu")?.contextWindow).toBe(1_000_000);
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });
 		}

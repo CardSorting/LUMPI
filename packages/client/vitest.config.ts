@@ -9,7 +9,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			"@noorm/lumpi-protocol": fileURLToPath(new URL("../protocol/src/index.ts", import.meta.url)),
+			"@noorm/lumi-protocol": fileURLToPath(new URL("../protocol/src/index.ts", import.meta.url)),
 		},
 	},
 });

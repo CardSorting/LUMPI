@@ -843,7 +843,7 @@ function reconcileRetiredRouting<TSpec extends VariantSpecLike>(
 
 	const offTarget = family.routing.off;
 	const fallbackWireId =
-		offTarget !== undefined && !retired.has(offTarget) ? offTarget : family.members.find(id => !retired.has(id));
+		offTarget !== undefined && !retired.has(offTarget) ? offTarget : family.members.find((id) => !retired.has(id));
 	const next: TSpec = { ...spec };
 	if (routingRetired && routing !== undefined) {
 		const nextRouting: Partial<Record<Effort | "off", string>> = {};
@@ -947,7 +947,7 @@ export function collapseEffortVariants<TSpec extends VariantSpecLike>(
 			existing !== undefined && existingCollapsed && retired !== undefined
 				? reconcileRetiredRouting(existing, family, retired)
 				: existing;
-		const rawPresent = family.members.filter(id => byId.has(id) && !(id === family.id && existingCollapsed));
+		const rawPresent = family.members.filter((id) => byId.has(id) && !(id === family.id && existingCollapsed));
 		if (rawPresent.length === 0) {
 			// Inert (no members) or already collapsed (pass-through). A stale
 			// family.id-keyed snapshot is refreshed in place from the current
@@ -974,7 +974,7 @@ export function collapseEffortVariants<TSpec extends VariantSpecLike>(
 			continue;
 		}
 
-		const memberSpecs = rawPresent.map(id => byId.get(id) as TSpec);
+		const memberSpecs = rawPresent.map((id) => byId.get(id) as TSpec);
 		const presentSet = new Set(rawPresent);
 		const routing: Partial<Record<Effort | "off", string>> = {};
 		let hasRouting = false;
@@ -996,14 +996,14 @@ export function collapseEffortVariants<TSpec extends VariantSpecLike>(
 
 		// A family that routes efforts to a live thinking backing id reasons
 		// even when upstream metadata forgot to mark the members.
-		const reasoning = memberSpecs.some(spec => spec.reasoning) || hasEffortRoute;
+		const reasoning = memberSpecs.some((spec) => spec.reasoning) || hasEffortRoute;
 		const thinking: ThinkingConfig = { ...family.thinking };
 		if (hasRouting) thinking.effortRouting = routing;
 		if (family.suppressWhenOff) thinking.suppressWhenOff = true;
 
 		const input: ("text" | "image")[] = [];
-		if (memberSpecs.some(spec => spec.input.includes("text"))) input.push("text");
-		if (memberSpecs.some(spec => spec.input.includes("image"))) input.push("image");
+		if (memberSpecs.some((spec) => spec.input.includes("text"))) input.push("text");
+		if (memberSpecs.some((spec) => spec.input.includes("image"))) input.push("image");
 
 		const collapsed: TSpec = {
 			...(memberSpecs[0] as TSpec),
@@ -1011,13 +1011,13 @@ export function collapseEffortVariants<TSpec extends VariantSpecLike>(
 			name: family.name,
 			reasoning,
 			input,
-			contextWindow: maxOrNull(memberSpecs.map(spec => spec.contextWindow)),
-			maxTokens: maxOrNull(memberSpecs.map(spec => spec.maxTokens)),
+			contextWindow: maxOrNull(memberSpecs.map((spec) => spec.contextWindow)),
+			maxTokens: maxOrNull(memberSpecs.map((spec) => spec.maxTokens)),
 		};
 		// The default wire id is the highest-priority live member; omit when it
 		// equals the logical id (bare/thinking pairs) — `resolveWireModelId`
 		// falls back. Retired members never become the default.
-		const defaultWireId = rawPresent.find(id => !retired?.has(id)) ?? rawPresent[0];
+		const defaultWireId = rawPresent.find((id) => !retired?.has(id)) ?? rawPresent[0];
 		if (defaultWireId === family.id) {
 			if (usedAbsentEffortRoute) {
 				collapsed.requestModelId = defaultWireId as string;
@@ -1112,7 +1112,7 @@ export function collapseEffortVariantsAcrossProviders<TSpec extends VariantSpecL
 export function collapseBuiltModelVariants<TApi extends Api>(models: readonly Model<TApi>[]): Model<TApi>[] {
 	const collapsed = collapseEffortVariantsAcrossProviders(models);
 	const inputRefs = new Set<Model<TApi>>(models);
-	return collapsed.map(model =>
+	return collapsed.map((model) =>
 		// Rebuild from a projected spec (sparse compatConfig) instead of resolved compat.
 		inputRefs.has(model) ? model : buildModel({ ...model, compat: model.compatConfig } as unknown as ModelSpec<TApi>),
 	);

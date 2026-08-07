@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
 import type { Socket } from "node:net";
-import { encodeServerMessage, type ServerHelloError, ServerMessageDecoder } from "@noorm/lumpi-protocol";
+import { encodeServerMessage, type ServerHelloError, ServerMessageDecoder } from "@noorm/lumi-protocol";
 import { expect, test, vi } from "vitest";
 import { UnixByteConnection } from "../src/transports/unix/listener.ts";
 

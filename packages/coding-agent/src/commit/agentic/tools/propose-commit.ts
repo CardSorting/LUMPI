@@ -1,5 +1,10 @@
-import { type } from "@oh-my-pi/omptype";
-import type { CommitAgentState } from "../../../commit/agentic/state";
+import { Type } from "typebox";
+import { defineTool, type ToolDefinition } from "../../../core/extensions/types.ts";
+import * as git from "../../../utils/git.ts";
+import { validateAnalysis } from "../../analysis/validation.ts";
+import type { CommitType, ConventionalAnalysis, ConventionalDetail } from "../../types.ts";
+import { normalizeDetails } from "../../utils.ts";
+import type { CommitAgentState } from "../state.ts";
 import {
 	capDetails,
 	MAX_DETAIL_ITEMS,
@@ -7,20 +12,15 @@ import {
 	SUMMARY_MAX_CHARS,
 	validateSummaryRules,
 	validateTypeConsistency,
-} from "../../../commit/agentic/validation";
-import { validateAnalysis } from "../../../commit/analysis/validation";
-import type { CommitType, ConventionalAnalysis, ConventionalDetail } from "../../../commit/types";
-import { normalizeDetails } from "../../../commit/utils";
-import type { CustomTool } from "../../../extensibility/custom-tools/types";
-import * as git from "../../../utils/git";
-import { commitTypeSchema, detailSchema } from "./schemas.js";
+} from "../validation.ts";
+import { commitTypeSchema, detailSchema } from "./schemas.ts";
 
-const proposeCommitSchema = type({
+const proposeCommitSchema = Type.Object({
 	type: commitTypeSchema,
-	scope: type("string").or("null"),
-	summary: "string",
-	details: detailSchema.array(),
-	issue_refs: "string[]",
+	scope: Type.Union([Type.String(), Type.Null()]),
+	summary: Type.String(),
+	details: Type.Array(detailSchema),
+	issue_refs: Type.Array(Type.String()),
 });
 
 interface ProposalResponse {
@@ -36,8 +36,11 @@ interface ProposalResponse {
 	};
 }
 
-export function createProposeCommitTool(cwd: string, state: CommitAgentState): CustomTool<typeof proposeCommitSchema> {
-	return {
+export function createProposeCommitTool(
+	cwd: string,
+	state: CommitAgentState,
+): ToolDefinition<typeof proposeCommitSchema> {
+	return defineTool({
 		name: "propose_commit",
 		label: "Propose Commit",
 		description: "Submit the final conventional commit proposal.",
@@ -105,5 +108,5 @@ export function createProposeCommitTool(cwd: string, state: CommitAgentState): C
 				details: response,
 			};
 		},
-	};
+	});
 }

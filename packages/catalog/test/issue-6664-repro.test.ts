@@ -49,7 +49,7 @@ describe("#6664 github-copilot reference-less Claude model", () => {
 		const options = githubCopilotModelManagerOptions({ apiKey: "copilot-test-key", fetch: copilotFetch() });
 		const specs = (await options.fetchDynamicModels?.()) ?? [];
 
-		const base = specs.find(m => m.id === "claude-opus-5");
+		const base = specs.find((m) => m.id === "claude-opus-5");
 		expect(base).toBeDefined();
 		expect(base?.api).toBe("anthropic-messages");
 		expect(base?.reasoning).toBe(true);
@@ -61,7 +61,7 @@ describe("#6664 github-copilot reference-less Claude model", () => {
 		expect(built.thinking?.mode).toBe("anthropic-adaptive");
 		expect(built.thinking?.efforts).toEqual([Effort.Low, Effort.Medium, Effort.High, Effort.XHigh, Effort.Max]);
 
-		const variant = specs.find(m => m.id === "claude-opus-5-1m");
+		const variant = specs.find((m) => m.id === "claude-opus-5-1m");
 		expect(variant).toBeDefined();
 		expect(variant?.requestModelId).toBe("claude-opus-5");
 		expect(variant?.contextWindow).toBe(1_000_000);
@@ -77,14 +77,14 @@ describe("#6664 github-copilot reference-less Claude model", () => {
 			});
 
 			const online = await manager.refresh("online");
-			expect(online.models.find(m => m.id === "claude-opus-5")).toBeDefined();
-			expect(online.models.find(m => m.id === "claude-opus-5-1m")).toBeDefined();
+			expect(online.models.find((m) => m.id === "claude-opus-5")).toBeDefined();
+			expect(online.models.find((m) => m.id === "claude-opus-5-1m")).toBeDefined();
 
 			// The header-restore path drops unrestorable dynamic-only models on
 			// offline reads; the trusted COPILOT_API_HEADERS constant must survive.
 			const offline = await manager.refresh("offline");
-			const opus5 = offline.models.find(m => m.id === "claude-opus-5");
-			const opus5_1m = offline.models.find(m => m.id === "claude-opus-5-1m");
+			const opus5 = offline.models.find((m) => m.id === "claude-opus-5");
+			const opus5_1m = offline.models.find((m) => m.id === "claude-opus-5-1m");
 			expect(opus5).toBeDefined();
 			expect(opus5?.reasoning).toBe(true);
 			expect(opus5?.headers?.["X-GitHub-Api-Version"]).toBe("2026-06-01");
@@ -109,7 +109,7 @@ describe("#6664 github-copilot reference-less Claude model", () => {
 		const options = githubCopilotModelManagerOptions({ apiKey: "copilot-test-key", fetch: fetchMock });
 		const specs = (await options.fetchDynamicModels?.()) ?? [];
 
-		const base = specs.find(m => m.id === "claude-sonnet-3.5");
+		const base = specs.find((m) => m.id === "claude-sonnet-3.5");
 		expect(base).toBeDefined();
 		expect(base?.api).toBe("anthropic-messages");
 		expect(base?.reasoning).toBe(false);

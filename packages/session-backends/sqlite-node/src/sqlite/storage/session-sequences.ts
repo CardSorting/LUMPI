@@ -1,4 +1,4 @@
-import { SessionError } from "@noorm/lumpi-agent-core";
+import { SessionError } from "@noorm/lumi-agent-core";
 import type { SqliteDatabase } from "../types.ts";
 
 export function createSequence(db: SqliteDatabase, sessionId: string, nextSeq = 1) {

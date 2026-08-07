@@ -10,7 +10,7 @@ const STANDARD_HOST = "api.xiaomimimo.com";
 describe("issue-772: Xiaomi MiMo token-plan (tp-) keys", () => {
 	it("loginXiaomi validates tp- keys against the SGP token-plan host first", async () => {
 		const seen: string[] = [];
-		const fetchMock: FetchImpl = async input => {
+		const fetchMock: FetchImpl = async (input) => {
 			seen.push(String(input));
 			return new Response("{}", { status: 200 });
 		};
@@ -30,7 +30,7 @@ describe("issue-772: Xiaomi MiMo token-plan (tp-) keys", () => {
 
 	it("xiaomiModelManagerOptions discovers models from the SGP token-plan host when given a tp- key", async () => {
 		const seen: string[] = [];
-		const fetchMock: FetchImpl = async input => {
+		const fetchMock: FetchImpl = async (input) => {
 			seen.push(String(input));
 			return new Response(JSON.stringify({ data: [] }), {
 				status: 200,
@@ -49,7 +49,7 @@ describe("issue-772: Xiaomi MiMo token-plan (tp-) keys", () => {
 
 	it("xiaomiModelManagerOptions still uses the standard host for sk- keys", async () => {
 		const seen: string[] = [];
-		const fetchMock: FetchImpl = async input => {
+		const fetchMock: FetchImpl = async (input) => {
 			seen.push(String(input));
 			return new Response(JSON.stringify({ data: [] }), {
 				status: 200,
@@ -87,7 +87,7 @@ describe("issue-772: Xiaomi MiMo token-plan (tp-) keys", () => {
 			fetch: fetchMock,
 		}).fetchDynamicModels?.();
 
-		expect(models?.map(model => model.id)).toEqual(["mimo-v2.5"]);
+		expect(models?.map((model) => model.id)).toEqual(["mimo-v2.5"]);
 	});
 
 	it("does not bundle Xiaomi ASR-only models", () => {

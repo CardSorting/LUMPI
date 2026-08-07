@@ -9,7 +9,7 @@ import type {
 	RetryPolicy,
 	SimpleStreamOptions,
 	Usage,
-} from "@noorm/lumpi-ai";
+} from "@noorm/lumi-ai";
 import type { AgentMessage, AgentTool, QueueMode, ThinkingLevel } from "../types.ts";
 import type { CompactionSettings } from "./compaction/compaction.ts";
 import { type Result as ResultValue, TaggedError } from "./result.ts";

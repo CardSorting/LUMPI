@@ -140,9 +140,9 @@ function restoreCachedModelHeaders<TApi extends Api>(
 	}
 	const omittedIds = new Set(headerOmittedModelIds);
 	const unrestorableIds = new Set(unrestorableHeaderModelIds);
-	const staticById = new Map(staticModels.map(model => [model.id, model]));
+	const staticById = new Map(staticModels.map((model) => [model.id, model]));
 	const unresolvedModelIds = new Set<string>();
-	const restored = models.map(model => {
+	const restored = models.map((model) => {
 		if (!omittedIds.has(model.id)) return model;
 		const unrestorable = unrestorableIds.has(model.id);
 		// Current unrestorable markers prove that neither same-id nor request-model
@@ -196,7 +196,7 @@ export async function resolveProviderModels<TApi extends Api = Api, TModelsDevPa
 		cache?.legacyHeaderRestoreMarkers ?? false,
 		restorableHeaderFallback,
 	);
-	const usableCachedModels = restoredCache.models.filter(model => !restoredCache.unresolvedModelIds.has(model.id));
+	const usableCachedModels = restoredCache.models.filter((model) => !restoredCache.unresolvedModelIds.has(model.id));
 	const cacheHasUnresolvedHeaders = restoredCache.unresolvedModelIds.size > 0;
 	const dynamicModelsAuthoritative = options.dynamicModelsAuthoritative ?? false;
 	const cacheDropIds = options.dropCachedModelIdsOnStaticMismatch;
@@ -211,7 +211,7 @@ export async function resolveProviderModels<TApi extends Api = Api, TModelsDevPa
 	const cacheNeedsModelMigration =
 		!cacheFingerprintMatches &&
 		cacheDropIds !== undefined &&
-		usableCachedModels.some(model => cacheDropIds.includes(model.id));
+		usableCachedModels.some((model) => cacheDropIds.includes(model.id));
 	const hasUsableFreshCache =
 		(cache?.fresh ?? false) &&
 		!cacheHasUnresolvedHeaders &&
@@ -300,7 +300,7 @@ export async function resolveProviderModels<TApi extends Api = Api, TModelsDevPa
 				restorableHeaderFallback,
 			);
 			const latestUsableCacheModels = latestRestoredCache.models.filter(
-				model => !latestRestoredCache.unresolvedModelIds.has(model.id),
+				(model) => !latestRestoredCache.unresolvedModelIds.has(model.id),
 			);
 			const fallbackSnapshotModels = collapseBuiltModelVariants(
 				mergeDynamicModels(
@@ -398,7 +398,7 @@ function prepareCacheModelsForStaticMismatch<TApi extends Api>(
 	}
 
 	const droppedIds = ids && ids.length > 0 ? new Set(ids) : undefined;
-	const staticIds = staticModels.length > 0 ? new Set(staticModels.map(model => model.id)) : undefined;
+	const staticIds = staticModels.length > 0 ? new Set(staticModels.map((model) => model.id)) : undefined;
 	const sanitizedModels: Model<TApi>[] = [];
 	for (const model of models) {
 		if (droppedIds?.has(model.id)) {
@@ -413,7 +413,7 @@ function mergeModelSources<TApi extends Api>(...sources: readonly (readonly Mode
 	// Strip out empty/missing sources up front. The hot path is `(static, [])`
 	// (modelsDev disabled / failed) — a single non-empty source means we can
 	// skip the Map churn entirely and just hand back the array.
-	const nonEmpty = sources.filter(source => source.length > 0);
+	const nonEmpty = sources.filter((source) => source.length > 0);
 	if (nonEmpty.length === 0) return [];
 	if (nonEmpty.length === 1) return [...nonEmpty[0]];
 	const merged = new Map<string, Model<TApi>>();
@@ -435,7 +435,7 @@ function mergeDynamicModels<TApi extends Api>(
 	// happens for providers without static catalogs.
 	if (dynamicModels.length === 0) return baseModels.length === 0 ? [] : [...baseModels];
 	if (baseModels.length === 0) return [...dynamicModels];
-	const merged = new Map<string, Model<TApi>>(baseModels.map(model => [model.id, model]));
+	const merged = new Map<string, Model<TApi>>(baseModels.map((model) => [model.id, model]));
 	for (const dynamicModel of dynamicModels) {
 		if (!dynamicModel?.id) {
 			continue;
@@ -455,8 +455,8 @@ function retainModelIds<TApi extends Api>(
 	retainedModels: readonly Model<TApi>[],
 ): Model<TApi>[] {
 	if (retainedModels.length === 0 || models.length === 0) return [];
-	const retainedIds = new Set(retainedModels.map(model => model.id));
-	return models.filter(model => retainedIds.has(model.id));
+	const retainedIds = new Set(retainedModels.map((model) => model.id));
+	return models.filter((model) => retainedIds.has(model.id));
 }
 
 /**

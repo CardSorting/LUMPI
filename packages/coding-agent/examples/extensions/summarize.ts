@@ -1,7 +1,7 @@
-import { uuidv7 } from "@noorm/lumpi-ai";
-import type { ExtensionAPI, ExtensionCommandContext } from "@noorm/lumpi-coding-agent";
-import { DynamicBorder, getMarkdownTheme } from "@noorm/lumpi-coding-agent";
-import { Container, Markdown, matchesKey, Text } from "@noorm/lumpi-tui";
+import { uuidv7 } from "@noorm/lumi-ai";
+import type { ExtensionAPI, ExtensionCommandContext } from "@noorm/lumi-coding-agent";
+import { DynamicBorder, getMarkdownTheme } from "@noorm/lumi-coding-agent";
+import { Container, Markdown, matchesKey, Text } from "@noorm/lumi-tui";
 
 type ContentBlock = {
 	type?: string;

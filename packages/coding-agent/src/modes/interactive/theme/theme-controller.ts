@@ -1,4 +1,4 @@
-import type { TUI } from "@noorm/lumpi-tui";
+import type { TUI } from "@noorm/lumi-tui";
 import type { SettingsManager } from "../../../core/settings-manager.ts";
 import {
 	detectTerminalBackgroundFromEnv,

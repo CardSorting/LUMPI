@@ -3,9 +3,9 @@
 	"compilerOptions": {
 		"outDir": "./dist",
 		"paths": {
-			"@noorm/lumpi-telemetry": ["../telemetry/dist/index.d.ts"],
-			"@noorm/lumpi-ai": ["../ai/dist/index.d.ts"],
-			"@noorm/lumpi-ai/*": ["../ai/dist/*.d.ts", "../ai/dist/providers/*.d.ts"]
+			"@noorm/lumi-telemetry": ["../telemetry/dist/index.d.ts"],
+			"@noorm/lumi-ai": ["../ai/dist/index.d.ts"],
+			"@noorm/lumi-ai/*": ["../ai/dist/*.d.ts", "../ai/dist/providers/*.d.ts"]
 		},
 		"rootDir": "./src"
 	},

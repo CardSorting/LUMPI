@@ -1,6 +1,6 @@
-import type { ThinkingLevel } from "@noorm/lumpi-agent-core";
-import type { Transport } from "@noorm/lumpi-ai";
-import type { TuiMode as RendererTuiMode, ScrollViewScrollbar } from "@noorm/lumpi-tui";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Transport } from "@noorm/lumi-ai";
+import type { TuiMode as RendererTuiMode, ScrollViewScrollbar } from "@noorm/lumi-tui";
 import { randomUUID } from "crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
@@ -91,6 +91,11 @@ export interface Settings {
 	defaultProvider?: string;
 	defaultModel?: string;
 	defaultThinkingLevel?: ThinkingLevel;
+	/** Provider-specific compatibility settings retained from the legacy config. */
+	providers?: {
+		tinyModel?: string;
+		[key: string]: string | undefined;
+	};
 	transport?: TransportSetting; // default: "auto"
 	steeringMode?: "all" | "one-at-a-time";
 	followUpMode?: "all" | "one-at-a-time";
@@ -446,6 +451,11 @@ export class SettingsManager {
 
 	getGlobalSettings(): Settings {
 		return structuredClone(this.globalSettings);
+	}
+
+	/** Return the effective settings after global and project values are merged. */
+	getSettings(): Settings {
+		return structuredClone(this.settings);
 	}
 
 	getProjectSettings(): Settings {

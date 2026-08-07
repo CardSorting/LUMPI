@@ -142,9 +142,9 @@ function normalizePaths(paths: readonly string[] | undefined): string[] {
 		return [...DEFAULT_MODEL_LIST_PATHS];
 	}
 	const normalized = paths
-		.map(path => path.trim())
-		.filter(path => path.length > 0)
-		.map(path => (path.startsWith("/") ? path : `/${path}`));
+		.map((path) => path.trim())
+		.filter((path) => path.length > 0)
+		.map((path) => (path.startsWith("/") ? path : `/${path}`));
 	return normalized.length > 0 ? normalized : [...DEFAULT_MODEL_LIST_PATHS];
 }
 
@@ -202,7 +202,7 @@ function normalizeCodexModels(payload: unknown, baseUrl: string): ModelSpec<"ope
 		return left.model.id.localeCompare(right.model.id);
 	});
 
-	return normalized.map(item => item.model);
+	return normalized.map((item) => item.model);
 }
 
 function normalizeCodexModelEntry(entry: unknown, baseUrl: string): NormalizedCodexModel | null {
@@ -301,7 +301,7 @@ function normalizeInputModalities(inputModalities: unknown): ("text" | "image")[
 	}
 
 	const canonical: ("text" | "image")[] = ["text", "image"];
-	return canonical.filter(modality => set.has(modality));
+	return canonical.filter((modality) => set.has(modality));
 }
 
 function getResponseEtag(headers: Headers): string | undefined {

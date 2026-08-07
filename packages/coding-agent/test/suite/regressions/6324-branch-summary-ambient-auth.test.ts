@@ -1,4 +1,4 @@
-import { createAssistantMessageEventStream } from "@noorm/lumpi-ai";
+import { createAssistantMessageEventStream } from "@noorm/lumi-ai";
 import { afterEach, describe, expect, it } from "vitest";
 import { assistantMsg, userMsg } from "../../utilities.ts";
 import { createHarness, type Harness } from "../harness.ts";

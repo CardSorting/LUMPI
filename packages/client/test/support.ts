@@ -7,7 +7,7 @@ import {
 	type ServerMessage,
 	type ServerSnapshot,
 	type SessionSnapshot,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import type { ByteTransport, ByteTransportHandlers, PiSessionHandle } from "../src/index.ts";
 import { PiClient } from "../src/index.ts";
 

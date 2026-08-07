@@ -1,4 +1,4 @@
-import type { CommandResult, ServerEvent, ServerSnapshot, SessionSnapshot } from "@noorm/lumpi-protocol";
+import type { CommandResult, ServerEvent, ServerSnapshot, SessionSnapshot } from "@noorm/lumi-protocol";
 import { toError } from "./errors.ts";
 import type { ListenerErrorHandler, Unsubscribe } from "./types.ts";
 

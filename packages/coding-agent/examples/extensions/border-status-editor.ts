@@ -3,9 +3,9 @@ import {
 	type ExtensionAPI,
 	type ExtensionContext,
 	type KeybindingsManager,
-} from "@noorm/lumpi-coding-agent";
-import type { Component, EditorTheme, TUI } from "@noorm/lumpi-tui";
-import { truncateToWidth, visibleWidth } from "@noorm/lumpi-tui";
+} from "@noorm/lumi-coding-agent";
+import type { Component, EditorTheme, TUI } from "@noorm/lumi-tui";
+import { truncateToWidth, visibleWidth } from "@noorm/lumi-tui";
 
 function fitBorder(
 	left: string,

@@ -18,7 +18,7 @@ describe("xai-oauth bundled catalog (regression)", () => {
 	const seed = buildXaiOAuthStaticSeed();
 
 	it("bundles every curated id", () => {
-		const seededIds = seed.map(model => model.id).sort();
+		const seededIds = seed.map((model) => model.id).sort();
 		const bundledIds = Object.keys(bundled).sort();
 		expect(bundledIds).toEqual(seededIds);
 	});
@@ -46,7 +46,7 @@ describe("xai-oauth bundled catalog (regression)", () => {
 	// reasoning flag — both sides regenerate from the same seed together — so
 	// pin the literal attributes here.
 	it("exposes grok-composer-2.5-fast as a non-reasoning 200K text model", () => {
-		const composer = seed.find(model => model.id === "grok-composer-2.5-fast");
+		const composer = seed.find((model) => model.id === "grok-composer-2.5-fast");
 		expect(composer, "grok-composer-2.5-fast must be in the SuperGrok curated seed").toBeDefined();
 		expect(composer!.reasoning).toBe(false);
 		expect(composer!.contextWindow).toBe(200_000);

@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as fsPromises from "node:fs/promises";
 import * as path from "node:path";
 
-import { type GitRepository, repo } from "./git";
+import { type GitRepository, repo } from "./git.ts";
 
 export interface ActiveRepoContext {
 	cwd: string;

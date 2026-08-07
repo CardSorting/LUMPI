@@ -7,8 +7,8 @@
  * (issues #6259, #6276).
  */
 
-import type { AgentMessage, AgentToolResult } from "@noorm/lumpi-agent-core";
-import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumpi-ai";
+import type { AgentMessage, AgentToolResult } from "@noorm/lumi-agent-core";
+import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumi-ai";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
 import { type SessionEntry, sessionEntryToContextMessages } from "../../src/core/session-manager.ts";

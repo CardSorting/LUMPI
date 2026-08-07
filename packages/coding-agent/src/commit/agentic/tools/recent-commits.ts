@@ -1,9 +1,9 @@
-import { type } from "@oh-my-pi/omptype";
-import type { CustomTool } from "../../../extensibility/custom-tools/types";
-import * as git from "../../../utils/git";
+import { Type } from "typebox";
+import { defineTool, type ToolDefinition } from "../../../core/extensions/types.ts";
+import * as git from "../../../utils/git.ts";
 
-const recentCommitsSchema = type({
-	"count?": type("1 <= number <= 50").describe("commit count"),
+const recentCommitsSchema = Type.Object({
+	count: Type.Optional(Type.Number({ description: "commit count", minimum: 1, maximum: 50 })),
 });
 
 interface RecentCommitStats {
@@ -25,8 +25,8 @@ function extractScope(subject: string): string | null {
 	return match?.[1]?.trim() ?? null;
 }
 
-export function createRecentCommitsTool(cwd: string): CustomTool<typeof recentCommitsSchema> {
-	return {
+export function createRecentCommitsTool(cwd: string): ToolDefinition<typeof recentCommitsSchema> {
+	return defineTool({
 		name: "recent_commits",
 		label: "Recent Commits",
 		description: "Return recent commit subjects with style statistics.",
@@ -77,5 +77,5 @@ export function createRecentCommitsTool(cwd: string): CustomTool<typeof recentCo
 				details: payload,
 			};
 		},
-	};
+	});
 }

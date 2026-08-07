@@ -73,7 +73,7 @@ describe("issue #2558 — GitHub Copilot Anthropic transport rejects eager_input
 		streamAnthropic(model, CONTEXT, {
 			apiKey: COPILOT_BEARER,
 			signal: aborted(),
-			onPayload: payload => resolve(payload),
+			onPayload: (payload) => resolve(payload),
 		});
 		const payload = (await promise) as { tools?: Array<Record<string, unknown>> };
 		expect(payload.tools).toHaveLength(1);

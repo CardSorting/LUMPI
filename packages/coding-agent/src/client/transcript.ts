@@ -1,4 +1,4 @@
-import type { JsonValue, SessionSnapshot, TranscriptItem, TranscriptProgress } from "@noorm/lumpi-protocol";
+import type { JsonValue, SessionSnapshot, TranscriptItem, TranscriptProgress } from "@noorm/lumi-protocol";
 
 export interface TranscriptState {
 	readonly snapshot: SessionSnapshot;

@@ -41,7 +41,7 @@ describe("ollama local provider discovery", () => {
 
 		const options = ollamaModelManagerOptions({ fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
-		const model = models?.find(candidate => candidate.id === "deepseek-v4:latest");
+		const model = models?.find((candidate) => candidate.id === "deepseek-v4:latest");
 
 		expect(model?.api).toBe("openai-responses");
 		expect(model?.contextWindow).toBe(1048576);
@@ -83,8 +83,8 @@ describe("ollama local provider discovery", () => {
 		});
 
 		const models = await ollamaModelManagerOptions({ fetch: fetchMock }).fetchDynamicModels?.();
-		const reasoningModel = models?.find(candidate => candidate.id === "gemma4:e4b");
-		const plainModel = models?.find(candidate => candidate.id === "llama-plain:latest");
+		const reasoningModel = models?.find((candidate) => candidate.id === "gemma4:e4b");
+		const plainModel = models?.find((candidate) => candidate.id === "llama-plain:latest");
 		const builtReasoningModel = reasoningModel ? buildModel(reasoningModel) : undefined;
 		const builtPlainModel = plainModel ? buildModel(plainModel) : undefined;
 
@@ -151,7 +151,7 @@ describe("ollama tool forcing", () => {
 
 		expect(eventTypes).toContain("done");
 		expect(requestBody?.tool_choice).toBe("required");
-		expect(requestBody?.tools?.map(tool => tool.function.name)).toEqual(["write"]);
+		expect(requestBody?.tools?.map((tool) => tool.function.name)).toEqual(["write"]);
 	});
 });
 

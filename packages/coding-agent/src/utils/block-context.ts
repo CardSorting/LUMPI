@@ -308,5 +308,5 @@ export function buildLineEntriesWithBlockContext(
 }
 
 export function lineEntriesToPlainText(entries: readonly LineEntry[], ellipsis = "…"): string {
-	return entries.map(entry => (entry.kind === "ellipsis" ? ellipsis : entry.text)).join("\n");
+	return entries.map((entry) => (entry.kind === "ellipsis" ? ellipsis : entry.text)).join("\n");
 }

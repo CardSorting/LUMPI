@@ -119,16 +119,16 @@ function migrateCacheSchema(db: Database): void {
 	const stmt = db.prepare("PRAGMA table_info(model_cache)");
 	try {
 		const columns = stmt.all() as TableInfoRow[];
-		if (!columns.some(column => column.name === "static_fingerprint")) {
+		if (!columns.some((column) => column.name === "static_fingerprint")) {
 			db.run("ALTER TABLE model_cache ADD COLUMN static_fingerprint TEXT NOT NULL DEFAULT ''");
 		}
-		if (!columns.some(column => column.name === "header_omitted_model_ids")) {
+		if (!columns.some((column) => column.name === "header_omitted_model_ids")) {
 			db.run("ALTER TABLE model_cache ADD COLUMN header_omitted_model_ids TEXT NOT NULL DEFAULT '[]'");
 		}
-		if (!columns.some(column => column.name === "unrestorable_header_model_ids")) {
+		if (!columns.some((column) => column.name === "unrestorable_header_model_ids")) {
 			db.run("ALTER TABLE model_cache ADD COLUMN unrestorable_header_model_ids TEXT NOT NULL DEFAULT '[]'");
 		}
-		if (!columns.some(column => column.name === "header_restore_version")) {
+		if (!columns.some((column) => column.name === "header_restore_version")) {
 			// Existing v10 rows get 0, distinguishing markers produced by the
 			// old id-only header matcher from rows written after request-model
 			// header matching was introduced.
@@ -152,7 +152,7 @@ export function readModelCache<TApi extends Api>(
 	dbPath?: string,
 ): CacheEntry<TApi> | null {
 	try {
-		return withModelCacheDb(dbPath, db => {
+		return withModelCacheDb(dbPath, (db) => {
 			const stmt = db.query<CacheRow, [string]>("SELECT * FROM model_cache WHERE provider_id = ?");
 			try {
 				const row = stmt.get(providerId);
@@ -233,11 +233,11 @@ export function writeModelCache<TApi extends Api>(
 	restorableHeaderFallback?: Record<string, string>,
 ): void {
 	try {
-		withModelCacheDb(dbPath, db => {
+		withModelCacheDb(dbPath, (db) => {
 			const headerOmittedModelIds: string[] = [];
 			const unrestorableHeaderModelIds: string[] = [];
 			const cachedModels: ModelSpec<TApi>[] = [];
-			const staticById = new Map(staticHeaderSources.map(model => [model.id, model]));
+			const staticById = new Map(staticHeaderSources.map((model) => [model.id, model]));
 			for (const model of models) {
 				if (hasModelHeaders(model)) {
 					headerOmittedModelIds.push(model.id);

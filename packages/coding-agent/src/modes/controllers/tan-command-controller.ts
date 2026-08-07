@@ -1,6 +1,6 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import type { AssistantMessage } from "@oh-my-pi/pi-ai";
+import type { AssistantMessage } from "@noorm/lumi-ai";
 import { prompt, Snowflake } from "@oh-my-pi/pi-utils";
 import backgroundTanDispatchPrompt from "../../prompts/system/background-tan-dispatch.md" with { type: "text" };
 import tanContextSwitchPrompt from "../../prompts/system/tan-context-switch.md" with { type: "text" };
@@ -24,8 +24,8 @@ function previewWork(work: string): string {
 function extractAssistantText(message: AssistantMessage | undefined): string {
 	if (!message) return "";
 	return message.content
-		.filter(content => content.type === "text")
-		.map(content => content.text)
+		.filter((content) => content.type === "text")
+		.map((content) => content.text)
 		.join("")
 		.trim();
 }
@@ -174,7 +174,7 @@ export class TanCommandController {
 						// history, after which the clone re-adopts the parent's task as its
 						// own (the summary blends both). Re-inject after every successful
 						// compaction so the fork boundary survives summarization.
-						const unsubscribeCompaction = clone.subscribe(event => {
+						const unsubscribeCompaction = clone.subscribe((event) => {
 							if (event.type === "auto_compaction_end" && event.result && !event.aborted) {
 								injectContextSwitch();
 							}

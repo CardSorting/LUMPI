@@ -3,8 +3,8 @@
  * Uses Kitty keyboard protocol for smooth movement (press/release detection)
  */
 
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { isKeyRelease, Key, matchesKey, visibleWidth } from "@noorm/lumpi-tui";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { isKeyRelease, Key, matchesKey, visibleWidth } from "@noorm/lumi-tui";
 
 const GAME_WIDTH = 60;
 const GAME_HEIGHT = 24;

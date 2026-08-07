@@ -4,7 +4,7 @@
 		"outDir": "./dist",
 		"rootDir": "./src",
 		"paths": {
-			"@noorm/lumpi-protocol": ["../protocol/dist/index.d.ts"]
+			"@noorm/lumi-protocol": ["../protocol/dist/index.d.ts"]
 		}
 	},
 	"include": ["src/**/*.ts"],

@@ -1,4 +1,4 @@
-import { fauxAssistantMessage } from "@noorm/lumpi-ai";
+import { fauxAssistantMessage } from "@noorm/lumi-ai";
 import { describe, expect, it } from "vitest";
 import { userMsg } from "../../utilities.ts";
 import { createHarness } from "../harness.ts";

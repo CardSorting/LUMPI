@@ -1,5 +1,5 @@
 {
-	"name": "@noorm/lumpi-telemetry",
+	"name": "@noorm/lumi-telemetry",
 	"version": "0.83.2",
 	"description": "Vendor-neutral telemetry contracts and typed schema utilities for pi",
 	"type": "module",

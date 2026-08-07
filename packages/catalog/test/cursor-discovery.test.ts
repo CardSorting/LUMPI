@@ -36,7 +36,7 @@ let baseUrl: string;
 
 beforeAll(async () => {
 	const response = create(GetUsableModelsResponseSchema, {
-		models: FIXTURE_MODEL_IDS.map(modelId => create(ModelDetailsSchema, { modelId })),
+		models: FIXTURE_MODEL_IDS.map((modelId) => create(ModelDetailsSchema, { modelId })),
 	});
 	const payload = Buffer.from(toBinary(GetUsableModelsResponseSchema, response));
 
@@ -53,7 +53,7 @@ beforeAll(async () => {
 			stream.end(payload);
 		});
 	});
-	await new Promise<void>(resolve => server.listen(0, "127.0.0.1", resolve));
+	await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
 	const address = server.address();
 	if (!address || typeof address === "string") {
 		throw new Error("expected http2 fixture server to bind a tcp port");
@@ -68,7 +68,7 @@ afterAll(() => {
 async function discover(): Promise<Map<string, ModelSpec<"cursor-agent">>> {
 	const models = await fetchCursorUsableModels({ apiKey: "test-key", baseUrl });
 	expect(models).not.toBeNull();
-	return new Map((models ?? []).map(model => [model.id, model]));
+	return new Map((models ?? []).map((model) => [model.id, model]));
 }
 
 describe("cursor discovery input modalities (issue #4726)", () => {
@@ -117,9 +117,9 @@ const tempDirs = new Set<string>();
 
 afterEach(async () => {
 	await Promise.all(
-		[...servers].map(srv => {
+		[...servers].map((srv) => {
 			const { promise, resolve, reject } = Promise.withResolvers<void>();
-			srv.close(error => {
+			srv.close((error) => {
 				if (error) {
 					reject(error);
 					return;
@@ -129,7 +129,7 @@ afterEach(async () => {
 			return promise;
 		}),
 	);
-	await Promise.all([...tempDirs].map(dir => fs.rm(dir, { recursive: true, force: true })));
+	await Promise.all([...tempDirs].map((dir) => fs.rm(dir, { recursive: true, force: true })));
 	servers.clear();
 	tempDirs.clear();
 });

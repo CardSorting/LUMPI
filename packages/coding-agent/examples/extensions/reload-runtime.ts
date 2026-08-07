@@ -5,7 +5,7 @@
  * tool that queues a follow-up command to trigger reload.
  */
 
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
 import { Type } from "typebox";
 
 export default function (pi: ExtensionAPI) {

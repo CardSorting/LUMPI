@@ -1,4 +1,4 @@
-import { Text } from "@noorm/lumpi-tui";
+import { Text } from "@noorm/lumi-tui";
 import { describe, expect, test } from "vitest";
 import type { MessageRenderer, MessageRenderOptions } from "../src/core/extensions/types.ts";
 import type { CustomMessage } from "../src/core/messages.ts";

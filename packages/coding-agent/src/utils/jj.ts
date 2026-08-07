@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { $which } from "@oh-my-pi/pi-utils";
 import { LRUCache } from "@oh-my-pi/pi-utils/lru";
 import { withTimeoutSignal } from "./fetch-timeout";
-import * as git from "./git";
+import * as git from "./git.ts";
 
 // ════════════════════════════════════════════════════════════════════════════
 // Types
@@ -145,7 +145,7 @@ async function runOptionalText(
 function splitLines(text: string): string[] {
 	return text
 		.split("\n")
-		.map(line => line.trim())
+		.map((line) => line.trim())
 		.filter(Boolean);
 }
 

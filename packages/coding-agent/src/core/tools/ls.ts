@@ -1,6 +1,6 @@
 import { readdir as fsReaddir, stat as fsStat } from "node:fs/promises";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { Text } from "@noorm/lumpi-tui";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { Text } from "@noorm/lumi-tui";
 import nodePath from "path";
 import { type Static, Type } from "typebox";
 import { keyHint } from "../../modes/interactive/components/keybinding-hints.ts";

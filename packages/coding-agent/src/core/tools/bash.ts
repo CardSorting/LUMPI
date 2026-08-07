@@ -1,7 +1,7 @@
 import { constants } from "node:fs";
 import { access as fsAccess } from "node:fs/promises";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { Container, Text, truncateToWidth } from "@noorm/lumpi-tui";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { Container, Text, truncateToWidth } from "@noorm/lumi-tui";
 import { spawn } from "child_process";
 import { type Static, Type } from "typebox";
 import { keyHint } from "../../modes/interactive/components/keybinding-hints.ts";

@@ -14,7 +14,7 @@ import {
 	type ServerHello,
 	type ServerHelloError,
 	type ServerMessage,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import {
 	type ByteConnection,
 	type ByteConnectionHandler,

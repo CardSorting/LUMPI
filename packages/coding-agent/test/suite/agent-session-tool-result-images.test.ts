@@ -1,7 +1,7 @@
 import { crc32, deflateSync } from "node:zlib";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import type { ImageContent } from "@noorm/lumpi-ai";
-import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumpi-ai";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import type { ImageContent } from "@noorm/lumi-ai";
+import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
 import { createHarness, type Harness } from "./harness.ts";

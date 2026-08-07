@@ -1,4 +1,4 @@
-import type { Entry, EntryOrder } from "@noorm/lumpi-agent-core";
+import type { Entry, EntryOrder } from "@noorm/lumi-agent-core";
 import type { SqliteDatabase } from "../types.ts";
 
 export interface EntryRow {

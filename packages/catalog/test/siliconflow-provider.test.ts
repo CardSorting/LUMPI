@@ -59,13 +59,13 @@ const MODELS_DEV_STUB_PAYLOAD = {
 
 describe("siliconflow built-in providers", () => {
 	test("registers dynamic-authoritative runtime descriptors with env-key discovery", () => {
-		const intl = PROVIDER_DESCRIPTORS.find(item => item.providerId === "siliconflow");
+		const intl = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "siliconflow");
 		expect(intl).toBeDefined();
 		expect(intl?.defaultModel).toBe("zai-org/GLM-5.1");
 		expect(intl?.dynamicModelsAuthoritative).toBe(true);
 		expect(DEFAULT_MODEL_PER_PROVIDER.siliconflow).toBe("zai-org/GLM-5.1");
 
-		const cn = PROVIDER_DESCRIPTORS.find(item => item.providerId === "siliconflow-cn");
+		const cn = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "siliconflow-cn");
 		expect(cn).toBeDefined();
 		expect(cn?.defaultModel).toBe("deepseek-ai/DeepSeek-V4-Pro");
 		expect(cn?.dynamicModelsAuthoritative).toBe(true);
@@ -77,22 +77,22 @@ describe("siliconflow built-in providers", () => {
 		// `catalogDiscovery` — the SiliconFlow entries are dynamic-authoritative
 		// and deliberately carry no catalog discovery config.
 		for (const providerId of ["siliconflow", "siliconflow-cn"] as const) {
-			const entry: ProviderCatalogEntry | undefined = CATALOG_PROVIDERS.find(item => item.id === providerId);
+			const entry: ProviderCatalogEntry | undefined = CATALOG_PROVIDERS.find((item) => item.id === providerId);
 			expect(entry).toBeDefined();
 			expect(entry?.dynamicModelsAuthoritative).toBe(true);
 			expect(entry?.catalogDiscovery).toBeUndefined();
 		}
 		// Runtime: no stencil.so mapping may feed the generator either.
-		expect(MODELS_DEV_PROVIDER_DESCRIPTORS.some(d => d.providerId === "siliconflow")).toBe(false);
-		expect(MODELS_DEV_PROVIDER_DESCRIPTORS.some(d => d.providerId === "siliconflow-cn")).toBe(false);
+		expect(MODELS_DEV_PROVIDER_DESCRIPTORS.some((d) => d.providerId === "siliconflow")).toBe(false);
+		expect(MODELS_DEV_PROVIDER_DESCRIPTORS.some((d) => d.providerId === "siliconflow-cn")).toBe(false);
 	});
 
 	test("registers API-key login providers", () => {
 		const providers = getOAuthProviders();
-		const intl = providers.find(item => item.id === "siliconflow");
+		const intl = providers.find((item) => item.id === "siliconflow");
 		expect(intl?.name).toBe("SiliconFlow");
 		expect(intl?.available).toBe(true);
-		const cn = providers.find(item => item.id === "siliconflow-cn");
+		const cn = providers.find((item) => item.id === "siliconflow-cn");
 		expect(cn?.name).toBe("SiliconFlow (China)");
 		expect(cn?.available).toBe(true);
 	});
@@ -140,10 +140,10 @@ describe("siliconflow built-in providers", () => {
 		expect(options.dynamicModelsAuthoritative).toBe(true);
 		const models = await options.fetchDynamicModels?.();
 		expect(models).not.toBeNull();
-		expect((models ?? []).map(model => model.id)).toEqual(["deepseek-ai/DeepSeek-V4-Pro", "zai-org/GLM-5.1"]);
+		expect((models ?? []).map((model) => model.id)).toEqual(["deepseek-ai/DeepSeek-V4-Pro", "zai-org/GLM-5.1"]);
 
 		// Tier 1: stencil.so carries the id — pricing, limits, and reasoning hydrate.
-		const glm = models?.find(model => model.id === "zai-org/GLM-5.1");
+		const glm = models?.find((model) => model.id === "zai-org/GLM-5.1");
 		expect(glm?.reasoning).toBe(true);
 		expect(glm?.contextWindow).toBe(205000);
 		expect(glm?.maxTokens).toBe(32768);
@@ -157,7 +157,7 @@ describe("siliconflow built-in providers", () => {
 		// pricing stays unknown instead of inheriting another host's values.
 		const canonical = resolveModelReference("deepseek-ai/DeepSeek-V4-Pro", getBundledModelReferenceIndex());
 		expect(canonical).toBeDefined();
-		const v4pro = models?.find(model => model.id === "deepseek-ai/DeepSeek-V4-Pro");
+		const v4pro = models?.find((model) => model.id === "deepseek-ai/DeepSeek-V4-Pro");
 		expect(v4pro?.reasoning).toBe(true);
 		expect(v4pro?.cost.input).toBe(0);
 		expect(v4pro?.contextWindow).toBe(canonical?.contextWindow ?? null);
@@ -168,13 +168,13 @@ describe("siliconflow built-in providers", () => {
 		}
 
 		expect(seen.urls).toContain("https://api.siliconflow.com/v1/models");
-		expect(seen.urls.some(url => url.startsWith("https://catalog.stencil.so/"))).toBe(true);
+		expect(seen.urls.some((url) => url.startsWith("https://catalog.stencil.so/"))).toBe(true);
 		expect(seen.authorization).toBe("Bearer sk-test");
 	});
 
 	test("cn variant discovers against the China endpoint with cn stencil.so pricing", async () => {
 		const seen: { urls: string[] } = { urls: [] };
-		const stubFetch: FetchImpl = async input => {
+		const stubFetch: FetchImpl = async (input) => {
 			const url = String(input);
 			seen.urls.push(url);
 			if (url.startsWith("https://catalog.stencil.so/")) {
@@ -205,7 +205,7 @@ describe("siliconflow built-in providers", () => {
 	});
 
 	test("stencil.so lookup failure still yields endpoint-discovered models", async () => {
-		const stubFetch: FetchImpl = async input => {
+		const stubFetch: FetchImpl = async (input) => {
 			const url = String(input);
 			if (url.startsWith("https://catalog.stencil.so/")) {
 				throw new Error("stencil.so stalled");
@@ -222,7 +222,7 @@ describe("siliconflow built-in providers", () => {
 
 		const options = siliconflowCnModelManagerOptions({ apiKey: "sk-test", fetch: stubFetch });
 		const models = await options.fetchDynamicModels?.();
-		expect(models?.map(model => model.id)).toEqual(["deepseek-ai/DeepSeek-V4-Pro"]);
+		expect(models?.map((model) => model.id)).toEqual(["deepseek-ai/DeepSeek-V4-Pro"]);
 		// Canonical fallback still hydrates reasoning when stencil.so is unreachable.
 		expect(models?.[0]?.reasoning).toBe(true);
 	});

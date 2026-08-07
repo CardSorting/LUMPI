@@ -4,7 +4,7 @@
  * Handles /mcp subcommands for managing MCP servers.
  */
 import * as path from "node:path";
-import { type Component, replaceTabs, Spacer, Text } from "@oh-my-pi/pi-tui";
+import { type Component, replaceTabs, Spacer, Text } from "@noorm/lumi-tui";
 import { getMCPConfigPath, getProjectDir } from "@oh-my-pi/pi-utils";
 import type { SourceMeta } from "../../capability/types";
 import { expandEnvVarsDeep } from "../../discovery/helpers";
@@ -57,7 +57,7 @@ import type {
 } from "../../mcp/types";
 import { shortenPath } from "../../tools/render-utils";
 import { urlHyperlinkAlways } from "../../tui";
-import { copyToClipboard } from "../../utils/clipboard";
+import { copyToClipboard } from "../../utils/clipboard.ts";
 import { isTimeoutError } from "../../utils/fetch-timeout";
 import { openPath } from "../../utils/open";
 import { ChatBlock } from "../components/chat-block";
@@ -66,7 +66,7 @@ import { TranscriptBlock } from "../components/transcript-container";
 import { parseCommandArgs } from "../shared";
 import { theme } from "../theme/theme";
 import type { InteractiveModeContext } from "../types";
-import { groupBySource, parseRemoveArgs, readScopeFlag, showCommandMessage } from "./command-controller-shared";
+import { groupBySource, parseRemoveArgs, readScopeFlag, showCommandMessage } from "./command-controller-shared.ts";
 
 const MCP_MANUAL_INPUT_PROVIDER_ID = "mcp";
 const MCP_MANUAL_LOGIN_TIP = "Headless? Paste the redirect URL or code with /login <value>.";
@@ -1108,7 +1108,7 @@ export class MCPCommandController {
 		// for-loop's iteration order: mcp.json wins over .mcp.json on a same-name hit.
 		const standalonePaths = [path.join(cwd, "mcp.json"), path.join(cwd, ".mcp.json")];
 		const fallbackConfigs = await Promise.all(
-			standalonePaths.map(async fallbackPath => {
+			standalonePaths.map(async (fallbackPath) => {
 				try {
 					return await readMCPConfigFile(fallbackPath);
 				} catch {
@@ -1179,9 +1179,9 @@ export class MCPCommandController {
 		// its own cached tokens (e.g. mcp-remote's machine-wide ~/.mcp-auth) and
 		// produces the misleading "reauthorization is not required".
 		if (config.type !== "http" && config.type !== "sse") {
-			const remoteUrl = config.args?.find(arg => /^https?:\/\//.test(arg));
+			const remoteUrl = config.args?.find((arg) => /^https?:\/\//.test(arg));
 			const httpHint = `{ "type": "http", "url": ${JSON.stringify(remoteUrl ?? "<remote url>")} }`;
-			const usesMcpRemote = [config.command, ...(config.args ?? [])].some(part => part?.includes("mcp-remote"));
+			const usesMcpRemote = [config.command, ...(config.args ?? [])].some((part) => part?.includes("mcp-remote"));
 			throw new Error(
 				usesMcpRemote
 					? `this server proxies OAuth through mcp-remote, which caches tokens machine-wide in ~/.mcp-auth (shared across every OMP profile). Clear ~/.mcp-auth to force a fresh login, or replace the proxy with ${httpHint} so OMP manages OAuth per profile.`
@@ -1313,10 +1313,10 @@ export class MCPCommandController {
 			// brand-new servers are registered in the registry but never activated.
 			// Explicitly activate the newly added server's tools now.
 			if (isConnected && this.ctx.mcpManager) {
-				const serverTools = this.ctx.mcpManager.getTools().filter(t => t.mcpServerName === name);
+				const serverTools = this.ctx.mcpManager.getTools().filter((t) => t.mcpServerName === name);
 				if (serverTools.length > 0) {
 					const currentActive = this.ctx.session.getEnabledToolNames();
-					const toActivate = serverTools.map(t => t.name).filter(n => this.ctx.session.getToolByName(n));
+					const toActivate = serverTools.map((t) => t.name).filter((n) => this.ctx.session.getToolByName(n));
 					if (toActivate.length > 0) {
 						await this.ctx.session.setActiveToolsByName([...new Set([...currentActive, ...toActivate])]);
 					}
@@ -1478,7 +1478,10 @@ export class MCPCommandController {
 
 			// Show discovered servers (from .claude.json, .cursor/mcp.json, .vscode/mcp.json, etc.)
 			if (discoveredServers.length > 0) {
-				for (const { providerName, shortPath, items: entries } of groupBySource(discoveredServers, e => e.source)) {
+				for (const { providerName, shortPath, items: entries } of groupBySource(
+					discoveredServers,
+					(e) => e.source,
+				)) {
 					lines.push(theme.fg("accent", providerName) + theme.fg("muted", ` (${shortPath}):`));
 					for (const { name } of entries) {
 						const state = this.ctx.mcpManager!.getConnectionStatus(name);
@@ -1495,7 +1498,7 @@ export class MCPCommandController {
 			}
 
 			// Show servers disabled via /mcp disable (from third-party configs)
-			const relevantDisabled = [...disabledServerNames].filter(n => !configServerNames.has(n));
+			const relevantDisabled = [...disabledServerNames].filter((n) => !configServerNames.has(n));
 			if (relevantDisabled.length > 0) {
 				lines.push(theme.fg("accent", "Disabled") + theme.fg("muted", " (discovered servers):"));
 				for (const name of relevantDisabled) {
@@ -1995,7 +1998,7 @@ export class MCPCommandController {
 				// MCP tool selection. No need to call activateDiscoveredMCPTools —
 				// that would broaden the selection to all server tools.
 				await this.ctx.session.refreshMCPTools(this.ctx.mcpManager.getTools());
-				const serverTools = this.ctx.mcpManager.getTools().filter(t => t.mcpServerName === name);
+				const serverTools = this.ctx.mcpManager.getTools().filter((t) => t.mcpServerName === name);
 				this.#showMessage(
 					[
 						"\n",
@@ -2511,7 +2514,7 @@ export class MCPCommandController {
 				["", theme.fg("muted", `Searching Smithery registry for "${parsed.keyword}"...`), ""].join("\n"),
 			);
 			const results = await this.#runSmitheryOperationWithAuthRetry(
-				apiKey =>
+				(apiKey) =>
 					searchSmitheryRegistry(parsed.keyword, {
 						limit: parsed.limit,
 						apiKey,

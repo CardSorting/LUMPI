@@ -1,4 +1,4 @@
-import type { SplitCommitGroup } from "./state";
+import type { SplitCommitGroup } from "./state.ts";
 
 export function computeDependencyOrder(groups: SplitCommitGroup[]): number[] | { error: string } {
 	const total = groups.length;

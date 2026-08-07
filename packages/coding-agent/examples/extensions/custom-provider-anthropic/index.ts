@@ -42,8 +42,8 @@ import {
 	type Tool,
 	type ToolCall,
 	type ToolResultMessage,
-} from "@noorm/lumpi-ai";
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumi-ai";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
 
 // =============================================================================
 // OAuth implementation adapted for the legacy extension compatibility interface.

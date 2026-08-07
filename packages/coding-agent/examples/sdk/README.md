@@ -32,14 +32,14 @@ npx tsx examples/sdk/01-minimal.ts
 ## Quick Reference
 
 ```typescript
-import { getModel } from "@noorm/lumpi-ai";
+import { getModel } from "@noorm/lumi-ai";
 import {
   createAgentSession,
   DefaultResourceLoader,
   ModelRuntime,
   SessionManager,
   SettingsManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumi-coding-agent";
 
 const modelRuntime = await ModelRuntime.create();
 

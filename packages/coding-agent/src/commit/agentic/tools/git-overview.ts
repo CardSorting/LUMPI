@@ -1,9 +1,9 @@
-import { type } from "@oh-my-pi/omptype";
-import type { CommitAgentState, GitOverviewSnapshot } from "../../../commit/agentic/state";
-import { extractScopeCandidates } from "../../../commit/analysis/scope";
-import type { CustomTool } from "../../../extensibility/custom-tools/types";
-import * as git from "../../../utils/git";
-import { EXCLUDED_LOCK_FILES } from "../lock-files";
+import { Type } from "typebox";
+import { defineTool, type ToolDefinition } from "../../../core/extensions/types.ts";
+import * as git from "../../../utils/git.ts";
+import { extractScopeCandidates } from "../../analysis/scope.ts";
+import { EXCLUDED_LOCK_FILES } from "../lock-files.ts";
+import type { CommitAgentState, GitOverviewSnapshot } from "../state.ts";
 
 function isExcludedFile(path: string): boolean {
 	const basename = path.split("/").pop() ?? path;
@@ -23,13 +23,13 @@ function filterExcludedFiles(files: string[]): { filtered: string[]; excluded: s
 	return { filtered, excluded };
 }
 
-const gitOverviewSchema = type({
-	"staged?": type("boolean").describe("use staged changes (default true)"),
-	"include_untracked?": type("boolean").describe("include untracked when unstaged"),
+const gitOverviewSchema = Type.Object({
+	staged: Type.Optional(Type.Boolean({ description: "use staged changes (default true)" })),
+	include_untracked: Type.Optional(Type.Boolean({ description: "include untracked when unstaged" })),
 });
 
-export function createGitOverviewTool(cwd: string, state: CommitAgentState): CustomTool<typeof gitOverviewSchema> {
-	return {
+export function createGitOverviewTool(cwd: string, state: CommitAgentState): ToolDefinition<typeof gitOverviewSchema> {
+	return defineTool({
 		name: "git_overview",
 		label: "Git Overview",
 		description: "Return staged files, diff stat summary, and numstat entries.",
@@ -40,7 +40,7 @@ export function createGitOverviewTool(cwd: string, state: CommitAgentState): Cus
 			const { filtered: files, excluded } = filterExcludedFiles(allFiles);
 			const stat = await git.diff(cwd, { stat: true, cached: staged });
 			const allNumstat = await git.diff.numstat(cwd, { cached: staged });
-			const numstat = allNumstat.filter(entry => !isExcludedFile(entry.path));
+			const numstat = allNumstat.filter((entry) => !isExcludedFile(entry.path));
 			const scopeResult = extractScopeCandidates(numstat);
 			const untrackedFiles = !staged && params.include_untracked ? await git.ls.untracked(cwd) : undefined;
 			const snapshot: GitOverviewSnapshot = {
@@ -58,5 +58,5 @@ export function createGitOverviewTool(cwd: string, state: CommitAgentState): Cus
 				details: snapshot,
 			};
 		},
-	};
+	});
 }

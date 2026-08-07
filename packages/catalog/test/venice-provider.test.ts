@@ -16,7 +16,7 @@ describe("Venice provider catalog", () => {
 
 	it("caps Kimi K2.7 Code during runtime discovery", async () => {
 		const requestedUrls: string[] = [];
-		const fetchImpl: FetchImpl = async input => {
+		const fetchImpl: FetchImpl = async (input) => {
 			requestedUrls.push(input instanceof Request ? input.url : String(input));
 			return new Response(
 				JSON.stringify({
@@ -35,7 +35,7 @@ describe("Venice provider catalog", () => {
 
 		const options = veniceModelManagerOptions({ apiKey: "venice-test-key", fetch: fetchImpl });
 		const models = await options.fetchDynamicModels?.();
-		const model = models?.find(candidate => candidate.id === "kimi-k2-7-code");
+		const model = models?.find((candidate) => candidate.id === "kimi-k2-7-code");
 
 		expect(requestedUrls).toEqual(["https://api.venice.ai/api/v1/models"]);
 		expect(model).toBeDefined();

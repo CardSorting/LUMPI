@@ -40,10 +40,10 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Api, Model } from "@noorm/lumpi-ai";
-import type { ExtensionAPI, ExtensionContext } from "@noorm/lumpi-coding-agent";
-import { CONFIG_DIR_NAME, DynamicBorder, getAgentDir } from "@noorm/lumpi-coding-agent";
-import { Container, Key, type SelectItem, SelectList, Text } from "@noorm/lumpi-tui";
+import type { Api, Model } from "@noorm/lumi-ai";
+import type { ExtensionAPI, ExtensionContext } from "@noorm/lumi-coding-agent";
+import { CONFIG_DIR_NAME, DynamicBorder, getAgentDir } from "@noorm/lumi-coding-agent";
+import { Container, Key, type SelectItem, SelectList, Text } from "@noorm/lumi-tui";
 
 // Preset configuration
 interface Preset {

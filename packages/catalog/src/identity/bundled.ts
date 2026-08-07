@@ -14,7 +14,7 @@ let bundledModels: readonly Model<Api>[] | undefined;
 
 function getBundledModelList(): readonly Model<Api>[] {
 	bundledModels ??= getBundledProviders().flatMap(
-		provider => getBundledModels(provider as Parameters<typeof getBundledModels>[0]) as Model<Api>[],
+		(provider) => getBundledModels(provider as Parameters<typeof getBundledModels>[0]) as Model<Api>[],
 	);
 	return bundledModels;
 }

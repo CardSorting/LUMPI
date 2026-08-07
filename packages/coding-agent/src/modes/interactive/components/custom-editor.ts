@@ -1,4 +1,4 @@
-import { Editor, type EditorOptions, type EditorTheme, type TUI } from "@noorm/lumpi-tui";
+import { Editor, type EditorOptions, type EditorTheme, type TUI } from "@noorm/lumi-tui";
 import type { AppKeybinding, KeybindingsManager } from "../../../core/keybindings.ts";
 
 /**

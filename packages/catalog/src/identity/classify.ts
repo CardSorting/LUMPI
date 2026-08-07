@@ -78,7 +78,7 @@ export function parseKnownModel(modelId: string): ParsedModel {
  */
 function parser<T>(parse: (modelId: string) => T | null): (modelId: string) => T | null {
 	const cache = new Map<string, T | null>();
-	return modelId => {
+	return (modelId) => {
 		const hit = cache.get(modelId);
 		if (hit !== undefined || cache.has(modelId)) {
 			return hit ?? null;

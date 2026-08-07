@@ -1,6 +1,6 @@
 import * as path from "node:path";
-import type { CommitType, ConventionalAnalysis, NumstatEntry } from "../../commit/types";
-import type { CommitProposal } from "./state";
+import type { CommitType, ConventionalAnalysis, NumstatEntry } from "../../commit/types.ts";
+import type { CommitProposal } from "./state.ts";
 
 const TEST_PATTERNS = ["/test/", "/tests/", "/__tests__/", "_test.", ".test.", ".spec.", "_spec."];
 const DOC_EXTENSIONS = new Set([".md", ".txt", ".rst", ".adoc"]);
@@ -20,7 +20,7 @@ function inferTypeFromFiles(numstat: NumstatEntry[]): CommitType {
 		const lowerPath = entry.path.toLowerCase();
 		const ext = getExtension(entry.path);
 
-		if (TEST_PATTERNS.some(pattern => lowerPath.includes(pattern))) {
+		if (TEST_PATTERNS.some((pattern) => lowerPath.includes(pattern))) {
 			hasTests = true;
 		} else if (DOC_EXTENSIONS.has(ext)) {
 			hasDocs = true;
@@ -48,7 +48,7 @@ function getExtension(filePath: string): string {
 
 export function generateFallbackAnalysis(numstat: NumstatEntry[]): ConventionalAnalysis {
 	const type = inferTypeFromFiles(numstat);
-	const details = numstat.slice(0, 3).map(e => ({
+	const details = numstat.slice(0, 3).map((e) => ({
 		text: `Updated ${path.basename(e.path)}`,
 		userVisible: false,
 	}));

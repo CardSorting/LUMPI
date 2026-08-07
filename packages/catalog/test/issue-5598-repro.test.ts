@@ -11,7 +11,7 @@ import {
 // providers surface comparison pricing in `/models`.
 describe("zai GLM pricing sources the PAYG stencil.so key (issue #5598)", () => {
 	test("descriptor maps the `zai` stencil.so key, not `zai-coding-plan`", () => {
-		const descriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find(d => d.providerId === "zai");
+		const descriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find((d) => d.providerId === "zai");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.modelsDevKey).toBe("zai");
 		expect(descriptor?.api).toBe("anthropic-messages");
@@ -47,9 +47,9 @@ describe("zai GLM pricing sources the PAYG stencil.so key (issue #5598)", () => 
 		};
 
 		const zai = mapModelsDevToModels(payload, MODELS_DEV_PROVIDER_DESCRIPTORS).filter(
-			model => model.provider === "zai",
+			(model) => model.provider === "zai",
 		);
-		const glm52 = zai.find(model => model.id === "glm-5.2");
+		const glm52 = zai.find((model) => model.id === "glm-5.2");
 		expect(glm52).toBeDefined();
 		expect(glm52?.cost).toEqual({ input: 1.4, output: 4.4, cacheRead: 0.26, cacheWrite: 0 });
 	});

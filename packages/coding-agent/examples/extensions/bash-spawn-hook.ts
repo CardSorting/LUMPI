@@ -7,8 +7,8 @@
  *   pi -e ./bash-spawn-hook.ts
  */
 
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { createBashTool } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { createBashTool } from "@noorm/lumi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
 	const cwd = process.cwd();

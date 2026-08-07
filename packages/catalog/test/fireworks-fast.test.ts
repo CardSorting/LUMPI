@@ -21,7 +21,7 @@ describe("fireworks fast id helpers", () => {
 
 describe("buildFireworksFastSeed", () => {
 	const seed = buildFireworksFastSeed();
-	const byId = new Map(seed.map(model => [model.id, model]));
+	const byId = new Map(seed.map((model) => [model.id, model]));
 
 	it("emits one fireworks fast variant per curated base", () => {
 		expect([...byId.keys()].sort()).toEqual(["glm-5.1-fast", "kimi-k2.6-fast", "kimi-k2.7-code-fast"]);

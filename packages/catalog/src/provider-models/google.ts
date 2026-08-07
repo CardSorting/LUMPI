@@ -95,7 +95,7 @@ export function googleGeminiCliModelManagerOptions(
 						if (models === null) {
 							return null;
 						}
-						return models.map(m => ({
+						return models.map((m) => ({
 							...m,
 							provider: "google-gemini-cli" as const,
 							baseUrl: endpoint,

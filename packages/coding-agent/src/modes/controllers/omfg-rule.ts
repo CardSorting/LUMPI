@@ -1,6 +1,6 @@
 import * as path from "node:path";
-import type { AgentMessage } from "@oh-my-pi/pi-agent-core";
-import type { AssistantMessage } from "@oh-my-pi/pi-ai";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { AssistantMessage } from "@noorm/lumi-ai";
 import { compileRuleCondition, type Rule } from "../../capability/rule";
 import { buildRuleFromMarkdown, createSourceMeta } from "../../discovery/helpers";
 import { TtsrManager, type TtsrMatchContext } from "../../export/ttsr";
@@ -294,7 +294,7 @@ function formatFrontmatterStringArray(values: readonly string[]): string {
 	if (values.length === 1) {
 		return JSON.stringify(values[0]);
 	}
-	return `[${values.map(value => JSON.stringify(value)).join(", ")}]`;
+	return `[${values.map((value) => JSON.stringify(value)).join(", ")}]`;
 }
 
 interface HistorySurface {
@@ -550,7 +550,7 @@ function formatRuleList(values: readonly string[] | undefined): string {
 	if (!values || values.length === 0) {
 		return "<default>";
 	}
-	return values.map(value => JSON.stringify(value)).join(", ");
+	return values.map((value) => JSON.stringify(value)).join(", ");
 }
 
 function extractConditionHints(conditions: readonly string[] | undefined): string[] {

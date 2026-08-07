@@ -1,13 +1,13 @@
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, ApiKey, AssistantMessage, Message, Model } from "@oh-my-pi/pi-ai";
-import { completeSimple } from "@oh-my-pi/pi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, AssistantMessage, Message, Model } from "@noorm/lumi-ai";
+import { completeSimple } from "@noorm/lumi-ai/compat";
 import { prompt } from "@oh-my-pi/pi-utils";
 import fileObserverSystemPrompt from "../../commit/prompts/file-observer-system.md" with { type: "text" };
 import fileObserverUserPrompt from "../../commit/prompts/file-observer-user.md" with { type: "text" };
-import type { FileDiff, FileObservation } from "../../commit/types";
-import { isExcludedFile } from "../../commit/utils/exclusions";
-import { toReasoningEffort } from "../../thinking";
-import { truncateToTokenLimit } from "./utils";
+import type { FileDiff, FileObservation } from "../../commit/types.ts";
+import { isExcludedFile } from "../../commit/utils/exclusions.ts";
+import { toReasoningEffort } from "../../thinking.ts";
+import { truncateToTokenLimit } from "./utils.ts";
 
 const MAX_FILE_TOKENS = 50_000;
 const MAX_CONTEXT_FILES = 20;
@@ -18,7 +18,7 @@ const RETRY_BACKOFF_MS = 1000;
 
 export interface MapPhaseInput {
 	model: Model<Api>;
-	apiKey: ApiKey;
+	apiKey: string;
 	thinkingLevel?: ThinkingLevel;
 	files: FileDiff[];
 	config?: {
@@ -37,14 +37,14 @@ export async function runMapPhase({
 	files,
 	config,
 }: MapPhaseInput): Promise<FileObservation[]> {
-	const filtered = files.filter(file => !isExcludedFile(file.filename));
+	const filtered = files.filter((file) => !isExcludedFile(file.filename));
 	const systemPrompt = prompt.render(fileObserverSystemPrompt);
 	const maxFileTokens = config?.maxFileTokens ?? MAX_FILE_TOKENS;
 	const maxConcurrency = config?.maxConcurrency ?? MAX_CONCURRENCY;
 	const timeoutMs = config?.timeoutMs ?? MAP_PHASE_TIMEOUT_MS;
 	const maxRetries = config?.maxRetries ?? MAX_RETRIES;
 	const retryBackoffMs = config?.retryBackoffMs ?? RETRY_BACKOFF_MS;
-	return runWithConcurrency(filtered, maxConcurrency, async file => {
+	return runWithConcurrency(filtered, maxConcurrency, async (file) => {
 		if (file.isBinary) {
 			return {
 				file: file.filename,
@@ -62,7 +62,7 @@ export async function runMapPhase({
 			context_header: contextHeader,
 		});
 		const request = {
-			systemPrompt: [systemPrompt],
+			systemPrompt,
 			messages: [{ role: "user", content: userContent, timestamp: Date.now() }] as Message[],
 		};
 
@@ -90,8 +90,8 @@ export async function runMapPhase({
 
 function parseObservations(message: AssistantMessage): string[] {
 	const text = message.content
-		.filter(content => content.type === "text")
-		.map(content => content.text)
+		.filter((content) => content.type === "text")
+		.map((content) => content.text)
 		.join("")
 		.trim();
 
@@ -99,9 +99,9 @@ function parseObservations(message: AssistantMessage): string[] {
 
 	const lines = text
 		.split("\n")
-		.map(line => line.trim())
+		.map((line) => line.trim())
 		.filter(Boolean)
-		.map(line => line.replace(/^[-*]\s+/, ""))
+		.map((line) => line.replace(/^[-*]\s+/, ""))
 		.filter(Boolean);
 
 	return lines.slice(0, 5);
@@ -112,7 +112,7 @@ function generateContextHeader(files: FileDiff[], currentFile: string): string {
 		return `(Large commit with ${files.length} total files)`;
 	}
 
-	const otherFiles = files.filter(file => file.filename !== currentFile);
+	const otherFiles = files.filter((file) => file.filename !== currentFile);
 	if (otherFiles.length === 0) return "";
 
 	const sorted = [...otherFiles].sort((a, b) => b.additions + b.deletions - (a.additions + a.deletions));
@@ -185,7 +185,7 @@ async function withRetry<T>(fn: () => Promise<T>, attempts: number, backoffMs: n
 		} catch (error) {
 			lastError = error;
 			if (attempt < attempts - 1) {
-				await Bun.sleep(backoffMs * (attempt + 1));
+				await new Promise<void>((resolve) => setTimeout(resolve, backoffMs * (attempt + 1)));
 			}
 		}
 	}

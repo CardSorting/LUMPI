@@ -12,7 +12,7 @@
 import { AgentLifecycleManager } from "../../registry/agent-lifecycle";
 import { AgentRegistry, MAIN_AGENT_ID, type RegistryEvent } from "../../registry/agent-registry";
 import type { AgentSession } from "../../session/agent-session";
-import { setTerminalTitleState } from "../../utils/title-generator";
+import { setTerminalTitleState } from "../../utils/title-generator.ts";
 import type { InteractiveModeContext } from "../types";
 
 export class SessionFocusController {
@@ -44,7 +44,7 @@ export class SessionFocusController {
 		if (id === this.#focusedAgentId && session === this.#attachedSession) return;
 		this.#focusedAgentId = id;
 		this.#attachedSession = session;
-		this.#registryUnsubscribe ??= this.registry.onChange(e => this.#onRegistryEvent(e));
+		this.#registryUnsubscribe ??= this.registry.onChange((e) => this.#onRegistryEvent(e));
 		await this.#attach(session);
 		this.ctx.showStatus(`Viewing agent ${id} — Esc returns to main, ←← hops to parent`);
 	}
@@ -94,7 +94,7 @@ export class SessionFocusController {
 		// the first orphaned update; every other handler is tolerant of unknown
 		// anchors (guarded by streamingComponent/pendingTools lookups).
 		let assistantStreamSynced = false;
-		this.ctx.unsubscribe = target.subscribe(async event => {
+		this.ctx.unsubscribe = target.subscribe(async (event) => {
 			if (event.type === "message_start" && event.message.role === "assistant") {
 				assistantStreamSynced = true;
 			} else if (event.type === "message_update" && event.message.role === "assistant" && !assistantStreamSynced) {

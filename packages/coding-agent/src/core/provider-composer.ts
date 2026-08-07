@@ -18,8 +18,8 @@ import {
 	type RefreshModelsContext,
 	type SimpleStreamOptions,
 	type StreamOptions,
-} from "@noorm/lumpi-ai";
-import { getApiProvider } from "@noorm/lumpi-ai/compat";
+} from "@noorm/lumi-ai";
+import { getApiProvider } from "@noorm/lumi-ai/compat";
 import type { ModelConfig, ModelsJsonModel, ModelsJsonModelOverride, ModelsJsonProvider } from "./model-config.ts";
 import {
 	clearConfigValueCache,

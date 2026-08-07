@@ -35,8 +35,8 @@ const CURSOR_KIMI_K3_BARE_ID_PATTERN = /(^|\/)k3$/i;
  */
 const CURSOR_MULTIMODAL_ID_PATTERN = /claude|gemini|gpt-|codex/;
 
-const OptionalDisplayNameSchema = type("unknown").pipe(raw => (typeof raw === "string" ? raw : undefined));
-const CursorAliasesSchema = type("unknown").pipe(raw => {
+const OptionalDisplayNameSchema = type("unknown").pipe((raw) => (typeof raw === "string" ? raw : undefined));
+const CursorAliasesSchema = type("unknown").pipe((raw) => {
 	if (Array.isArray(raw)) {
 		return raw.filter((alias: unknown): alias is string => typeof alias === "string");
 	}
@@ -54,7 +54,7 @@ const CursorModelDetailsSchema = type({
 });
 
 const CursorModelsInnerSchema = type("unknown[]");
-const ResilientCursorModelsSchema = type("unknown").pipe(raw => {
+const ResilientCursorModelsSchema = type("unknown").pipe((raw) => {
 	const out = CursorModelsInnerSchema(raw);
 	return out instanceof type.errors ? [] : out;
 });
@@ -164,7 +164,7 @@ async function fetchViaHttp2(
 		client.close();
 		resolve(null);
 	});
-	req.on("response", headers => {
+	req.on("response", (headers) => {
 		const status = Number(headers[":status"] ?? 0);
 		if (status < 200 || status >= 300) {
 			clearTimeout(timer);
@@ -337,7 +337,7 @@ function resolveCursorContextWindow(
 	const labeled1M =
 		CURSOR_1M_NAME_PATTERN.test(id) ||
 		[model.displayName, model.displayNameShort, model.displayModelId, ...model.aliases].some(
-			candidate => typeof candidate === "string" && CURSOR_1M_NAME_PATTERN.test(candidate),
+			(candidate) => typeof candidate === "string" && CURSOR_1M_NAME_PATTERN.test(candidate),
 		);
 	if (labeled1M || isCursorNative1MModelId(id) || (model.maxMode && CURSOR_MAX_MODE_1M_ID_PATTERN.test(id))) {
 		return Math.max(fallback ?? 0, CURSOR_1M_CONTEXT_WINDOW);

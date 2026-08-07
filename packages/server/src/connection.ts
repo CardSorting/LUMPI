@@ -1,4 +1,4 @@
-import type { ClientMessageDecoder } from "@noorm/lumpi-protocol";
+import type { ClientMessageDecoder } from "@noorm/lumi-protocol";
 
 import type { MaybePromise } from "./types.ts";
 

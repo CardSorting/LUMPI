@@ -28,7 +28,7 @@ async function discover(models: readonly Record<string, unknown>[]) {
 describe("Kimi Code provider catalog", () => {
 	it("uses live K3 effort, mandatory-thinking, and native-protocol metadata", async () => {
 		const models = await discover([LIVE_K3]);
-		const model = models.find(candidate => candidate.id === "k3");
+		const model = models.find((candidate) => candidate.id === "k3");
 
 		expect(model).toMatchObject({
 			id: "k3",
@@ -59,8 +59,8 @@ describe("Kimi Code provider catalog", () => {
 				supports_reasoning: true,
 			},
 		]);
-		const anthropic = models.find(candidate => candidate.id === "k3-anthropic");
-		const legacy = models.find(candidate => candidate.id === "kimi-for-coding");
+		const anthropic = models.find((candidate) => candidate.id === "k3-anthropic");
+		const legacy = models.find((candidate) => candidate.id === "kimi-for-coding");
 
 		expect(anthropic?.compat.kimiApiFormat).toBe("anthropic");
 		expect(legacy?.compat).toMatchObject({ thinkingFormat: "zai" });
@@ -81,7 +81,7 @@ describe("Kimi Code provider catalog", () => {
 			},
 			{ id: "kimi-k2", display_name: "Kimi K2", context_length: 262_144 },
 		]);
-		const maxTokensFor = (id: string) => models.find(model => model.id === id)?.maxTokens;
+		const maxTokensFor = (id: string) => models.find((model) => model.id === id)?.maxTokens;
 
 		expect(maxTokensFor("k3")).toBe(131_072);
 		expect(maxTokensFor("k3-256k")).toBe(131_072);

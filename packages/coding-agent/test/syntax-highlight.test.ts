@@ -1,4 +1,4 @@
-import { resetCapabilitiesCache, setCapabilities } from "@noorm/lumpi-tui";
+import { resetCapabilitiesCache, setCapabilities } from "@noorm/lumi-tui";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { highlightCode, initTheme } from "../src/modes/interactive/theme/theme.ts";
 import { highlight, renderHighlightedHtml, supportsLanguage } from "../src/utils/syntax-highlight.ts";

@@ -2,8 +2,8 @@
  * Model resolution, scoping, and initial selection
  */
 
-import type { ThinkingLevel } from "@noorm/lumpi-agent-core";
-import { type Api, type AuthOperationOptions, type KnownProvider, type Model, modelsAreEqual } from "@noorm/lumpi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import { type Api, type AuthOperationOptions, type KnownProvider, type Model, modelsAreEqual } from "@noorm/lumi-ai";
 import chalk from "chalk";
 import { minimatch } from "minimatch";
 import { isValidThinkingLevel } from "../cli/args.ts";

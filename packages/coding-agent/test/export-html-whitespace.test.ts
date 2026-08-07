@@ -1,4 +1,4 @@
-import type { Component } from "@noorm/lumpi-tui";
+import type { Component } from "@noorm/lumi-tui";
 import { readFileSync } from "fs";
 import { describe, expect, it } from "vitest";
 import { ansiLinesToHtml } from "../src/core/export-html/ansi-to-html.ts";

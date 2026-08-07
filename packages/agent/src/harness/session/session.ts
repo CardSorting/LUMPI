@@ -1,4 +1,4 @@
-import { uuidv7 } from "@noorm/lumpi-ai";
+import { uuidv7 } from "@noorm/lumi-ai";
 import type { AgentMessage } from "../../types.ts";
 import type {
 	BranchBounds,

@@ -50,7 +50,7 @@ export function openaiCodexModelManagerOptions(
 						const accounts = await resolveAccounts();
 						if (!accounts || accounts.length === 0) return null;
 						const results = await Promise.all(
-							accounts.map(account =>
+							accounts.map((account) =>
 								fetchCodexModels({
 									accessToken: account.accessToken,
 									accountId: account.accountId,

@@ -1,4 +1,4 @@
-import { PiSessionOwnershipError } from "@noorm/lumpi-client";
+import { PiSessionOwnershipError } from "@noorm/lumi-client";
 import { describe, expect, test } from "vitest";
 import { RemoteSession } from "../../src/client/remote-session.ts";
 import { collectRequests, connectClient, MemoryServer, sessionSnapshot } from "./support.ts";

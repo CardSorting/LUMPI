@@ -1,4 +1,4 @@
-import type { Message } from "@noorm/lumpi-ai";
+import type { Message } from "@noorm/lumi-ai";
 import { describe, expect, it } from "vitest";
 import { serializeConversation } from "../src/core/compaction/utils.ts";
 

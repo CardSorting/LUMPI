@@ -1,16 +1,16 @@
-import type { CommitAgentState } from "../../../commit/agentic/state";
-import type { ModelRegistry } from "../../../config/model-registry";
-import type { Settings } from "../../../config/settings";
-import type { CustomTool } from "../../../extensibility/custom-tools/types";
-import type { AuthStorage } from "../../../session/auth-storage";
-import { createAnalyzeFileTool } from "./analyze-file";
-import { createGitFileDiffTool } from "./git-file-diff";
-import { createGitHunkTool } from "./git-hunk";
-import { createGitOverviewTool } from "./git-overview";
-import { createProposeChangelogTool } from "./propose-changelog";
-import { createProposeCommitTool } from "./propose-commit";
-import { createRecentCommitsTool } from "./recent-commits";
-import { createSplitCommitTool } from "./split-commit";
+import type { AuthStorage } from "../../../core/auth-storage.ts";
+import type { ToolDefinition } from "../../../core/extensions/types.ts";
+import type { ModelRegistry } from "../../../core/model-registry.ts";
+import type { Settings } from "../../../core/settings-manager.ts";
+import type { CommitAgentState } from "../state.ts";
+import { createAnalyzeFileTool } from "./analyze-file.ts";
+import { createGitFileDiffTool } from "./git-file-diff.ts";
+import { createGitHunkTool } from "./git-hunk.ts";
+import { createGitOverviewTool } from "./git-overview.ts";
+import { createProposeChangelogTool } from "./propose-changelog.ts";
+import { createProposeCommitTool } from "./propose-commit.ts";
+import { createRecentCommitsTool } from "./recent-commits.ts";
+import { createSplitCommitTool } from "./split-commit.ts";
 
 export interface CommitToolOptions {
 	cwd: string;
@@ -23,8 +23,8 @@ export interface CommitToolOptions {
 	enableAnalyzeFiles?: boolean;
 }
 
-export function createCommitTools(options: CommitToolOptions): Array<CustomTool<any, any>> {
-	const tools: Array<CustomTool<any, any>> = [
+export function createCommitTools(options: CommitToolOptions): ToolDefinition[] {
+	const tools: ToolDefinition[] = [
 		createGitOverviewTool(options.cwd, options.state),
 		createGitFileDiffTool(options.cwd, options.state),
 		createGitHunkTool(options.cwd),

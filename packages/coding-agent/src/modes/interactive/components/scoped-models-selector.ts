@@ -1,4 +1,4 @@
-import type { Model } from "@noorm/lumpi-ai";
+import type { Model } from "@noorm/lumi-ai";
 import {
 	Container,
 	type Focusable,
@@ -9,7 +9,7 @@ import {
 	matchesKey,
 	Spacer,
 	Text,
-} from "@noorm/lumpi-tui";
+} from "@noorm/lumi-tui";
 import { getModelSearchText } from "../model-search.ts";
 import { theme } from "../theme/theme.ts";
 import { DynamicBorder } from "./dynamic-border.ts";

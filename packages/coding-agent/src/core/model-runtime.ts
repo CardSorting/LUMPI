@@ -35,8 +35,8 @@ import {
 	type ProviderRequestOptions,
 	type SimpleStreamOptions,
 	type StreamOptions,
-} from "@noorm/lumpi-ai";
-import * as builtinProviderCatalog from "@noorm/lumpi-ai/providers/all";
+} from "@noorm/lumi-ai";
+import * as builtinProviderCatalog from "@noorm/lumi-ai/providers/all";
 import { getAgentDir } from "../config.ts";
 import { operationSignal, raceWithAbortSignal } from "../utils/abort.ts";
 import { AuthStorage as DefaultAuthStorage } from "./auth-storage.ts";

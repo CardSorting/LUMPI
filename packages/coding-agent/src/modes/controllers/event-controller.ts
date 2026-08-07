@@ -1,10 +1,10 @@
-import type { AssistantMessage, ImageContent } from "@oh-my-pi/pi-ai";
-import * as AIError from "@oh-my-pi/pi-ai/error";
-import { getStreamingPartialJson } from "@oh-my-pi/pi-ai/utils/block-symbols";
-import { type Component, Loader, TERMINAL } from "@oh-my-pi/pi-tui";
+import type { AssistantMessage, ImageContent } from "@noorm/lumi-ai";
+import * as AIError from "@noorm/lumi-ai/error";
+import { getStreamingPartialJson } from "@noorm/lumi-ai/utils/block-symbols";
+import { INTENT_FIELD } from "@noorm/lumi-protocol";
+import { type Component, Loader, TERMINAL } from "@noorm/lumi-tui";
 import { logger, prompt, sanitizeText } from "@oh-my-pi/pi-utils";
-import { INTENT_FIELD } from "@oh-my-pi/pi-wire";
-import { extractTextContent } from "../../commit/utils";
+import { extractTextContent } from "../../commit/utils.ts";
 import { settings } from "../../config/settings";
 import { getEditClipboard } from "../../edit/edit-clipboard";
 import { getFileSnapshotStore } from "../../edit/file-snapshot-store";
@@ -32,7 +32,7 @@ import { nextActionableTask } from "../../tools/todo";
 import { SpeechEnhancer } from "../../tts/speech-enhancer";
 import { vocalizer } from "../../tts/vocalizer";
 import { canonicalizeMessage } from "../../utils/thinking-display";
-import { setTerminalTitleState } from "../../utils/title-generator";
+import { setTerminalTitleState } from "../../utils/title-generator.ts";
 import { interruptHint } from "../shared";
 import { createAssistantMessageComponent } from "../utils/interactive-context-helpers";
 import {
@@ -41,8 +41,8 @@ import {
 	splitAssistantMessageToolTimeline,
 } from "../utils/transcript-render-helpers";
 import { isWarpCliAgentProtocolActive } from "../warp-events";
-import { StreamingRevealController } from "./streaming-reveal";
-import { streamingStringKeysForTool, ToolArgsRevealController } from "./tool-args-reveal";
+import { StreamingRevealController } from "./streaming-reveal.ts";
+import { streamingStringKeysForTool, ToolArgsRevealController } from "./tool-args-reveal.ts";
 
 type AgentSessionEventKind = AgentSessionEvent["type"];
 
@@ -203,7 +203,7 @@ export class EventController {
 						settings: session.settings,
 						registry: session.modelRegistry,
 						sessionId: session.sessionId,
-						metadataResolver: provider => session.agent.metadataForProvider(provider),
+						metadataResolver: (provider) => session.agent.metadataForProvider(provider),
 					})
 				: null,
 		);
@@ -211,34 +211,34 @@ export class EventController {
 			getSmoothStreaming: () => this.ctx.settings.get("display.smoothStreaming"),
 			getHideThinkingBlock: () => this.ctx.effectiveHideThinkingBlock,
 			getProseOnlyThinking: () => this.ctx.proseOnlyThinking,
-			requestRender: component => this.ctx.ui.requestComponentRender(component),
+			requestRender: (component) => this.ctx.ui.requestComponentRender(component),
 		});
 		this.#toolArgsReveal = new ToolArgsRevealController({
 			getSmoothStreaming: () => this.ctx.settings.get("display.smoothStreaming"),
-			requestRender: component => this.ctx.ui.requestComponentRender(component),
+			requestRender: (component) => this.ctx.ui.requestComponentRender(component),
 		});
 		this.#handlers = {
-			agent_start: e => this.#handleAgentStart(e),
-			agent_end: e => this.#handleAgentEnd(e),
+			agent_start: (e) => this.#handleAgentStart(e),
+			agent_end: (e) => this.#handleAgentEnd(e),
 			turn_start: async () => {},
-			turn_end: async e => this.#handleTurnEnd(e),
-			message_start: e => this.#handleMessageStart(e),
-			message_update: e => this.#handleMessageUpdate(e),
-			message_end: e => this.#handleMessageEnd(e),
-			tool_execution_start: e => this.#handleToolExecutionStart(e),
-			tool_execution_update: e => this.#handleToolExecutionUpdate(e),
-			tool_execution_end: e => this.#handleToolExecutionEnd(e),
-			auto_compaction_start: e => this.#handleAutoCompactionStart(e),
-			auto_compaction_end: e => this.#handleAutoCompactionEnd(e),
-			auto_retry_start: e => this.#handleAutoRetryStart(e),
-			auto_retry_end: e => this.#handleAutoRetryEnd(e),
-			retry_fallback_applied: e => this.#handleRetryFallbackApplied(e),
-			retry_fallback_succeeded: e => this.#handleRetryFallbackSucceeded(e),
-			ttsr_triggered: e => this.#handleTtsrTriggered(e),
-			todo_reminder: e => this.#handleTodoReminder(e),
-			todo_auto_clear: e => this.#handleTodoAutoClear(e),
-			irc_message: e => this.#handleIrcMessage(e),
-			notice: e => this.#handleNotice(e),
+			turn_end: async (e) => this.#handleTurnEnd(e),
+			message_start: (e) => this.#handleMessageStart(e),
+			message_update: (e) => this.#handleMessageUpdate(e),
+			message_end: (e) => this.#handleMessageEnd(e),
+			tool_execution_start: (e) => this.#handleToolExecutionStart(e),
+			tool_execution_update: (e) => this.#handleToolExecutionUpdate(e),
+			tool_execution_end: (e) => this.#handleToolExecutionEnd(e),
+			auto_compaction_start: (e) => this.#handleAutoCompactionStart(e),
+			auto_compaction_end: (e) => this.#handleAutoCompactionEnd(e),
+			auto_retry_start: (e) => this.#handleAutoRetryStart(e),
+			auto_retry_end: (e) => this.#handleAutoRetryEnd(e),
+			retry_fallback_applied: (e) => this.#handleRetryFallbackApplied(e),
+			retry_fallback_succeeded: (e) => this.#handleRetryFallbackSucceeded(e),
+			ttsr_triggered: (e) => this.#handleTtsrTriggered(e),
+			todo_reminder: (e) => this.#handleTodoReminder(e),
+			todo_auto_clear: (e) => this.#handleTodoAutoClear(e),
+			irc_message: (e) => this.#handleIrcMessage(e),
+			notice: (e) => this.#handleNotice(e),
 			model_changed: async () => {
 				this.ctx.statusLine.invalidate();
 				this.ctx.ui.requestRender();
@@ -400,7 +400,7 @@ export class EventController {
 				(content): content is ImageContent =>
 					content.type === "image" && typeof content.data === "string" && typeof content.mimeType === "string",
 			)
-			.map(content => ({ type: "image", data: content.data, mimeType: content.mimeType }));
+			.map((content) => ({ type: "image", data: content.data, mimeType: content.mimeType }));
 		if (images.length === 0) return false;
 		assistantComponent.setToolResultImages(toolCallId, images);
 		return settings.get("terminal.showImages");
@@ -410,7 +410,7 @@ export class EventController {
 		const children = this.ctx.chatContainer.children;
 		const anchorIndex = anchor ? children.indexOf(anchor) : -1;
 		if (anchorIndex < 0) return false;
-		if (children.slice(anchorIndex + 1).some(child => !this.ctx.chatContainer.isBlockUncommitted(child))) {
+		if (children.slice(anchorIndex + 1).some((child) => !this.ctx.chatContainer.isBlockUncommitted(child))) {
 			return false;
 		}
 		this.ctx.chatContainer.addChild(component);
@@ -556,7 +556,7 @@ export class EventController {
 			// #7443 follow-up).
 			void this.#runSerialized(async () => {
 				await this.#flushPendingMessageUpdate();
-			}).catch(err => {
+			}).catch((err) => {
 				logger.warn("Message update flush rejected", {
 					error: err instanceof Error ? err.message : String(err),
 				});
@@ -665,7 +665,7 @@ export class EventController {
 			if (component) {
 				this.#retrySupersededAssistantComponents.delete(persistenceKey);
 				this.#retrySupersededAssistantQueue = this.#retrySupersededAssistantQueue.filter(
-					item => item !== component,
+					(item) => item !== component,
 				);
 				return component;
 			}
@@ -983,7 +983,7 @@ export class EventController {
 			this.#streamingReveal.setTarget(timeline.beforeTools);
 
 			const visibleBlockCount = this.ctx.streamingMessage.content.filter(
-				content =>
+				(content) =>
 					(content.type === "text" && canonicalizeMessage(content.text)) ||
 					(content.type === "thinking" && canonicalizeMessage(content.thinking)),
 			).length;
@@ -1001,7 +1001,7 @@ export class EventController {
 			// stream (a big write/edit/eval) sits below a still-live block and
 			// can never reach native scrollback: the head of the preview is
 			// neither committed nor on screen and the transcript reads as cut.
-			if (this.ctx.streamingMessage.content.some(content => content.type === "toolCall")) {
+			if (this.ctx.streamingMessage.content.some((content) => content.type === "toolCall")) {
 				this.ctx.streamingComponent.markTranscriptBlockFinalized();
 			}
 			for (let contentIndex = 0; contentIndex < this.ctx.streamingMessage.content.length; contentIndex++) {
@@ -1625,7 +1625,7 @@ export class EventController {
 						title: details.title,
 						planExists: details.planExists,
 					})
-					.catch(err => {
+					.catch((err) => {
 						logger.warn("Plan approval dispatch failed", {
 							error: err instanceof Error ? err.message : String(err),
 						});
@@ -1701,7 +1701,7 @@ export class EventController {
 			}
 		}
 		this.#backgroundTaskCallIds = new Set(
-			Array.from(this.#backgroundTaskCallIds).filter(toolCallId => this.ctx.pendingTools.has(toolCallId)),
+			Array.from(this.#backgroundTaskCallIds).filter((toolCallId) => this.ctx.pendingTools.has(toolCallId)),
 		);
 		this.#approvalAttentionToolCallIds.clear();
 		this.#readToolCallArgs.clear();
@@ -1790,8 +1790,8 @@ export class EventController {
 						: "Auto context-full maintenance";
 		this.ctx.autoCompactionLoader = new Loader(
 			this.ctx.ui,
-			spinner => theme.fg("accent", spinner),
-			text => theme.fg("muted", text),
+			(spinner) => theme.fg("accent", spinner),
+			(text) => theme.fg("muted", text),
 			`${reasonText}${actionLabel}…${this.#maintenanceEscHint()}`,
 			getSymbolTheme().spinnerFrames,
 		);
@@ -1906,8 +1906,8 @@ export class EventController {
 		const delaySeconds = Math.round(event.delayMs / 1000);
 		this.ctx.retryLoader = new Loader(
 			this.ctx.ui,
-			spinner => theme.fg("warning", spinner),
-			text => theme.fg("muted", text),
+			(spinner) => theme.fg("warning", spinner),
+			(text) => theme.fg("muted", text),
 			`Retrying (${event.attempt}/${event.maxAttempts}) in ${delaySeconds}s…${this.#maintenanceEscHint()}`,
 			getSymbolTheme().spinnerFrames,
 		);

@@ -1,8 +1,8 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { fauxAssistantMessage, fauxToolCall, type Model } from "@noorm/lumpi-ai";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { fauxAssistantMessage, fauxToolCall, type Model } from "@noorm/lumi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
 import type { InputEvent } from "../../src/core/extensions/index.ts";

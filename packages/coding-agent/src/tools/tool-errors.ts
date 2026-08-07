@@ -10,11 +10,11 @@
  * Override render() for custom LLM-facing formatting.
  */
 export class ToolError extends Error {
-	constructor(
-		message: string,
-		readonly context?: Record<string, unknown>,
-	) {
+	readonly context?: Record<string, unknown>;
+
+	constructor(message: string, context?: Record<string, unknown>) {
 		super(message);
+		this.context = context;
 		this.name = "ToolError";
 	}
 

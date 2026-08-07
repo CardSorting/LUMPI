@@ -4,7 +4,7 @@ import { novitaModelManagerOptions } from "@oh-my-pi/pi-catalog/provider-models/
 
 describe("Novita built-in provider", () => {
 	test("registers catalog descriptor with NOVITA_API_KEY env discovery", () => {
-		const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === "novita");
+		const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "novita");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.defaultModel).toBe("moonshotai/kimi-k2.7-code");
 		expect(descriptor?.catalogDiscovery?.envVars).toContain("NOVITA_API_KEY");
@@ -76,11 +76,11 @@ describe("Novita built-in provider", () => {
 
 		const options = novitaModelManagerOptions({ fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
-		const model = models?.find(item => item.id === "moonshotai/kimi-k2.7-code");
+		const model = models?.find((item) => item.id === "moonshotai/kimi-k2.7-code");
 
 		expect(requests).toEqual(["https://api.novita.ai/openai/v1/models"]);
 		expect(options.dynamicModelsAuthoritative).toBe(true);
-		expect(models?.map(item => item.id)).toEqual(["moonshotai/kimi-k2.7-code"]);
+		expect(models?.map((item) => item.id)).toEqual(["moonshotai/kimi-k2.7-code"]);
 		expect(model?.provider).toBe("novita");
 		expect(model?.baseUrl).toBe("https://api.novita.ai/openai/v1");
 		expect(model?.name).toBe("Kimi K2.7 Code");

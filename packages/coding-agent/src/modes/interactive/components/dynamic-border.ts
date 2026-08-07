@@ -1,4 +1,4 @@
-import type { Component } from "@noorm/lumpi-tui";
+import type { Component } from "@noorm/lumi-tui";
 import { theme } from "../theme/theme.ts";
 
 /**

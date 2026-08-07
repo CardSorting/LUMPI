@@ -1,5 +1,5 @@
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import { type ImageContent, type Message, type TextContent, type Usage, uuidv7 } from "@noorm/lumpi-ai";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import { type ImageContent, type Message, type TextContent, type Usage, uuidv7 } from "@noorm/lumi-ai";
 import { randomUUID } from "crypto";
 import {
 	appendFileSync,

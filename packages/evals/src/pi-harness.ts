@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { performance } from "node:perf_hooks";
-import { contentText } from "@noorm/lumpi-ai";
+import { contentText } from "@noorm/lumi-ai";
 import {
 	type AgentSession,
 	type CreateAgentSessionOptions,
@@ -12,7 +12,7 @@ import {
 	ModelRuntime,
 	SessionManager,
 	SettingsManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumi-coding-agent";
 import {
 	createHarness,
 	type Harness,

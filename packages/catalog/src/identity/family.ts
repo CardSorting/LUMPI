@@ -108,7 +108,7 @@ const GROK_EFFORT_CAPABLE_PREFIXES = ["grok-3-mini", "grok-4.20-multi-agent", "g
 export const isGrokReasoningEffortCapable = memo((modelId: string): boolean => {
 	const bare = bareModelId(modelId).trim().toLowerCase();
 	if (!bare) return false;
-	return GROK_EFFORT_CAPABLE_PREFIXES.some(prefix => bare.startsWith(prefix));
+	return GROK_EFFORT_CAPABLE_PREFIXES.some((prefix) => bare.startsWith(prefix));
 });
 
 /**

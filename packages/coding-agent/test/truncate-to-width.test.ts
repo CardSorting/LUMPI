@@ -1,4 +1,4 @@
-import { truncateToWidth, visibleWidth } from "@noorm/lumpi-tui";
+import { truncateToWidth, visibleWidth } from "@noorm/lumi-tui";
 import { describe, expect, it } from "vitest";
 
 /**

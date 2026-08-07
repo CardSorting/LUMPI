@@ -46,28 +46,28 @@ const googleVertexModelsDevPayload = {
 describe("google-vertex model catalog", () => {
 	it("maps the stencil.so Vertex catalog instead of the project discovery endpoint", () => {
 		const models = mapModelsDevToModels(googleVertexModelsDevPayload, MODELS_DEV_PROVIDER_DESCRIPTORS).filter(
-			model => model.provider === "google-vertex",
+			(model) => model.provider === "google-vertex",
 		);
 
-		expect(models.map(model => model.id)).toEqual([
+		expect(models.map((model) => model.id)).toEqual([
 			"gemini-3.5-flash",
 			"deepseek-ai/deepseek-v3.2-maas",
 			"claude-sonnet-4@20250514",
 		]);
 
-		const gemini = models.find(model => model.id === "gemini-3.5-flash");
+		const gemini = models.find((model) => model.id === "gemini-3.5-flash");
 		expect(gemini?.api).toBe("google-vertex");
 		expect(gemini?.baseUrl).toBe("https://{location}-aiplatform.googleapis.com");
 		expect(gemini?.input).toEqual(["text", "image"]);
 		expect(gemini?.contextWindow).toBe(1_048_576);
 
-		const deepseek = models.find(model => model.id === "deepseek-ai/deepseek-v3.2-maas");
+		const deepseek = models.find((model) => model.id === "deepseek-ai/deepseek-v3.2-maas");
 		expect(deepseek?.api).toBe("openai-completions");
 		expect(deepseek?.baseUrl).toBe(
 			"https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/endpoints/openapi",
 		);
 
-		const claude = models.find(model => model.id === "claude-sonnet-4@20250514");
+		const claude = models.find((model) => model.id === "claude-sonnet-4@20250514");
 		expect(claude?.api).toBe("anthropic-messages");
 		expect(claude?.baseUrl).toBe(
 			"https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/anthropic/models/claude-sonnet-4@20250514:streamRawPredict",
@@ -87,8 +87,10 @@ describe("google-vertex model catalog", () => {
 
 		const result = await resolveProviderModels({ ...options, cacheDbPath: ":memory:" }, "offline");
 		expect(result.stale).toBe(false);
-		expect(result.models.some(model => model.id.endsWith("-maas") && model.api === "openai-completions")).toBe(true);
-		expect(result.models.some(model => model.id === "gemini-3.5-flash")).toBe(true);
-		expect(result.models.some(model => model.id === "gemini-1.5-pro")).toBe(false);
+		expect(result.models.some((model) => model.id.endsWith("-maas") && model.api === "openai-completions")).toBe(
+			true,
+		);
+		expect(result.models.some((model) => model.id === "gemini-3.5-flash")).toBe(true);
+		expect(result.models.some((model) => model.id === "gemini-1.5-pro")).toBe(false);
 	});
 });

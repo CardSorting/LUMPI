@@ -8,8 +8,8 @@
  * - Edge case tests (wide chars, styled text, emoji)
  */
 
-import type { ExtensionAPI, ExtensionCommandContext, Theme } from "@noorm/lumpi-coding-agent";
-import { CURSOR_MARKER, type Focusable, matchesKey, visibleWidth } from "@noorm/lumpi-tui";
+import type { ExtensionAPI, ExtensionCommandContext, Theme } from "@noorm/lumi-coding-agent";
+import { CURSOR_MARKER, type Focusable, matchesKey, visibleWidth } from "@noorm/lumi-tui";
 
 export default function (pi: ExtensionAPI) {
 	pi.registerCommand("overlay-test", {

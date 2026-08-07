@@ -1,4 +1,4 @@
-import { Container, getKeybindings, Spacer, Text } from "@noorm/lumpi-tui";
+import { Container, getKeybindings, Spacer, Text } from "@noorm/lumi-tui";
 import {
 	getProjectTrustOptions,
 	type ProjectTrustOption,

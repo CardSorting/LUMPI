@@ -1,23 +1,23 @@
-# @noorm/lumpi-agent-core
+# @noorm/lumi-agent-core
 
-Stateful agent with tool execution and event streaming. Built on `@noorm/lumpi-ai`.
+Stateful agent with tool execution and event streaming. Built on `@noorm/lumi-ai`.
 
 ## Installation
 
 ```bash
-npm install @noorm/lumpi-agent-core
+npm install @noorm/lumi-agent-core
 ```
 
 ### SQLite session backends
 
-The SQLite session backend and the `node:sqlite` adapter live in a separate package, `@noorm/lumpi-session-backend-sqlite-node`, so the core package does not pull in runtime builtins or native SQLite dependencies by default. The backend accepts a runtime-specific SQLite factory, allowing other session backends to ship as their own packages in the future.
+The SQLite session backend and the `node:sqlite` adapter live in a separate package, `@noorm/lumi-session-backend-sqlite-node`, so the core package does not pull in runtime builtins or native SQLite dependencies by default. The backend accepts a runtime-specific SQLite factory, allowing other session backends to ship as their own packages in the future.
 
 ## Quick Start
 
 ```typescript
-import { Agent } from "@noorm/lumpi-agent-core";
-import { createModels } from "@noorm/lumpi-ai";
-import { anthropicProvider } from "@noorm/lumpi-ai/providers/anthropic";
+import { Agent } from "@noorm/lumi-agent-core";
+import { createModels } from "@noorm/lumi-ai";
+import { anthropicProvider } from "@noorm/lumi-ai/providers/anthropic";
 
 const models = createModels();
 models.setProvider(anthropicProvider());
@@ -378,7 +378,7 @@ Follow-up messages are checked only when there are no more tool calls and no ste
 Extend `AgentMessage` via declaration merging:
 
 ```typescript
-declare module "@noorm/lumpi-agent-core" {
+declare module "@noorm/lumi-agent-core" {
   interface CustomAgentMessages {
     notification: { role: "notification"; text: string; timestamp: number };
   }
@@ -460,7 +460,7 @@ Return `terminate: true` from `execute()` or `afterToolCall` to hint that the ag
 For browser apps that proxy through a backend:
 
 ```typescript
-import { Agent, streamProxy } from "@noorm/lumpi-agent-core";
+import { Agent, streamProxy } from "@noorm/lumi-agent-core";
 
 const agent = new Agent({
   streamFn: (model, context, options) =>
@@ -477,7 +477,7 @@ const agent = new Agent({
 For direct control without the Agent class:
 
 ```typescript
-import { agentLoop, agentLoopContinue } from "@noorm/lumpi-agent-core";
+import { agentLoop, agentLoopContinue } from "@noorm/lumi-agent-core";
 
 const context: AgentContext = {
   systemPrompt: "You are helpful.",

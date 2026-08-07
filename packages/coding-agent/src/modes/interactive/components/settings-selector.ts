@@ -1,5 +1,5 @@
-import type { ThinkingLevel } from "@noorm/lumpi-agent-core";
-import type { Transport } from "@noorm/lumpi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Transport } from "@noorm/lumi-ai";
 import {
 	type Component,
 	Container,
@@ -12,7 +12,7 @@ import {
 	SettingsList,
 	Spacer,
 	Text,
-} from "@noorm/lumpi-tui";
+} from "@noorm/lumi-tui";
 import { formatHttpIdleTimeoutMs, HTTP_IDLE_TIMEOUT_CHOICES } from "../../../core/http-dispatcher.ts";
 import type {
 	DefaultProjectTrust,

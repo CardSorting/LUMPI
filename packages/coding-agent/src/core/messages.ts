@@ -5,8 +5,8 @@
  * and provides a transformer to convert them to LLM-compatible messages.
  */
 
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import type { ImageContent, Message, TextContent } from "@noorm/lumpi-ai";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { ImageContent, Message, TextContent } from "@noorm/lumi-ai";
 
 export const COMPACTION_SUMMARY_PREFIX = `The conversation history before this point was compacted into the following summary:
 
@@ -66,13 +66,27 @@ export interface CompactionSummaryMessage {
 	timestamp: number;
 }
 
+export interface FileMentionMessage {
+	role: "fileMention";
+	files: {
+		path: string;
+		content: string;
+		lineCount?: number;
+		byteSize?: number;
+		skippedReason?: "tooLarge" | "binary";
+		image?: ImageContent;
+	}[];
+	timestamp: number;
+}
+
 // Extend CustomAgentMessages via declaration merging
-declare module "@noorm/lumpi-agent-core" {
+declare module "@noorm/lumi-agent-core" {
 	interface CustomAgentMessages {
 		bashExecution: BashExecutionMessage;
 		custom: CustomMessage;
 		branchSummary: BranchSummaryMessage;
 		compactionSummary: CompactionSummaryMessage;
+		fileMention: FileMentionMessage;
 	}
 }
 
@@ -181,6 +195,16 @@ export function convertToLlm(messages: AgentMessage[]): Message[] {
 						],
 						timestamp: m.timestamp,
 					};
+				case "fileMention": {
+					const textParts = m.files.map((f) =>
+						f.skippedReason ? `File: ${f.path}\n${f.content}` : `File: ${f.path}\n\`\`\`\n${f.content}\n\`\`\``,
+					);
+					return {
+						role: "user",
+						content: [{ type: "text" as const, text: textParts.join("\n\n") }],
+						timestamp: m.timestamp,
+					};
+				}
 				case "user":
 				case "assistant":
 				case "toolResult":

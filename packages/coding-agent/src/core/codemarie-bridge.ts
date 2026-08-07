@@ -67,14 +67,14 @@ import {
 	type WorkspaceArchitectureProfile,
 	WorkspaceIntelligenceEngine,
 	WriteCoalescer,
-} from "@noorm/lumpi-codemarie";
-import { type SQLiteMaintenanceEngine, sqliteMaintenanceEngine } from "@noorm/lumpi-codemarie/db";
+} from "@noorm/lumi-codemarie";
+import { type SQLiteMaintenanceEngine, sqliteMaintenanceEngine } from "@noorm/lumi-codemarie/db";
 import {
 	atomicWriteFile,
 	calculateFileChecksum,
 	cleanStaleTempFiles,
 	verifyIntegrity,
-} from "@noorm/lumpi-codemarie/disk";
+} from "@noorm/lumi-codemarie/disk";
 import {
 	buildJoyRideWorkspaceSnapshot,
 	bumpTaskGeneration,
@@ -98,13 +98,13 @@ import {
 	shutdownJoyRideCache,
 	storeCommandDiagnostic,
 	storeReusableCommandResult,
-} from "@noorm/lumpi-codemarie/joyride";
-import { StorageManager, type StorageOptimizationResult } from "@noorm/lumpi-codemarie/storage";
+} from "@noorm/lumi-codemarie/joyride";
+import { StorageManager, type StorageOptimizationResult } from "@noorm/lumi-codemarie/storage";
 import {
 	defaultTokenBufferEngine,
 	type LifetimeTelemetryStats,
 	type TokenIngestionBufferEngine,
-} from "@noorm/lumpi-codemarie/transform";
+} from "@noorm/lumi-codemarie/transform";
 import { URI } from "vscode-uri";
 
 export interface CodemarieBridgeOptions {

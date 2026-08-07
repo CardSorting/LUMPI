@@ -1,30 +1,26 @@
-import { type } from "@oh-my-pi/omptype";
-import type { CommitAgentState } from "../../../commit/agentic/state";
-import { CHANGELOG_CATEGORIES, type ChangelogCategory } from "../../../commit/types";
-import type { CustomTool } from "../../../extensibility/custom-tools/types";
+import { Type } from "typebox";
+import { defineTool, type ToolDefinition } from "../../../core/extensions/types.ts";
+import { CHANGELOG_CATEGORIES, type ChangelogCategory } from "../../types.ts";
+import type { CommitAgentState } from "../state.ts";
 
-const changelogCategoryProperties = {
-	"Breaking Changes?": "string[]",
-	"Added?": "string[]",
-	"Changed?": "string[]",
-	"Deprecated?": "string[]",
-	"Removed?": "string[]",
-	"Fixed?": "string[]",
-	"Security?": "string[]",
-} as const;
-
-const changelogEntriesSchema = type({
-	...changelogCategoryProperties,
+const changelogEntriesSchema = Type.Object({
+	"Breaking Changes": Type.Optional(Type.Array(Type.String())),
+	Added: Type.Optional(Type.Array(Type.String())),
+	Changed: Type.Optional(Type.Array(Type.String())),
+	Deprecated: Type.Optional(Type.Array(Type.String())),
+	Removed: Type.Optional(Type.Array(Type.String())),
+	Fixed: Type.Optional(Type.Array(Type.String())),
+	Security: Type.Optional(Type.Array(Type.String())),
 });
 
-const changelogEntrySchema = type({
-	path: "string",
+const changelogEntrySchema = Type.Object({
+	path: Type.String(),
 	entries: changelogEntriesSchema,
-	"deletions?": changelogEntriesSchema.describe("entries to remove"),
+	deletions: Type.Optional(changelogEntriesSchema),
 });
 
-const proposeChangelogSchema = type({
-	entries: changelogEntrySchema.array(),
+const proposeChangelogSchema = Type.Object({
+	entries: Type.Array(changelogEntrySchema),
 });
 
 interface ChangelogResponse {
@@ -38,8 +34,8 @@ const allowedCategories = new Set<ChangelogCategory>(CHANGELOG_CATEGORIES);
 export function createProposeChangelogTool(
 	state: CommitAgentState,
 	changelogTargets: string[],
-): CustomTool<typeof proposeChangelogSchema> {
-	return {
+): ToolDefinition<typeof proposeChangelogSchema> {
+	return defineTool({
 		name: "propose_changelog",
 		label: "Propose Changelog",
 		description: "Provide changelog entries for targeted CHANGELOG.md files.",
@@ -50,7 +46,7 @@ export function createProposeChangelogTool(
 			const targets = new Set(changelogTargets);
 			const seen = new Set<string>();
 
-			const normalized = params.entries.map(entry => {
+			const normalized = params.entries.map((entry) => {
 				const cleaned: Record<string, string[]> = {};
 				const entries = entry.entries as Record<string, string[]>;
 				for (const [category, values] of Object.entries(entries)) {
@@ -62,7 +58,7 @@ export function createProposeChangelogTool(
 						errors.push(`Invalid changelog entries for ${entry.path}: ${category}`);
 						continue;
 					}
-					const items = values.map(value => value.trim().replace(/\.$/, "")).filter(value => value.length > 0);
+					const items = values.map((value) => value.trim().replace(/\.$/, "")).filter((value) => value.length > 0);
 					if (items.length > 0) {
 						cleaned[category] = Array.from(new Set(items));
 					}
@@ -81,7 +77,7 @@ export function createProposeChangelogTool(
 							errors.push(`Invalid deletion entries for ${entry.path}: ${category}`);
 							continue;
 						}
-						const items = values.map(value => value.trim()).filter(value => value.length > 0);
+						const items = values.map((value) => value.trim()).filter((value) => value.length > 0);
 						if (items.length > 0) {
 							cleanedDeletions[category] = Array.from(new Set(items));
 						}
@@ -133,15 +129,15 @@ export function createProposeChangelogTool(
 
 			let text = response.valid ? "Changelog entries accepted." : "Changelog validation failed.";
 			if (response.errors.length > 0) {
-				text += `\n\nErrors:\n${response.errors.map(e => `- ${e}`).join("\n")}`;
+				text += `\n\nErrors:\n${response.errors.map((e) => `- ${e}`).join("\n")}`;
 			}
 			if (response.warnings.length > 0) {
-				text += `\n\nWarnings:\n${response.warnings.map(w => `- ${w}`).join("\n")}`;
+				text += `\n\nWarnings:\n${response.warnings.map((w) => `- ${w}`).join("\n")}`;
 			}
 			return {
 				content: [{ type: "text", text }],
 				details: response,
 			};
 		},
-	};
+	});
 }

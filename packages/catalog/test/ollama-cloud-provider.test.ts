@@ -34,7 +34,7 @@ const readFileTool = {
 } satisfies Tool;
 
 function createNdjsonResponse(lines: unknown[]): Response {
-	const body = `${lines.map(line => JSON.stringify(line)).join("\n")}\n`;
+	const body = `${lines.map((line) => JSON.stringify(line)).join("\n")}\n`;
 	const encoder = new TextEncoder();
 	const stream = new ReadableStream<Uint8Array>({
 		start(controller) {
@@ -97,8 +97,8 @@ describe("ollama-cloud provider support", () => {
 
 		const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
-		const gpt = models?.find(model => model.id === "gpt-oss:120b");
-		const qwen = models?.find(model => model.id === "qwen3:32b");
+		const gpt = models?.find((model) => model.id === "gpt-oss:120b");
+		const qwen = models?.find((model) => model.id === "qwen3:32b");
 
 		expect(options.providerId).toBe("ollama-cloud");
 		expect(gpt?.provider).toBe("ollama-cloud");
@@ -135,7 +135,7 @@ describe("ollama-cloud provider support", () => {
 
 		const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
-		const model = models?.find(candidate => candidate.id === "glm-5.2");
+		const model = models?.find((candidate) => candidate.id === "glm-5.2");
 		const built = model ? buildModel(model) : undefined;
 
 		expect(model?.reasoning).toBe(true);
@@ -172,9 +172,9 @@ describe("ollama-cloud provider support", () => {
 		const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
 
-		const ids = models?.map(m => m.id).sort();
+		const ids = models?.map((m) => m.id).sort();
 		expect(ids).toEqual(["model-a", "model-b"]);
-		const modelB = models?.find(m => m.id === "model-b");
+		const modelB = models?.find((m) => m.id === "model-b");
 		expect(modelB?.input).toEqual(["text"]);
 	});
 
@@ -197,7 +197,7 @@ describe("ollama-cloud provider support", () => {
 
 		const options = ollamaCloudModelManagerOptions({ apiKey: "cloud-test-key", fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
-		const model = models?.find(candidate => candidate.id === "gpt-oss:120b");
+		const model = models?.find((candidate) => candidate.id === "gpt-oss:120b");
 
 		expect(model).toBeDefined();
 		expect(model?.id).toBe("gpt-oss:120b");
@@ -411,7 +411,7 @@ describe("ollama-cloud provider support", () => {
 			eventTypes.push(event.type);
 		}
 		const result = await response.result();
-		const toolCall = result.content.find(block => block.type === "toolCall");
+		const toolCall = result.content.find((block) => block.type === "toolCall");
 
 		expect(eventTypes).toContain("toolcall_start");
 		expect(eventTypes).toContain("toolcall_end");
@@ -550,7 +550,7 @@ describe("ollama-cloud provider support", () => {
 		await stream(cloudModel, context, { apiKey: "cloud-test-key", fetch: fetchMock }).result();
 
 		const messages = requestBody?.messages as Array<Record<string, unknown>> | undefined;
-		const assistant = messages?.find(message => message.role === "assistant");
+		const assistant = messages?.find((message) => message.role === "assistant");
 		expect(assistant).toBeDefined();
 		expect(assistant).not.toHaveProperty("thinking");
 		expect(assistant?.tool_calls).toEqual([
@@ -588,7 +588,7 @@ describe("ollama-cloud provider support", () => {
 		expect(messages).toHaveLength(3);
 		expect(messages?.[0]).toEqual({ role: "system", content: "Stable instruction." });
 		expect(messages?.[1]).toEqual({ role: "system", content: "Extra policy." });
-		expect(messages?.map(message => message.role)).toEqual(["system", "system", "user"]);
+		expect(messages?.map((message) => message.role)).toEqual(["system", "system", "user"]);
 	});
 
 	describe("mapToolChoice", () => {

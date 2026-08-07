@@ -7,20 +7,13 @@
  */
 import * as fs from "node:fs/promises";
 import path from "node:path";
-import { formatHashlineHeader, formatNumberedLines, type SnapshotStore } from "@oh-my-pi/hashline";
-import type { AgentMessage } from "@oh-my-pi/pi-agent-core";
-import type { ImageContent } from "@oh-my-pi/pi-ai";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { ImageContent } from "@noorm/lumi-ai";
+import { formatHashlineHeader, formatNumberedLines, normalizeToLF, type SnapshotStore } from "@oh-my-pi/hashline";
 import { formatAge, formatBytes, isProbablyBinary, readImageMetadata } from "@oh-my-pi/pi-utils";
-import { canonicalSnapshotKey } from "../edit/file-snapshot-store";
-import { normalizeToLF } from "../edit/normalize";
-import type { FileMentionMessage } from "../session/messages";
-import {
-	DEFAULT_MAX_BYTES,
-	formatHeadTruncationNotice,
-	truncateHead,
-	truncateHeadBytes,
-} from "../session/streaming-output";
-import { resolveReadPath } from "../tools/path-utils";
+import type { FileMentionMessage } from "../core/messages.ts";
+import { resolveReadPath } from "../core/tools/path-utils.ts";
+import { DEFAULT_MAX_BYTES, truncateHead } from "../core/tools/truncate.ts";
 import { formatDimensionNote, resizeImage } from "./image-resize";
 
 /** Regex to match @filepath patterns in text */
@@ -50,7 +43,7 @@ function sanitizeMentionPath(rawPath: string): string | null {
 
 async function pathExists(filePath: string): Promise<boolean> {
 	try {
-		await Bun.file(filePath).stat();
+		await fs.stat(filePath);
 		return true;
 	} catch {
 		return false;
@@ -74,26 +67,39 @@ function buildTextOutput(textContent: string): { output: string; lineCount: numb
 	if (truncation.firstLineExceedsLimit) {
 		const firstLine = allLines[0] ?? "";
 		const firstLineBytes = Buffer.byteLength(firstLine, "utf-8");
-		const snippet = truncateHeadBytes(firstLine, DEFAULT_MAX_BYTES);
-		let outputText = snippet.text;
+		const buf = Buffer.from(firstLine, "utf-8");
+		const sliced = buf.subarray(0, DEFAULT_MAX_BYTES);
+		let end = sliced.length;
+		while (end > 0 && (sliced[end - 1] & 0xc0) === 0x80) {
+			end--;
+		}
+		const outputText = sliced.subarray(0, end).toString("utf-8");
 
-		if (outputText.length > 0) {
-			outputText += `\n\n[Line 1 is ${formatBytes(firstLineBytes)}, exceeds ${formatBytes(
+		let resultText = outputText;
+		if (resultText.length > 0) {
+			resultText += `\n\n[Line 1 is ${formatBytes(firstLineBytes)}, exceeds ${formatBytes(
 				DEFAULT_MAX_BYTES,
-			)} limit. Showing first ${formatBytes(snippet.bytes)} of the line.]`;
+			)} limit. Showing first ${formatBytes(end)} of the line.]`;
 		} else {
-			outputText = `[Line 1 is ${formatBytes(firstLineBytes)}, exceeds ${formatBytes(
+			resultText = `[Line 1 is ${formatBytes(firstLineBytes)}, exceeds ${formatBytes(
 				DEFAULT_MAX_BYTES,
 			)} limit. Unable to display a valid UTF-8 snippet.]`;
 		}
 
-		return { output: outputText, lineCount: totalFileLines };
+		return { output: resultText, lineCount: totalFileLines };
 	}
 
 	let outputText = truncation.content;
 
 	if (truncation.truncated) {
-		outputText += formatHeadTruncationNotice(truncation, { startLine: 1, totalFileLines });
+		const endLineDisplay = truncation.outputLines;
+		if (truncation.truncatedBy === "lines") {
+			outputText += `\n\n[Showing lines 1-${endLineDisplay} of ${totalFileLines}.]`;
+		} else {
+			outputText += `\n\n[Showing lines 1-${endLineDisplay} of ${totalFileLines} (${formatBytes(
+				DEFAULT_MAX_BYTES,
+			)} limit).]`;
+		}
 	}
 
 	return { output: outputText, lineCount: totalFileLines };
@@ -102,7 +108,7 @@ function buildTextOutput(textContent: string): { output: string; lineCount: numb
 async function buildDirectoryListing(absolutePath: string): Promise<{ output: string; lineCount: number }> {
 	let entries: string[];
 	try {
-		entries = await Array.fromAsync(new Bun.Glob("*").scan({ cwd: absolutePath, dot: true, onlyFiles: false }));
+		entries = await fs.readdir(absolutePath);
 	} catch {
 		return { output: "(empty directory)", lineCount: 1 };
 	}
@@ -123,7 +129,7 @@ async function buildDirectoryListing(absolutePath: string): Promise<{ output: st
 		let age = "";
 
 		try {
-			const stat = await Bun.file(fullPath).stat();
+			const stat = await fs.stat(fullPath);
 			if (stat.isDirectory()) {
 				suffix = "/";
 			}
@@ -202,7 +208,7 @@ export async function generateFileMentionMessages(
 		}
 		const absolutePath = resolveReadPath(resolvedPath, cwd);
 		try {
-			const stat = await Bun.file(absolutePath).stat();
+			const stat = await fs.stat(absolutePath);
 			if (stat.isDirectory()) {
 				const { output, lineCount } = await buildDirectoryListing(absolutePath);
 				files.push({ path: resolvedPath, content: output, lineCount });
@@ -226,19 +232,21 @@ export async function generateFileMentionMessages(
 					continue;
 				}
 
-				const base64Content = buffer.toBase64();
+				const base64Content = buffer.toString("base64");
 				let image: ImageContent = { type: "image", mimeType, data: base64Content };
 				let dimensionNote: string | undefined;
 
 				if (autoResizeImages) {
 					try {
-						const resized = await resizeImage({ type: "image", data: base64Content, mimeType });
-						dimensionNote = formatDimensionNote(resized);
-						image = {
-							type: "image",
-							mimeType: resized.mimeType,
-							data: resized.data,
-						};
+						const resized = await resizeImage(buffer, mimeType);
+						if (resized) {
+							dimensionNote = formatDimensionNote(resized);
+							image = {
+								type: "image",
+								mimeType: resized.mimeType,
+								data: resized.data,
+							};
+						}
 					} catch {
 						image = { type: "image", mimeType, data: base64Content };
 					}
@@ -267,12 +275,12 @@ export async function generateFileMentionMessages(
 				continue;
 			}
 
-			const content = await Bun.file(absolutePath).text();
+			const content = await fs.readFile(absolutePath, "utf-8");
 			const snapshotStore = options?.useHashLines ? options.snapshotStore : undefined;
 			const normalized = snapshotStore ? normalizeToLF(content) : content;
 			let { output, lineCount } = buildTextOutput(normalized);
 			if (snapshotStore) {
-				const tag = snapshotStore.record(canonicalSnapshotKey(absolutePath), normalized);
+				const tag = snapshotStore.record(absolutePath, normalized);
 				output = `${formatHashlineHeader(resolvedPath, tag)}\n${formatNumberedLines(output)}`;
 			}
 			files.push({ path: resolvedPath, content: output, lineCount });

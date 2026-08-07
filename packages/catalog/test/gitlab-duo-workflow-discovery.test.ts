@@ -118,7 +118,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		});
 
 		expect(selection).toEqual({ rootNamespaceId: "gid://gitlab/Namespace/10", source: "override" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual(["/api/graphql"]);
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual(["/api/graphql"]);
 		expect((calls[0].body as { variables: { rootNamespaceId: string } }).variables.rootNamespaceId).toBe(
 			"gid://gitlab/Namespace/10",
 		);
@@ -148,7 +148,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		const selection = await discoverGitLabDuoWorkflowNamespace({ apiKey: TEST_TOKEN, fetch });
 
 		expect(selection).toEqual({ rootNamespaceId: "env-root", source: "override" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual(["/api/graphql"]);
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual(["/api/graphql"]);
 	});
 
 	it("resolves a runtime namespace override without aiChatAvailableModels", async () => {
@@ -208,7 +208,7 @@ describe("GitLab Duo Workflow discovery", () => {
 			namespacePath: "runtime-group",
 			source: "override",
 		});
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual(["/api/v4/groups/134945106"]);
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual(["/api/v4/groups/134945106"]);
 	});
 
 	it("resolves a runtime project namespace without aiChatAvailableModels", async () => {
@@ -222,7 +222,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		const selection = await discoverGitLabDuoWorkflowRuntimeNamespace({ apiKey: TEST_TOKEN, projectId: "42", fetch });
 
 		expect(selection).toEqual({ rootNamespaceId: "runtime-project-root", source: "project" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual(["/api/v4/projects/42"]);
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual(["/api/v4/projects/42"]);
 	});
 
 	it("resolves a runtime project path root via GraphQL when REST only exposes the leaf namespace", async () => {
@@ -247,7 +247,7 @@ describe("GitLab Duo Workflow discovery", () => {
 			projectPath: "group/project",
 			source: "project",
 		});
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual([
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual([
 			"/api/v4/projects/group%2Fproject",
 			"/api/graphql",
 		]);
@@ -275,8 +275,8 @@ describe("GitLab Duo Workflow discovery", () => {
 				namespacePath: "runtime-group",
 				source: "group",
 			});
-			expect(calls.map(call => new URL(call.url).pathname)).toEqual(["/api/v4/groups"]);
-			expect(calls.some(call => new URL(call.url).pathname === "/api/graphql")).toBe(false);
+			expect(calls.map((call) => new URL(call.url).pathname)).toEqual(["/api/v4/groups"]);
+			expect(calls.some((call) => new URL(call.url).pathname === "/api/graphql")).toBe(false);
 		} finally {
 			await fs.rm(tmpDir, { recursive: true, force: true });
 		}
@@ -293,7 +293,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		const selection = await discoverGitLabDuoWorkflowNamespace({ apiKey: TEST_TOKEN, projectId: "42", fetch });
 
 		expect(selection).toEqual({ rootNamespaceId: "root-from-project", source: "project" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual(["/api/v4/projects/42", "/api/graphql"]);
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual(["/api/v4/projects/42", "/api/graphql"]);
 		expect((calls[1].body as { variables: { rootNamespaceId: string } }).variables.rootNamespaceId).toBe(
 			"root-from-project",
 		);
@@ -317,7 +317,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		const selection = await discoverGitLabDuoWorkflowNamespace({ apiKey: TEST_TOKEN, projectId: "42", fetch });
 
 		expect(selection).toEqual({ rootNamespaceId: "top-root", source: "project" });
-		const graphqlCalls = calls.filter(call => new URL(call.url).pathname === "/api/graphql");
+		const graphqlCalls = calls.filter((call) => new URL(call.url).pathname === "/api/graphql");
 		expect((graphqlCalls[0].body as { variables: { fullPath?: string } }).variables.fullPath).toBe("top/sub/project");
 	});
 
@@ -336,7 +336,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		});
 
 		expect(selection).toEqual({ rootNamespaceId: "top-level-root", source: "project" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual([
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual([
 			"/api/v4/projects/group%2Fproject",
 			"/api/graphql",
 		]);
@@ -363,7 +363,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		});
 
 		expect(selection).toEqual({ rootNamespaceId: "graphql-root", source: "project" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual([
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual([
 			"/api/v4/projects/group%2Fproject",
 			"/api/graphql",
 			"/api/graphql",
@@ -389,7 +389,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		});
 
 		expect(selection).toEqual({ rootNamespaceId: "graphql-root", source: "project" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual([
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual([
 			"/api/v4/projects/group%2Fproject",
 			"/api/graphql",
 			"/api/graphql",
@@ -412,7 +412,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		const selection = await discoverGitLabDuoWorkflowNamespace({ apiKey: TEST_TOKEN, fetch });
 
 		expect(selection).toEqual({ rootNamespaceId: "env-project-root", source: "project" });
-		expect(calls.map(call => new URL(call.url).pathname)).toEqual(["/api/v4/projects/env-project", "/api/graphql"]);
+		expect(calls.map((call) => new URL(call.url).pathname)).toEqual(["/api/v4/projects/env-project", "/api/graphql"]);
 	});
 
 	it("honors GITLAB_DUO_PROJECT_PATH and the projectPath config field for namespace discovery", async () => {
@@ -463,8 +463,8 @@ describe("GitLab Duo Workflow discovery", () => {
 			source: "group",
 		});
 		const graphqlRootIds = calls
-			.filter(call => new URL(call.url).pathname === "/api/graphql")
-			.map(call => (call.body as { variables: { rootNamespaceId: string } }).variables.rootNamespaceId);
+			.filter((call) => new URL(call.url).pathname === "/api/graphql")
+			.map((call) => (call.body as { variables: { rootNamespaceId: string } }).variables.rootNamespaceId);
 		expect(graphqlRootIds).toEqual(["no-models", "empty-models", "usable-models"]);
 	});
 
@@ -481,7 +481,7 @@ describe("GitLab Duo Workflow discovery", () => {
 
 		const models = await fetchGitLabDuoWorkflowModels({ apiKey: TEST_TOKEN, namespaceId: "root", fetch });
 
-		expect(models?.map(model => model.id)).toEqual(["pinned_ref"]);
+		expect(models?.map((model) => model.id)).toEqual(["pinned_ref"]);
 		expect(models?.[0]).toMatchObject({
 			name: "Pinned Model",
 			api: "gitlab-duo-agent",
@@ -521,7 +521,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		const options = gitLabDuoWorkflowModelManagerOptions();
 		expect(options.providerId).toBe("gitlab-duo-agent");
 		expect(options.dynamicModelsAuthoritative).toBe(true);
-		expect(options.staticModels?.map(model => model.id)).toEqual(["claude_sonnet_4_6_vertex"]);
+		expect(options.staticModels?.map((model) => model.id)).toEqual(["claude_sonnet_4_6_vertex"]);
 		const seed = options.staticModels?.[0];
 		expect(seed?.provider).toBe("gitlab-duo-agent");
 		expect(seed?.api).toBe("gitlab-duo-agent");
@@ -536,7 +536,7 @@ describe("GitLab Duo Workflow discovery", () => {
 		// namespace's pinned/selectable catalog into models.json as authoritative for
 		// every fresh install. Only the generic, namespace-free fallback may be bundled;
 		// live namespace-scoped models are discovered at runtime per credential/workspace.
-		const descriptor = PROVIDER_DESCRIPTORS.find(entry => entry.providerId === "gitlab-duo-agent");
+		const descriptor = PROVIDER_DESCRIPTORS.find((entry) => entry.providerId === "gitlab-duo-agent");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.catalogDiscovery).toBeUndefined();
 		expect(descriptor && isCatalogDescriptor(descriptor)).toBe(false);
@@ -617,7 +617,7 @@ describe("GitLab Duo Workflow discovery", () => {
 			const selection = await discoverGitLabDuoWorkflowNamespace({ apiKey: TEST_TOKEN, cwd: tmpDir, fetch });
 
 			expect(selection).toEqual({ rootNamespaceId: "remote-root", source: "remote" });
-			expect(calls.map(call => new URL(call.url).pathname)).toEqual([
+			expect(calls.map((call) => new URL(call.url).pathname)).toEqual([
 				"/api/v4/projects/group%2Fproject",
 				"/api/graphql",
 			]);
@@ -658,7 +658,7 @@ describe("GitLab Duo Workflow discovery", () => {
 			const selection = await discoverGitLabDuoWorkflowNamespace({ apiKey: TEST_TOKEN, cwd: workDir, fetch });
 
 			expect(selection).toEqual({ rootNamespaceId: "remote-root", source: "remote" });
-			expect(calls.map(call => new URL(call.url).pathname)).toEqual([
+			expect(calls.map((call) => new URL(call.url).pathname)).toEqual([
 				"/api/v4/projects/group%2Fproject",
 				"/api/graphql",
 			]);
@@ -700,7 +700,7 @@ describe("GitLab Duo Workflow discovery", () => {
 
 			// The remote URL carries the `/gitlab` install path, but the project full path
 			// is `group/project`; the lookup must not query `.../projects/gitlab%2Fgroup%2Fproject`.
-			const projectCall = calls.find(call => call.url.includes("/api/v4/projects/"));
+			const projectCall = calls.find((call) => call.url.includes("/api/v4/projects/"));
 			expect(projectCall?.url).toContain("/api/v4/projects/group%2Fproject");
 			expect(projectCall?.url).not.toContain("gitlab%2Fgroup");
 		} finally {
@@ -740,7 +740,7 @@ describe("GitLab Duo Workflow discovery", () => {
 
 			// Falls through to the group candidate, never queries the cross-port project.
 			expect(selection.rootNamespaceId).toBe("group-root");
-			expect(calls.some(call => call.url.includes("/api/v4/projects/group%2Fproject"))).toBe(false);
+			expect(calls.some((call) => call.url.includes("/api/v4/projects/group%2Fproject"))).toBe(false);
 		} finally {
 			await fs.rm(tmpDir, { recursive: true, force: true });
 		}
@@ -776,7 +776,7 @@ describe("GitLab Duo Workflow discovery", () => {
 
 			// The SSH-port remote resolves the workspace project, not the group fallback.
 			expect(selection).toEqual({ rootNamespaceId: "remote-root", source: "remote" });
-			expect(calls.some(call => call.url.includes("/api/v4/projects/group%2Fproject"))).toBe(true);
+			expect(calls.some((call) => call.url.includes("/api/v4/projects/group%2Fproject"))).toBe(true);
 		} finally {
 			await fs.rm(tmpDir, { recursive: true, force: true });
 		}
@@ -823,8 +823,8 @@ describe("GitLab Duo Workflow discovery", () => {
 		expect(selection.rootNamespaceId).toBe("page2-root");
 		// Both pages were fetched (page=1 then page=2).
 		const groupPages = calls
-			.filter(call => new URL(call.url).pathname === "/api/v4/groups")
-			.map(call => new URL(call.url).searchParams.get("page"));
+			.filter((call) => new URL(call.url).pathname === "/api/v4/groups")
+			.map((call) => new URL(call.url).searchParams.get("page"));
 		expect(groupPages).toEqual(["1", "2"]);
 	});
 });

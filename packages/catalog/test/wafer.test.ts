@@ -14,7 +14,7 @@ import { getBundledModel } from "@oh-my-pi/pi-catalog/models";
 import { waferServerlessModelManagerOptions } from "@oh-my-pi/pi-catalog/provider-models/openai-compat";
 
 function sseResponse(events: unknown[]): Response {
-	const payload = `${events.map(e => `data: ${typeof e === "string" ? e : JSON.stringify(e)}`).join("\n\n")}\n\n`;
+	const payload = `${events.map((e) => `data: ${typeof e === "string" ? e : JSON.stringify(e)}`).join("\n\n")}\n\n`;
 	return new Response(payload, {
 		status: 200,
 		headers: { "content-type": "text/event-stream" },
@@ -167,7 +167,7 @@ describe("Wafer dynamic discovery mapper", () => {
 		const manager = createModelManager(waferServerlessModelManagerOptions({ apiKey: "wfr_test", fetch: fetchMock }));
 		const { models } = await manager.refresh("online");
 
-		const byId = new Map(models.map(m => [m.id, m as Model<"openai-completions">]));
+		const byId = new Map(models.map((m) => [m.id, m as Model<"openai-completions">]));
 		expect(byId.get("GLM-fake")?.compatConfig?.thinkingFormat).toBe("zai");
 		expect(byId.get("Kimi-fake")?.compatConfig?.thinkingFormat).toBe("zai");
 		expect(byId.get("qwen-fake")?.compatConfig?.thinkingFormat).toBe("qwen");
@@ -212,7 +212,7 @@ describe("Wafer dynamic discovery mapper", () => {
 			waferServerlessModelManagerOptions({ apiKey: "wfr_test", fetch: srvFetchMock }),
 		);
 		const srvResult = await srvManager.refresh("online");
-		const srvModel = srvResult.models.find(m => m.id === "Shared-fake");
+		const srvModel = srvResult.models.find((m) => m.id === "Shared-fake");
 		expect(srvModel).toBeDefined();
 		// 120 × 0.0125 = 1.50, 360 × 0.0125 = 4.50, 12 × 0.0125 = 0.15 — matches
 		// the wafer.ai Serverless rate card for GLM-5.1.

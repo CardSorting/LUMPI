@@ -1,4 +1,4 @@
-import { PROTOCOL_VERSION } from "@noorm/lumpi-protocol";
+import { PROTOCOL_VERSION } from "@noorm/lumi-protocol";
 import { describe, expect, test } from "vitest";
 import { PiClient, PiClientDisposedError } from "../src/index.ts";
 import { attachSession, baseServerSnapshot, connectClient, MemoryByteServer, sessionSnapshot } from "./support.ts";

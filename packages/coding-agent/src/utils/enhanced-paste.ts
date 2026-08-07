@@ -1,4 +1,4 @@
-import type { ImageContent } from "@oh-my-pi/pi-ai";
+import type { ImageContent } from "@noorm/lumi-ai";
 
 const OSC5522_PREFIX = "\x1b]5522;";
 const OSC_TERMINATOR_ST = "\x1b\\";
@@ -183,7 +183,7 @@ export class EnhancedPasteController {
 			return;
 		}
 		this.#state = undefined;
-		const bytes = Buffer.concat(state.chunks.map(chunk => Buffer.from(chunk, "base64")));
+		const bytes = Buffer.concat(state.chunks.map((chunk) => Buffer.from(chunk, "base64")));
 		if (bytes.byteLength === 0) {
 			this.#handlers.showStatus("Clipboard paste was empty");
 			return;

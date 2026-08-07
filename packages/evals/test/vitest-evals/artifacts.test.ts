@@ -22,7 +22,7 @@ it("records session and source artifacts against the explicit test task", async 
 
 	expect(task.artifacts).toContainEqual(
 		expect.objectContaining({
-			type: "@noorm/lumpi-evals:session",
+			type: "@noorm/lumi-evals:session",
 			runId,
 			attachments: [
 				expect.objectContaining({
@@ -36,7 +36,7 @@ it("records session and source artifacts against the explicit test task", async 
 	);
 	expect(task.artifacts).toContainEqual(
 		expect.objectContaining({
-			type: "@noorm/lumpi-evals:source",
+			type: "@noorm/lumi-evals:source",
 			runId,
 			attachments: [
 				expect.objectContaining({
@@ -56,7 +56,7 @@ it("persists and selects attachments belonging to the reported run", async () =>
 		const references = await persistEvalArtifactReferences(
 			[
 				{
-					type: "@noorm/lumpi-evals:session",
+					type: "@noorm/lumi-evals:session",
 					runId: "run-1",
 					attachments: [
 						{
@@ -68,12 +68,12 @@ it("persists and selects attachments belonging to the reported run", async () =>
 					],
 				},
 				{
-					type: "@noorm/lumpi-evals:session",
+					type: "@noorm/lumi-evals:session",
 					runId: "run-2",
 					attachments: [],
 				},
 				{
-					type: "@noorm/lumpi-evals:source",
+					type: "@noorm/lumi-evals:source",
 					runId: "run-1",
 					attachments: [
 						{

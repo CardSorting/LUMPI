@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { NodeExecutionEnv } from "@noorm/lumpi-agent-core/node";
+import { NodeExecutionEnv } from "@noorm/lumi-agent-core/node";
 import { describe, expect, it, vi } from "vitest";
 import { createNodeSqliteFactory, type SqliteSessionMetadata, SqliteSessionRepository } from "../src/index.ts";
 import { createTempDir, createUserMessage } from "./test-utils.ts";

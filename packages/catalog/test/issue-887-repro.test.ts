@@ -18,7 +18,7 @@ import {
 const OPENCODE_GO_BASE = "https://opencode.ai/zen/go/v1";
 
 describe("opencode-go resolver routes 404-ing ids to openai-completions (issue #887)", () => {
-	const descriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find(d => d.providerId === "opencode-go");
+	const descriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find((d) => d.providerId === "opencode-go");
 
 	// Per upstream stencil.so (verified 2026-05-02 against
 	// https://stencil.so/api.json["opencode-go"].models), these three ids carry
@@ -28,7 +28,7 @@ describe("opencode-go resolver routes 404-ing ids to openai-completions (issue #
 
 	test.each([["minimax-m2.7"], ["qwen3.5-plus"], ["qwen3.6-plus"]])(
 		"%s resolves to openai-completions on /v1/chat/completions",
-		modelId => {
+		(modelId) => {
 			const resolved = descriptor?.resolveApi?.(modelId, npmAnthropic);
 			expect(resolved).toEqual({ api: "openai-completions", baseUrl: OPENCODE_GO_BASE });
 		},
@@ -56,7 +56,7 @@ describe("opencode-go resolver routes 404-ing ids to openai-completions (issue #
 
 		const options = opencodeGoModelManagerOptions({ apiKey: "opencode-test-key", fetch: fetchMock });
 		const models = await options.fetchDynamicModels?.();
-		const qwenMax = models?.find(model => model.id === "qwen3.7-max");
+		const qwenMax = models?.find((model) => model.id === "qwen3.7-max");
 
 		expect(requestedUrl).toBe("https://opencode.ai/zen/go/v1/models");
 		expect(qwenMax?.api).toBe("anthropic-messages");

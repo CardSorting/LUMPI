@@ -23,7 +23,7 @@ describe("zenmux provider support", () => {
 	});
 
 	test("registers built-in descriptor and default model", () => {
-		const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === "zenmux");
+		const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "zenmux");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.defaultModel).toBe("anthropic/claude-opus-4.8");
 		expect(descriptor?.catalogDiscovery?.envVars).toContain("ZENMUX_API_KEY");
@@ -31,7 +31,7 @@ describe("zenmux provider support", () => {
 	});
 
 	test("registers ZenMux in OAuth provider selector", () => {
-		const provider = getOAuthProviders().find(item => item.id === "zenmux");
+		const provider = getOAuthProviders().find((item) => item.id === "zenmux");
 		expect(provider?.name).toBe("ZenMux");
 	});
 	test("routes Anthropic-owned models to anthropic-messages", async () => {
@@ -83,14 +83,14 @@ describe("zenmux provider support", () => {
 			expect.objectContaining({ method: "GET" }),
 		);
 
-		const anthropic = models?.find(model => model.id === "anthropic/claude-opus-4.6");
+		const anthropic = models?.find((model) => model.id === "anthropic/claude-opus-4.6");
 		expect(anthropic?.api).toBe("anthropic-messages");
 		expect(anthropic?.baseUrl).toBe("https://zenmux.ai/api/anthropic");
 		expect(anthropic?.input).toEqual(["text", "image"]);
 		expect(anthropic?.cost.input).toBe(15);
 		expect(anthropic?.cost.cacheWrite).toBe(18.75);
 
-		const openai = models?.find(model => model.id === "openai/gpt-5.2");
+		const openai = models?.find((model) => model.id === "openai/gpt-5.2");
 		expect(openai?.api).toBe("openai-completions");
 		expect(openai?.baseUrl).toBe("https://zenmux.ai/api/v1");
 		expect(openai?.cost.output).toBe(10);
@@ -134,7 +134,7 @@ describe("zenmux provider support", () => {
 		);
 		expect(sentHeaders).not.toHaveProperty("Authorization");
 
-		const free = models?.find(model => model.id === "anthropic/claude-fable-5-free");
+		const free = models?.find((model) => model.id === "anthropic/claude-fable-5-free");
 		expect(free?.api).toBe("anthropic-messages");
 		expect(free?.baseUrl).toBe("https://zenmux.ai/api/anthropic");
 		expect(free?.cost.input).toBe(0);

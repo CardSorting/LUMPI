@@ -4,19 +4,35 @@
 import { dlopen, FFIType, ptr } from "bun:ffi";
 import * as path from "node:path";
 
-import { type Api, type AssistantMessage, completeSimple, type Model } from "@oh-my-pi/pi-ai";
-import { StreamMarkupHealing } from "@oh-my-pi/pi-ai/utils/stream-markup-healing";
+import type { Api, AssistantMessage, Model } from "@noorm/lumi-ai";
+import { completeSimple } from "@noorm/lumi-ai/compat";
 import { isTerminalHeadless, logger, prompt } from "@oh-my-pi/pi-utils";
-import type { ModelRegistry } from "../config/model-registry";
+import type { ModelRegistry } from "../core/model-registry.ts";
+import { findExactModelReferenceMatch } from "../core/model-resolver.ts";
+import type { Settings } from "../core/settings-manager.ts";
 
-import { resolveRoleSelection } from "../config/model-resolver";
-import type { Settings } from "../config/settings";
+function resolveRoleSelection(
+	_roles: string[],
+	settings: Settings,
+	availableModels: Model<Api>[],
+): { model?: Model<Api> } | undefined {
+	if (availableModels.length === 0) return undefined;
+	if (settings.defaultProvider && settings.defaultModel) {
+		const configured = findExactModelReferenceMatch(
+			`${settings.defaultProvider}/${settings.defaultModel}`,
+			availableModels,
+		);
+		if (configured) return { model: configured };
+	}
+	return { model: availableModels[0] };
+}
+
 import titleMarkerInstruction from "../prompts/system/title-marker-instruction.md" with { type: "text" };
 import titleSystemPrompt from "../prompts/system/title-system.md" with { type: "text" };
-import { formatTitleUserMessage } from "../tiny/message-preproc";
-import { isTinyTitleLocalModelKey, ONLINE_TINY_TITLE_MODEL_KEY } from "../tiny/models";
-import { isLowSignalTitleInput, normalizeGeneratedTitle } from "../tiny/text";
-import { tinyTitleClient } from "../tiny/title-client";
+import { formatTitleUserMessage } from "../tiny/message-preproc.ts";
+import { isTinyTitleLocalModelKey, ONLINE_TINY_TITLE_MODEL_KEY } from "../tiny/models.ts";
+import { isLowSignalTitleInput, normalizeGeneratedTitle } from "../tiny/text.ts";
+import { tinyTitleClient } from "../tiny/title-client.ts";
 
 const TITLE_SYSTEM_PROMPT = prompt.render(titleSystemPrompt);
 const TITLE_MARKER_INSTRUCTION = prompt.render(titleMarkerInstruction);
@@ -143,8 +159,7 @@ export async function generateSessionTitle(
 		return null;
 	}
 
-	const titleSystemPrompt = customSystemPrompt?.trim() || undefined;
-	const tinyModel = settings.get("providers.tinyModel");
+	const tinyModel = settings.providers?.tinyModel ?? ONLINE_TINY_TITLE_MODEL_KEY;
 	if (tinyModel === ONLINE_TINY_TITLE_MODEL_KEY) {
 		return generateTitleOnline(
 			firstMessage,
@@ -238,7 +253,7 @@ export async function generateTitleOnline(
 	logger.debug("title-generator: start", modelContext);
 
 	try {
-		const apiKey = await registry.getApiKey(model, sessionId);
+		const apiKey = await registry.getApiKeyForProvider(model.provider);
 		if (!apiKey) {
 			logger.warn("title-generator: no API key", { ...modelContext, reason: "missing-api-key" });
 			return null;
@@ -256,13 +271,12 @@ export async function generateTitleOnline(
 		const response = await completeSimple(
 			model,
 			{
-				systemPrompt,
+				systemPrompt: systemPrompt.join("\n\n"),
 				messages: [{ role: "user", content: userMessage, timestamp: Date.now() }],
 			},
 			{
-				apiKey: registry.resolver(model, sessionId),
+				apiKey,
 				maxTokens,
-				disableReasoning: true,
 				metadata,
 				signal,
 			},
@@ -378,8 +392,7 @@ function stripLeadingLeakedThinkingMarkup(text: string): string {
 }
 
 function stripLeakedThinkingMarkup(text: string): string {
-	const healer = new StreamMarkupHealing({ pattern: "thinking" });
-	return healer.feed(text) + healer.flushPending();
+	return text.replace(THINKING_TAG_ENVELOPE_RE, "").replace(THINKING_FENCE_ENVELOPE_RE, "");
 }
 
 /**

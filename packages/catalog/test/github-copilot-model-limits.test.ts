@@ -128,7 +128,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "gemini-2.5-pro");
+		const model = models.find((candidate) => candidate.id === "gemini-2.5-pro");
 		expect(model).toBeDefined();
 		expect(model?.contextWindow).toBe(1_048_576);
 		expect(model?.maxTokens).toBe(64_000);
@@ -153,7 +153,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "gpt-5.2-codex");
+		const model = models.find((candidate) => candidate.id === "gpt-5.2-codex");
 		expect(model).toBeDefined();
 		expect(model?.api).toBe("openai-responses");
 		expect(model?.contextWindow).toBe(250_000);
@@ -176,7 +176,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "claude-opus-4.6");
+		const model = models.find((candidate) => candidate.id === "claude-opus-4.6");
 		expect(model).toBeDefined();
 		expect(model?.contextWindow).toBe(128_000);
 		expect(model?.maxTokens).toBe(16_000);
@@ -219,7 +219,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "gpt-5.4-mini");
+		const model = models.find((candidate) => candidate.id === "gpt-5.4-mini");
 		expect(model).toBeDefined();
 		expect(model?.api).toBe("openai-responses");
 		expect(model?.reasoning).toBe(true);
@@ -250,7 +250,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "gpt-5.4");
+		const model = models.find((candidate) => candidate.id === "gpt-5.4");
 		expect(model).toBeDefined();
 		expect(model?.contextWindow).toBe(400_000);
 		expect(model?.maxTokens).toBe(128_000);
@@ -290,7 +290,7 @@ describe("github copilot model limits mapping", () => {
 				cacheDbPath: path.join(tempDir, "models.db"),
 			});
 			const { models } = await manager.refresh("online");
-			const model = models.find(candidate => candidate.id === "gpt-5.4");
+			const model = models.find((candidate) => candidate.id === "gpt-5.4");
 
 			expect(getBundledModel("github-copilot", "gpt-5.4")?.contextWindow).toBe(272_000);
 			expect(model).toBeDefined();
@@ -313,7 +313,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "gpt-5.4");
+		const model = models.find((candidate) => candidate.id === "gpt-5.4");
 		expect(model).toBeDefined();
 		// Should use the Copilot-specific bundled reference (272k after models.json fix),
 		// not the OpenAI global reference (1050k).
@@ -331,7 +331,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "mai-code-1-flash-picker");
+		const model = models.find((candidate) => candidate.id === "mai-code-1-flash-picker");
 		expect(model).toBeDefined();
 		expect(model?.api).toBe("openai-responses");
 	});
@@ -345,7 +345,7 @@ describe("github copilot model limits mapping", () => {
 			],
 		});
 
-		const model = models.find(candidate => candidate.id === "grok-4.5");
+		const model = models.find((candidate) => candidate.id === "grok-4.5");
 		expect(model).toBeDefined();
 		expect(model?.api).toBe("openai-responses");
 	});
@@ -383,7 +383,7 @@ describe("github copilot model limits mapping", () => {
 					cacheDbPath,
 				});
 				const { models } = await manager.refresh("online-if-uncached");
-				const model = models.find(candidate => candidate.id === migration.id);
+				const model = models.find((candidate) => candidate.id === migration.id);
 
 				expect(fetchMock).toHaveBeenCalledTimes(1);
 				expect(model?.api).toBe("openai-responses");
@@ -421,8 +421,8 @@ describe("github copilot model limits mapping", () => {
 			const { models } = await manager.refresh("online-if-uncached");
 
 			expect(fetchMock).toHaveBeenCalledTimes(1);
-			expect(models.find(candidate => candidate.id === "grok-4.5")).toBeUndefined();
-			expect(models.find(candidate => candidate.id === "grok-4.5-1m")).toBeUndefined();
+			expect(models.find((candidate) => candidate.id === "grok-4.5")).toBeUndefined();
+			expect(models.find((candidate) => candidate.id === "grok-4.5-1m")).toBeUndefined();
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });
 		}
@@ -506,7 +506,7 @@ describe("github copilot tiered context windows", () => {
 			],
 		});
 
-		const base = models.find(candidate => candidate.id === "claude-opus-4.7");
+		const base = models.find((candidate) => candidate.id === "claude-opus-4.7");
 		expect(base).toBeDefined();
 		expect(base?.api).toBe("anthropic-messages");
 		expect(base?.contextWindow).toBe(264_000);
@@ -514,7 +514,7 @@ describe("github copilot tiered context windows", () => {
 		expect(base?.contextPromotionTarget).toBe("github-copilot/claude-opus-4.7-1m");
 		expect(base?.headers?.["X-GitHub-Api-Version"]).toBe("2026-06-01");
 
-		const variant = models.find(candidate => candidate.id === "claude-opus-4.7-1m");
+		const variant = models.find((candidate) => candidate.id === "claude-opus-4.7-1m");
 		expect(variant).toBeDefined();
 		expect(variant?.requestModelId).toBe("claude-opus-4.7");
 		expect(variant?.name).toBe("Claude Opus 4.7 (1M)");
@@ -540,7 +540,7 @@ describe("github copilot tiered context windows", () => {
 			],
 		});
 
-		const variant = models.find(candidate => candidate.id === "gemini-9.9-pro-preview-1m");
+		const variant = models.find((candidate) => candidate.id === "gemini-9.9-pro-preview-1m");
 		expect(variant).toBeDefined();
 		expect(variant?.cost).toEqual({ input: 4, output: 18, cacheRead: 0.4, cacheWrite: 0 });
 	});
@@ -561,9 +561,9 @@ describe("github copilot tiered context windows", () => {
 			],
 		});
 
-		const base = models.find(candidate => candidate.id === "gpt-5.6-luna");
+		const base = models.find((candidate) => candidate.id === "gpt-5.6-luna");
 		expect(base?.cost).toMatchObject({ input: 0.2, output: 1.2, cacheRead: 0.02 });
-		const variant = models.find(candidate => candidate.id === "gpt-5.6-luna-1m");
+		const variant = models.find((candidate) => candidate.id === "gpt-5.6-luna-1m");
 		expect(variant?.cost).toMatchObject({ input: 0.4, output: 1.8, cacheRead: 0.04 });
 	});
 
@@ -612,10 +612,10 @@ describe("github copilot tiered context windows", () => {
 			],
 		});
 
-		const fable = models.find(candidate => candidate.id === "claude-fable-9");
+		const fable = models.find((candidate) => candidate.id === "claude-fable-9");
 		expect(fable?.input).toEqual(["text", "image"]);
 		expect(fable?.api).toBe("anthropic-messages");
-		const textOnly = models.find(candidate => candidate.id === "text-only-model");
+		const textOnly = models.find((candidate) => candidate.id === "text-only-model");
 		expect(textOnly?.input).toEqual(["text"]);
 	});
 
@@ -655,7 +655,7 @@ describe("github copilot tiered context windows", () => {
 			],
 		});
 
-		const served = models.filter(candidate => candidate.id === "claude-opus-4.6-1m");
+		const served = models.filter((candidate) => candidate.id === "claude-opus-4.6-1m");
 		expect(served).toHaveLength(1);
 		expect(served[0]?.contextWindow).toBe(999_000);
 		expect(served[0]?.requestModelId).toBeUndefined();
@@ -689,7 +689,7 @@ describe("github copilot vision endpoint policy", () => {
 			"https://api.business.githubcopilot.com",
 			"ghu_business_token",
 		);
-		const model = models.find(candidate => candidate.id === "claude-sonnet-4.6");
+		const model = models.find((candidate) => candidate.id === "claude-sonnet-4.6");
 		expect(model?.baseUrl).toBe("https://api.business.githubcopilot.com");
 		expect(model?.input).toEqual(["text", "image"]);
 	});
@@ -711,7 +711,7 @@ describe("github copilot vision endpoint policy", () => {
 			"https://copilot-api.ghe.example.com",
 			"ghu_enterprise_token",
 		);
-		const model = models.find(candidate => candidate.id === "claude-sonnet-4.6");
+		const model = models.find((candidate) => candidate.id === "claude-sonnet-4.6");
 		expect(model?.baseUrl).toBe("https://copilot-api.ghe.example.com");
 		expect(model?.input).toEqual(["text", "image"]);
 	});
@@ -745,7 +745,7 @@ describe("github copilot vision endpoint policy", () => {
 				endpoint.baseUrl,
 				endpoint.token,
 			);
-			const model = models.find(candidate => candidate.id === "claude-sonnet-4.6");
+			const model = models.find((candidate) => candidate.id === "claude-sonnet-4.6");
 			expect(model?.baseUrl).toBe(endpoint.baseUrl);
 			expect(model?.input).toEqual(["text"]);
 		}
@@ -779,7 +779,7 @@ describe("github copilot vision endpoint policy", () => {
 				endpoint.baseUrl,
 				endpoint.token,
 			);
-			const model = models.find(candidate => candidate.id === "claude-sonnet-4.6");
+			const model = models.find((candidate) => candidate.id === "claude-sonnet-4.6");
 			expect(model?.baseUrl).toBe(endpoint.baseUrl);
 			expect(model?.input).toEqual(["text"]);
 		}
@@ -797,7 +797,7 @@ describe("github copilot vision endpoint policy", () => {
 				}),
 			],
 		});
-		const model = models.find(candidate => candidate.id === "claude-sonnet-4.6");
+		const model = models.find((candidate) => candidate.id === "claude-sonnet-4.6");
 		expect(model?.baseUrl).toBe("https://api.githubcopilot.com");
 		expect(model?.input).toEqual(["text", "image"]);
 	});
@@ -835,7 +835,7 @@ describe("github copilot vision endpoint policy", () => {
 				cacheDbPath: path.join(tempDir, "models.db"),
 			});
 			const { models } = await manager.refresh("online");
-			const model = models.find(candidate => candidate.id === "claude-sonnet-4.6");
+			const model = models.find((candidate) => candidate.id === "claude-sonnet-4.6");
 			expect(model?.baseUrl).toBe("https://api.githubcopilot.com");
 			expect(model?.input).toEqual(["text"]);
 		} finally {
@@ -880,7 +880,7 @@ describe("github copilot vision endpoint policy", () => {
 				cacheDbPath: path.join(tempDir, "models.db"),
 			});
 			const { models } = await manager.refresh("online");
-			const model = models.find(candidate => candidate.id === "claude-sonnet-4.6");
+			const model = models.find((candidate) => candidate.id === "claude-sonnet-4.6");
 			expect(model?.baseUrl).toBe("https://api.business.githubcopilot.com");
 			expect(model?.input).toEqual(["text", "image"]);
 		} finally {

@@ -1,12 +1,12 @@
 import * as path from "node:path";
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, ApiKey, Model } from "@oh-my-pi/pi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, Model } from "@noorm/lumi-ai";
 import { logger } from "@oh-my-pi/pi-utils";
-import { CHANGELOG_CATEGORIES } from "../../commit/types";
-import * as git from "../../utils/git";
-import { detectChangelogBoundaries } from "./detect";
-import { generateChangelogEntries } from "./generate";
-import { parseUnreleasedSection } from "./parse";
+import { CHANGELOG_CATEGORIES } from "../../commit/types.ts";
+import * as git from "../../utils/git.ts";
+import { detectChangelogBoundaries } from "./detect.ts";
+import { generateChangelogEntries } from "./generate.ts";
+import { parseUnreleasedSection } from "./parse.ts";
 
 const CHANGELOG_SECTIONS = CHANGELOG_CATEGORIES;
 
@@ -15,7 +15,7 @@ const DEFAULT_MAX_DIFF_CHARS = 120_000;
 export interface ChangelogFlowInput {
 	cwd: string;
 	model: Model<Api>;
-	apiKey: ApiKey;
+	apiKey: string;
 	thinkingLevel?: ThinkingLevel;
 	stagedFiles: string[];
 	dryRun: boolean;
@@ -179,8 +179,8 @@ function applyDeletions(
 ): Record<string, string[]> {
 	const result: Record<string, string[]> = {};
 	for (const [section, items] of Object.entries(existing)) {
-		const toDelete = new Set((deletions[section] ?? []).map(d => d.toLowerCase()));
-		const filtered = items.filter(item => !toDelete.has(item.toLowerCase()));
+		const toDelete = new Set((deletions[section] ?? []).map((d) => d.toLowerCase()));
+		const filtered = items.filter((item) => !toDelete.has(item.toLowerCase()));
 		if (filtered.length > 0) {
 			result[section] = filtered;
 		}
@@ -195,7 +195,7 @@ function mergeEntries(
 	const merged: Record<string, string[]> = { ...existing };
 	for (const [section, items] of Object.entries(incoming)) {
 		const current = merged[section] ?? [];
-		const lower = new Set(current.map(item => item.toLowerCase()));
+		const lower = new Set(current.map((item) => item.toLowerCase()));
 		for (const item of items) {
 			if (!lower.has(item.toLowerCase())) {
 				current.push(item);
@@ -226,9 +226,9 @@ function renderUnreleasedSections(entries: Record<string, string[]>): string[] {
 function normalizeEntries(entries: Record<string, string[]>): Record<string, string[]> {
 	const result: Record<string, string[]> = {};
 	for (const [section, items] of Object.entries(entries)) {
-		const trimmed = items.map(item => item.trim().replace(/\.$/, "")).filter(item => item.length > 0);
+		const trimmed = items.map((item) => item.trim().replace(/\.$/, "")).filter((item) => item.length > 0);
 		if (trimmed.length === 0) continue;
-		result[section] = Array.from(new Set(trimmed.map(item => item.trim())));
+		result[section] = Array.from(new Set(trimmed.map((item) => item.trim())));
 	}
 	return result;
 }

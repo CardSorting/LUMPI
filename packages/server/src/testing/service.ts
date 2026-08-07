@@ -6,7 +6,7 @@ import type {
 	SessionSummary,
 	ThinkingLevel,
 	TranscriptProgress,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import { PiServerError } from "../errors.ts";
 import type {
 	CreateSessionOptions,

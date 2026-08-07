@@ -1,24 +1,27 @@
 import * as path from "node:path";
 import { createInterface } from "node:readline/promises";
 import { $env, getProjectDir, isEnoent, prompt } from "@oh-my-pi/pi-utils";
-import { applyChangelogProposals } from "../../commit/changelog";
-import { detectChangelogBoundaries } from "../../commit/changelog/detect";
-import { parseUnreleasedSection } from "../../commit/changelog/parse";
-import { formatCommitMessage } from "../../commit/message";
-import { resolvePrimaryModel, resolveSmolModel } from "../../commit/model-selection";
-import type { CommitCommandArgs, ConventionalAnalysis, NumstatEntry } from "../../commit/types";
-import { ModelRegistry } from "../../config/model-registry";
-import { Settings } from "../../config/settings";
-import { discoverAuthStorage, discoverContextFiles, loadCliExtensionProviders } from "../../sdk";
-import * as git from "../../utils/git";
-import { abortOnGitFailure, pushOrAbort } from "../execute";
-import { type ExistingChangelogEntries, runCommitAgentSession } from "./agent";
-import { generateFallbackProposal } from "./fallback";
-import { assignLockFilesToPlan } from "./lock-files";
-import splitConfirmPrompt from "./prompts/split-confirm.md" with { type: "text" };
-import type { CommitAgentState, CommitProposal, HunkSelector, SplitCommitPlan } from "./state";
-import { computeDependencyOrder } from "./topo-sort";
-import { detectTrivialChange } from "./trivial";
+import { detectChangelogBoundaries } from "../../commit/changelog/detect.ts";
+import { applyChangelogProposals } from "../../commit/changelog/index.ts";
+import { parseUnreleasedSection } from "../../commit/changelog/parse.ts";
+import { formatCommitMessage } from "../../commit/message.ts";
+import { resolvePrimaryModel, resolveSmolModel } from "../../commit/model-selection.ts";
+import type { CommitCommandArgs, ConventionalAnalysis, NumstatEntry } from "../../commit/types.ts";
+import { getAgentDir } from "../../config.ts";
+import { AuthStorage } from "../../core/auth-storage.ts";
+import { ModelRegistry } from "../../core/model-registry.ts";
+import { ModelRuntime } from "../../core/model-runtime.ts";
+import { loadProjectContextFiles } from "../../core/resource-loader.ts";
+import { SettingsManager } from "../../core/settings-manager.ts";
+import * as git from "../../utils/git.ts";
+import { abortOnGitFailure, pushOrAbort } from "../execute.ts";
+import splitConfirmPrompt from "../prompts/split-confirm.md" with { type: "text" };
+import { type ExistingChangelogEntries, runCommitAgentSession } from "./agent.ts";
+import { generateFallbackProposal } from "./fallback.ts";
+import { assignLockFilesToPlan } from "./lock-files.ts";
+import type { CommitAgentState, CommitProposal, HunkSelector, SplitCommitPlan } from "./state.ts";
+import { computeDependencyOrder } from "./topo-sort.ts";
+import { detectTrivialChange } from "./trivial.ts";
 
 interface CommitExecutionContext {
 	cwd: string;
@@ -28,12 +31,14 @@ interface CommitExecutionContext {
 
 export async function runAgenticCommit(args: CommitCommandArgs): Promise<{ usedFallback: boolean }> {
 	const cwd = getProjectDir();
-	const [settings, authStorage] = await Promise.all([Settings.init({ cwd }), discoverAuthStorage()]);
+	const settingsManager = SettingsManager.create(cwd);
+	const settings = settingsManager.getSettings();
+	const authStorage = AuthStorage.create();
+	const modelRuntime = await ModelRuntime.create({ credentials: authStorage });
 
 	process.stdout.write("● Resolving model...\n");
-	const modelRegistry = new ModelRegistry(authStorage);
+	const modelRegistry = new ModelRegistry(modelRuntime);
 	await modelRegistry.refresh();
-	await loadCliExtensionProviders(modelRegistry, settings, cwd);
 	const stagedFilesPromise = (async () => {
 		let stagedFiles = await git.diff.changedFiles(cwd, { cached: true });
 		if (stagedFiles.length === 0) {
@@ -71,11 +76,11 @@ export async function runAgenticCommit(args: CommitCommandArgs): Promise<{ usedF
 	}
 	const [changelogBoundaries, contextFiles, numstat, diff] = await Promise.all([
 		args.noChangelog ? [] : detectChangelogBoundaries(cwd, stagedFiles),
-		discoverContextFiles(cwd),
+		loadProjectContextFiles({ cwd, agentDir: getAgentDir() }),
 		git.diff.numstat(cwd, { cached: true }),
 		git.diff(cwd, { cached: true }),
 	]);
-	const changelogTargets = changelogBoundaries.map(boundary => boundary.changelogPath);
+	const changelogTargets = changelogBoundaries.map((boundary: { changelogPath: string }) => boundary.changelogPath);
 	if (!args.noChangelog) {
 		if (changelogTargets.length > 0) {
 			for (const path of changelogTargets) {
@@ -87,7 +92,7 @@ export async function runAgenticCommit(args: CommitCommandArgs): Promise<{ usedF
 	}
 
 	process.stdout.write("● Discovering context files...\n");
-	const agentsMdFiles = contextFiles.filter(file => file.path.endsWith("AGENTS.md"));
+	const agentsMdFiles = contextFiles.filter((file: { path: string }) => file.path.endsWith("AGENTS.md"));
 	if (agentsMdFiles.length > 0) {
 		for (const file of agentsMdFiles) {
 			process.stdout.write(`  └─ ${file.path}\n`);
@@ -140,13 +145,15 @@ export async function runAgenticCommit(args: CommitCommandArgs): Promise<{ usedF
 			settings,
 			modelRegistry,
 			authStorage,
+			modelRuntime,
+			settingsManager,
 			userContext: args.context,
 			contextFiles,
 			changelogTargets,
 			requireChangelog: !args.noChangelog && changelogTargets.length > 0,
 			diffText: diff,
 			existingChangelogEntries,
-			onComplete: async commitState => {
+			onComplete: async (commitState) => {
 				agentSessionCompleted = true;
 				usedFallback = await completeAgentCommitState(commitState, {
 					cwd,
@@ -202,11 +209,11 @@ async function completeAgentCommitState(
 			cwd: ctx.cwd,
 			proposals: commitState.changelogProposal.entries,
 			dryRun: ctx.dryRun,
-			onProgress: message => {
+			onProgress: (message) => {
 				process.stdout.write(`  ├─ ${message}\n`);
 			},
 		});
-		updatedChangelogFiles = updated.map(filePath => path.relative(ctx.cwd, filePath));
+		updatedChangelogFiles = updated.map((filePath) => path.relative(ctx.cwd, filePath));
 		if (updated.length > 0) {
 			for (const filePath of updated) {
 				process.stdout.write(`  └─ ${filePath}\n`);
@@ -267,8 +274,8 @@ async function runSplitCommit(
 	}
 	const stagedFiles = await git.diff.changedFiles(ctx.cwd, { cached: true });
 	assignLockFilesToPlan(plan, stagedFiles);
-	const plannedFiles = new Set(plan.commits.flatMap(commit => commit.changes.map(change => change.path)));
-	const missingFiles = stagedFiles.filter(file => !plannedFiles.has(file));
+	const plannedFiles = new Set(plan.commits.flatMap((commit) => commit.changes.map((change) => change.path)));
+	const missingFiles = stagedFiles.filter((file) => !plannedFiles.has(file));
 	if (missingFiles.length > 0) {
 		throw new Error(`Split commit plan missing staged files: ${missingFiles.join(", ")}`);
 	}
@@ -285,7 +292,7 @@ async function runSplitCommit(
 			const message = formatCommitMessage(analysis, commit.summary);
 			process.stdout.write(`Commit ${index + 1}:\n${message}\n`);
 			const changeSummary = commit.changes
-				.map(change => formatFileChangeSummary(change.path, change.hunks))
+				.map((change) => formatFileChangeSummary(change.path, change.hunks))
 				.join(", ");
 			process.stdout.write(`Changes: ${changeSummary}\n`);
 		}
@@ -336,7 +343,7 @@ async function runSplitCommit(
 
 function appendFilesToLastCommit(plan: SplitCommitPlan, files: string[]): void {
 	if (plan.commits.length === 0) return;
-	const planned = new Set(plan.commits.flatMap(commit => commit.changes.map(change => change.path)));
+	const planned = new Set(plan.commits.flatMap((commit) => commit.changes.map((change) => change.path)));
 	const targetCommit = plan.commits[plan.commits.length - 1];
 	for (const file of files) {
 		if (planned.has(file)) continue;
@@ -360,7 +367,7 @@ async function confirmSplitCommitPlan(plan: SplitCommitPlan): Promise<boolean> {
 }
 
 function formatWarnings(warnings: string[]): string {
-	return `Warnings:\n${warnings.map(warning => `- ${warning}`).join("\n")}\n`;
+	return `Warnings:\n${warnings.map((warning) => `- ${warning}`).join("\n")}\n`;
 }
 
 function formatFileChangeSummary(path: string, hunks: HunkSelector): string {
@@ -375,7 +382,7 @@ function formatFileChangeSummary(path: string, hunks: HunkSelector): string {
 
 async function loadExistingChangelogEntries(paths: string[]): Promise<ExistingChangelogEntries[]> {
 	const entries = await Promise.all(
-		paths.map(async path => {
+		paths.map(async (path) => {
 			let content: string;
 			try {
 				content = await Bun.file(path).text();

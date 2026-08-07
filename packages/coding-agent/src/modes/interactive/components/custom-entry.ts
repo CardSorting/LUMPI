@@ -1,5 +1,5 @@
-import type { Component } from "@noorm/lumpi-tui";
-import { Box, Container, Spacer, Text } from "@noorm/lumpi-tui";
+import type { Component } from "@noorm/lumi-tui";
+import { Box, Container, Spacer, Text } from "@noorm/lumi-tui";
 import type { EntryRenderer } from "../../../core/extensions/types.ts";
 import type { CustomEntry } from "../../../core/session-manager.ts";
 import { theme } from "../theme/theme.ts";

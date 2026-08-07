@@ -1,6 +1,6 @@
-import type { TextContent } from "@noorm/lumpi-ai";
-import type { Component } from "@noorm/lumpi-tui";
-import { Box, Container, Markdown, type MarkdownTheme, Spacer, Text } from "@noorm/lumpi-tui";
+import type { TextContent } from "@noorm/lumi-ai";
+import type { Component } from "@noorm/lumi-tui";
+import { Box, Container, Markdown, type MarkdownTheme, Spacer, Text } from "@noorm/lumi-tui";
 import type { MessageRenderer } from "../../../core/extensions/types.ts";
 import type { CustomMessage } from "../../../core/messages.ts";
 import { getMarkdownTheme, theme } from "../theme/theme.ts";

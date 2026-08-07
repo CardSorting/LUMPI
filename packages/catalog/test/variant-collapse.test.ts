@@ -82,10 +82,10 @@ describe("collapseEffortVariants", () => {
 			ANTIGRAVITY_VARIANT_COLLAPSE_TABLE,
 		);
 
-		expect(out.map(m => m.id).sort()).toEqual(["gemini-2.5-flash-lite", "gemini-3.5-flash"]);
+		expect(out.map((m) => m.id).sort()).toEqual(["gemini-2.5-flash-lite", "gemini-3.5-flash"]);
 		// Non-family specs pass through by reference.
-		expect(out.find(m => m.id === "gemini-2.5-flash-lite")?.thinking).toBeUndefined();
-		const flash = out.find(m => m.id === "gemini-3.5-flash");
+		expect(out.find((m) => m.id === "gemini-2.5-flash-lite")?.thinking).toBeUndefined();
+		const flash = out.find((m) => m.id === "gemini-3.5-flash");
 		expect(flash?.name).toBe("Gemini 3.5 Flash");
 		expect(flash?.requestModelId).toBe("gemini-3.5-flash-extra-low");
 		// Capability union: max caps, image support from any member.
@@ -322,7 +322,7 @@ describe("collapseEffortVariants", () => {
 
 	it("keeps gemini-cli flash on the level transport with the original routing", () => {
 		const out = collapseEffortVariants(FLASH_TRIPLET(), GEMINI_CLI_VARIANT_COLLAPSE_TABLE);
-		const flash = out.find(m => m.id === "gemini-3.5-flash");
+		const flash = out.find((m) => m.id === "gemini-3.5-flash");
 		expect(flash?.thinking?.mode).toBe("google-level");
 		expect(flash?.thinking?.effortBudgets).toBeUndefined();
 		expect(flash?.thinking?.effortRouting).toEqual({
@@ -339,7 +339,7 @@ describe("collapseEffortVariants", () => {
 			[memberSpec("gemini-3.1-pro-low"), memberSpec("gemini-pro-agent")],
 			ANTIGRAVITY_VARIANT_COLLAPSE_TABLE,
 		);
-		const pro = out.find(m => m.id === "gemini-3.1-pro");
+		const pro = out.find((m) => m.id === "gemini-3.1-pro");
 		expect(pro?.thinking?.mode).toBe("budget");
 		expect(pro?.thinking?.effortBudgets).toEqual({ low: 1001, high: 10001 });
 		expect(pro?.thinking?.effortRouting).toEqual({
@@ -359,7 +359,7 @@ describe("collapseEffortVariants", () => {
 			thinking: { mode: "google-level", efforts: [Effort.Minimal, Effort.Low, Effort.Medium, Effort.High] },
 		};
 		const out = collapseEffortVariants([stale], ANTIGRAVITY_VARIANT_COLLAPSE_TABLE);
-		const flash = out.find(m => m.id === "gemini-3-flash");
+		const flash = out.find((m) => m.id === "gemini-3-flash");
 		expect(flash).toBeDefined();
 		expect(flash?.thinking?.mode).toBe("budget");
 		expect(flash?.thinking?.effortBudgets).toEqual({ minimal: 1000, low: 1000, medium: 4000, high: 10000 });
@@ -377,16 +377,16 @@ describe("collapseEffortVariants", () => {
 			thinking: { mode: "google-level", efforts: [Effort.Minimal, Effort.Low, Effort.Medium, Effort.High] },
 		};
 		const canonical = collapseEffortVariants(FLASH_TRIPLET(), ANTIGRAVITY_VARIANT_COLLAPSE_TABLE).find(
-			m => m.id === "gemini-3.5-flash",
+			(m) => m.id === "gemini-3.5-flash",
 		);
 		expect(canonical).toBeDefined();
 		const out = collapseEffortVariants(
 			[stale, canonical as ModelSpec<"google-gemini-cli">],
 			ANTIGRAVITY_VARIANT_COLLAPSE_TABLE,
 		);
-		expect(out.map(m => m.id).sort()).toEqual(["gemini-3-flash", "gemini-3.5-flash"]);
-		expect(out.find(m => m.id === "gemini-3-flash")?.thinking?.mode).toBe("budget");
-		expect(out.find(m => m.id === "gemini-3.5-flash")?.thinking?.mode).toBe("budget");
+		expect(out.map((m) => m.id).sort()).toEqual(["gemini-3-flash", "gemini-3.5-flash"]);
+		expect(out.find((m) => m.id === "gemini-3-flash")?.thinking?.mode).toBe("budget");
+		expect(out.find((m) => m.id === "gemini-3.5-flash")?.thinking?.mode).toBe("budget");
 	});
 
 	it("refreshes a stale family.id-keyed 3.1-pro snapshot in place to the budget contract", () => {
@@ -404,7 +404,7 @@ describe("collapseEffortVariants", () => {
 			},
 		};
 		const out = collapseEffortVariants([stale], ANTIGRAVITY_VARIANT_COLLAPSE_TABLE);
-		const pro = out.find(m => m.id === "gemini-3.1-pro");
+		const pro = out.find((m) => m.id === "gemini-3.1-pro");
 		expect(pro?.thinking?.mode).toBe("budget");
 		expect(pro?.thinking?.effortBudgets).toEqual({ low: 1001, high: 10001 });
 	});
@@ -498,7 +498,7 @@ describe("deriveThinkingPairFamilies", () => {
 		expect(families[0]?.thinking.efforts.length).toBeGreaterThan(0);
 
 		const out = collapseEffortVariants([base, twin], { families });
-		expect(out.map(m => m.id)).toEqual(["TEE/kimi-k2.5"]);
+		expect(out.map((m) => m.id)).toEqual(["TEE/kimi-k2.5"]);
 		// Effort routing to a live thinking id forces reasoning even though
 		// upstream marked neither member.
 		expect(out[0]?.reasoning).toBe(true);
@@ -554,7 +554,7 @@ describe("collapseEffortVariantsAcrossProviders", () => {
 			pairSpec("qwen3-vl-32b-thinking", { provider: "aimlapi", reasoning: true, thinking: PAIR_THINKING }),
 		]);
 
-		expect(out.map(m => `${m.provider}/${m.id}`).sort()).toEqual([
+		expect(out.map((m) => `${m.provider}/${m.id}`).sort()).toEqual([
 			"aimlapi/qwen3-vl-32b-thinking",
 			"google-antigravity/gemini-3.5-flash",
 			"venice/kimi-k2",
@@ -564,7 +564,7 @@ describe("collapseEffortVariantsAcrossProviders", () => {
 
 describe("Devin tier routing", () => {
 	const family = (id: string) => {
-		const found = DEVIN_VARIANT_COLLAPSE_TABLE.families.find(f => f.id === id);
+		const found = DEVIN_VARIANT_COLLAPSE_TABLE.families.find((f) => f.id === id);
 		if (!found) throw new Error(`Devin family ${id} missing`);
 		return found;
 	};
@@ -645,10 +645,10 @@ describe("Devin tier routing", () => {
 		);
 
 		const collapsed = collapseEffortVariants(specs, DEVIN_VARIANT_COLLAPSE_TABLE);
-		expect(collapsed.map(model => model.id).sort()).toEqual(["claude-fable-5", "swe-1-7"]);
+		expect(collapsed.map((model) => model.id).sort()).toEqual(["claude-fable-5", "swe-1-7"]);
 
-		const fable = collapsed.find(model => model.id === "claude-fable-5");
-		const swe = collapsed.find(model => model.id === "swe-1-7");
+		const fable = collapsed.find((model) => model.id === "claude-fable-5");
+		const swe = collapsed.find((model) => model.id === "swe-1-7");
 		if (!fable || !swe) throw new Error("Current Devin families did not collapse");
 		expect(resolveWireModelId(buildModel(fable), Effort.XHigh)).toBe("claude-5-fable-xhigh");
 		expect(resolveWireModelId(buildModel(swe), Effort.Medium)).toBe("swe-1-7-medium");
@@ -753,7 +753,7 @@ describe("merge-point collapsing (resolveProviderModels)", () => {
 			},
 			"online",
 		);
-		expect(result.models.map(m => m.id).sort()).toEqual(["gemini-2.5-flash-lite", "gemini-3.1-pro"]);
+		expect(result.models.map((m) => m.id).sort()).toEqual(["gemini-2.5-flash-lite", "gemini-3.1-pro"]);
 
 		// The cache snapshot written above is collapsed too: a later resolve
 		// whose dynamic fetch fails must not resurrect raw ids.
@@ -766,7 +766,9 @@ describe("merge-point collapsing (resolveProviderModels)", () => {
 			},
 			"online",
 		);
-		expect(offline.models.filter(m => m.id.includes("gemini-3.1-pro")).map(m => m.id)).toEqual(["gemini-3.1-pro"]);
+		expect(offline.models.filter((m) => m.id.includes("gemini-3.1-pro")).map((m) => m.id)).toEqual([
+			"gemini-3.1-pro",
+		]);
 	});
 
 	it("collapses X/X-thinking pairs for providers without a hand table", async () => {
@@ -783,7 +785,7 @@ describe("merge-point collapsing (resolveProviderModels)", () => {
 			"offline",
 		);
 
-		expect(result.models.map(m => m.id)).toEqual(["kimi-k2"]);
+		expect(result.models.map((m) => m.id)).toEqual(["kimi-k2"]);
 		const model = result.models[0];
 		expect(model?.reasoning).toBe(true);
 		expect(model && resolveWireModelId(model, Effort.High)).toBe("kimi-k2-thinking");
@@ -835,14 +837,14 @@ describe("antigravity discovery collapsing", () => {
 	it("returns collapsed logical entries and keeps the denylist", async () => {
 		const models = await fetchAntigravityDiscoveryModels({ token: "t", endpoint: "https://cca.test", fetcher });
 
-		expect(models?.map(m => m.id).sort()).toEqual(["claude-sonnet-4-6", "gemini-2.5-flash", "gemini-3.5-flash"]);
-		const flash = models?.find(m => m.id === "gemini-3.5-flash");
+		expect(models?.map((m) => m.id).sort()).toEqual(["claude-sonnet-4-6", "gemini-2.5-flash", "gemini-3.5-flash"]);
+		const flash = models?.find((m) => m.id === "gemini-3.5-flash");
 		expect(flash?.requestModelId).toBe("gemini-3.5-flash-extra-low");
 		expect(flash?.thinking?.effortRouting?.[Effort.High]).toBe("gemini-3-flash-agent");
 		expect(flash?.thinking?.effortRouting?.[Effort.Medium]).toBe("gemini-3.5-flash-low");
 		expect(flash?.thinking?.suppressWhenOff).toBe(true);
 		// The 2.5 pair collapses instead of denylisting the -thinking twin.
-		const flash25 = models?.find(m => m.id === "gemini-2.5-flash");
+		const flash25 = models?.find((m) => m.id === "gemini-2.5-flash");
 		expect(flash25?.thinking?.effortRouting?.[Effort.High]).toBe("gemini-2.5-flash-thinking");
 		expect(flash25?.thinking?.effortRouting?.off).toBe("gemini-2.5-flash");
 	});
@@ -855,7 +857,7 @@ describe("antigravity discovery collapsing", () => {
 		});
 		const models = await options.fetchDynamicModels?.();
 
-		const flash = models?.find(m => m.id === "gemini-3.5-flash");
+		const flash = models?.find((m) => m.id === "gemini-3.5-flash");
 		expect(flash?.provider).toBe("google-gemini-cli");
 		expect(flash?.baseUrl).toBe("https://cca.test");
 		expect(flash?.requestModelId).toBe("gemini-3.5-flash-extra-low");

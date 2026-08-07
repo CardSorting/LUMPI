@@ -1,4 +1,4 @@
-import type { SessionEntry } from "@noorm/lumpi-coding-agent";
+import type { SessionEntry } from "@noorm/lumi-coding-agent";
 import { describe, expect, it } from "vitest";
 import { getUsageCostBreakdown } from "../src/core/usage-totals.ts";
 

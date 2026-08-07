@@ -1,6 +1,6 @@
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumpi-ai";
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { fauxAssistantMessage, fauxToolCall } from "@noorm/lumi-ai";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
 import { createHarness, getAssistantTexts, getUserTexts, type Harness } from "../harness.ts";

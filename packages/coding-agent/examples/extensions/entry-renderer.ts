@@ -8,8 +8,8 @@
  * Usage: /status-card [message]
  */
 
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { Box, Text } from "@noorm/lumpi-tui";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { Box, Text } from "@noorm/lumi-tui";
 
 interface StatusCardData {
 	message: string;

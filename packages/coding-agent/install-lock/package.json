@@ -1,10 +1,10 @@
 {
-	"name": "@noorm/lumpi-install",
+	"name": "@noorm/lumi-install",
 	"version": "0.83.2",
 	"private": true,
 	"description": "Lockfile root used by the Pi installer and updater.",
 	"dependencies": {
-		"@noorm/lumpi": "0.83.2"
+		"@noorm/lumi": "0.83.2"
 	},
 	"overrides": {
 		"protobufjs": "7.6.5",

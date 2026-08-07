@@ -1,6 +1,6 @@
 import type { Component } from "./tui.ts";
 
-export const LAYOUT_NODE = Symbol.for("@noorm/lumpi-tui/layout-node");
+export const LAYOUT_NODE = Symbol.for("@noorm/lumi-tui/layout-node");
 
 export interface LayoutViewport {
 	width: number;

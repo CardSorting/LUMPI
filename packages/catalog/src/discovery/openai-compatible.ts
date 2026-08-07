@@ -231,8 +231,8 @@ function extractModelEntriesFromNode(node: unknown): ParsedOpenAICompatibleModel
 	}
 	if (Array.isArray(parsedPayload)) {
 		const parsedEntries = parsedPayload
-			.map(entry => openAICompatibleModelRecordSchema(entry))
-			.flatMap(entry => (entry instanceof type.errors ? [] : [entry]));
+			.map((entry) => openAICompatibleModelRecordSchema(entry))
+			.flatMap((entry) => (entry instanceof type.errors ? [] : [entry]));
 		return parsedEntries;
 	}
 	for (const candidate of [parsedPayload.data, parsedPayload.models, parsedPayload.result, parsedPayload.items]) {

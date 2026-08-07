@@ -1,12 +1,12 @@
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, ApiKey, Model } from "@oh-my-pi/pi-ai";
-import { completeSimple } from "@oh-my-pi/pi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, Model } from "@noorm/lumi-ai";
+import { completeSimple } from "@noorm/lumi-ai/compat";
 import { prompt } from "@oh-my-pi/pi-utils";
 import analysisSystemPrompt from "../../commit/prompts/analysis-system.md" with { type: "text" };
 import analysisUserPrompt from "../../commit/prompts/analysis-user.md" with { type: "text" };
-import type { ConventionalAnalysis } from "../../commit/types";
-import { toReasoningEffort } from "../../thinking";
-import { createConventionalAnalysisTool, parseConventionalAnalysisResponse } from "../shared-llm";
+import type { ConventionalAnalysis } from "../../commit/types.ts";
+import { toReasoningEffort } from "../../thinking.ts";
+import { createConventionalAnalysisTool, parseConventionalAnalysisResponse } from "../shared-llm.ts";
 
 const ConventionalAnalysisTool = createConventionalAnalysisTool(
 	"Analyze a diff and return conventional commit classification.",
@@ -14,7 +14,7 @@ const ConventionalAnalysisTool = createConventionalAnalysisTool(
 
 export interface ConventionalAnalysisInput {
 	model: Model<Api>;
-	apiKey: ApiKey;
+	apiKey: string;
 	thinkingLevel?: ThinkingLevel;
 	contextFiles?: Array<{ path: string; content: string }>;
 	userContext?: string;
@@ -53,7 +53,7 @@ export async function generateConventionalAnalysis({
 	const response = await completeSimple(
 		model,
 		{
-			systemPrompt: [prompt.render(analysisSystemPrompt)],
+			systemPrompt: prompt.render(analysisSystemPrompt),
 			messages: [{ role: "user", content: userContent, timestamp: Date.now() }],
 			tools: [ConventionalAnalysisTool],
 		},

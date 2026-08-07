@@ -1,5 +1,5 @@
 import chalk from "@oh-my-pi/pi-utils/chalk";
-import type { CommitCommandArgs } from "./types";
+import type { CommitCommandArgs } from "./types.ts";
 
 const FLAG_ALIASES = new Map<string, string>([
 	["-c", "--context"],

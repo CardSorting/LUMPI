@@ -112,9 +112,9 @@ Expected Output in Step 2:
 ```text
 ✔ Initialized BroccoliDB Zero-GC Slab Arena (16MB)
 ✔ Provider Gateway: OpenAI Codex (gpt-5.6-luna)
-1. @noorm/lumpi: Primary CLI & interactive TUI engine.
+1. @noorm/lumi: Primary CLI & interactive TUI engine.
 2. @noorm/broccolidb: High-throughput slab memory allocator.
-3. @noorm/lumpi-ai: Multi-provider router supporting 12+ LLM gateways.
+3. @noorm/lumi-ai: Multi-provider router supporting 12+ LLM gateways.
 ```
 
 ---
@@ -156,7 +156,7 @@ npx tsx packages/coding-agent/src/cli.ts -p "Explain the monorepo package struct
 
 ## 🖥️ Interactive TUI Preview
 
-LUMI features a branded, differential rendering terminal interface (`@noorm/lumpi-tui`) with active key detection and session management:
+LUMI features a branded, differential rendering terminal interface (`@noorm/lumi-tui`) with active key detection and session management:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -301,9 +301,9 @@ LUMI processes developer interactions through a multi-layered pipeline connectin
 +-----------------------------------------------------------------------------------+
 |                            LUMI ENGINE TOPOLOGY                                   |
 +-----------------------------------------------------------------------------------+
-|  [Developer Interface]  --> @noorm/lumpi-tui (Differential Terminal UI & Controllers)|
+|  [Developer Interface]  --> @noorm/lumi-tui (Differential Terminal UI & Controllers)|
 |                                     |                                             |
-|  [Agent Core Engine]   --> @noorm/lumpi (Session State CAS & Task Worktrees)      |
+|  [Agent Core Engine]   --> @noorm/lumi (Session State CAS & Task Worktrees)      |
 |                                     |                                             |
 |  [Native Rust Core]    --> crates/pi-natives (pi-walker, Ripgrep, ast-grep)       |
 |                                     |                                             |
@@ -315,9 +315,9 @@ LUMI processes developer interactions through a multi-layered pipeline connectin
 |                                     |                                             |
 |  [Memory Substrate]    --> mnemopi-broccolidb (16MB Zero-GC Slab Arena Allocator) |
 |                                     |                                             |
-|  [Host Integration]    --> @noorm/lumpi-codemarie (CodemarieBridge Provider)      |
+|  [Host Integration]    --> @noorm/lumi-codemarie (CodemarieBridge Provider)      |
 |                                     |                                             |
-|  [Multi-LLM Router]    --> @noorm/lumpi-ai (OpenAI Codex / Claude / Gemini)       |
+|  [Multi-LLM Router]    --> @noorm/lumi-ai (OpenAI Codex / Claude / Gemini)       |
 |                                     |                                             |
 |  [Sandbox Execution]   --> Gondolin Micro-VM / Docker / OpenShell Sandbox          |
 +-----------------------------------------------------------------------------------+
@@ -355,19 +355,19 @@ LUMI is structured as a unified monorepo under the `@noorm/*` scope.
 
 | Package / Engine | Location | Description |
 | :--- | :--- | :--- |
-| **`@noorm/lumpi`** | [`packages/coding-agent`](packages/coding-agent) | Primary CLI binary engine, TUI session manager (`ToolArgsReveal`, `BTW`, `OMFG`), Hashes/line delta engine (`hashline`), Auto-learning harness (`autolearn`), Mnemopi BroccoliDB memory (`mnemopi-broccolidb`), VFS router, task worktree isolation, and agentic git commit pipeline. |
+| **`@noorm/lumi`** | [`packages/coding-agent`](packages/coding-agent) | Primary CLI binary engine, TUI session manager (`ToolArgsReveal`, `BTW`, `OMFG`), Hashes/line delta engine (`hashline`), Auto-learning harness (`autolearn`), Mnemopi BroccoliDB memory (`mnemopi-broccolidb`), VFS router, task worktree isolation, and agentic git commit pipeline. |
 | **`pi-natives`** | [`crates/pi-natives`](crates/pi-natives) | High-performance native Rust engine bindings (pi-walker, Ripgrep, ast-grep) for zero-latency structural workspace search. |
-| **`@noorm/lumpi-codemarie`** | [`packages/codemarie`](packages/codemarie) | Merged CodeMarie CLI Host Provider (`HostProvider`, workspace/env/window/diff clients). |
+| **`@noorm/lumi-codemarie`** | [`packages/codemarie`](packages/codemarie) | Merged CodeMarie CLI Host Provider (`HostProvider`, workspace/env/window/diff clients). |
 | **`@noorm/broccolidb`** | [`packages/broccolidb`](packages/broccolidb) | Substrate storage engine with 16MB contiguous zero-GC slab allocators (`ArenaAllocator`) and SharedArrayBuffer ring buffers. |
-| **`@noorm/lumpi-agent-core`** | [`packages/agent`](packages/agent) | Core agent runtime enforcing CAS state transitions, prompt assembly, and tool invocations. |
-| **`@noorm/lumpi-ai`** | [`packages/ai`](packages/ai) | Unified multi-provider LLM API supporting OpenAI Codex, OpenRouter, Gemini, Claude, xAI, Cerebras, and Ollama. |
-| **`@noorm/lumpi-tui`** | [`packages/tui`](packages/tui) | High-efficiency terminal UI library featuring differential screen rendering and keyboard navigation bindings. |
-| **`@noorm/lumpi-telemetry`** | [`packages/telemetry`](packages/telemetry) | Vendor-neutral telemetry interfaces, metric aggregators, and schema validation utilities. |
-| **`@noorm/lumpi-client`** | [`packages/client`](packages/client) | Client abstraction bindings for remote RPC agent interaction. |
-| **`@noorm/lumpi-server`** | [`packages/server`](packages/server) | Multi-tenant agent server and IPC communication broker. |
-| **`@noorm/lumpi-protocol`** | [`packages/protocol`](packages/protocol) | Shared RPC protocol definitions, message schemas, and type-safe codecs. |
-| **`@noorm/lumpi-session-backends`** | [`packages/session-backends`](packages/session-backends) | High-performance persistence backends including SQLite Node wrappers. |
-| **`@noorm/lumpi-evals`** | [`packages/evals`](packages/evals) | Benchmarking framework for evaluating agent tool use, coding accuracy, and model reasoning speed. |
+| **`@noorm/lumi-agent-core`** | [`packages/agent`](packages/agent) | Core agent runtime enforcing CAS state transitions, prompt assembly, and tool invocations. |
+| **`@noorm/lumi-ai`** | [`packages/ai`](packages/ai) | Unified multi-provider LLM API supporting OpenAI Codex, OpenRouter, Gemini, Claude, xAI, Cerebras, and Ollama. |
+| **`@noorm/lumi-tui`** | [`packages/tui`](packages/tui) | High-efficiency terminal UI library featuring differential screen rendering and keyboard navigation bindings. |
+| **`@noorm/lumi-telemetry`** | [`packages/telemetry`](packages/telemetry) | Vendor-neutral telemetry interfaces, metric aggregators, and schema validation utilities. |
+| **`@noorm/lumi-client`** | [`packages/client`](packages/client) | Client abstraction bindings for remote RPC agent interaction. |
+| **`@noorm/lumi-server`** | [`packages/server`](packages/server) | Multi-tenant agent server and IPC communication broker. |
+| **`@noorm/lumi-protocol`** | [`packages/protocol`](packages/protocol) | Shared RPC protocol definitions, message schemas, and type-safe codecs. |
+| **`@noorm/lumi-session-backends`** | [`packages/session-backends`](packages/session-backends) | High-performance persistence backends including SQLite Node wrappers. |
+| **`@noorm/lumi-evals`** | [`packages/evals`](packages/evals) | Benchmarking framework for evaluating agent tool use, coding accuracy, and model reasoning speed. |
 
 ---
 
@@ -416,8 +416,8 @@ Key scripts defined in the root [`package.json`](package.json) for managing, val
 | **`npm run build`** | Performs ordered topological compilation of all 12 monorepo packages. |
 | **`npm run clean`** | Cleans build artifacts (`dist/`) across all workspace packages. |
 | **`npm run test`** | Executes test suites across workspaces. *(Use `./test.sh` for non-e2e test runs)* |
-| **`npm run generate:models`** | Regenerates AI model definitions in `@noorm/lumpi-ai`. |
-| **`npm run eval`** | Runs agent reasoning benchmarks via `@noorm/lumpi-evals`. |
+| **`npm run generate:models`** | Regenerates AI model definitions in `@noorm/lumi-ai`. |
+| **`npm run eval`** | Runs agent reasoning benchmarks via `@noorm/lumi-evals`. |
 
 ---
 
@@ -447,7 +447,7 @@ Over 70 reference implementations are available in [`packages/coding-agent/examp
 
 ```typescript
 // Example: Registering a custom extension tool in LUMI
-import { defineTool } from "@noorm/lumpi-coding-agent";
+import { defineTool } from "@noorm/lumi-coding-agent";
 
 export default defineTool({
   name: "query_substrate_metrics",

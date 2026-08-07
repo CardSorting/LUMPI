@@ -7,7 +7,7 @@ This page gets you from install to a useful first pi session.
 Pi is distributed as an npm package:
 
 ```bash
-npm install -g --ignore-scripts @noorm/lumpi
+npm install -g --ignore-scripts @noorm/lumi
 ```
 
 `--ignore-scripts` disables dependency lifecycle scripts during install. Pi does not require install scripts for normal npm installs.
@@ -18,16 +18,16 @@ Use the package manager that installed pi. The curl installer uses npm globally,
 
 ```bash
 # curl installer or npm install -g
-npm uninstall -g @noorm/lumpi
+npm uninstall -g @noorm/lumi
 
 # pnpm
-pnpm remove -g @noorm/lumpi
+pnpm remove -g @noorm/lumi
 
 # Yarn
-yarn global remove @noorm/lumpi
+yarn global remove @noorm/lumi
 
 # Bun
-bun uninstall -g @noorm/lumpi
+bun uninstall -g @noorm/lumi
 ```
 
 Uninstalling pi leaves settings, credentials, sessions, and installed pi packages in `~/.pi/agent/`.

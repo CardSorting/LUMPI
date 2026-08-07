@@ -1,4 +1,4 @@
-import type { AssistantMessage } from "@noorm/lumpi-ai";
+import type { AssistantMessage } from "@noorm/lumi-ai";
 import type { SessionEntry } from "./session-manager.ts";
 
 /**

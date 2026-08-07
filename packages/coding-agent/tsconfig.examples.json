@@ -3,10 +3,10 @@
 	"compilerOptions": {
 		"noEmit": true,
 		"paths": {
-			"@noorm/lumpi-coding-agent": ["./src/index.ts"],
-			"@noorm/lumpi-coding-agent/hooks": ["./src/core/hooks/index.ts"],
-			"@noorm/lumpi-tui": ["../tui/src/index.ts"],
-			"@noorm/lumpi-ai": ["../ai/src/index.ts"],
+			"@noorm/lumi-coding-agent": ["./src/index.ts"],
+			"@noorm/lumi-coding-agent/hooks": ["./src/core/hooks/index.ts"],
+			"@noorm/lumi-tui": ["../tui/src/index.ts"],
+			"@noorm/lumi-ai": ["../ai/src/index.ts"],
 			"typebox": ["../../node_modules/typebox"]
 		},
 		"skipLibCheck": true

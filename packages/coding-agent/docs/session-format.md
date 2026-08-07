@@ -34,7 +34,7 @@ Source on GitHub ([lumpi](https://github.com/earendil-works/lumpi)):
 - [`packages/ai/src/types.ts`](https://github.com/earendil-works/lumpi/blob/main/packages/ai/src/types.ts) - Base message types (UserMessage, AssistantMessage, ToolResultMessage)
 - [`packages/agent/src/types.ts`](https://github.com/earendil-works/lumpi/blob/main/packages/agent/src/types.ts) - AgentMessage union type
 
-For TypeScript definitions in your project, inspect `node_modules/@noorm/lumpi/dist/` and `node_modules/@noorm/lumpi-ai/dist/`.
+For TypeScript definitions in your project, inspect `node_modules/@noorm/lumi/dist/` and `node_modules/@noorm/lumi-ai/dist/`.
 
 ## Message Types
 
@@ -119,7 +119,7 @@ interface Usage {
 
 The exported pi-ai `StopReason` type also includes `"pending"`, but that value is reserved for partial messages in streaming events. Terminal `done`/`error` messages replace it with a completion reason before pi persists the assistant message, so `"pending"` should never appear in session JSONL.
 
-### Extended Message Types (from @noorm/lumpi)
+### Extended Message Types (from @noorm/lumi)
 
 ```typescript
 interface BashExecutionMessage {

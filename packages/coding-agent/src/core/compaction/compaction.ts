@@ -5,10 +5,10 @@
  * and after compaction the session is reloaded.
  */
 
-import type { AgentMessage, StreamFn, ThinkingLevel } from "@noorm/lumpi-agent-core";
-import { contentText, type RetryCallbacks, type RetryPolicy, retryAssistantCall, uuidv7 } from "@noorm/lumpi-ai";
-import type { AssistantMessage, Context, Model, SimpleStreamOptions, Usage } from "@noorm/lumpi-ai/compat";
-import { completeSimple } from "@noorm/lumpi-ai/compat";
+import type { AgentMessage, StreamFn, ThinkingLevel } from "@noorm/lumi-agent-core";
+import { contentText, type RetryCallbacks, type RetryPolicy, retryAssistantCall, uuidv7 } from "@noorm/lumi-ai";
+import type { AssistantMessage, Context, Model, SimpleStreamOptions, Usage } from "@noorm/lumi-ai/compat";
+import { completeSimple } from "@noorm/lumi-ai/compat";
 import { convertToLlm } from "../messages.ts";
 import {
 	buildSessionContext,

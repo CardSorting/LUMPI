@@ -4,7 +4,7 @@
  * Control session persistence: in-memory, new file, continue, or open specific.
  */
 
-import { createAgentSession, SessionManager } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, SessionManager } from "@noorm/lumi-coding-agent";
 
 // In-memory (no persistence)
 const { session: inMemory } = await createAgentSession({

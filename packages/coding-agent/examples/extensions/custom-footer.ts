@@ -8,9 +8,9 @@
  * Token stats come from ctx.sessionManager/ctx.model (already accessible).
  */
 
-import type { AssistantMessage } from "@noorm/lumpi-ai";
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { truncateToWidth, visibleWidth } from "@noorm/lumpi-tui";
+import type { AssistantMessage } from "@noorm/lumi-ai";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { truncateToWidth, visibleWidth } from "@noorm/lumi-tui";
 
 export default function (pi: ExtensionAPI) {
 	let enabled = false;

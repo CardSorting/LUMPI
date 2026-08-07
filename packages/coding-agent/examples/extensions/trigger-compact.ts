@@ -1,4 +1,4 @@
-import type { ExtensionAPI, ExtensionContext } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@noorm/lumi-coding-agent";
 
 const COMPACT_THRESHOLD_TOKENS = 100_000;
 

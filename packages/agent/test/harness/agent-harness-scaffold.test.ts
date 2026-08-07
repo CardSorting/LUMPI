@@ -1,5 +1,5 @@
-import { createModels, type Usage } from "@noorm/lumpi-ai";
-import { getModel } from "@noorm/lumpi-ai/compat";
+import { createModels, type Usage } from "@noorm/lumi-ai";
+import { getModel } from "@noorm/lumi-ai/compat";
 import { describe, expect, it } from "vitest";
 import {
 	AgentHarness,

@@ -1,7 +1,7 @@
 {
-	"name": "@noorm/lumpi-session-backend-sqlite-node",
+	"name": "@noorm/lumi-session-backend-sqlite-node",
 	"version": "0.83.2",
-	"description": "Node sqlite session backend for @noorm/lumpi-agent-core sessions",
+	"description": "Node sqlite session backend for @noorm/lumi-agent-core sessions",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -34,8 +34,8 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@noorm/lumpi-ai": "^0.83.2",
-		"@noorm/lumpi-agent-core": "^0.83.2"
+		"@noorm/lumi-ai": "^0.83.2",
+		"@noorm/lumi-agent-core": "^0.83.2"
 	},
 	"devDependencies": {
 		"@vitest/coverage-v8": "4.1.9",

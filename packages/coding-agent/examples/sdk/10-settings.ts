@@ -4,7 +4,7 @@
  * Override settings using SettingsManager.
  */
 
-import { createAgentSession, SessionManager, SettingsManager } from "@noorm/lumpi-coding-agent";
+import { createAgentSession, SessionManager, SettingsManager } from "@noorm/lumi-coding-agent";
 
 const cwd = process.cwd();
 

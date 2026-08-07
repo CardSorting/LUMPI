@@ -1,5 +1,5 @@
-import { Agent, type AgentTool } from "@noorm/lumpi-agent-core";
-import { getModel, streamSimple } from "@noorm/lumpi-ai/compat";
+import { Agent, type AgentTool } from "@noorm/lumi-agent-core";
+import { getModel, streamSimple } from "@noorm/lumi-ai/compat";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
 import { AgentSession } from "../src/core/agent-session.ts";

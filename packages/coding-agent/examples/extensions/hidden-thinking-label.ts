@@ -18,7 +18,7 @@
  *   /thinking-label          Reset to the default label
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@noorm/lumi-coding-agent";
 
 const DEFAULT_LABEL = "Pondering...";
 

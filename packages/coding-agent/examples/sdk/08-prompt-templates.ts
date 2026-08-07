@@ -11,7 +11,7 @@ import {
 	getAgentDir,
 	type PromptTemplate,
 	SessionManager,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumi-coding-agent";
 
 // Define custom templates
 const deployTemplate: PromptTemplate = {

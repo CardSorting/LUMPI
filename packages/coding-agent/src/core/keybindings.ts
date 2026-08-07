@@ -5,7 +5,7 @@ import {
 	type KeyId,
 	TUI_KEYBINDINGS,
 	KeybindingsManager as TuiKeybindingsManager,
-} from "@noorm/lumpi-tui";
+} from "@noorm/lumi-tui";
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { getAgentDir } from "../config.ts";
@@ -57,7 +57,7 @@ export interface AppKeybindings {
 
 export type AppKeybinding = keyof AppKeybindings;
 
-declare module "@noorm/lumpi-tui" {
+declare module "@noorm/lumi-tui" {
 	interface Keybindings extends AppKeybindings {}
 }
 

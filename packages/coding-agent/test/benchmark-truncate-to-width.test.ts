@@ -1,4 +1,4 @@
-import { truncateToWidth } from "@noorm/lumpi-tui";
+import { truncateToWidth } from "@noorm/lumi-tui";
 import { describe, expect, it } from "vitest";
 
 interface TruncateToWidthBenchmarkResult {

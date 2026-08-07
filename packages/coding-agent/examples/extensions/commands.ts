@@ -10,7 +10,7 @@
  * 3. Use /commands extensions to filter by source
  */
 
-import type { ExtensionAPI, SlashCommandInfo } from "@noorm/lumpi-coding-agent";
+import type { ExtensionAPI, SlashCommandInfo } from "@noorm/lumi-coding-agent";
 
 export default function commandsExtension(pi: ExtensionAPI) {
 	pi.registerCommand("commands", {

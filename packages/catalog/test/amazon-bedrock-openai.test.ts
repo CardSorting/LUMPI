@@ -36,7 +36,7 @@ function bedrockModel(provider: string, id: string): ModelSpec<"bedrock-converse
 
 describe("Amazon Bedrock OpenAI routing", () => {
 	test("seeds Responses-only models under the Bedrock Mantle provider", () => {
-		expect(BEDROCK_MANTLE_STATIC_MODELS.map(model => model.id)).toEqual(MANTLE_MODEL_IDS);
+		expect(BEDROCK_MANTLE_STATIC_MODELS.map((model) => model.id)).toEqual(MANTLE_MODEL_IDS);
 		for (const model of BEDROCK_MANTLE_STATIC_MODELS) {
 			expect(model.provider).toBe("bedrock-mantle");
 			expect(model.api).toBe("openai-responses");
@@ -46,7 +46,7 @@ describe("Amazon Bedrock OpenAI routing", () => {
 	});
 
 	test("uses current Luna and Terra pricing", () => {
-		const byId = Object.fromEntries(BEDROCK_MANTLE_STATIC_MODELS.map(model => [model.id, model]));
+		const byId = Object.fromEntries(BEDROCK_MANTLE_STATIC_MODELS.map((model) => [model.id, model]));
 		expect(byId["openai.gpt-5.6-luna"]?.cost).toEqual({
 			input: 0.22,
 			output: 1.32,
@@ -90,7 +90,7 @@ describe("Amazon Bedrock OpenAI routing", () => {
 			baseUrl: "https://bedrock-mantle.{region}.api.aws/openai/v1",
 			cost: { input: 0.22, output: 1.32, cacheRead: 0.022, cacheWrite: 0.275 },
 		});
-		const descriptor = PROVIDER_DESCRIPTORS.find(descriptor => descriptor.providerId === "bedrock-mantle");
+		const descriptor = PROVIDER_DESCRIPTORS.find((descriptor) => descriptor.providerId === "bedrock-mantle");
 		expect(descriptor).toMatchObject({ dynamicModelsAuthoritative: true });
 		expect(descriptor?.catalogDiscovery).toBeUndefined();
 
@@ -103,7 +103,7 @@ describe("Amazon Bedrock OpenAI routing", () => {
 				"online",
 			);
 			expect(refreshed.stale).toBe(false);
-			expect(refreshed.models.map(model => model.id).sort()).toEqual([
+			expect(refreshed.models.map((model) => model.id).sort()).toEqual([
 				"openai.gpt-5.6-luna",
 				"openai.gpt-5.7-preview",
 			]);
@@ -114,12 +114,12 @@ describe("Amazon Bedrock OpenAI routing", () => {
 
 	test("drops only the unusable Converse rows for Mantle models", () => {
 		const input = [
-			...MANTLE_MODEL_IDS.map(id => bedrockModel("amazon-bedrock", id)),
+			...MANTLE_MODEL_IDS.map((id) => bedrockModel("amazon-bedrock", id)),
 			bedrockModel("amazon-bedrock", "openai.gpt-oss-120b"),
 			bedrockModel("bedrock-mantle", "openai.gpt-5.6-sol"),
 		];
 
-		expect(dropBedrockMantleOpenAIModels(input).map(model => `${model.provider}/${model.id}`)).toEqual([
+		expect(dropBedrockMantleOpenAIModels(input).map((model) => `${model.provider}/${model.id}`)).toEqual([
 			"amazon-bedrock/openai.gpt-oss-120b",
 			"bedrock-mantle/openai.gpt-5.6-sol",
 		]);

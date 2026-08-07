@@ -12,7 +12,7 @@ import {
 	type ParsedGeneratedRule,
 	parseGeneratedRule,
 	validateParsedRuleAgainstAssistantHistory,
-} from "./omfg-rule";
+} from "./omfg-rule.ts";
 
 interface OmfgRequest {
 	component: OmfgPanelComponent;
@@ -148,7 +148,7 @@ export class OmfgController {
 			const { replyText } = await this.ctx.session.runEphemeralTurn({
 				promptText,
 				dedupeReply: false,
-				onTextDelta: delta => {
+				onTextDelta: (delta) => {
 					if (this.#isActiveRequest(request)) {
 						request.component.appendDraft(delta);
 					}

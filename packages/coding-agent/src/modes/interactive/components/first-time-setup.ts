@@ -1,4 +1,4 @@
-import { Container, getKeybindings, Spacer, Text } from "@noorm/lumpi-tui";
+import { Container, getKeybindings, Spacer, Text } from "@noorm/lumi-tui";
 import { APP_NAME } from "../../../config.ts";
 import { type TerminalTheme, theme } from "../theme/theme.ts";
 import { DynamicBorder } from "./dynamic-border.ts";

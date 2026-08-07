@@ -1,5 +1,5 @@
-import { fauxAssistantMessage } from "@noorm/lumpi-ai";
-import { Container, Text } from "@noorm/lumpi-tui";
+import { fauxAssistantMessage } from "@noorm/lumi-ai";
+import { Container, Text } from "@noorm/lumi-tui";
 import { describe, expect, it, vi } from "vitest";
 import type { AgentSessionEvent } from "../../../src/core/agent-session.ts";
 import type { ExtensionUIContext } from "../../../src/core/extensions/index.ts";

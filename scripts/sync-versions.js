@@ -18,7 +18,7 @@ const workspacePackages = findPackageDirectories(packageRoot)
 		const path = join(directory, "package.json");
 		return { data: JSON.parse(readFileSync(path, "utf8")), path };
 	});
-const publishedPackages = workspacePackages.filter((pkg) => pkg.data.private !== true);
+const publishedPackages = workspacePackages.filter((pkg) => pkg.data.private !== true && pkg.data.name.startsWith("@noorm/"));
 const versionMap = new Map(workspacePackages.map((pkg) => [pkg.data.name, pkg.data.version]));
 
 console.log("Current versions:");
@@ -48,8 +48,9 @@ for (const pkg of workspacePackages) {
 		}
 
 		for (const [dependencyName, currentSpecifier] of Object.entries(dependencies)) {
-			// Registry aliases such as `npm:@noorm/lumpi-ai@0.1.2` are never workspace-linked,
-			// so lockstep bumping them would point at a version that is not published yet.
+			if (currentSpecifier === "*" || currentSpecifier.startsWith("catalog:")) {
+				continue;
+			}
 			const version = versionMap.get(dependencyName);
 			const newSpecifier = version ? `^${version}` : null;
 			if (!newSpecifier || currentSpecifier === newSpecifier) {

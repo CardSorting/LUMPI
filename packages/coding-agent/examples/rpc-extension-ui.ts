@@ -27,7 +27,7 @@ import {
 	SelectList,
 	type TUI,
 	TuiMainScreen,
-} from "@noorm/lumpi-tui";
+} from "@noorm/lumi-tui";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

@@ -1,4 +1,4 @@
-import type { AssistantMessage } from "@oh-my-pi/pi-ai";
+import type { AssistantMessage } from "@noorm/lumi-ai";
 import { logger } from "@oh-my-pi/pi-utils";
 import { LiveSessionController, type LiveSessionControllerOptions, type LiveTranscript } from "../../live/controller";
 import { LIVE_MODEL } from "../../live/protocol";
@@ -83,7 +83,7 @@ export class LiveCommandController {
 		const session = this.#session;
 		if (session) {
 			this.#finish(session);
-			void session.stop().catch(cause => {
+			void session.stop().catch((cause) => {
 				logger.debug("Live session teardown failed", { error: errorFrom(cause).message });
 			});
 		} else {
@@ -96,7 +96,7 @@ export class LiveCommandController {
 		this.#assistantTranscriptStartedAt = 0;
 		const visualizer = new LiveVisualizer({
 			onStop: () => {
-				void this.stop().catch(cause => this.#ctx.showError(errorFrom(cause).message));
+				void this.stop().catch((cause) => this.#ctx.showError(errorFrom(cause).message));
 			},
 			onToggleMute: () => this.#session?.toggleMute(),
 			stopKeys: this.#ctx.keybindings.getKeys("app.live.toggle"),
@@ -106,20 +106,20 @@ export class LiveCommandController {
 		let session: LiveSessionController;
 		const options: LiveSessionControllerOptions = {
 			session: this.#ctx.session,
-			extractAssistantText: message => this.#ctx.extractAssistantText(message),
+			extractAssistantText: (message) => this.#ctx.extractAssistantText(message),
 			voice: this.#ctx.settings.get("live.voice"),
 			callbacks: {
-				onPhase: phase => {
+				onPhase: (phase) => {
 					if (this.#visualizer !== visualizer) return;
 					visualizer.setPhase(phase);
 					this.#ctx.ui.requestComponentRender(visualizer);
 				},
-				onLevels: input => {
+				onLevels: (input) => {
 					if (this.#visualizer !== visualizer) return;
 					visualizer.setInputLevel(input);
 					this.#ctx.ui.requestComponentRender(visualizer);
 				},
-				onTranscript: transcript => {
+				onTranscript: (transcript) => {
 					if (this.#visualizer !== visualizer) return;
 					if (!transcript) {
 						visualizer.clearTranscript();
@@ -131,7 +131,7 @@ export class LiveCommandController {
 						this.#presentAssistantTranscript(transcript);
 					}
 				},
-				onTerminal: error => this.#finish(session, error),
+				onTerminal: (error) => this.#finish(session, error),
 			},
 		};
 		session = this.#createSession ? this.#createSession(options) : new LiveSessionController(options);
@@ -162,7 +162,7 @@ export class LiveCommandController {
 		let component = this.#assistantTranscriptComponent;
 		if (!component) {
 			component = createAssistantMessageComponent(this.#ctx);
-			component.setTextColorTransform(text => theme.fg("borderAccent", text));
+			component.setTextColorTransform((text) => theme.fg("borderAccent", text));
 			this.#assistantTranscriptComponent = component;
 			this.#assistantTranscriptStartedAt = Date.now();
 		}
@@ -224,7 +224,7 @@ export class LiveCommandController {
 		this.#session = undefined;
 		this.#restoreEditor();
 		if (error) this.#ctx.showError(error.message);
-		const settling = session.stop().catch(cause => {
+		const settling = session.stop().catch((cause) => {
 			logger.debug("Live session cleanup failed", { error: errorFrom(cause).message });
 		});
 		this.#settling = settling;

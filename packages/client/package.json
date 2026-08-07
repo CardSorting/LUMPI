@@ -1,7 +1,7 @@
 {
-	"name": "@noorm/lumpi-client",
+	"name": "@noorm/lumi-client",
 	"version": "0.83.2",
-	"description": "Transport-neutral client for remote pi sessions over framed CBOR bytes",
+	"description": "TypeScript client library for remote pi session daemon",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -10,20 +10,35 @@
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
 		},
+		"./errors": {
+			"types": "./dist/errors.d.ts",
+			"import": "./dist/errors.js"
+		},
+		"./session": {
+			"types": "./dist/session-handle.d.ts",
+			"import": "./dist/session-handle.js"
+		},
+		"./testing": {
+			"types": "./dist/testing.d.ts",
+			"import": "./dist/testing.js"
+		},
+		"./types": {
+			"types": "./dist/types.d.ts",
+			"import": "./dist/types.js"
+		},
 		"./unix": {
 			"types": "./dist/unix.d.ts",
 			"import": "./dist/unix.js"
-		},
-		"./package.json": "./package.json"
+		}
 	},
 	"sideEffects": false,
 	"files": [
 		"dist",
-		"README.md",
-		"CHANGELOG.md"
+		"README.md"
 	],
 	"scripts": {
 		"clean": "shx rm -rf dist",
+		"dev": "tsgo -p tsconfig.build.json --watch --preserveWatchOutput",
 		"build": "tsgo -p tsconfig.build.json",
 		"test": "vitest --run",
 		"typecheck": "tsgo -p tsconfig.test.json",
@@ -32,9 +47,7 @@
 	"keywords": [
 		"pi",
 		"client",
-		"protocol",
-		"cbor",
-		"binary"
+		"sdk"
 	],
 	"author": "Earendil Works",
 	"license": "MIT",
@@ -47,7 +60,7 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@noorm/lumpi-protocol": "^0.83.2"
+		"@noorm/lumi-protocol": "^0.83.2"
 	},
 	"devDependencies": {
 		"shx": "0.4.0",

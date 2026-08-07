@@ -23,8 +23,8 @@ import type {
 	AgentTool,
 	PrepareNextTurnContext,
 	ThinkingLevel,
-} from "@noorm/lumpi-agent-core";
-import { contentText } from "@noorm/lumpi-ai";
+} from "@noorm/lumi-agent-core";
+import { contentText } from "@noorm/lumi-ai";
 import type {
 	AssistantMessage,
 	AuthResult,
@@ -33,7 +33,7 @@ import type {
 	ProviderHeaders,
 	TextContent,
 	Usage,
-} from "@noorm/lumpi-ai/compat";
+} from "@noorm/lumi-ai/compat";
 import {
 	clampThinkingLevel,
 	cleanupSessionResources,
@@ -45,7 +45,7 @@ import {
 	type RetryCallbacks,
 	resetApiProviders,
 	streamSimple,
-} from "@noorm/lumpi-ai/compat";
+} from "@noorm/lumi-ai/compat";
 import { getThemeByName, theme } from "../modes/interactive/theme/theme.ts";
 import { stripFrontmatter } from "../utils/frontmatter.ts";
 import { resolvePath } from "../utils/paths.ts";
@@ -900,6 +900,12 @@ export class AgentSession {
 	/** Current effective system prompt (includes any per-turn extension modifications) */
 	get systemPrompt(): string {
 		return this.agent.state.systemPrompt;
+	}
+
+	/** Override the generated system prompt for the lifetime of the current run. */
+	setSystemPrompt(systemPrompt: string): void {
+		this._systemPromptOverride = systemPrompt;
+		this.agent.state.systemPrompt = systemPrompt;
 	}
 
 	/** Current retry attempt (0 if not retrying) */

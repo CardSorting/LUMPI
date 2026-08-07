@@ -11,8 +11,8 @@ import { createInMemoryModelRegistry, getModelRuntime } from "./model-runtime-te
 import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { AgentTool } from "@noorm/lumpi-agent-core";
-import { Agent } from "@noorm/lumpi-agent-core";
+import type { AgentTool } from "@noorm/lumi-agent-core";
+import { Agent } from "@noorm/lumi-agent-core";
 import type {
 	AssistantMessage,
 	AssistantMessageEvent,
@@ -25,8 +25,8 @@ import type {
 	ThinkingContent,
 	ToolCall,
 	Usage,
-} from "@noorm/lumpi-ai";
-import { createAssistantMessageEventStream } from "@noorm/lumpi-ai";
+} from "@noorm/lumi-ai";
+import { createAssistantMessageEventStream } from "@noorm/lumi-ai";
 import { AgentSession, type AgentSessionEvent } from "../src/core/agent-session.ts";
 import { AuthStorage } from "../src/core/auth-storage.ts";
 import { SessionManager } from "../src/core/session-manager.ts";

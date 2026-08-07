@@ -2,8 +2,8 @@
  * Snake game extension - play snake with /snake command
  */
 
-import type { ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { matchesKey, visibleWidth } from "@noorm/lumpi-tui";
+import type { ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { matchesKey, visibleWidth } from "@noorm/lumi-tui";
 
 const GAME_WIDTH = 40;
 const GAME_HEIGHT = 15;

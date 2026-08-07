@@ -8,8 +8,8 @@ import type {
 	Session as CoreSession,
 	Entry,
 	MessageEntry,
-} from "@noorm/lumpi-agent-core";
-import type { Usage } from "@noorm/lumpi-ai";
+} from "@noorm/lumi-agent-core";
+import type { Usage } from "@noorm/lumi-ai";
 import { afterEach, vi } from "vitest";
 import type { SqliteDatabaseFactory, SqliteSessionMetadata } from "../src/index.ts";
 

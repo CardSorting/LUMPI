@@ -1,15 +1,15 @@
-# @noorm/lumpi-codemarie
+# @noorm/lumi-codemarie
 
 > **Codemarie Agent Controller, Substrate Persistence & Mixture-of-Designers (MoD) Steering Engine**
 
-`@noorm/lumpi-codemarie` provides the task lifecycle management, state persistence, governance policy enforcement, and Mixture-of-Designers (MoD) system prompt steering for the `pi` AI coding agent harness.
+`@noorm/lumi-codemarie` provides the task lifecycle management, state persistence, governance policy enforcement, and Mixture-of-Designers (MoD) system prompt steering for the `pi` AI coding agent harness.
 
 ---
 
 ## 🏛️ Architecture & Navigation Map
 
 ```
-@noorm/lumpi-codemarie
+@noorm/lumi-codemarie
  ├── /hosts           # Host provider interfaces & CLI integration clients
  ├── /policy          # Plan mode enforcement, universal guard, & fluid policy engines
  ├── /orchestration   # Task streams, state tracking, & entropy calculators
@@ -20,30 +20,30 @@
 
 ## 📦 Subpath Entrypoints & Module Usage
 
-### 1. Host Provider Integration (`@noorm/lumpi-codemarie/hosts`)
+### 1. Host Provider Integration (`@noorm/lumi-codemarie/hosts`)
 Provides workspace, environment, and window interaction bridges for headless and interactive host environments.
 
 ```ts
-import { initializeCliHostProvider } from "@noorm/lumpi-codemarie/hosts";
+import { initializeCliHostProvider } from "@noorm/lumi-codemarie/hosts";
 
 const hostProvider = initializeCliHostProvider("/path/to/workspace");
 ```
 
-### 2. Governance & Policy Guardrails (`@noorm/lumpi-codemarie/policy`)
+### 2. Governance & Policy Guardrails (`@noorm/lumi-codemarie/policy`)
 Enforces architectural layer rules, read/write AST boundaries, and Plan Mode workflow guards.
 
 ```ts
-import { UniversalGuard, PlanModeEnforcer } from "@noorm/lumpi-codemarie/policy";
+import { UniversalGuard, PlanModeEnforcer } from "@noorm/lumi-codemarie/policy";
 
 const guard = new UniversalGuard("/path/to/workspace", "task-123", stateManager);
 await guard.guardPreExecution(toolBlock, input);
 ```
 
-### 3. Swarm & Task Orchestration (`@noorm/lumpi-codemarie/orchestration`)
+### 3. Swarm & Task Orchestration (`@noorm/lumi-codemarie/orchestration`)
 Manages task stream mutations, cross-shadow conflict detection, and algorithmic entropy metrics.
 
 ```ts
-import { orchestrator } from "@noorm/lumpi-codemarie/orchestration";
+import { orchestrator } from "@noorm/lumi-codemarie/orchestration";
 
 const entropy = orchestrator.calculateEntropy(previousContent, currentContent);
 ```
@@ -90,5 +90,5 @@ npm run check
 
 ## 📄 License
 
-`@noorm/lumpi-codemarie` is licensed under the [Apache License 2.0](LICENSE).
+`@noorm/lumi-codemarie` is licensed under the [Apache License 2.0](LICENSE).
 

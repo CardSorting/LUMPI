@@ -58,7 +58,7 @@ describe("Baseten provider discovery", () => {
 			},
 		]);
 
-		const kimi = models?.find(model => model.id === "moonshotai/Kimi-K2.7-Code");
+		const kimi = models?.find((model) => model.id === "moonshotai/Kimi-K2.7-Code");
 		expect(kimi).toBeDefined();
 		expect(kimi).toMatchObject({
 			provider: "baseten",
@@ -76,7 +76,7 @@ describe("Baseten provider discovery", () => {
 			},
 		});
 
-		const deepseek = models?.find(model => model.id === "deepseek-ai/DeepSeek-V4-Pro");
+		const deepseek = models?.find((model) => model.id === "deepseek-ai/DeepSeek-V4-Pro");
 		expect(deepseek).toBeDefined();
 		expect(deepseek).toMatchObject({
 			provider: "baseten",

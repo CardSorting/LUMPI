@@ -33,15 +33,15 @@ describe("azure catalog provider", () => {
 	test("is catalog-only (no runtime discovery) with an env-var-backed default model", () => {
 		// Mirrors Bedrock: bundled models + env auth, no model-manager factory, so
 		// it must NOT appear in the runtime discovery descriptor list.
-		expect(PROVIDER_DESCRIPTORS.some(d => d.providerId === "azure")).toBe(false);
+		expect(PROVIDER_DESCRIPTORS.some((d) => d.providerId === "azure")).toBe(false);
 		expect(DEFAULT_MODEL_PER_PROVIDER.azure).toBe("gpt-5.5");
 	});
 
 	test("stencil.so descriptor keeps only OpenAI-family Responses models, baseUrl resolved at runtime", () => {
 		const azure = mapModelsDevToModels(AZURE_MODELS_DEV_FIXTURE, MODELS_DEV_PROVIDER_DESCRIPTORS).filter(
-			model => model.provider === "azure",
+			(model) => model.provider === "azure",
 		);
-		const ids = azure.map(model => model.id).sort();
+		const ids = azure.map((model) => model.id).sort();
 		// gpt-4o + o3 survive; the instruct model (no tool_call) and the Foundry
 		// Claude (non-Responses, per-model provider override) are dropped.
 		expect(ids).toEqual(["gpt-4o", "o3"]);

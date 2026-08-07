@@ -7,7 +7,7 @@ import type {
 	SessionSummary,
 	ThinkingLevel,
 	TranscriptProgress,
-} from "@noorm/lumpi-protocol";
+} from "@noorm/lumi-protocol";
 import type { PiServerError } from "./errors.ts";
 import type { PiServerListener } from "./listener.ts";
 

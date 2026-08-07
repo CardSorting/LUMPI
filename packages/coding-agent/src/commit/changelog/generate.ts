@@ -1,35 +1,40 @@
-import { type } from "@oh-my-pi/omptype";
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, ApiKey, AssistantMessage, Model } from "@oh-my-pi/pi-ai";
-import { completeSimple, validateToolCall } from "@oh-my-pi/pi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, AssistantMessage, Model, Tool } from "@noorm/lumi-ai";
+import { completeSimple, validateToolCall } from "@noorm/lumi-ai/compat";
 import { prompt } from "@oh-my-pi/pi-utils";
+import { Type } from "typebox";
 import changelogSystemPrompt from "../../commit/prompts/changelog-system.md" with { type: "text" };
 import changelogUserPrompt from "../../commit/prompts/changelog-user.md" with { type: "text" };
-import type { ChangelogGenerationResult } from "../../commit/types";
-import { toReasoningEffort } from "../../thinking";
-import { extractTextContent, extractToolCall, parseJsonPayload } from "../utils";
+import type { ChangelogGenerationResult } from "../../commit/types.ts";
+import { toReasoningEffort } from "../../thinking.ts";
+import { extractTextContent, extractToolCall, parseJsonPayload } from "../utils.ts";
 
-// Build the changelog entry schema with arktype
-// Each category maps to an optional array of strings
-const changelogEntriesSchema = type({
-	"Breaking Changes?": "string[]",
-	"Added?": "string[]",
-	"Changed?": "string[]",
-	"Deprecated?": "string[]",
-	"Removed?": "string[]",
-	"Fixed?": "string[]",
-	"Security?": "string[]",
+// Each category maps to an optional array of strings.
+const changelogEntriesSchema = Type.Object({
+	"Breaking Changes": Type.Optional(Type.Array(Type.String())),
+	Added: Type.Optional(Type.Array(Type.String())),
+	Changed: Type.Optional(Type.Array(Type.String())),
+	Deprecated: Type.Optional(Type.Array(Type.String())),
+	Removed: Type.Optional(Type.Array(Type.String())),
+	Fixed: Type.Optional(Type.Array(Type.String())),
+	Security: Type.Optional(Type.Array(Type.String())),
 });
+
+const changelogToolParameters = Type.Object({ entries: changelogEntriesSchema });
 
 export const changelogTool = {
 	name: "create_changelog_entries",
 	description: "Generate changelog entries grouped by Keep a Changelog categories.",
-	parameters: type({ entries: changelogEntriesSchema }),
-};
+	parameters: changelogToolParameters,
+} satisfies Tool<typeof changelogToolParameters>;
+
+interface ChangelogToolParameters {
+	entries: Record<string, string[]>;
+}
 
 export interface ChangelogPromptInput {
 	model: Model<Api>;
-	apiKey: ApiKey;
+	apiKey: string;
 	thinkingLevel?: ThinkingLevel;
 	changelogPath: string;
 	isPackageChangelog: boolean;
@@ -58,7 +63,7 @@ export async function generateChangelogEntries({
 	const response = await completeSimple(
 		model,
 		{
-			systemPrompt: [prompt.render(changelogSystemPrompt)],
+			systemPrompt: prompt.render(changelogSystemPrompt),
 			messages: [{ role: "user", content: userContent, timestamp: Date.now() }],
 			tools: [changelogTool],
 		},
@@ -72,7 +77,7 @@ export async function generateChangelogEntries({
 function parseChangelogResponse(message: AssistantMessage): ChangelogGenerationResult {
 	const toolCall = extractToolCall(message, "create_changelog_entries");
 	if (toolCall) {
-		const parsed = validateToolCall([changelogTool], toolCall) as typeof changelogTool.parameters.infer;
+		const parsed = validateToolCall([changelogTool], toolCall) as unknown as ChangelogToolParameters;
 		return { entries: parsed.entries ?? {} };
 	}
 

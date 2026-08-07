@@ -485,7 +485,7 @@ try {
 }
 
 const piConfigName: string | undefined = pkg.piConfig?.name;
-export const PACKAGE_NAME: string = pkg.name || "@noorm/lumpi-coding-agent";
+export const PACKAGE_NAME: string = pkg.name || "@noorm/lumi-coding-agent";
 export const APP_NAME: string = piConfigName || "LUMI";
 export const APP_TITLE: string = piConfigName || "LUMI";
 export const CONFIG_DIR_NAME: string = pkg.piConfig?.configDir || ".pi";

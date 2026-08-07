@@ -1,4 +1,4 @@
-import { fuzzyMatch } from "@noorm/lumpi-tui";
+import { fuzzyMatch } from "@noorm/lumi-tui";
 import type { SessionInfo } from "../../../core/session-manager.ts";
 
 export type SortMode = "threaded" | "recent" | "relevance";

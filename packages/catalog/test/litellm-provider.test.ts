@@ -424,13 +424,13 @@ describe("LiteLLM provider discovery", () => {
 
 		const models = await options.fetchDynamicModels?.();
 
-		expect(models?.find(model => model.id === "no-tools")?.supportsTools).toBe(false);
-		expect(models?.find(model => model.id === "params-tools")?.supportsTools).toBe(true);
+		expect(models?.find((model) => model.id === "no-tools")?.supportsTools).toBe(false);
+		expect(models?.find((model) => model.id === "params-tools")?.supportsTools).toBe(true);
 	});
 
 	test.each([["all-team-models"], ["all-proxy-models"], ["no-default-models"]])(
 		"falls back from %s placeholder to v2 model info",
-		async sentinelModelId => {
+		async (sentinelModelId) => {
 			const calls: string[] = [];
 			const fetchMock = vi.fn(async (input: string | URL | Request) => {
 				const url = inputUrl(input);
@@ -472,7 +472,7 @@ describe("LiteLLM provider discovery", () => {
 			expect(calls).toContain("http://primary:4000/model_group/info");
 			expect(calls).toContain("http://primary:4000/v2/model/info");
 			expect(calls).not.toContain("http://primary:4000/v1/models");
-			expect(models?.map(model => model.id)).toEqual(["example-real-model"]);
+			expect(models?.map((model) => model.id)).toEqual(["example-real-model"]);
 			expect(models?.[0]).toMatchObject({
 				id: "example-real-model",
 				contextWindow: 200_000,
@@ -525,7 +525,7 @@ describe("LiteLLM provider discovery", () => {
 		expect(calls).toContain("http://primary:4000/model_group/info");
 		expect(calls).not.toContain("http://primary:4000/v2/model/info");
 		expect(calls).not.toContain("http://primary:4000/v1/models");
-		expect(models?.map(model => model.id)).toEqual(["example-real-model"]);
+		expect(models?.map((model) => model.id)).toEqual(["example-real-model"]);
 		expect(models?.[0]).toMatchObject({
 			id: "example-real-model",
 			name: "Example Real Model",
@@ -641,7 +641,7 @@ describe("LiteLLM provider discovery", () => {
 		expect(calls).toContain("http://primary:4000/model/info");
 		expect(calls).not.toContain("http://primary:4000/v1/models");
 		expect(models).toHaveLength(1);
-		expect(models?.find(model => model.id === "vision-proxy-model")).toMatchObject({
+		expect(models?.find((model) => model.id === "vision-proxy-model")).toMatchObject({
 			id: "vision-proxy-model",
 			name: "Vision Proxy Model",
 			input: ["text", "image"],
@@ -770,7 +770,7 @@ describe("LiteLLM provider discovery", () => {
 			contextWindow: 64_000,
 			maxTokens: 8_000,
 		});
-		expect(models?.find(model => model.id === "minimax-m3")).toMatchObject({
+		expect(models?.find((model) => model.id === "minimax-m3")).toMatchObject({
 			id: "minimax-m3",
 			name: "MiniMax M3",
 			contextWindow: 262_144,

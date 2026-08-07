@@ -10,7 +10,7 @@
  * if the validator were skipped. See issue #4632.
  */
 
-import type { SplitCommitPlan } from "./state";
+import type { SplitCommitPlan } from "./state.ts";
 
 /**
  * Lock file basename -> ordered sibling manifests. Order matters: the first
@@ -58,7 +58,7 @@ export const EXCLUDED_LOCK_FILES: ReadonlySet<string> = new Set(Object.keys(LOCK
 export function assignLockFilesToPlan(plan: SplitCommitPlan, stagedFiles: readonly string[]): void {
 	if (plan.commits.length === 0) return;
 
-	const planned = new Set(plan.commits.flatMap(commit => commit.changes.map(change => change.path)));
+	const planned = new Set(plan.commits.flatMap((commit) => commit.changes.map((change) => change.path)));
 	const orphanedLockFiles: string[] = [];
 	for (const file of stagedFiles) {
 		if (planned.has(file)) continue;

@@ -17,9 +17,9 @@
  * separate variables. Only the agent cursor is ever exposed to the agent.
  */
 
-import { StringEnum } from "@noorm/lumpi-ai";
-import type { ExtensionAPI, ExtensionContext, Theme, ToolExecutionMode } from "@noorm/lumpi-coding-agent";
-import { type Component, matchesKey, Text, truncateToWidth, visibleWidth } from "@noorm/lumpi-tui";
+import { StringEnum } from "@noorm/lumi-ai";
+import type { ExtensionAPI, ExtensionContext, Theme, ToolExecutionMode } from "@noorm/lumi-coding-agent";
+import { type Component, matchesKey, Text, truncateToWidth, visibleWidth } from "@noorm/lumi-tui";
 import { Type } from "typebox";
 
 // Thrown from the tool on illegal actions. The agent runtime surfaces thrown

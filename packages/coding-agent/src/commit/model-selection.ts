@@ -1,38 +1,46 @@
-import type { ThinkingLevel } from "@oh-my-pi/pi-agent-core";
-import type { Api, ApiKey, Model } from "@oh-my-pi/pi-ai";
-import type { ApiKeyResolverRegistry } from "../config/api-key-resolver";
-import {
-	getModelMatchPreferences,
-	type ModelLookupRegistry,
-	parseModelPattern,
-	resolveModelRoleValue,
-	resolveRoleSelection,
-} from "../config/model-resolver";
-import { MODEL_ROLE_IDS } from "../config/model-roles";
-import type { Settings } from "../config/settings";
-import MODEL_PRIO from "../priority.json" with { type: "json" };
-import { concreteThinkingLevel } from "../thinking";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Api, Model } from "@noorm/lumi-ai";
+import type { ModelRegistry } from "../core/model-registry.ts";
+import { findExactModelReferenceMatch, parseModelPattern } from "../core/model-resolver.ts";
+import type { Settings } from "../core/settings-manager.ts";
+
+const SMOL_MODEL_PATTERNS = ["claude-3-5-haiku", "gpt-4o-mini", "gemini-1.5-flash"];
 
 export interface ResolvedCommitModel {
 	model: Model<Api>;
-	/**
-	 * Resolver for the model's bearer: re-resolves on 401 / usage-limit so the
-	 * whole commit pipeline (analysis, map/reduce, changelog) inherits the
-	 * central force-refresh + account-rotation policy.
-	 */
-	apiKey: ApiKey;
-	/**
-	 * Commit-time inference is stateless: session-level auto classification
-	 * isn't available, so an explicit `:auto` selector collapses to "no
-	 * override" and the model's own default level fills in.
-	 */
+	/** API key used by the compatibility completion helpers. */
+	apiKey: string;
+	/** Explicit thinking level from the model selector, if one was supplied. */
 	thinkingLevel?: ThinkingLevel;
 }
 
-type CommitModelRegistry = ModelLookupRegistry &
-	ApiKeyResolverRegistry & {
-		getApiKey: (model: Model<Api>) => Promise<string | undefined>;
-	};
+type CommitModelRegistry = Pick<ModelRegistry, "getAvailable" | "getApiKeyForProvider">;
+
+function resolveModelPattern(
+	pattern: string,
+	available: Model<Api>[],
+): { model: Model<Api>; thinkingLevel?: ThinkingLevel } | undefined {
+	const exact = findExactModelReferenceMatch(pattern, available);
+	if (exact) return { model: exact };
+	const parsed = parseModelPattern(pattern, available);
+	return parsed.model ? { model: parsed.model, thinkingLevel: parsed.thinkingLevel } : undefined;
+}
+
+function resolveDefaultModel(
+	settings: Settings,
+	available: Model<Api>[],
+): { model: Model<Api>; thinkingLevel?: ThinkingLevel } | undefined {
+	if (settings.defaultProvider && settings.defaultModel) {
+		const exact = findExactModelReferenceMatch(`${settings.defaultProvider}/${settings.defaultModel}`, available);
+		if (exact) return { model: exact, thinkingLevel: settings.defaultThinkingLevel };
+	}
+	if (settings.defaultModel) {
+		const parsed = resolveModelPattern(settings.defaultModel, available);
+		if (parsed) return { ...parsed, thinkingLevel: settings.defaultThinkingLevel ?? parsed.thinkingLevel };
+	}
+	const first = available[0];
+	return first ? { model: first, thinkingLevel: settings.defaultThinkingLevel } : undefined;
+}
 
 export async function resolvePrimaryModel(
 	override: string | undefined,
@@ -40,56 +48,29 @@ export async function resolvePrimaryModel(
 	modelRegistry: CommitModelRegistry,
 ): Promise<ResolvedCommitModel> {
 	const available = modelRegistry.getAvailable();
-	const matchPreferences = getModelMatchPreferences(settings);
-	const resolved = override
-		? resolveModelRoleValue(override, available, { settings, matchPreferences })
-		: resolveRoleSelection(["commit", "smol", ...MODEL_ROLE_IDS], settings, available);
-	const model = resolved?.model;
-	if (!model) {
+	const resolved = override ? resolveModelPattern(override, available) : resolveDefaultModel(settings, available);
+	if (!resolved) {
 		throw new Error("No model available for commit generation");
 	}
-	const apiKey = await modelRegistry.getApiKey(model);
+	const apiKey = await modelRegistry.getApiKeyForProvider(resolved.model.provider);
 	if (!apiKey) {
-		throw new Error(`No API key available for model ${model.provider}/${model.id}`);
+		throw new Error(`No API key available for model ${resolved.model.provider}/${resolved.model.id}`);
 	}
-	return {
-		model,
-		apiKey: modelRegistry.resolver(model),
-		thinkingLevel: concreteThinkingLevel(resolved?.thinkingLevel),
-	};
+	return { model: resolved.model, apiKey, thinkingLevel: resolved.thinkingLevel };
 }
 
 export async function resolveSmolModel(
-	settings: Settings,
+	_settings: Settings,
 	modelRegistry: CommitModelRegistry,
 	fallbackModel: Model<Api>,
-	fallbackApiKey: ApiKey,
+	fallbackApiKey: string,
 ): Promise<ResolvedCommitModel> {
 	const available = modelRegistry.getAvailable();
-	const resolvedSmol = resolveRoleSelection(["smol"], settings, available);
-	if (resolvedSmol?.model) {
-		const apiKey = await modelRegistry.getApiKey(resolvedSmol.model);
-		if (apiKey) {
-			return {
-				model: resolvedSmol.model,
-				apiKey: modelRegistry.resolver(resolvedSmol.model),
-				thinkingLevel: concreteThinkingLevel(resolvedSmol.thinkingLevel),
-			};
-		}
-	}
-
-	const matchPreferences = getModelMatchPreferences(settings);
-	for (const pattern of MODEL_PRIO.smol) {
-		const candidate = parseModelPattern(pattern, available, matchPreferences).model;
+	for (const pattern of SMOL_MODEL_PATTERNS) {
+		const candidate = resolveModelPattern(pattern, available);
 		if (!candidate) continue;
-		const apiKey = await modelRegistry.getApiKey(candidate);
-		if (apiKey) {
-			return {
-				model: candidate,
-				apiKey: modelRegistry.resolver(candidate),
-			};
-		}
+		const apiKey = await modelRegistry.getApiKeyForProvider(candidate.model.provider);
+		if (apiKey) return { model: candidate.model, apiKey, thinkingLevel: candidate.thinkingLevel };
 	}
-
 	return { model: fallbackModel, apiKey: fallbackApiKey };
 }

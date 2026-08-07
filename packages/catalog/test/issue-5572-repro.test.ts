@@ -48,7 +48,7 @@ describe("issue #5572 — custom Anthropic endpoints reject eager_input_streamin
 		streamAnthropic(model, CONTEXT, {
 			apiKey: "sk-ant-test",
 			signal: aborted(),
-			onPayload: payload => resolve(payload),
+			onPayload: (payload) => resolve(payload),
 		});
 
 		const payload = (await promise) as { tools?: Array<Record<string, unknown>> };
@@ -87,7 +87,7 @@ describe("issue #5572 — custom Anthropic endpoints reject eager_input_streamin
 		streamAnthropic(model, CONTEXT, {
 			apiKey: "sk-ant-test",
 			signal: aborted(),
-			onPayload: payload => resolve(payload),
+			onPayload: (payload) => resolve(payload),
 		});
 
 		const payload = (await promise) as { tools?: Array<Record<string, unknown>> };
@@ -115,7 +115,7 @@ describe("issue #5572 — custom Anthropic endpoints reject eager_input_streamin
 		streamAnthropic(model, CONTEXT, {
 			apiKey: "sk-ant-test",
 			signal: aborted(),
-			onPayload: payload => resolve(payload),
+			onPayload: (payload) => resolve(payload),
 		});
 
 		const payload = (await promise) as { tools?: Array<Record<string, unknown>> };
@@ -132,7 +132,7 @@ describe("issue #5572 — custom Anthropic endpoints reject eager_input_streamin
 		streamAnthropic(model, CONTEXT, {
 			apiKey: "sk-ant-test",
 			signal: aborted(),
-			onPayload: payload => resolve(payload),
+			onPayload: (payload) => resolve(payload),
 		});
 
 		const payload = (await promise) as { tools?: Array<Record<string, unknown>> };

@@ -1,6 +1,6 @@
-# @noorm/lumpi-session-backend-sqlite-node
+# @noorm/lumi-session-backend-sqlite-node
 
-Node sqlite session backend for `@noorm/lumpi-agent-core` sessions. Provides the
+Node sqlite session backend for `@noorm/lumi-agent-core` sessions. Provides the
 `node:sqlite` adapter (`SqliteDatabase` implementation), SQLite session repository,
 migrations, materialized views, and optional FTS search.
 

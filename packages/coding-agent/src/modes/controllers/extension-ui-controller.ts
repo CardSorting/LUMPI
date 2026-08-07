@@ -1,6 +1,6 @@
-import type { Component, OverlayHandle, TUI } from "@oh-my-pi/pi-tui";
-import { Container, Spacer, Text } from "@oh-my-pi/pi-tui";
-import type { CollabUiRequestDraft, CollabUiSelectItem } from "@oh-my-pi/pi-wire";
+import type { CollabUiRequestDraft, CollabUiSelectItem } from "@noorm/lumi-protocol";
+import type { Component, OverlayHandle, TUI } from "@noorm/lumi-tui";
+import { Container, Spacer, Text } from "@noorm/lumi-tui";
 import { KeybindingsManager } from "../../config/keybindings";
 import type {
 	CompactOptions,
@@ -28,7 +28,7 @@ import { HookSelectorComponent, type HookSelectorSlider } from "../../modes/comp
 import { getAvailableThemesWithPaths, getThemeByName, setTheme, type Theme, theme } from "../../modes/theme/theme";
 import type { InteractiveModeContext, InteractiveSelectorDialogOptions } from "../../modes/types";
 import { normalizeCustomMessagePayload, USER_INTERRUPT_LABEL } from "../../session/messages";
-import { setExtensionTerminalTitle, setSessionTerminalTitle } from "../../utils/title-generator";
+import { setExtensionTerminalTitle, setSessionTerminalTitle } from "../../utils/title-generator.ts";
 
 const MAX_WIDGET_LINES = 10;
 const ASK_OTHER_OPTION = "Other (type your own)";
@@ -52,7 +52,7 @@ interface CollabAskDialogWinner {
 type GuestUiResult = { kind: "answered"; value: string } | { kind: "cancelled" } | { kind: "unavailable" };
 
 function toWireSelectOptions(options: ExtensionUISelectItem[]): CollabUiSelectItem[] {
-	return options.map(option =>
+	return options.map((option) =>
 		typeof option === "string"
 			? option
 			: option.description
@@ -90,30 +90,30 @@ export class ExtensionUiController {
 			input: (title, placeholder, dialogOptions) => this.showHookInput(title, placeholder, dialogOptions),
 			askDialog: (questions, dialogOptions) => this.showAskDialog(questions, dialogOptions),
 			notify: (message, type) => this.showHookNotify(message, type),
-			onTerminalInput: handler => this.addExtensionTerminalInputListener(handler),
+			onTerminalInput: (handler) => this.addExtensionTerminalInputListener(handler),
 			setStatus: (key, text) => this.setHookStatus(key, text),
-			setWorkingMessage: message => this.ctx.setWorkingMessage(message),
+			setWorkingMessage: (message) => this.ctx.setWorkingMessage(message),
 			setWidget: (key, content, options) => this.setHookWidget(key, content, options),
-			setTitle: title => setExtensionTerminalTitle(title),
+			setTitle: (title) => setExtensionTerminalTitle(title),
 			custom: (factory, options) => this.showHookCustom(factory, options),
-			setEditorText: text => {
+			setEditorText: (text) => {
 				this.ctx.editor.setText(text);
 				this.ctx.ui.requestRender();
 			},
-			pasteToEditor: text => {
+			pasteToEditor: (text) => {
 				this.ctx.editor.handleInput(`\x1b[200~${text}\x1b[201~`);
 				this.ctx.ui.requestRender();
 			},
 			getEditorText: () => this.ctx.editor.getText(),
 			editor: (title, prefill, dialogOptions, editorOptions) =>
 				this.showCollabAwareEditor(title, prefill, dialogOptions, editorOptions),
-			addAutocompleteProvider: factory => this.ctx.addAutocompleteProvider(factory),
+			addAutocompleteProvider: (factory) => this.ctx.addAutocompleteProvider(factory),
 			get theme() {
 				return theme;
 			},
-			getAllThemes: async () => (await getAvailableThemesWithPaths()).map(t => ({ name: t.name, path: t.path })),
-			getTheme: name => getThemeByName(name),
-			setTheme: async themeArg => {
+			getAllThemes: async () => (await getAvailableThemesWithPaths()).map((t) => ({ name: t.name, path: t.path })),
+			getTheme: (name) => getThemeByName(name),
+			setTheme: async (themeArg) => {
 				if (typeof themeArg === "string") {
 					return await setTheme(themeArg, true);
 				}
@@ -122,9 +122,9 @@ export class ExtensionUiController {
 			},
 			setFooter: () => {},
 			setHeader: () => {},
-			setEditorComponent: factory => this.ctx.setEditorComponent(factory),
+			setEditorComponent: (factory) => this.ctx.setEditorComponent(factory),
 			getToolsExpanded: () => this.ctx.toolOutputExpanded,
-			setToolsExpanded: expanded => this.ctx.setToolsExpanded(expanded),
+			setToolsExpanded: (expanded) => this.ctx.setToolsExpanded(expanded),
 		};
 		this.ctx.setToolUIContext(uiContext, true);
 		this.#toolUIContext = uiContext;
@@ -167,20 +167,20 @@ export class ExtensionUiController {
 			},
 			getActiveTools: () => this.ctx.session.getEnabledToolNames(),
 			getAllTools: () => this.ctx.session.getAllToolInfos(),
-			setActiveTools: toolNames => this.ctx.session.setActiveToolsByName(toolNames),
-			setModel: async model => {
+			setActiveTools: (toolNames) => this.ctx.session.setActiveToolsByName(toolNames),
+			setModel: async (model) => {
 				const key = await this.ctx.session.modelRegistry.getApiKey(model);
 				if (!key) return false;
 				await this.ctx.session.setModel(model);
 				return true;
 			},
 			getThinkingLevel: () => this.ctx.session.thinkingLevel,
-			setThinkingLevel: level => this.ctx.session.setThinkingLevel(level),
+			setThinkingLevel: (level) => this.ctx.session.setThinkingLevel(level),
 			getServiceTiers: () => this.ctx.session.serviceTierByFamily,
 			setServiceTier: (family, tier) => this.ctx.session.setServiceTierFamily(family, tier),
 			getCommands: () => getSessionSlashCommands(this.ctx.session),
 			getSessionName: () => this.ctx.sessionManager.getSessionName(),
-			setSessionName: name => this.#updateSessionName(name),
+			setSessionName: (name) => this.#updateSessionName(name),
 		};
 		const contextActions: ExtensionContextActions = {
 			getModel: () => this.ctx.session.model,
@@ -194,7 +194,7 @@ export class ExtensionUiController {
 				this.ctx.shutdownRequested = true;
 			},
 			getContextUsage: () => this.ctx.session.getContextUsage(),
-			compact: instructionsOrOptions => this.#compactSession(instructionsOrOptions),
+			compact: (instructionsOrOptions) => this.#compactSession(instructionsOrOptions),
 			getSystemPrompt: () => this.ctx.session.systemPrompt,
 		};
 		const commandActions: ExtensionCommandContextActions = {
@@ -206,7 +206,7 @@ export class ExtensionUiController {
 				await this.ctx.reloadTodos();
 				this.ctx.showStatus("Reloaded session");
 			},
-			newSession: async options => {
+			newSession: async (options) => {
 				this.ctx.clearTransientSessionUi();
 
 				// Create new session
@@ -238,7 +238,7 @@ export class ExtensionUiController {
 
 				return { cancelled: false };
 			},
-			branch: async entryId => {
+			branch: async (entryId) => {
 				const result = await this.ctx.session.branch(entryId);
 				if (result.cancelled) {
 					return { cancelled: true };
@@ -268,8 +268,8 @@ export class ExtensionUiController {
 
 				return { cancelled: false };
 			},
-			compact: async instructionsOrOptions => this.#handleInteractiveCompact(instructionsOrOptions),
-			switchSession: async sessionPath => {
+			compact: async (instructionsOrOptions) => this.#handleInteractiveCompact(instructionsOrOptions),
+			switchSession: async (sessionPath) => {
 				this.clearHookWidgets();
 				const result = await this.ctx.session.switchSession(sessionPath);
 				if (!result) {
@@ -400,8 +400,8 @@ export class ExtensionUiController {
 			},
 			getActiveTools: () => this.ctx.session.getEnabledToolNames(),
 			getAllTools: () => this.ctx.session.getAllToolInfos(),
-			setActiveTools: toolNames => this.ctx.session.setActiveToolsByName(toolNames),
-			setModel: async model => {
+			setActiveTools: (toolNames) => this.ctx.session.setActiveToolsByName(toolNames),
+			setModel: async (model) => {
 				const key = await this.ctx.session.modelRegistry.getApiKey(model);
 				if (!key) return false;
 				await this.ctx.session.setModel(model);
@@ -413,7 +413,7 @@ export class ExtensionUiController {
 			setServiceTier: (family, tier) => this.ctx.session.setServiceTierFamily(family, tier),
 			getCommands: () => getSessionSlashCommands(this.ctx.session),
 			getSessionName: () => this.ctx.sessionManager.getSessionName(),
-			setSessionName: name => this.#updateSessionName(name),
+			setSessionName: (name) => this.#updateSessionName(name),
 		};
 		const contextActions: ExtensionContextActions = {
 			getModel: () => this.ctx.session.model,
@@ -427,7 +427,7 @@ export class ExtensionUiController {
 				this.ctx.shutdownRequested = true;
 			},
 			getContextUsage: () => this.ctx.session.getContextUsage(),
-			compact: instructionsOrOptions => this.#compactSession(instructionsOrOptions),
+			compact: (instructionsOrOptions) => this.#compactSession(instructionsOrOptions),
 			getSystemPrompt: () => this.ctx.session.systemPrompt,
 		};
 		const commandActions: ExtensionCommandContextActions = {
@@ -439,7 +439,7 @@ export class ExtensionUiController {
 				await this.ctx.reloadTodos();
 				this.ctx.showStatus("Reloaded session");
 			},
-			newSession: async options => {
+			newSession: async (options) => {
 				this.ctx.clearTransientSessionUi();
 
 				// Create new session
@@ -468,7 +468,7 @@ export class ExtensionUiController {
 
 				return { cancelled: false };
 			},
-			branch: async entryId => {
+			branch: async (entryId) => {
 				const result = await this.ctx.session.branch(entryId);
 				if (result.cancelled) {
 					return { cancelled: true };
@@ -498,8 +498,8 @@ export class ExtensionUiController {
 
 				return { cancelled: false };
 			},
-			compact: async instructionsOrOptions => this.#handleInteractiveCompact(instructionsOrOptions),
-			switchSession: async sessionPath => {
+			compact: async (instructionsOrOptions) => this.#handleInteractiveCompact(instructionsOrOptions),
+			switchSession: async (sessionPath) => {
 				this.clearHookWidgets();
 				const result = await this.ctx.session.switchSession(sessionPath);
 				if (!result) {
@@ -534,7 +534,7 @@ export class ExtensionUiController {
 						...runner!.createContext(),
 						ui: uiContext,
 						hasUI: true,
-						compact: instructionsOrOptions => this.#compactSession(instructionsOrOptions),
+						compact: (instructionsOrOptions) => this.#compactSession(instructionsOrOptions),
 					});
 				} catch (err) {
 					this.showToolError(registeredTool.definition.name, err instanceof Error ? err.message : String(err));
@@ -547,7 +547,7 @@ export class ExtensionUiController {
 	 * Show a tool error in the chat.
 	 */
 	showToolError(toolName: string, error: string): void {
-		const errorText = new Text(`Tool "${toolName}" error: ${error}`, 1, 0).setStyleFn(t => theme.fg("error", t));
+		const errorText = new Text(`Tool "${toolName}" error: ${error}`, 1, 0).setStyleFn((t) => theme.fg("error", t));
 		this.ctx.present(errorText);
 	}
 
@@ -575,7 +575,7 @@ export class ExtensionUiController {
 			markableCount: dialogOptions?.markableCount,
 			helpText: dialogOptions?.helpText,
 		};
-		return this.#raceCollabDialog(request, dialogOptions?.signal, signal =>
+		return this.#raceCollabDialog(request, dialogOptions?.signal, (signal) =>
 			this.showHookSelector(title, options, { ...dialogOptions, signal }, extra),
 		);
 	}
@@ -587,7 +587,7 @@ export class ExtensionUiController {
 		editorOptions?: { promptStyle?: boolean },
 	): Promise<string | undefined> {
 		const request: CollabUiRequestDraft = { kind: "editor", title, prefill };
-		return this.#raceCollabDialog(request, dialogOptions?.signal, signal =>
+		return this.#raceCollabDialog(request, dialogOptions?.signal, (signal) =>
 			this.showHookEditor(title, prefill, { ...dialogOptions, signal }, editorOptions),
 		);
 	}
@@ -607,7 +607,7 @@ export class ExtensionUiController {
 			(value): CollabAskDialogWinner => ({ source: "local", value }),
 		);
 		const remoteWinner: Promise<CollabAskDialogWinner> = this.#runGuestAskDialog(questions, remoteSignal).then(
-			result => (result === "unavailable" ? localWinner : { source: "remote", value: result }),
+			(result) => (result === "unavailable" ? localWinner : { source: "remote", value: result }),
 		);
 		const winner = await Promise.race([localWinner, remoteWinner]);
 		if (winner.source === "remote") localAbort.abort();
@@ -619,7 +619,7 @@ export class ExtensionUiController {
 		questions: ExtensionAskDialogQuestion[],
 		dialogOptions?: ExtensionUIDialogOptions,
 	): Promise<ExtensionAskDialogResult | undefined> {
-		return this.#presentDialog<ExtensionAskDialogResult>(dialogOptions?.signal, settle => {
+		return this.#presentDialog<ExtensionAskDialogResult>(dialogOptions?.signal, (settle) => {
 			let askDialog: AskDialogComponent | undefined;
 			let promptEditor: HookEditorComponent | undefined;
 			let promptResolve: ((value: string | undefined) => void) | undefined;
@@ -668,7 +668,7 @@ export class ExtensionUiController {
 					this.ctx.ui,
 					title,
 					prefill,
-					value => finishPrompt(value),
+					(value) => finishPrompt(value),
 					() => finishPrompt(undefined),
 					{ promptStyle: true },
 				);
@@ -682,7 +682,7 @@ export class ExtensionUiController {
 			askDialog = new AskDialogComponent(
 				questions,
 				{
-					onSubmit: result => settle(result),
+					onSubmit: (result) => settle(result),
 					onCancel: () => settle(undefined),
 					onPrompt: promptForText,
 				},
@@ -737,7 +737,7 @@ export class ExtensionUiController {
 		const localWinner = local(signal ? AbortSignal.any([signal, localAbort.signal]) : localAbort.signal).then(
 			(value): CollabDialogWinner => ({ source: "local", value }),
 		);
-		const remoteWinner: Promise<CollabDialogWinner> = remote.then(result =>
+		const remoteWinner: Promise<CollabDialogWinner> = remote.then((result) =>
 			result.kind === "answered" ? { source: "remote", value: result.value } : localWinner,
 		);
 		const winner = await Promise.race([localWinner, remoteWinner]);
@@ -766,14 +766,14 @@ export class ExtensionUiController {
 	): Promise<ExtensionAskDialogResultItem | "chat" | "unavailable" | undefined> {
 		const selected = new Set<string>();
 		let customInput: string | undefined;
-		const baseOptions: CollabUiSelectItem[] = question.options.map(option =>
+		const baseOptions: CollabUiSelectItem[] = question.options.map((option) =>
 			option.description?.trim() ? { label: option.label, description: option.description.trim() } : option.label,
 		);
 		if (question.multi) {
 			while (true) {
 				const checkedIndices = question.options
 					.map((option, index) => (selected.has(option.label) ? index : -1))
-					.filter(index => index >= 0);
+					.filter((index) => index >= 0);
 				// Mirror the local dialog's Next gating: omit the Next option until
 				// at least one option is checked or a custom answer exists, so a
 				// guest cannot submit an empty multi-select result
@@ -857,9 +857,9 @@ export class ExtensionUiController {
 		return {
 			id: question.id,
 			question: question.question,
-			options: question.options.map(option => option.label),
+			options: question.options.map((option) => option.label),
 			multi: question.multi ?? false,
-			selectedOptions: question.options.map(option => option.label).filter(label => selected.has(label)),
+			selectedOptions: question.options.map((option) => option.label).filter((label) => selected.has(label)),
 			customInput,
 		};
 	}
@@ -883,12 +883,12 @@ export class ExtensionUiController {
 		dialogOptions?: InteractiveSelectorDialogOptions,
 		extra?: { slider?: HookSelectorSlider },
 	): Promise<string | undefined> {
-		return this.#presentDialog(dialogOptions?.signal, settle => {
+		return this.#presentDialog(dialogOptions?.signal, (settle) => {
 			const maxVisible = Math.max(4, Math.min(15, this.ctx.ui.terminal.rows - 12));
 			this.ctx.hookSelector = new HookSelectorComponent(
 				title,
 				options,
-				option => settle(option),
+				(option) => settle(option),
 				() => settle(undefined),
 				{
 					onLeft: dialogOptions?.onLeft
@@ -955,11 +955,11 @@ export class ExtensionUiController {
 		placeholder?: string,
 		dialogOptions?: ExtensionUIDialogOptions,
 	): Promise<string | undefined> {
-		return this.#presentDialog(dialogOptions?.signal, settle => {
+		return this.#presentDialog(dialogOptions?.signal, (settle) => {
 			this.ctx.hookInput = new HookInputComponent(
 				title,
 				placeholder,
-				value => settle(value),
+				(value) => settle(value),
 				() => settle(undefined),
 				{
 					timeout: dialogOptions?.timeout,
@@ -996,12 +996,12 @@ export class ExtensionUiController {
 		dialogOptions?: ExtensionUIDialogOptions,
 		editorOptions?: { promptStyle?: boolean },
 	): Promise<string | undefined> {
-		return this.#presentDialog(dialogOptions?.signal, settle => {
+		return this.#presentDialog(dialogOptions?.signal, (settle) => {
 			this.ctx.hookEditor = new HookEditorComponent(
 				this.ctx.ui,
 				title,
 				prefill,
-				value => settle(value),
+				(value) => settle(value),
 				() => settle(undefined),
 				editorOptions,
 			);
@@ -1073,7 +1073,7 @@ export class ExtensionUiController {
 			resolve(result);
 		};
 
-		Promise.try(() => factory(this.ctx.ui, theme, keybindings, close)).then(c => {
+		Promise.try(() => factory(this.ctx.ui, theme, keybindings, close)).then((c) => {
 			if (closed) {
 				c.dispose?.();
 				return;
@@ -1128,7 +1128,7 @@ export class ExtensionUiController {
 	}
 
 	showExtensionError(extensionPath: string, error: string): void {
-		const errorText = new Text(`Extension "${extensionPath}" error: ${error}`, 1, 0).setStyleFn(t =>
+		const errorText = new Text(`Extension "${extensionPath}" error: ${error}`, 1, 0).setStyleFn((t) =>
 			theme.fg("error", t),
 		);
 		this.ctx.present(errorText);

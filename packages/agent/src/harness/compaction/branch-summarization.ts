@@ -6,7 +6,7 @@ import {
 	type RetryCallbacks,
 	type RetryPolicy,
 	type Usage,
-} from "@noorm/lumpi-ai";
+} from "@noorm/lumi-ai";
 
 import type { AgentMessage } from "../../types.ts";
 import { convertToLlm, createBranchSummaryMessage, createCompactionSummaryMessage } from "../messages.ts";

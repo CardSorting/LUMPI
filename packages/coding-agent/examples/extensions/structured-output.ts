@@ -5,8 +5,8 @@
  * without paying for an extra follow-up LLM turn.
  */
 
-import { defineTool, type ExtensionAPI } from "@noorm/lumpi-coding-agent";
-import { Text } from "@noorm/lumpi-tui";
+import { defineTool, type ExtensionAPI } from "@noorm/lumi-coding-agent";
+import { Text } from "@noorm/lumi-tui";
 import { Type } from "typebox";
 
 interface StructuredOutputDetails {

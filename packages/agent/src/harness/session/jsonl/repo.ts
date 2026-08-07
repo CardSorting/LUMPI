@@ -1,4 +1,4 @@
-import { uuidv7 } from "@noorm/lumpi-ai";
+import { uuidv7 } from "@noorm/lumi-ai";
 import { assertJsonSerializable, Session } from "../session.ts";
 import { type Entry, type ForkOptions, type LanePointer, SessionError, type SessionRepo } from "../types.ts";
 import { encodeHeader, metadataFromHeader, parseHeader } from "./codec.ts";

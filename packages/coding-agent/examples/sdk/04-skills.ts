@@ -12,7 +12,7 @@ import {
 	getAgentDir,
 	SessionManager,
 	type Skill,
-} from "@noorm/lumpi-coding-agent";
+} from "@noorm/lumi-coding-agent";
 
 // Or define custom skills inline
 const customSkill: Skill = {

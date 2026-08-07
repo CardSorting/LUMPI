@@ -95,9 +95,9 @@ describe("Codex model discovery", () => {
 			fetchFn,
 		});
 
-		const terra = result?.models.find(model => model.id === "gpt-5.6-terra");
+		const terra = result?.models.find((model) => model.id === "gpt-5.6-terra");
 		expect(terra).toMatchObject({ preferWebsockets: true, useResponsesLite: true });
-		const legacy = result?.models.find(model => model.id === "gpt-5.5");
+		const legacy = result?.models.find((model) => model.id === "gpt-5.5");
 		expect(legacy?.useResponsesLite).toBeUndefined();
 	});
 
@@ -135,9 +135,9 @@ describe("Codex model discovery", () => {
 			fetchFn,
 		});
 
-		const sol = result?.models.find(model => model.id === "gpt-5.6-sol");
+		const sol = result?.models.find((model) => model.id === "gpt-5.6-sol");
 		expect(sol?.contextWindow).toBe(372_000);
-		const legacy = result?.models.find(model => model.id === "gpt-5.5");
+		const legacy = result?.models.find((model) => model.id === "gpt-5.5");
 		expect(legacy?.contextWindow).toBe(272_000);
 	});
 
@@ -177,9 +177,9 @@ describe("Codex model discovery", () => {
 			fetchFn,
 		});
 
-		const sol = result?.models.find(model => model.id === "gpt-5.6-sol");
+		const sol = result?.models.find((model) => model.id === "gpt-5.6-sol");
 		expect(sol?.contextWindow).toBe(272_000);
-		const legacy = result?.models.find(model => model.id === "gpt-5.5");
+		const legacy = result?.models.find((model) => model.id === "gpt-5.5");
 		expect(legacy?.contextWindow).toBe(272_000);
 	});
 
@@ -247,7 +247,7 @@ describe("Codex model discovery", () => {
 				"online",
 			);
 
-			expect(result.models.map(model => model.id)).toEqual(["gpt-5.3-codex-spark"]);
+			expect(result.models.map((model) => model.id)).toEqual(["gpt-5.3-codex-spark"]);
 			expect(result.models[0]).toMatchObject({
 				contextWindow: 128_000,
 				maxTokens: 128_000,
@@ -272,7 +272,7 @@ describe("Codex model discovery", () => {
 				const slugs = catalogs[accountId] ?? [];
 				return new Response(
 					JSON.stringify({
-						models: slugs.map(slug => ({
+						models: slugs.map((slug) => ({
 							slug,
 							display_name: slug,
 							default_reasoning_level: "medium",
@@ -298,7 +298,11 @@ describe("Codex model discovery", () => {
 				"online",
 			);
 
-			expect(result.models.map(model => model.id).sort()).toEqual(["gpt-5.6-luna", "gpt-5.6-sol", "gpt-5.6-terra"]);
+			expect(result.models.map((model) => model.id).sort()).toEqual([
+				"gpt-5.6-luna",
+				"gpt-5.6-sol",
+				"gpt-5.6-terra",
+			]);
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });
 		}
@@ -350,7 +354,7 @@ describe("Codex model discovery", () => {
 				"online",
 			);
 
-			expect(result.models.map(model => model.id)).toEqual(["gpt-5.6-terra"]);
+			expect(result.models.map((model) => model.id)).toEqual(["gpt-5.6-terra"]);
 		} finally {
 			await fs.rm(tempDir, { recursive: true, force: true });
 		}
@@ -408,7 +412,7 @@ describe("Codex model discovery", () => {
 			});
 
 			expect(fetched).toBe(true);
-			expect(result.models.find(model => model.id === "gpt-5.5")?.remoteCompaction).toEqual(
+			expect(result.models.find((model) => model.id === "gpt-5.5")?.remoteCompaction).toEqual(
 				refreshedModel.remoteCompaction,
 			);
 		} finally {

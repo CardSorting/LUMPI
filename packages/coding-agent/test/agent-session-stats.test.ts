@@ -1,11 +1,11 @@
-import { Agent } from "@noorm/lumpi-agent-core";
+import { Agent } from "@noorm/lumi-agent-core";
 import {
 	type AssistantMessage,
 	getModel,
 	streamSimple,
 	type ToolResultMessage,
 	type Usage,
-} from "@noorm/lumpi-ai/compat";
+} from "@noorm/lumi-ai/compat";
 import { describe, expect, it } from "vitest";
 import { AgentSession } from "../src/core/agent-session.ts";
 import { AuthStorage } from "../src/core/auth-storage.ts";

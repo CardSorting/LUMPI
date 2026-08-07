@@ -61,8 +61,8 @@ const ExtensionAuthoringJudge = createJudge<PiCodingAgentInput, ExtensionAuthori
 				output.extensionSource.matchAll(/\b(?:from|import)\s+["']([^"']+)["']/g),
 				(match) => match[1],
 			);
-			if (!imports.includes("@noorm/lumpi-coding-agent")) {
-				failures.push("extension does not import the canonical @noorm/lumpi-coding-agent package");
+			if (!imports.includes("@noorm/lumi-coding-agent")) {
+				failures.push("extension does not import the canonical @noorm/lumi-coding-agent package");
 			}
 			if (imports.some((specifier) => specifier.startsWith("@mariozechner/"))) {
 				failures.push("extension imports a legacy @mariozechner package");

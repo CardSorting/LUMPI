@@ -111,21 +111,21 @@ describe("Fireworks control-plane serverless discovery", () => {
 		expect(first.pathname).toBe("/v1/accounts/fireworks/models");
 		expect(first.searchParams.get("filter")).toBe("supports_serverless=true");
 		// No request should hit the inference `/v1/models` listing.
-		expect(controlPlaneUrls.some(u => u.includes("/inference/v1/models"))).toBe(false);
+		expect(controlPlaneUrls.some((u) => u.includes("/inference/v1/models"))).toBe(false);
 	});
 
 	it("paginates the full catalog via nextPageToken", async () => {
 		const { models, controlPlaneUrls } = await discover();
 		expect(controlPlaneUrls.length).toBe(2);
 		// Models from both pages are collected.
-		const ids = models.map(m => m.id);
+		const ids = models.map((m) => m.id);
 		expect(ids).toContain("kimi-k2.7-code");
 		expect(ids).toContain("deepseek-v4-flash");
 	});
 
 	it("surfaces an unbundled on-demand model (kimi-k2.7-code) with live metadata", async () => {
 		const { models } = await discover();
-		const kimi = models.find(m => m.id === "kimi-k2.7-code");
+		const kimi = models.find((m) => m.id === "kimi-k2.7-code");
 		expect(kimi).toBeDefined();
 		if (!kimi) return;
 		// Wire id `kimi-k2p7-code` normalizes to the public `kimi-k2.7-code`.
@@ -144,8 +144,8 @@ describe("Fireworks control-plane serverless discovery", () => {
 
 	it("keeps non-tool serverless records flagged and filters unavailable records", async () => {
 		const { models } = await discover();
-		const ids = models.map(m => m.id);
-		const flux = models.find(m => m.id === "flux-1-schnell-fp8");
+		const ids = models.map((m) => m.id);
+		const flux = models.find((m) => m.id === "flux-1-schnell-fp8");
 		expect(flux?.supportsTools).toBe(false);
 		expect(ids).not.toContain("kimi-k2-instruct-0905"); // serverless: false
 		expect(ids).not.toContain("some-pending-model"); // state: DEPLOYING
@@ -153,7 +153,7 @@ describe("Fireworks control-plane serverless discovery", () => {
 
 	it("builds the discovered model with Fireworks effort-mode thinking", async () => {
 		const { models } = await discover();
-		const kimi = models.find(m => m.id === "kimi-k2.7-code");
+		const kimi = models.find((m) => m.id === "kimi-k2.7-code");
 		expect(kimi).toBeDefined();
 		if (!kimi) return;
 		const built = buildModel(kimi);

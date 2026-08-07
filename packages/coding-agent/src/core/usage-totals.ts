@@ -1,4 +1,4 @@
-import type { Usage } from "@noorm/lumpi-ai/compat";
+import type { Usage } from "@noorm/lumi-ai/compat";
 import type { SessionEntry } from "./session-manager.ts";
 
 export interface UsageTotals {

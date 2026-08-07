@@ -1,6 +1,10 @@
-import { type } from "@oh-my-pi/omptype";
-import type { CommitAgentState, SplitCommitGroup, SplitCommitPlan } from "../../../commit/agentic/state";
-import { computeDependencyOrder } from "../../../commit/agentic/topo-sort";
+import { Type } from "typebox";
+import { defineTool, type ToolDefinition } from "../../../core/extensions/types.ts";
+import * as git from "../../../utils/git.ts";
+import { validateScope } from "../../analysis/validation.ts";
+import { normalizeDetails } from "../../utils.ts";
+import type { CommitAgentState, SplitCommitGroup, SplitCommitPlan } from "../state.ts";
+import { computeDependencyOrder } from "../topo-sort.ts";
 import {
 	capDetails,
 	MAX_DETAIL_ITEMS,
@@ -8,35 +12,33 @@ import {
 	SUMMARY_MAX_CHARS,
 	validateSummaryRules,
 	validateTypeConsistency,
-} from "../../../commit/agentic/validation";
-import { validateScope } from "../../../commit/analysis/validation";
-import { normalizeDetails } from "../../../commit/utils";
-import type { CustomTool } from "../../../extensibility/custom-tools/types";
-import * as git from "../../../utils/git";
-import { commitTypeSchema, detailSchema } from "./schemas.js";
+} from "../validation.ts";
+import { commitTypeSchema, detailSchema } from "./schemas.ts";
 
-const hunkSelectorSchema = type({ type: "'all'" })
-	.or({ type: "'indices'", indices: "number[]" })
-	.or({ type: "'lines'", start: "number", end: "number" });
+const hunkSelectorSchema = Type.Union([
+	Type.Object({ type: Type.Literal("all") }),
+	Type.Object({ type: Type.Literal("indices"), indices: Type.Array(Type.Number()) }),
+	Type.Object({ type: Type.Literal("lines"), start: Type.Number(), end: Type.Number() }),
+]);
 
-const fileChangeSchema = type({
-	path: "string",
+const fileChangeSchema = Type.Object({
+	path: Type.String(),
 	hunks: hunkSelectorSchema,
 });
 
-const commitItemSchema = type({
-	changes: fileChangeSchema.array(),
+const commitItemSchema = Type.Object({
+	changes: Type.Array(fileChangeSchema),
 	type: commitTypeSchema,
-	scope: type("string").or("null"),
-	summary: "string",
-	"details?": detailSchema.array(),
-	"issue_refs?": "string[]",
-	"rationale?": "string",
-	"dependencies?": "number[]",
+	scope: Type.Union([Type.String(), Type.Null()]),
+	summary: Type.String(),
+	details: Type.Optional(Type.Array(detailSchema)),
+	issue_refs: Type.Optional(Type.Array(Type.String())),
+	rationale: Type.Optional(Type.String()),
+	dependencies: Type.Optional(Type.Array(Type.Number())),
 });
 
-const splitCommitSchema = type({
-	commits: commitItemSchema.array(),
+const splitCommitSchema = Type.Object({
+	commits: Type.Array(commitItemSchema),
 });
 
 interface SplitCommitResponse {
@@ -50,8 +52,8 @@ export function createSplitCommitTool(
 	cwd: string,
 	state: CommitAgentState,
 	changelogTargets: string[],
-): CustomTool<typeof splitCommitSchema> {
-	return {
+): ToolDefinition<typeof splitCommitSchema> {
+	return defineTool({
 		name: "split_commit",
 		label: "Split Commit",
 		description: "Propose multiple atomic commits for unrelated changes.",
@@ -71,14 +73,14 @@ export function createSplitCommitTool(
 				const summary = normalizeSummary(commit.summary, commit.type, scope);
 				const detailInput = normalizeDetails(commit.details ?? []);
 				const detailResult = capDetails(detailInput);
-				warnings.push(...detailResult.warnings.map(warning => `Commit ${index + 1}: ${warning}`));
+				warnings.push(...detailResult.warnings.map((warning) => `Commit ${index + 1}: ${warning}`));
 				const issueRefs = commit.issue_refs ?? [];
-				const dependencies = (commit.dependencies ?? []).map(dep => Math.floor(dep));
-				const changes = commit.changes.map(change => ({
+				const dependencies = (commit.dependencies ?? []).map((dep) => Math.floor(dep));
+				const changes = commit.changes.map((change) => ({
 					path: change.path,
 					hunks: change.hunks,
 				}));
-				const files = changes.map(change => change.path);
+				const files = changes.map((change) => change.path);
 
 				const summaryValidation = validateSummaryRules(summary);
 				const scopeValidation = validateScope(scope);
@@ -89,16 +91,16 @@ export function createSplitCommitTool(
 				});
 
 				if (summaryValidation.errors.length > 0) {
-					errors.push(...summaryValidation.errors.map(error => `Commit ${index + 1}: ${error}`));
+					errors.push(...summaryValidation.errors.map((error) => `Commit ${index + 1}: ${error}`));
 				}
 				if (!scopeValidation.valid) {
-					errors.push(...scopeValidation.errors.map(error => `Commit ${index + 1}: ${error}`));
+					errors.push(...scopeValidation.errors.map((error) => `Commit ${index + 1}: ${error}`));
 				}
 				if (typeValidation.errors.length > 0) {
-					errors.push(...typeValidation.errors.map(error => `Commit ${index + 1}: ${error}`));
+					errors.push(...typeValidation.errors.map((error) => `Commit ${index + 1}: ${error}`));
 				}
-				warnings.push(...summaryValidation.warnings.map(warning => `Commit ${index + 1}: ${warning}`));
-				warnings.push(...typeValidation.warnings.map(warning => `Commit ${index + 1}: ${warning}`));
+				warnings.push(...summaryValidation.warnings.map((warning) => `Commit ${index + 1}: ${warning}`));
+				warnings.push(...typeValidation.warnings.map((warning) => `Commit ${index + 1}: ${warning}`));
 				const hunkValidation = validateHunkSelectors(index, changes, files, validateHunksForDiff);
 				warnings.push(...hunkValidation.warnings);
 				errors.push(...hunkValidation.errors);
@@ -176,7 +178,7 @@ export function createSplitCommitTool(
 				details: response,
 			};
 		},
-	};
+	});
 }
 
 function validateHunkSelectors(
@@ -195,7 +197,7 @@ function validateHunkSelectors(
 	for (const change of changes) {
 		if (change.hunks.type === "indices") {
 			const invalid = change.hunks.indices.filter(
-				value => !Number.isFinite(value) || Math.floor(value) !== value || value < 1,
+				(value) => !Number.isFinite(value) || Math.floor(value) !== value || value < 1,
 			);
 			if (invalid.length > 0) {
 				errors.push(`${prefix}: invalid hunk indices for ${change.path}`);

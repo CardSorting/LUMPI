@@ -18,7 +18,7 @@ const rawModelIds = Object.keys(MODELS[provider]);
 const firstModels = getBundledModels(provider);
 
 expect(buildSpy).toHaveBeenCalledTimes(rawModelIds.length);
-expect(firstModels.map(model => model.id)).toEqual(rawModelIds);
+expect(firstModels.map((model) => model.id)).toEqual(rawModelIds);
 
 const secondModels = getBundledModels(provider);
 expect(secondModels).not.toBe(firstModels);

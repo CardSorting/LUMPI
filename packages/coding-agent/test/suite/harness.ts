@@ -6,10 +6,10 @@ import { createInMemoryModelRegistry, createModelRegistry, getModelRuntime } fro
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { AgentMessage, AgentTool } from "@noorm/lumpi-agent-core";
-import { Agent } from "@noorm/lumpi-agent-core";
-import type { FauxModelDefinition, FauxProviderRegistration, FauxResponseStep, Model } from "@noorm/lumpi-ai/compat";
-import { registerFauxProvider, streamSimple } from "@noorm/lumpi-ai/compat";
+import type { AgentMessage, AgentTool } from "@noorm/lumi-agent-core";
+import { Agent } from "@noorm/lumi-agent-core";
+import type { FauxModelDefinition, FauxProviderRegistration, FauxResponseStep, Model } from "@noorm/lumi-ai/compat";
+import { registerFauxProvider, streamSimple } from "@noorm/lumi-ai/compat";
 import { AgentSession, type AgentSessionEvent } from "../../src/core/agent-session.ts";
 import { AuthStorage } from "../../src/core/auth-storage.ts";
 import type { ExtensionRunner } from "../../src/core/extensions/index.ts";

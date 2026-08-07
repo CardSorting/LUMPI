@@ -1,6 +1,6 @@
 import { join } from "node:path";
-import type { ThinkingLevel } from "@noorm/lumpi-agent-core";
-import type { Model } from "@noorm/lumpi-ai";
+import type { ThinkingLevel } from "@noorm/lumi-agent-core";
+import type { Model } from "@noorm/lumi-ai";
 import { getAgentDir } from "../config.ts";
 import { resolvePath } from "../utils/paths.ts";
 import type { SessionStartEvent, ToolDefinition } from "./extensions/index.ts";

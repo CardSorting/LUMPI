@@ -1,5 +1,5 @@
-import type { StreamFn } from "@noorm/lumpi-agent-core";
-import { type AssistantMessage, createAssistantMessageEventStream, fauxAssistantMessage } from "@noorm/lumpi-ai";
+import type { StreamFn } from "@noorm/lumi-agent-core";
+import { type AssistantMessage, createAssistantMessageEventStream, fauxAssistantMessage } from "@noorm/lumi-ai";
 import { afterEach, describe, expect, it } from "vitest";
 import { createHarness, type Harness } from "../harness.ts";
 

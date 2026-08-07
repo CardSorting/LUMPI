@@ -9,7 +9,7 @@ import {
 	type TodoPhase,
 	USER_TODO_EDIT_CUSTOM_TYPE,
 } from "../../tools/todo";
-import { copyToClipboard } from "../../utils/clipboard";
+import { copyToClipboard } from "../../utils/clipboard.ts";
 import { getEditorCommand, openInEditor } from "../../utils/external-editor";
 import type { InteractiveModeContext } from "../types";
 
@@ -66,7 +66,7 @@ function titleCase(s: string): string {
 	return s
 		.split(/\s+/)
 		.filter(Boolean)
-		.map(word => word[0].toUpperCase() + word.slice(1))
+		.map((word) => word[0].toUpperCase() + word.slice(1))
 		.join(" ");
 }
 
@@ -78,12 +78,12 @@ function findPhaseFuzzy(phases: TodoPhase[], query: string): TodoPhase | undefin
 	const q = query.trim().toLowerCase();
 	if (!q) return undefined;
 	// Exact name (case-insensitive)
-	const byName = phases.find(p => p.name.toLowerCase() === q);
+	const byName = phases.find((p) => p.name.toLowerCase() === q);
 	if (byName) return byName;
 	// Substring (prefer prefix match)
-	const prefixMatches = phases.filter(p => p.name.toLowerCase().startsWith(q));
+	const prefixMatches = phases.filter((p) => p.name.toLowerCase().startsWith(q));
 	if (prefixMatches.length === 1) return prefixMatches[0];
-	const subMatches = phases.filter(p => p.name.toLowerCase().includes(q));
+	const subMatches = phases.filter((p) => p.name.toLowerCase().includes(q));
 	if (subMatches.length === 1) return subMatches[0];
 	return undefined;
 }
@@ -107,7 +107,7 @@ function findTaskFuzzy(phases: TodoPhase[], query: string): { task: TodoItem; ph
 	}
 	if (matches.length === 1) return matches[0];
 	// Prefer single in_progress/pending hit when ambiguous
-	const active = matches.filter(m => m.task.status === "in_progress" || m.task.status === "pending");
+	const active = matches.filter((m) => m.task.status === "in_progress" || m.task.status === "pending");
 	if (active.length === 1) return active[0];
 	return undefined;
 }
@@ -273,7 +273,7 @@ export class TodoCommandController {
 			content = tokens.slice(1).join(" ");
 		}
 
-		const next = current.map(phase => ({ ...phase, tasks: phase.tasks.slice() }));
+		const next = current.map((phase) => ({ ...phase, tasks: phase.tasks.slice() }));
 		let targetPhase: TodoPhase | undefined;
 
 		if (phaseName) {

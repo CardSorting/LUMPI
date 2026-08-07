@@ -1,4 +1,4 @@
-# @noorm/lumpi-telemetry
+# @noorm/lumi-telemetry
 
 Vendor-neutral telemetry contracts and typed schema utilities for pi packages.
 

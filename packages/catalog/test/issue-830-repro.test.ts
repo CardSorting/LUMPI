@@ -7,7 +7,7 @@ import type { OpenAICompat } from "@oh-my-pi/pi-catalog/types";
 
 describe("deepseek built-in provider (issue #830)", () => {
 	test("registers built-in runtime descriptor with DEEPSEEK_API_KEY env discovery", () => {
-		const descriptor = PROVIDER_DESCRIPTORS.find(item => item.providerId === "deepseek");
+		const descriptor = PROVIDER_DESCRIPTORS.find((item) => item.providerId === "deepseek");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.defaultModel).toBe("deepseek-v4-pro");
 		expect(descriptor?.catalogDiscovery?.envVars).toContain("DEEPSEEK_API_KEY");
@@ -15,7 +15,7 @@ describe("deepseek built-in provider (issue #830)", () => {
 	});
 
 	test("registers DeepSeek as an API-key login provider", () => {
-		const provider = getOAuthProviders().find(item => item.id === "deepseek");
+		const provider = getOAuthProviders().find((item) => item.id === "deepseek");
 		expect(provider?.name).toBe("DeepSeek");
 		expect(provider?.available).toBe(true);
 	});
@@ -35,7 +35,7 @@ describe("deepseek built-in provider (issue #830)", () => {
 	});
 
 	test("stencil.so mapping descriptor uses api.deepseek.com and forces reasoning_content + no tool_choice", () => {
-		const descriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find(d => d.providerId === "deepseek");
+		const descriptor = MODELS_DEV_PROVIDER_DESCRIPTORS.find((d) => d.providerId === "deepseek");
 		expect(descriptor).toBeDefined();
 		expect(descriptor?.modelsDevKey).toBe("deepseek");
 		expect(descriptor?.api).toBe("openai-completions");

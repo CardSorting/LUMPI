@@ -10,9 +10,9 @@
  * correct for that point in history.
  */
 
-import { StringEnum } from "@noorm/lumpi-ai";
-import type { ExtensionAPI, ExtensionContext, Theme } from "@noorm/lumpi-coding-agent";
-import { matchesKey, Text, truncateToWidth } from "@noorm/lumpi-tui";
+import { StringEnum } from "@noorm/lumi-ai";
+import type { ExtensionAPI, ExtensionContext, Theme } from "@noorm/lumi-coding-agent";
+import { matchesKey, Text, truncateToWidth } from "@noorm/lumi-tui";
 import { Type } from "typebox";
 
 interface Todo {

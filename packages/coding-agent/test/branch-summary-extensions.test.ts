@@ -1,4 +1,4 @@
-import type { Usage } from "@noorm/lumpi-ai/compat";
+import type { Usage } from "@noorm/lumi-ai/compat";
 import { afterEach, describe, expect, it } from "vitest";
 import { createHarness, type Harness } from "./suite/harness.ts";
 import { assistantMsg, userMsg } from "./utilities.ts";

@@ -1,4 +1,4 @@
-import { InMemoryModelsStore } from "@noorm/lumpi-ai";
+import { InMemoryModelsStore } from "@noorm/lumi-ai";
 import { describe, expect, test, vi } from "vitest";
 import { parseArgs } from "../src/cli/args.ts";
 import {

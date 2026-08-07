@@ -556,7 +556,7 @@ export type KnownProvider = (typeof CATALOG_PROVIDERS)[number]["id"];
  */
 const CATALOG_ENTRY_LIST: readonly ProviderCatalogEntry[] = CATALOG_PROVIDERS;
 
-export const PROVIDER_DESCRIPTORS: readonly ProviderDescriptor[] = CATALOG_ENTRY_LIST.flatMap(provider => {
+export const PROVIDER_DESCRIPTORS: readonly ProviderDescriptor[] = CATALOG_ENTRY_LIST.flatMap((provider) => {
 	if (!provider.createModelManagerOptions || provider.specialModelManager) {
 		return [];
 	}
@@ -576,9 +576,9 @@ export const PROVIDER_DESCRIPTORS: readonly ProviderDescriptor[] = CATALOG_ENTRY
 
 /** Default model IDs for all known providers, derived from the catalog table. */
 export const DEFAULT_MODEL_PER_PROVIDER: Record<KnownProvider, string> = Object.fromEntries(
-	CATALOG_PROVIDERS.map(provider => [provider.id, provider.defaultModel] as [string, string]),
+	CATALOG_PROVIDERS.map((provider) => [provider.id, provider.defaultModel] as [string, string]),
 ) as Record<KnownProvider, string>;
 
 export function getCatalogProviderEntry(id: string): ProviderCatalogEntry | undefined {
-	return CATALOG_PROVIDERS.find(provider => provider.id === id);
+	return CATALOG_PROVIDERS.find((provider) => provider.id === id);
 }

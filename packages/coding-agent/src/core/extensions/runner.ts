@@ -2,9 +2,9 @@
  * Extension runner - executes extensions and manages their lifecycle.
  */
 
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import type { ImageContent, Model, Provider, ProviderHeaders } from "@noorm/lumpi-ai";
-import type { KeyId } from "@noorm/lumpi-tui";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { ImageContent, Model, Provider, ProviderHeaders } from "@noorm/lumi-ai";
+import type { KeyId } from "@noorm/lumi-tui";
 import { type Theme, theme } from "../../modes/interactive/theme/theme.ts";
 import type { ResourceDiagnostic } from "../diagnostics.ts";
 import type { KeybindingsConfig } from "../keybindings.ts";

@@ -148,7 +148,7 @@ export function ollamaCloudModelManagerOptions(
 			const payload = (await response.json()) as { models?: OllamaTagEntry[] };
 			const entries = payload.models ?? [];
 			const models = await Promise.all(
-				entries.map(async entry => {
+				entries.map(async (entry) => {
 					const id = entry.model ?? entry.name;
 					if (!id) {
 						return undefined;

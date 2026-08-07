@@ -3,6 +3,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { $which, hasFsCode, isEisdir, isEnoent, isEnotdir, Snowflake } from "@oh-my-pi/pi-utils";
 import type { Subprocess } from "bun";
+import hostedGitInfo from "hosted-git-info";
 import {
 	parseDiffHunks as parseCommitDiffHunks,
 	parseFileDiffs,
@@ -614,7 +615,7 @@ export async function withRepoLock<T>(cwd: string, fn: () => Promise<T>, signal?
 function splitLines(text: string): string[] {
 	return text
 		.split("\n")
-		.map(line => line.trim())
+		.map((line) => line.trim())
 		.filter(Boolean);
 }
 
@@ -946,17 +947,22 @@ async function isReftableRepo(repository: GitRepository): Promise<boolean> {
 
 async function resolveHeadStateReftable(repository: GitRepository, signal?: AbortSignal): Promise<GitHeadState | null> {
 	throwIfAborted(signal);
-	const symResult = await git(repository.repoRoot, ["symbolic-ref", "HEAD"], { readOnly: true, signal }).catch(err => {
-		if (signal?.aborted || (err instanceof Error && (err.name === "AbortError" || err.name === "ToolAbortError"))) {
-			throw err;
-		}
-		return null;
-	});
+	const symResult = await git(repository.repoRoot, ["symbolic-ref", "HEAD"], { readOnly: true, signal }).catch(
+		(err) => {
+			if (
+				signal?.aborted ||
+				(err instanceof Error && (err.name === "AbortError" || err.name === "ToolAbortError"))
+			) {
+				throw err;
+			}
+			return null;
+		},
+	);
 	throwIfAborted(signal);
 	const revResult = await git(repository.repoRoot, ["rev-parse", "--verify", "HEAD"], {
 		readOnly: true,
 		signal,
-	}).catch(err => {
+	}).catch((err) => {
 		if (signal?.aborted || (err instanceof Error && (err.name === "AbortError" || err.name === "ToolAbortError"))) {
 			throw err;
 		}
@@ -1039,7 +1045,7 @@ async function readRef(repository: GitRepository, targetRef: string, signal?: Ab
 	if (await isReftableRepo(repository)) {
 		throwIfAborted(signal);
 		const symResult = await git(repository.repoRoot, ["symbolic-ref", targetRef], { readOnly: true, signal }).catch(
-			err => {
+			(err) => {
 				if (
 					signal?.aborted ||
 					(err instanceof Error && (err.name === "AbortError" || err.name === "ToolAbortError"))
@@ -1056,7 +1062,7 @@ async function readRef(repository: GitRepository, targetRef: string, signal?: Ab
 		const revResult = await git(repository.repoRoot, ["rev-parse", "--verify", targetRef], {
 			readOnly: true,
 			signal,
-		}).catch(err => {
+		}).catch((err) => {
 			if (
 				signal?.aborted ||
 				(err instanceof Error && (err.name === "AbortError" || err.name === "ToolAbortError"))
@@ -1139,9 +1145,9 @@ function parseWorktreeList(text: string): GitWorktreeEntry[] {
 	if (!trimmed) return [];
 	return trimmed
 		.split(/\n\s*\n/)
-		.map(block => block.trim())
+		.map((block) => block.trim())
 		.filter(Boolean)
-		.map(block => {
+		.map((block) => {
 			const entry: GitWorktreeEntry = { detached: false, path: "" };
 			for (const line of block.split("\n")) {
 				if (line.startsWith("worktree ")) entry.path = line.slice("worktree ".length);
@@ -1169,13 +1175,13 @@ function extractFileHeader(diffText: string): string {
 
 function selectHunks(file: FileHunks, selector: HunkSelection["hunks"]): FileHunks["hunks"] {
 	if (selector.type === "indices") {
-		const wanted = new Set(selector.indices.map(v => Math.max(1, Math.floor(v))));
-		return file.hunks.filter(hunk => wanted.has(hunk.index + 1));
+		const wanted = new Set(selector.indices.map((v) => Math.max(1, Math.floor(v))));
+		return file.hunks.filter((hunk) => wanted.has(hunk.index + 1));
 	}
 	if (selector.type === "lines") {
 		const start = Math.floor(selector.start);
 		const end = Math.floor(selector.end);
-		return file.hunks.filter(hunk => hunk.newStart <= end && hunk.newStart + hunk.newLines - 1 >= start);
+		return file.hunks.filter((hunk) => hunk.newStart <= end && hunk.newStart + hunk.newLines - 1 >= start);
 	}
 	return file.hunks;
 }
@@ -1183,8 +1189,8 @@ function selectHunks(file: FileHunks, selector: HunkSelection["hunks"]): FileHun
 export function createHunkSelectionValidator(
 	rawDiff: string,
 ): (selections: readonly HunkSelection[]) => HunkSelectionValidationError[] {
-	const fileDiffMap = new Map(parseFileDiffs(rawDiff).map(entry => [entry.filename, entry]));
-	return selections => validateHunkSelectionsFromMap(fileDiffMap, selections);
+	const fileDiffMap = new Map(parseFileDiffs(rawDiff).map((entry) => [entry.filename, entry]));
+	return (selections) => validateHunkSelectionsFromMap(fileDiffMap, selections);
 }
 
 function validateHunkSelectionsFromMap(
@@ -1349,7 +1355,7 @@ export const stage = {
 		if (selections.length === 0) return;
 		const rawDiff = options.rawDiff ?? (await diff(cwd, { cached: options.diffCached, signal: options.signal }));
 		const fileDiffs = parseFileDiffs(rawDiff);
-		const fileDiffMap = new Map(fileDiffs.map(entry => [entry.filename, entry]));
+		const fileDiffMap = new Map(fileDiffs.map((entry) => [entry.filename, entry]));
 		const patchParts: string[] = [];
 
 		for (const selection of selections) {
@@ -1369,7 +1375,7 @@ export const stage = {
 			const selected = selectHunks(fileHunks, selection.hunks);
 			if (selected.length === 0) throw new Error(`No hunks selected for ${selection.path}`);
 			const header = extractFileHeader(fileDiff.content);
-			patchParts.push([header, ...selected.map(h => h.content)].join("\n"));
+			patchParts.push([header, ...selected.map((h) => h.content)].join("\n"));
 		}
 
 		const patchText = patch.join(patchParts);
@@ -1633,7 +1639,7 @@ export async function detachGitDir(worktreeRoot: string, sourceCommonDir: string
 			const commands = refDump
 				.split("\n")
 				.filter(Boolean)
-				.map(line => {
+				.map((line) => {
 					const sep = line.indexOf(" ");
 					return `create ${line.slice(sep + 1)} ${line.slice(0, sep)}`;
 				})
@@ -2014,7 +2020,7 @@ export const patch = {
 	/** Join patch parts into a single patch string. */
 	join(parts: string[]): string {
 		return `${parts
-			.map(part => (part.endsWith("\n") ? part : `${part}\n`))
+			.map((part) => (part.endsWith("\n") ? part : `${part}\n`))
 			.join("\n")
 			.replace(/\n+$/, "")}\n`;
 	},
@@ -2250,7 +2256,7 @@ export const ls = {
 		const args = ["ls-tree", "--name-only", "-r", "-z", ref];
 		if (files.length > 0) args.push("--", ...files);
 		const raw = await runText(cwd, args, { readOnly: true, signal });
-		return raw.split("\0").filter(entry => entry.length > 0);
+		return raw.split("\0").filter((entry) => entry.length > 0);
 	},
 
 	/** List submodule paths (recursive). */
@@ -2484,24 +2490,156 @@ export const github = {
 	},
 };
 
-export interface GitSource {
-	url: string;
+/** Parsed and validated git package source. */
+export type GitSource = {
+	type: "git";
+	repo: string;
+	host: string;
+	path: string;
 	ref?: string;
-	path?: string;
+	pinned: boolean;
+};
+
+function splitRef(url: string): { repo: string; ref?: string } {
+	const scpLikeMatch = url.match(/^git@([^:]+):(.+)$/);
+	if (scpLikeMatch) {
+		const pathWithMaybeRef = scpLikeMatch[2] ?? "";
+		const refSeparator = pathWithMaybeRef.indexOf("@");
+		if (refSeparator < 0) return { repo: url };
+		const repoPath = pathWithMaybeRef.slice(0, refSeparator);
+		const ref = pathWithMaybeRef.slice(refSeparator + 1);
+		if (!repoPath || !ref) return { repo: url };
+		return { repo: `git@${scpLikeMatch[1] ?? ""}:${repoPath}`, ref };
+	}
+
+	if (url.includes("://")) {
+		try {
+			const parsed = new URL(url);
+			const pathWithMaybeRef = parsed.pathname.replace(/^\/+/, "");
+			const refSeparator = pathWithMaybeRef.indexOf("@");
+			if (refSeparator < 0) return { repo: url };
+			const repoPath = pathWithMaybeRef.slice(0, refSeparator);
+			const ref = pathWithMaybeRef.slice(refSeparator + 1);
+			if (!repoPath || !ref) return { repo: url };
+			parsed.pathname = `/${repoPath}`;
+			return { repo: parsed.toString().replace(/\/$/, ""), ref };
+		} catch {
+			return { repo: url };
+		}
+	}
+
+	const slashIndex = url.indexOf("/");
+	if (slashIndex < 0) return { repo: url };
+	const host = url.slice(0, slashIndex);
+	const pathWithMaybeRef = url.slice(slashIndex + 1);
+	const refSeparator = pathWithMaybeRef.indexOf("@");
+	if (refSeparator < 0) return { repo: url };
+	const repoPath = pathWithMaybeRef.slice(0, refSeparator);
+	const ref = pathWithMaybeRef.slice(refSeparator + 1);
+	if (!repoPath || !ref) return { repo: url };
+	return { repo: `${host}/${repoPath}`, ref };
 }
 
-export function parseGitUrl(input: string): GitSource | null {
-	if (!input.startsWith("git+") && !input.startsWith("git://") && !input.includes("github.com/") && !input.endsWith(".git")) {
+function decodeForValidation(value: string): string | null {
+	try {
+		return decodeURIComponent(value);
+	} catch {
 		return null;
 	}
-	let raw = input.startsWith("git+") ? input.slice(4) : input;
-	let ref: string | undefined;
-	let path: string | undefined;
-	const hashIdx = raw.indexOf("#");
-	if (hashIdx !== -1) {
-		ref = raw.slice(hashIdx + 1);
-		raw = raw.slice(0, hashIdx);
-	}
-	return { url: raw, ref, path };
 }
 
+function hasUnsafeGitInstallPart(value: string, allowSlash: boolean): boolean {
+	const decoded = decodeForValidation(value);
+	if (decoded === null) return true;
+	for (const candidate of [value, decoded]) {
+		if (candidate.includes("\0") || candidate.includes("\\") || candidate.startsWith("/")) return true;
+		if (!allowSlash && candidate.includes("/")) return true;
+		if (candidate.split("/").includes("..")) return true;
+	}
+	return false;
+}
+
+function buildGitSource(args: { repo: string; host: string; path: string; ref?: string }): GitSource | null {
+	if (args.path.startsWith("/")) return null;
+	const normalizedPath = args.path.replace(/\.git$/, "").replace(/^\/+/, "");
+	if (!args.host || !normalizedPath || normalizedPath.split("/").length < 2) return null;
+	if (hasUnsafeGitInstallPart(args.host, false) || hasUnsafeGitInstallPart(normalizedPath, true)) return null;
+	return {
+		type: "git",
+		repo: args.repo,
+		host: args.host,
+		path: normalizedPath,
+		ref: args.ref,
+		pinned: Boolean(args.ref),
+	};
+}
+
+function parseGenericGitUrl(url: string): GitSource | null {
+	const { repo: repoWithoutRef, ref } = splitRef(url);
+	let repo = repoWithoutRef;
+	let host = "";
+	let path = "";
+
+	const scpLikeMatch = repoWithoutRef.match(/^git@([^:]+):(.+)$/);
+	if (scpLikeMatch) {
+		host = scpLikeMatch[1] ?? "";
+		path = scpLikeMatch[2] ?? "";
+	} else if (/^(https?|ssh|git):\/\//.test(repoWithoutRef)) {
+		try {
+			const parsed = new URL(repoWithoutRef);
+			host = parsed.hostname;
+			path = parsed.pathname.replace(/^\/+/, "");
+		} catch {
+			return null;
+		}
+	} else {
+		const slashIndex = repoWithoutRef.indexOf("/");
+		if (slashIndex < 0) return null;
+		host = repoWithoutRef.slice(0, slashIndex);
+		path = repoWithoutRef.slice(slashIndex + 1);
+		if (!host.includes(".") && host !== "localhost") return null;
+		repo = `https://${repoWithoutRef}`;
+	}
+
+	return buildGitSource({ repo, host, path, ref });
+}
+
+/** Parse a git package source into its clone and install-path components. */
+export function parseGitUrl(source: string): GitSource | null {
+	const trimmed = source.trim();
+	const hasGitPrefix = trimmed.startsWith("git:");
+	const url = hasGitPrefix ? trimmed.slice(4).trim() : trimmed;
+	if (!hasGitPrefix && !/^(https?|ssh|git):\/\//i.test(url)) return null;
+
+	const split = splitRef(url);
+	const hostedCandidates = [split.ref ? `${split.repo}#${split.ref}` : undefined, url].filter(
+		(value): value is string => Boolean(value),
+	);
+	for (const candidate of hostedCandidates) {
+		const info = hostedGitInfo.fromUrl(candidate);
+		if (!info || (split.ref && info.project?.includes("@"))) continue;
+		const useHttpsPrefix = !/^(https?|ssh|git):\/\//.test(split.repo) && !split.repo.startsWith("git@");
+		return buildGitSource({
+			repo: useHttpsPrefix ? `https://${split.repo}` : split.repo,
+			host: info.domain || "",
+			path: `${info.user}/${info.project}`,
+			ref: info.committish || split.ref || undefined,
+		});
+	}
+
+	const httpsCandidates = [split.ref ? `https://${split.repo}#${split.ref}` : undefined, `https://${url}`].filter(
+		(value): value is string => Boolean(value),
+	);
+	for (const candidate of httpsCandidates) {
+		const info = hostedGitInfo.fromUrl(candidate);
+		if (!info || (split.ref && info.project?.includes("@"))) continue;
+		return buildGitSource({
+			repo: `https://${split.repo}`,
+			host: info.domain || "",
+			path: `${info.user}/${info.project}`,
+			ref: info.committish || split.ref || undefined,
+		});
+	}
+
+	return parseGenericGitUrl(url);
+}

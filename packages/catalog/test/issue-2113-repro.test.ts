@@ -47,7 +47,7 @@ function basicContext(): Context {
 }
 
 function encodeSseChunks(chunks: ReadonlyArray<Record<string, unknown>>): string {
-	const lines = chunks.map(c => `data: ${JSON.stringify(c)}\n\n`);
+	const lines = chunks.map((c) => `data: ${JSON.stringify(c)}\n\n`);
 	lines.push("data: [DONE]\n\n");
 	return lines.join("");
 }
@@ -122,7 +122,7 @@ describe("issue #2113 — moonshot kimi-k2.6 discovery and wire format", () => {
 
 		const models = await moonshotModelManagerOptions({ apiKey: "test-key", fetch: fetchMock }).fetchDynamicModels?.();
 		expect(models).toBeDefined();
-		const byId = new Map(models?.map(m => [m.id, m]));
+		const byId = new Map(models?.map((m) => [m.id, m]));
 
 		const k25 = byId.get("kimi-k2.5");
 		expect(k25?.reasoning).toBe(true);
@@ -152,7 +152,7 @@ describe("issue #2113 — moonshot kimi-k2.6 discovery and wire format", () => {
 		expect(captured.url).toContain("api.moonshot.ai/v1/chat/completions");
 		expect(captured.body.thinking).toEqual({ type: "disabled" });
 		expect(assistant.errorMessage).toBeUndefined();
-		const textBlock = assistant.content.find(b => b.type === "text");
+		const textBlock = assistant.content.find((b) => b.type === "text");
 		expect(textBlock).toBeDefined();
 	});
 

@@ -1,14 +1,16 @@
-import type { AssistantMessage, ToolCall } from "@oh-my-pi/pi-ai";
-import type { ChangelogCategory, ConventionalAnalysis, ConventionalDetail } from "./types";
+import type { AssistantMessage, ToolCall } from "@noorm/lumi-ai";
+import type { ChangelogCategory, ConventionalAnalysis, ConventionalDetail } from "./types.ts";
 
 export function extractToolCall(message: AssistantMessage, name: string): ToolCall | undefined {
-	return message.content.find(content => content.type === "toolCall" && content.name === name) as ToolCall | undefined;
+	return message.content.find((content) => content.type === "toolCall" && content.name === name) as
+		| ToolCall
+		| undefined;
 }
 
 export function extractTextContent(message: AssistantMessage): string {
 	return message.content
-		.filter(content => content.type === "text")
-		.map(content => content.text)
+		.filter((content) => content.type === "text")
+		.map((content) => content.text)
 		.join("")
 		.trim();
 }
@@ -34,7 +36,7 @@ export function normalizeAnalysis(parsed: {
 	return {
 		type: parsed.type,
 		scope: parsed.scope?.trim() || null,
-		details: parsed.details.map(detail => ({
+		details: parsed.details.map((detail) => ({
 			text: detail.text.trim(),
 			changelogCategory: detail.user_visible ? detail.changelog_category : undefined,
 			userVisible: detail.user_visible ?? false,
@@ -50,7 +52,7 @@ export function normalizeDetails(
 		user_visible?: boolean;
 	}>,
 ): ConventionalDetail[] {
-	return details.map(detail => ({
+	return details.map((detail) => ({
 		text: detail.text.trim(),
 		changelogCategory: detail.user_visible ? detail.changelog_category : undefined,
 		userVisible: detail.user_visible ?? false,

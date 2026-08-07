@@ -1,4 +1,4 @@
-import type { ConventionalAnalysis } from "../../commit/types";
+import type { ConventionalAnalysis } from "../../commit/types.ts";
 
 export interface ValidationResult {
 	valid: boolean;

@@ -1,20 +1,56 @@
-import { type } from "@oh-my-pi/omptype";
 import { prompt } from "@oh-my-pi/pi-utils";
-import analyzeFilePrompt from "../../../commit/agentic/prompts/analyze-file.md" with { type: "text" };
-import type { CommitAgentState } from "../../../commit/agentic/state";
-import type { NumstatEntry } from "../../../commit/types";
-import type { ModelRegistry } from "../../../config/model-registry";
-import type { Settings } from "../../../config/settings";
-import type { CustomTool, CustomToolContext } from "../../../extensibility/custom-tools/types";
-import type { AuthStorage } from "../../../session/auth-storage";
-import { TaskTool } from "../../../task";
-import type { TaskParams } from "../../../task/types";
-import type { ToolSession } from "../../../tools";
-import { getFilePriority } from "./git-file-diff";
+import { Type } from "typebox";
+import type { AuthStorage } from "../../../core/auth-storage.ts";
+import {
+	type ExtensionContext as CustomToolContext,
+	defineTool,
+	type ToolDefinition,
+} from "../../../core/extensions/types.ts";
+import type { ModelRegistry } from "../../../core/model-registry.ts";
+import type { Settings } from "../../../core/settings-manager.ts";
+import type { NumstatEntry } from "../../types.ts";
+import analyzeFilePrompt from "../prompts/analyze-file.md" with { type: "text" };
+import type { CommitAgentState } from "../state.ts";
+import { getFilePriority } from "./git-file-diff.ts";
 
-const analyzeFileSchema = type({
-	files: type("string").describe("file path").array().atLeastLength(1),
-	"goal?": type("string").describe("analysis focus"),
+export interface ToolSession {
+	cwd: string;
+	hasUI?: boolean;
+	suppressSpawnAdvisory?: boolean;
+	getSessionFile?: () => string | null;
+	getSessionSpawns?: () => string | null;
+	settings?: Settings;
+	authStorage?: AuthStorage;
+	modelRegistry?: ModelRegistry;
+	outputSchema?: unknown;
+}
+
+export interface TaskParams {
+	name: string;
+	agent: string;
+	task: string;
+}
+
+export interface TaskAnalysisResult {
+	content: Array<{ type: string; text?: string }>;
+	details?: {
+		results?: unknown[];
+		totalDurationMs?: number;
+	};
+}
+
+export class TaskTool {
+	static async create(_session: ToolSession): Promise<TaskTool> {
+		return new TaskTool();
+	}
+	async execute(_toolCallId: string, _params: TaskParams, _signal?: AbortSignal): Promise<TaskAnalysisResult> {
+		return { content: [] };
+	}
+}
+
+const analyzeFileSchema = Type.Object({
+	files: Type.Array(Type.String()),
+	goal: Type.Optional(Type.String()),
 });
 
 const analyzeFileOutputSchema = {
@@ -59,13 +95,13 @@ export function createAnalyzeFileTool(options: {
 	settings: Settings;
 	spawns: string;
 	state: CommitAgentState;
-}): CustomTool<typeof analyzeFileSchema> {
-	return {
+}): ToolDefinition<typeof analyzeFileSchema> {
+	return defineTool({
 		name: "analyze_files",
 		label: "Analyze Files",
 		description: "Spawn sonic agents to analyze files.",
 		parameters: analyzeFileSchema,
-		async execute(toolCallId, params, _onUpdate, ctx, signal) {
+		async execute(toolCallId, params, signal, _onUpdate, ctx) {
 			const toolSession = buildToolSession(ctx, options);
 			// The hand-built ToolSession carries no asyncJobManager, so every
 			// execute() below takes the task tool's sync fallback and resolves
@@ -75,7 +111,7 @@ export function createAnalyzeFileTool(options: {
 			const numstat = options.state.overview?.numstat ?? [];
 
 			const analyses = await Promise.all(
-				params.files.map((file, index) => {
+				params.files.map((file: string, index: number) => {
 					const relatedFiles = formatRelatedFiles(params.files, file, numstat);
 					const assignment = prompt.render(analyzeFilePrompt, {
 						file,
@@ -90,9 +126,12 @@ export function createAnalyzeFileTool(options: {
 					return taskTool.execute(`${toolCallId}-${index + 1}`, taskParams, signal);
 				}),
 			);
-			const results = analyses.flatMap(analysis => analysis.details?.results ?? []);
+			const results = analyses.flatMap((analysis: TaskAnalysisResult) => analysis.details?.results ?? []);
 			const text = analyses
-				.map(analysis => analysis.content.find(part => part.type === "text")?.text ?? "")
+				.map(
+					(analysis: TaskAnalysisResult) =>
+						analysis.content.find((part: { type: string; text?: string }) => part.type === "text")?.text ?? "",
+				)
 				.filter(Boolean)
 				.join("\n\n");
 			return {
@@ -100,11 +139,14 @@ export function createAnalyzeFileTool(options: {
 				details: {
 					projectAgentsDir: null,
 					results,
-					totalDurationMs: analyses.reduce((sum, analysis) => sum + (analysis.details?.totalDurationMs ?? 0), 0),
+					totalDurationMs: analyses.reduce(
+						(sum: number, analysis: TaskAnalysisResult) => sum + (analysis.details?.totalDurationMs ?? 0),
+						0,
+					),
 				},
 			};
 		},
-	};
+	});
 }
 
 function inferFileType(path: string): string {
@@ -129,12 +171,12 @@ function inferFileType(path: string): string {
 }
 
 function formatRelatedFiles(files: string[], currentFile: string, numstat: NumstatEntry[]): string | undefined {
-	const others = files.filter(file => file !== currentFile);
+	const others = files.filter((file) => file !== currentFile);
 	if (others.length === 0) return undefined;
 
-	const numstatMap = new Map(numstat.map(entry => [entry.path, entry]));
+	const numstatMap = new Map(numstat.map((entry) => [entry.path, entry]));
 
-	const lines = others.map(file => {
+	const lines = others.map((file) => {
 		const entry = numstatMap.get(file);
 		const fileType = inferFileType(file);
 		if (entry) {

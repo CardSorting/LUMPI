@@ -1,6 +1,6 @@
-import type { AgentMessage } from "@noorm/lumpi-agent-core";
-import type { AssistantMessage, ToolResultMessage, Usage } from "@noorm/lumpi-ai";
-import { Container, Text, type TUI } from "@noorm/lumpi-tui";
+import type { AgentMessage } from "@noorm/lumi-agent-core";
+import type { AssistantMessage, ToolResultMessage, Usage } from "@noorm/lumi-ai";
+import { Container, Text, type TUI } from "@noorm/lumi-tui";
 import { beforeAll, describe, expect, test, vi } from "vitest";
 import type { AgentSessionEvent } from "../../../src/core/agent-session.ts";
 import type { SessionEntry } from "../../../src/core/session-manager.ts";
