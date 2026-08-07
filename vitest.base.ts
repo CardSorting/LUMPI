@@ -27,6 +27,7 @@ export default defineConfig({
 			},
 			{ find: /^@noorm\/lumpi-agent-core$/, replacement: workspaceSourcePaths.agentIndex },
 			{ find: /^@noorm\/lumpi-agent-core\/node$/, replacement: fileURLToPath(new URL("./packages/agent/src/node.ts", import.meta.url)) },
+			{ find: /^@noorm\/lumpi$/, replacement: workspaceSourcePaths.codingAgentIndex },
 			{ find: /^@noorm\/lumpi-tui$/, replacement: workspaceSourcePaths.tuiIndex },
 			{ find: /^@noorm\/lumpi-codemarie\/joyride$/, replacement: workspaceSourcePaths.codemarieJoyRide },
 			{ find: /^@noorm\/lumpi-codemarie$/, replacement: workspaceSourcePaths.codemarieIndex },

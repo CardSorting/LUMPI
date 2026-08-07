@@ -1,11 +1,11 @@
 {
-	"name": "@noorm/lumpi-coding-agent",
+	"name": "@noorm/lumpi",
 	"version": "0.83.0",
 	"lockfileVersion": 3,
 	"requires": true,
 	"packages": {
 		"": {
-			"name": "@noorm/lumpi-coding-agent",
+			"name": "@noorm/lumpi",
 			"version": "0.83.0",
 			"license": "MIT",
 			"dependencies": {

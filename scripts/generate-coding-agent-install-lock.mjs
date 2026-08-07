@@ -12,7 +12,7 @@ const rootLockfilePath = join(repoRoot, "package-lock.json");
 const outputPackageJsonPath = join(outputDir, "package.json");
 const outputLockfilePath = join(outputDir, "package-lock.json");
 const internalPackagePrefix = "@noorm/lumpi-";
-const installPackageName = "@noorm/lumpi-coding-agent-install";
+const installPackageName = "@noorm/lumpi-install";
 const allowedInstallScriptPackages = new Map([
 	["@google/genai@1.52.0", "preinstall is a no-op in the published package"],
 	["protobufjs@7.6.5", "postinstall only warns about protobufjs version scheme mismatches"],
@@ -146,7 +146,7 @@ function getInternalWorkspaces(lockPackages) {
 		if (!lockPath.startsWith("packages/") || lockPath.includes("/node_modules/") || !entry.name || !entry.version) {
 			continue;
 		}
-		if (!entry.name.startsWith(internalPackagePrefix) && entry.name !== "@noorm/broccolidb") {
+		if (entry.name !== "@noorm/lumpi" && !entry.name.startsWith(internalPackagePrefix) && entry.name !== "@noorm/broccolidb") {
 			continue;
 		}
 

@@ -139,7 +139,7 @@ function getInternalWorkspaces(lockPackages) {
 		if (!lockPath.startsWith("packages/") || lockPath.includes("/node_modules/") || !entry.name || !entry.version) {
 			continue;
 		}
-		if (!entry.name.startsWith(internalPackagePrefix) && entry.name !== "@noorm/broccolidb") {
+		if (entry.name !== "@noorm/lumpi" && !entry.name.startsWith(internalPackagePrefix) && entry.name !== "@noorm/broccolidb") {
 			continue;
 		}
 

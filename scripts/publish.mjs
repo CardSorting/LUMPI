@@ -12,7 +12,7 @@ const packages = [
 	{ directory: "packages/client", name: "@noorm/lumpi-client" },
 	{ directory: "packages/session-backends/sqlite-node", name: "@noorm/lumpi-session-backend-sqlite-node" },
 	{ directory: "packages/tui", name: "@noorm/lumpi-tui" },
-	{ directory: "packages/coding-agent", name: "@noorm/lumpi-coding-agent" },
+	{ directory: "packages/coding-agent", name: "@noorm/lumpi" },
 ];
 
 const dryRun = process.argv.includes("--dry-run");
@@ -30,10 +30,15 @@ function commandForPlatform(command) {
 
 function run(command, args, options = {}) {
 	console.log(`$ ${[command, ...args].join(" ")}`);
+	const env = { ...process.env, ...(options.env ?? {}) };
+	if (process.env.NPM_CONFIG_TOKEN) {
+		env["npm_config_//registry.npmjs.org/:_authToken"] = process.env.NPM_CONFIG_TOKEN;
+	}
 	const result = spawnSync(commandForPlatform(command), args, {
 		cwd: options.cwd,
 		encoding: "utf8",
 		stdio: options.capture ? ["inherit", "pipe", "pipe"] : "inherit",
+		env,
 	});
 
 	if (result.status !== 0) {
@@ -61,9 +66,14 @@ function validatePack(directory) {
 }
 
 function isPublished(name, version) {
+	const env = { ...process.env };
+	if (process.env.NPM_CONFIG_TOKEN) {
+		env["npm_config_//registry.npmjs.org/:_authToken"] = process.env.NPM_CONFIG_TOKEN;
+	}
 	const result = spawnSync(commandForPlatform("npm"), ["view", `${name}@${version}`, "version", "--json"], {
 		encoding: "utf8",
 		stdio: ["inherit", "pipe", "pipe"],
+		env,
 	});
 
 	if (result.status === 0 && result.stdout.trim()) {

@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {
 		"@noorm/lumpi-ai": "^0.83.0",
-		"@noorm/lumpi-coding-agent": "^0.83.0",
+		"@noorm/lumpi": "0.83.0",
 		"@types/node": "24.12.4",
 		"shx": "0.4.0",
 		"typescript": "5.9.3",

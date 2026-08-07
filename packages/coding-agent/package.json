@@ -1,5 +1,5 @@
 {
-	"name": "@noorm/lumpi-coding-agent",
+	"name": "@noorm/lumpi",
 	"version": "0.83.0",
 	"description": "Coding agent CLI with read, bash, edit, write tools and session management",
 	"type": "module",
