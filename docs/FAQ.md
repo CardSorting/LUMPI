@@ -85,6 +85,19 @@ pi --extension packages/coding-agent/examples/extensions/gondolin
 ### Q: What is BroccoliDB and why is it zero-GC?
 `BroccoliDB` (`@noorm/broccolidb`) is an in-memory high-throughput state substrate that allocates memory in pre-sized 16MB slab arenas. By reusing pre-allocated slab blocks instead of creating transient JS objects during execution turns, BroccoliDB eliminates Garbage Collection (GC) pauses during active TUI streaming.
 
+### Q: What are the native Rust crate bindings (`crates/pi-natives`)?
+`crates/pi-natives` is a Rust 1.99 Nightly native crate compiled into the N-API addon `pi_natives.darwin-arm64.node`. It provides parallel directory walking (`pi-walker`), sub-millisecond Ripgrep text search, `ast-grep`, Sixel image encoding, POSIX advisory `file_lock`, and transcript compaction (`snapcompact`).
+
+### Q: How do I test the single-host worker host architecture?
+Run the built-in worker host smoke probe:
+```bash
+bun packages/coding-agent/src/cli.ts --smoke-test
+```
+This tests `installWorkerInbox()` and `consumeWorkerInbox()` to verify 0% message-drop rates during Bun worker thread initialization.
+
+### Q: How are reasoning thinking effort levels managed?
+`@oh-my-pi/pi-catalog` pre-clamps thinking budgets across Anthropic adaptive, Gemini 3, OpenAI o-series, Kimi K3, and GLM-5.2 to eliminate un-clamped thinking effort API payload rejections.
+
 ---
 
 ## 6. Headless Automation & CI/CD

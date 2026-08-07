@@ -15,8 +15,12 @@ To maintain clarity across our 12 monorepo packages, issues are categorized usin
 | **`pkg:agent`** | [`packages/agent`](../packages/agent) | Core CAS state machine, prompt assembly, turn transitions. |
 | **`pkg:ai`** | [`packages/ai`](../packages/ai) | Multi-provider LLM API router, model definitions, provider connectors. |
 | **`pkg:broccolidb`** | [`packages/broccolidb`](../packages/broccolidb) | Substrate storage, 16MB zero-GC slab arena allocators. |
+| **`pkg:catalog`** | [`packages/catalog`](../packages/catalog) | Model thinking budget clampers, provider model descriptors. |
 | **`pkg:codemarie`** | [`packages/codemarie`](../packages/codemarie) | Merged HostProvider bridge, workspace/env/diff clients. |
 | **`pkg:coding-agent`** | [`packages/coding-agent`](../packages/coding-agent) | Primary CLI binary, TUI host runner, extension loaders. |
+| **`pkg:hashline`** | [`packages/hashline`](../packages/hashline) | xxHash line deltas and fuzzy patch validation. |
+| **`pkg:natives`** | [`packages/natives`](../packages/natives), `crates/` | Native Rust N-API addon (`pi-walker`, Ripgrep, `ast-grep`, POSIX locks). |
+| **`pkg:snapcompact`** | [`packages/snapcompact`](../packages/snapcompact) | Transcript compaction engine. |
 | **`pkg:tui`** | [`packages/tui`](../packages/tui) | Differential terminal screen rendering library. |
 | **`pkg:telemetry`** | [`packages/telemetry`](../packages/telemetry) | Metrics aggregators and telemetry schema validation. |
 | **`pkg:evals`** | [`packages/evals`](../packages/evals) | Evaluation benchmarks and tool-calling accuracy harness. |

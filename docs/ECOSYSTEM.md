@@ -11,9 +11,11 @@
 ## LUMI EXTENSIBILITY LAYERS
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  1. Extension Plugins  ──► Custom agent tools, lifecycle hooks, keybinds     │
-│  2. Model Drivers      ──► Multi-LLM provider adaptations (@earendil/pi-ai)  │
-│  3. Substrate Storage  ──► High-throughput state backends (@earendil/broc)   │
-│  4. RPC / Daemon API   ──► JSON-RPC 2.0 transport socket integration       │
+│  2. Native Rust Core   ──► Parallel walker, Ripgrep, ast-grep (@oh-my-pi)     │
+│  3. Model Catalog      ──► Thinking budget clampers & providers (@oh-my-pi)   │
+│  4. Line Delta Engine  ──► xxHash line deltas & fuzzy patches (@oh-my-pi)     │
+│  5. Substrate Storage  ──► High-throughput state backends (@noorm/broccolidb)│
+│  6. RPC / Daemon API   ──► JSON-RPC 2.0 transport socket integration       │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 

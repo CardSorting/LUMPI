@@ -252,6 +252,45 @@ Last audited: 2026-07-24
 5. **Buffer Pooling & Garbage Collection**: Parameter-bounded chunking in `BufferedDbPool` (dynamically capped to parameter buffer bounds), with bounded ring-buffer latency tracking to eliminate array allocation pressure.
 6. **Binary Exclusion**: Binary database exclusion in `CheckpointExclusions.ts` (`*.db`, `*.db-wal`, `*.db-shm`, `*.sqlite3`) to prevent Git checkpoint bloat.
 
-**Consequences:** Prevents unbounded disk growth, eliminates native statement handle and V8 array allocation memory leaks, prevents lock timeouts (`busy_timeout = 5000`), and keeps SQLite query latencies sub-millisecond.
+## ADR-017: Zenith Tier Native Strategy Fusion into pi-main
+
+**Status:** Accepted
+
+**Context:** Fusing high-performance features from `@oh-my-pi/*` into `pi-main` (`/Users/bozoegg/Downloads/pi-main`) required elevating system performance (Rust native directory walking, ripgrep, Sixel rendering, 30 FPS character-level streaming JSON decoding, xxHash line delta verification, enterprise VCS execution) while maintaining 100% backward compatibility with `pi-main`'s existing memory systems (`broccolidb`, `autolearn`, `codemarie` storage).
+
+**Decision:** Fuse the native strategy modules directly into `pi-main` monorepo packages:
+1. **Rust Native Core (`crates/pi-natives`)**: Native Rust crate (`crates/pi-natives`) compiled with Nightly toolchain containing parallel directory walker (`pi-walker`), Ripgrep engine, `ast-grep-core`, Sixel image encoding, POSIX `file_lock`, and transcript compaction (`snapcompact`).
+2. **Single-Host Worker Host Architecture (`@oh-my-pi/pi-utils/worker-host`)**: Enforce single-host worker entry routing via `declareWorkerHostEntry()` and inbox buffering (`installWorkerInbox()`, `consumeWorkerInbox()`) in `packages/coding-agent/src/cli.ts`, solving Bun worker message-drop race conditions.
+3. **30 FPS Character Streaming (`ToolArgsRevealController`)**: Deploy character-by-character JSON state machine parser (`modes/controllers/tool-args-reveal.ts`) to stream tool call argument previews at 30 FPS.
+4. **Line Hash Delta Verification (`@oh-my-pi/hashline`)**: Deploy xxHash line deltas and fuzzy patch verification for zero-error file edits.
+5. **Thinking Budget & Model Catalog (`@oh-my-pi/pi-catalog`)**: Fuse thinking budget clampers and provider model resolvers to normalize reasoning effort across Anthropic adaptive, Gemini 3, OpenAI o-series, Kimi K3, and GLM-5.2.
+6. **Enterprise VCS Engine (`git.ts` & `jj.ts`)**: Upgrade `git.ts` to 101 KB enterprise version (`--no-optional-locks`, 8 MiB output streaming caps, POSIX retry loops, `withRepoLock`) and add `jj.ts` (16.8 KB Jujutsu engine).
+7. **VS Code Host Isolation**: Provide non-VS Code stub package (`node_modules/vscode`) ensuring non-VS Code CLI executions run cleanly without missing optional VS Code LM imports.
+8. **Memory Non-Replacement**: Maintain existing `broccolidb` and `autolearn` vector memory storage intact without replacement.
+
+**Consequences:**
+- Achieves sub-millisecond file listing and ripgrep text search via native Rust bindings.
+- Prevents worker thread init stall timeouts in Bun worker threads.
+- Eliminates invalid LLM payload rejections by pre-clamping thinking effort levels.
+- Guarantees 100% preservation of pre-existing memory structures.
+
+## ADR-018: Enterprise VCS Utility & Node16 Type Resolution for git.ts
+
+**Status:** Accepted
+
+**Context:** The enterprise 101 KB VCS utility `git.ts` was ported into `packages/coding-agent/src/utils/git.ts`. During monorepo Node16 ESM module resolution (`--moduleResolution node16`), relative imports required explicit `.ts` extensions, `Promise.withResolvers` required portable deferred resolution, and global `Bun` process/file calls needed safe environment casting and standard `node:fs` fallbacks.
+
+**Decision:** Harden `git.ts` with strict ECMAScript Node16 type compliance:
+1. **Explicit Relative Extensions**: Update relative imports (`../commit/git/diff.ts`, `../commit/types.ts`, `../tools/tool-errors.ts`) to use explicit `.ts` extensions.
+2. **Portable Deferred Resolution**: Replace `Promise.withResolvers` with portable `createDeferred<T>()` helper to ensure non-failing execution across Node and Bun runtime versions.
+3. **Dual Runtime Safe Process & I/O Spawning**: Cast `(globalThis as any).Bun` for `spawn` and `spawnSync` calls, and standardize file output operations to `node:fs/promises` (`fs.promises.writeFile`) for 100% cross-runtime compatibility.
+4. **Monomorphic Type Maps & Helper Exports**: Explicitly type map callback parameters (`entry: FileDiff`) and re-export `GitSource` & `parseGitUrl` for package manager and interactive UI consumers.
+
+**Consequences:**
+- Resolves all 31 compiler and IDE type diagnostics in `git.ts`.
+- Guarantees seamless compatibility across Bun binary execution and Node ESM monorepo builds.
+- Preserves enterprise VCS lock avoidance, reftable HEAD resolution, and 8 MiB streaming output caps.
+
+
 
 

@@ -4,23 +4,20 @@
 > **When do I use it?** At an agent handoff boundary before changing coordination, scheduling, or completion behavior.
 > **What is the source of truth?** The current working tree and the implementation paths linked below.
 
-Last updated: 2026-08-06
+Last updated: 2026-08-07
 
 ## Current Task
 
-The 11 Wide-Sweeping Backend Engine Fusion Passes are complete. All major Codemarie subsystems have been re-exported from `@noorm/lumpi-codemarie` and wired to `CodemarieBridge` in `packages/coding-agent`:
+The Native Strategy Zenith Tier Fusion into `pi-main` (`/Users/bozoegg/Downloads/pi-main`) is complete. Key strategies fused with zero breaking changes to existing memory features (`broccolidb`, `autolearn`, `codemarie` storage remaining 100% intact):
 
-1. **Workspace Intelligence Engine**: `WorkspaceIntelligenceEngine`
-2. **Spider Engine & AST Forensic Audit**: `SpiderEngine`
-3. **Persistent Subscription Hub**: `PersistentSubscriptionHub`, `disposeAllPersistentSubscriptionHubs`
-4. **Terminal Orchestrator & Executor**: `CommandExecutor`, `orchestrateCommandExecution`
-5. **Context Staleness Tracker**: `ContextStalenessTracker`
-6. **Command Safety Sanitizer**: `validateCommand`, `splitCommand`, `getSanitizerMode`
-7. **DietCode Temp Manager**: `DietCodeTempManager`
-8. **Swarm Mutex Service**: `SwarmMutexService`
-9. **Roadmap Gate Catalog**: `buildGateStateFromInputs`, `collectGateInputs`, `evaluateGateChecks`
-10. **Telemetry & Document Extraction**: `TelemetryService`, `telemetryService`, `callTextExtractionFunctions`, `processFilesIntoText`, `sanitizeNotebookForLLM`
-11. **Code Safety & Review**: `detectCodeOmission`, `showOmissionWarning`, `CommentReviewController`, `MAX_CONTENT_SIZE_BYTES`, `readBroccoliFence`, `AUTO_GOVERNANCE`
+1. **Native High-Performance Crate Engine**: `crates/pi-natives` (Rust 1.99 Nightly) with parallel walker (`pi-walker`), Ripgrep engine, `ast-grep-core`, Sixel image encoding, POSIX `file_lock`, and `snapcompact`.
+2. **Single-Host Worker Host Entry**: `@oh-my-pi/pi-utils/worker-host` with `declareWorkerHostEntry()`, `installWorkerInbox()`, and `consumeWorkerInbox()` eliminating Bun worker message-drop race conditions.
+3. **30 FPS Character Streaming Engine**: `ToolArgsRevealController` with character-by-character JSON state machine streaming parser for instant tool execution UI rendering.
+4. **Line Hash & Delta Verification**: `@oh-my-pi/hashline` xxHash line deltas and fuzzy patch verification for zero-error file edits.
+5. **Model Catalog & Thinking Budget Management**: `@oh-my-pi/pi-catalog` thinking budget clampers and provider resolvers for Anthropic adaptive, Gemini 3, OpenAI o-series, Kimi K3, and GLM-5.2.
+6. **Enterprise VCS Utilities**: Upgraded `git.ts` (101 KB) with `--no-optional-locks` isolation, 8 MiB output streaming limits, POSIX retry loops, and `jj.ts` (16.8 KB Jujutsu engine).
+7. **Agentic Commit Pipeline**: `packages/coding-agent/src/commit/` map-reduce commit generator and diff hunk parser.
+8. **VS Code Host Isolation**: `node_modules/vscode` stub package preventing missing-module errors during non-VS Code CLI executions.
 
 ## Implementation State
 

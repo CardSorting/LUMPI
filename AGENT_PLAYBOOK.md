@@ -4,30 +4,34 @@
 > **When do I use it?** At task start to understand the active developer landscape, blockers, and orientation paths.
 > **What is the source of truth?** The live workspace layout, manifests, package files, and the active task requirements.
 
-Last audited: 2026-08-06
+Last audited: 2026-08-07
 
 ## Current Status
 
 | Area | State | Evidence |
 |---|---|---|
-| Product | High-velocity agentic AI coding engine (`LUMI`) | `packages/coding-agent`, `packages/codemarie` |
-| Branding | Default app title & UI branding `LUMI` | `packages/coding-agent/src/config.ts` |
-| Defaults | Default provider `openai-codex` (`gpt-5.6-luna`) | `packages/coding-agent/src/core/model-resolver.ts` |
-| Onboarding | Streamlined 1-press setup card with key detection, selection status box & 3D ASCII banner | `packages/coding-agent/src/modes/interactive/components/first-time-setup.ts` |
-| UI Navigation | Branded headers & bracketed key caps (`[Enter]`, `[Tab]`, `[Esc]`, `[↑/↓]`) across all TUI selectors | `packages/coding-agent/src/modes/interactive/components/` |
-| Workspaces | Monorepo packages | `packages/codemarie`, `packages/broccolidb`, `packages/coding-agent`, `packages/ai` |
-| UI | Terminal TUI + CLI host provider | `packages/tui`, `packages/codemarie/src/hosts/cli/` |
-| Subpath Exports | Modular package exports | `packages/codemarie/src/hosts/index.ts`, `packages/codemarie/README.md` |
-| Test Harness | Isolated test framework | `packages/codemarie/tests/harness.ts` |
-| Substrate | BroccoliDB package | `packages/broccolidb` |
-| CLI Bridge | CodemarieBridge & BroccoliBridge | `packages/coding-agent/src/core/codemarie-bridge.ts`, `packages/coding-agent/src/core/broccolidb-bridge.ts` |
-| CLI Flags | Engine & MoD steering | `LUMI --mod`, `LUMI --engine=codemarie` |
-| Engine Fusion | 11 Wide-Sweeping Engine Fusion Passes | `packages/codemarie/src/index.ts`, `packages/coding-agent/src/core/codemarie-bridge.ts` |
-| Verification | `npm run check` clean | All 7 monorepo validation steps passing (1029 files checked) |
+| Native Engine | `crates/pi-natives` (Rust 1.99 Nightly) | `crates/pi-natives`, `@oh-my-pi/pi-natives` |
+| Single-Host Worker | Worker host entry routing & inbox buffer | `@oh-my-pi/pi-utils/worker-host`, `cli.ts` |
+| Streaming UI | 30 FPS character streaming JSON parser | `modes/controllers/tool-args-reveal.ts` |
+| Delta Verification | xxHash line deltas & fuzzy patch check | `@oh-my-pi/hashline`, `hashline-tool.ts` |
+| Catalog & Thinking | Model catalog & thinking budget clampers | `@oh-my-pi/pi-catalog` |
+| VCS Engine | Enterprise `git.ts` (101 KB) & `jj.ts` (16.8 KB) | `packages/coding-agent/src/utils/git.ts` |
+| Product | High-velocity agentic AI coding engine | `packages/coding-agent`, `packages/codemarie` |
+| Memory System | Retained original BroccoliDB & AutoLearn | `packages/broccolidb`, `packages/codemarie` |
+| Verification | `bun cli.ts --smoke-test` & `cargo check` clean | Native worker smoke test passed |
 
 ## What Is Happening Right Now
 
-The active work now includes 11 wide-sweeping backend engine fusion passes, unifying Codemarie subsystems directly into `@noorm/lumpi-codemarie` exports and `CodemarieBridge` in `packages/coding-agent`:
+The workspace has completed the Zenith Tier Native Strategy Fusion into `/Users/bozoegg/Downloads/pi-main`. Native performance Rust crates, single-host worker routing, 30 FPS streaming state machines, line delta verification, and enterprise VCS engines are fully fused into `pi-main` with **zero breaking changes to existing memory features** (`broccolidb`, `autolearn`, `codemarie` storage remaining 100% intact):
+
+1. **Native High-Performance Core (`crates/pi-natives`)**: Rust 1.99 Nightly parallel directory walker (`pi-walker`), Ripgrep engine, `ast-grep`, Sixel image encoder, POSIX `file_lock`, and transcript compaction (`snapcompact`).
+2. **Single-Host Worker Architecture (`@oh-my-pi/pi-utils/worker-host`)**: Eliminates Bun worker inbox message-drop race conditions via `installWorkerInbox()` and synchronous main entry routing (`declareWorkerHostEntry()`).
+3. **30 FPS Character Streaming Engine (`ToolArgsRevealController`)**: Character-by-character JSON state machine decodes partial streamed arguments with 30 FPS display throttle for instant tool execution UI rendering.
+4. **Line Hash & Delta Verification (`@oh-my-pi/hashline`)**: Fast xxHash line deltas and fuzzy hunk patch verification prevent invalid file edits.
+5. **Model Catalog & Thinking Budget Management (`@oh-my-pi/pi-catalog`)**: Clamps reasoning effort across Anthropic adaptive, Gemini 3, OpenAI o-series, Kimi K3, and GLM-5.2 to avoid invalid LLM payload rejections.
+6. **Enterprise VCS Engine (`git.ts` & `jj.ts`)**: `--no-optional-locks` index safety, 8 MiB output streaming limits, POSIX `EINTR` retries, and `withRepoLock` per-repo serialization.
+7. **Commit Pipeline (`packages/coding-agent/src/commit`)**: Automated diff hunk splitting and map-reduce commit message generation.
+8. **VS Code Host Isolation (`node_modules/vscode` stub)**: Ensures non-VS Code CLI executions run cleanly without missing optional VS Code LM imports.
 
 1. **Workspace Intelligence Engine**: `WorkspaceIntelligenceEngine` (structural indexing, file entropy, symbol graphs).
 2. **Spider Engine**: `SpiderEngine` (AST symbol extraction, dependency graph traversal).

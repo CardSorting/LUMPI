@@ -263,15 +263,21 @@ LUMI processes developer interactions through a multi-layered pipeline connectin
 +-----------------------------------------------------------------------------------+
 |                            LUMI ENGINE TOPOLOGY                                   |
 +-----------------------------------------------------------------------------------+
-|  [Developer Interface]  --> @noorm/lumpi-tui (Differential Terminal UI)     |
+|  [Developer Interface]  --> @noorm/lumpi-tui (Differential Terminal UI)             |
 |                                     |                                             |
-|  [Agent Core Engine]   --> @noorm/lumpi (Session State CAS & CLI)           |
+|  [Agent Core Engine]   --> @noorm/lumpi (Session State CAS & CLI)                 |
 |                                     |                                             |
-|  [Host Integration]    --> @noorm/lumpi-codemarie (CodemarieBridge Provider)|
+|  [Native Rust Core]    --> crates/pi-natives (pi-walker, Ripgrep, ast-grep)       |
 |                                     |                                             |
-|  [Multi-LLM Router]    --> @noorm/lumpi-ai (OpenAI Codex / Claude / Gemini) |
+|  [Line Delta Engine]   --> @oh-my-pi/hashline (xxHash deltas & patch validation)  |
 |                                     |                                             |
-|  [Substrate Storage]   --> @noorm/broccolidb (16MB Slab Arena & RingBuf) |
+|  [Model Catalog & Thinking] --> @oh-my-pi/pi-catalog (Effort clampers & router)   |
+|                                     |                                             |
+|  [Host Integration]    --> @noorm/lumpi-codemarie (CodemarieBridge Provider)      |
+|                                     |                                             |
+|  [Multi-LLM Router]    --> @noorm/lumpi-ai (OpenAI Codex / Claude / Gemini)       |
+|                                     |                                             |
+|  [Substrate Storage]   --> @noorm/broccolidb (16MB Slab Arena & RingBuf)          |
 |                                     |                                             |
 |  [Sandbox Execution]   --> Gondolin Micro-VM / Docker / OpenShell Sandbox          |
 +-----------------------------------------------------------------------------------+

@@ -9,9 +9,12 @@ This guide details configuring **LUMI** for enterprise security compliance, corp
 LUMI operates under a zero-trust supply chain model:
 
 1. **Zero External Telemetry**: LUMI makes zero call-home telemetric ping requests. Code context is sent strictly to the user-configured LLM provider API.
-2. **Lifecycle Script Suppression**: Dependencies are installed using `--ignore-scripts` to block post-install scripts.
-3. **Lockfile Immutability**: Production dependency changes require explicit override approval (`PI_ALLOW_LOCKFILE_CHANGE=1`).
-4. **Erasable TypeScript**: Engine sources use Node strip-only mode (no JS code transformers or un-audited transpilation passes).
+2. **Native Rust Memory Safety**: Rust 1.99 Nightly compiler borrow checker (`crates/pi-natives`) guarantees memory safety for high-throughput walker/grep native binaries (`pi_natives.node`).
+3. **POSIX Advisory File Locking**: Atomic `file_lock` acquiring prevents race conditions and overlapping file mutations during parallel multi-agent executions.
+4. **Single-Host Worker Inbox Buffering**: Worker threads attach synchronous message buffers (`installWorkerInbox`) preventing parent process payload drops during startup evaluation.
+5. **Lifecycle Script Suppression**: Dependencies are installed using `--ignore-scripts` to block post-install scripts.
+6. **Lockfile Immutability**: Production dependency changes require explicit override approval (`PI_ALLOW_LOCKFILE_CHANGE=1`).
+7. **Erasable TypeScript**: Engine sources use Node strip-only mode (no JS code transformers or un-audited transpilation passes).
 
 ---
 

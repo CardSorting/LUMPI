@@ -25,11 +25,17 @@ Do not merge these narratives. LUMI owns IDE session behavior and approvals. Bro
 | Host abstraction | `src/hosts/host-provider.ts`, `src/hosts/vscode/` | Core code should use host abstractions instead of direct `vscode` imports |
 | Controller | `src/core/controller/` | Task lifecycle, webview RPC, MCP hub, auth, state |
 | Agent loop | `src/core/task/` | Prompt -> API stream -> parse message -> execute tools -> completion |
-| Tools | `src/core/task/tools/`, `src/shared/tools.ts` | 63 typed default tools plus dynamic subagent tools |
+| Native Rust Core | `crates/pi-natives`, `@oh-my-pi/pi-natives` | Native Rust 1.99 Nightly parallel directory walker (`pi-walker`), Ripgrep engine, `ast-grep`, Sixel image encoder, POSIX `file_lock`, `snapcompact` |
+| Single-Host Worker Host | `packages/utils/src/worker-host.ts`, `packages/coding-agent/src/cli.ts` | Dispatches single-host worker entry (`declareWorkerHostEntry`) and buffers messages (`installWorkerInbox`, `consumeWorkerInbox`) to prevent worker init stalls |
+| 30 FPS Character Streaming | `packages/coding-agent/src/modes/controllers/tool-args-reveal.ts` | Character-by-character JSON state machine streaming parser for 30 FPS display throttled live tool previews |
+| Line Delta Engine | `packages/hashline/`, `packages/coding-agent/src/core/tools/hashline-tool.ts` | Fast xxHash line deltas and fuzzy hunk patch verification preventing invalid file edits |
+| Model Catalog & Thinking | `packages/catalog/`, `@oh-my-pi/pi-catalog` | Model thinking budget clampers & provider model resolvers (Anthropic adaptive, Gemini 3, OpenAI o-series, Kimi K3, GLM-5.2) |
+| Enterprise VCS Engine | `packages/coding-agent/src/utils/git.ts`, `jj.ts` | Enterprise `git.ts` (101 KB) with `--no-optional-locks` isolation, 8 MiB output streaming limits, POSIX retry loops, `withRepoLock`, and `jj.ts` (16.8 KB Jujutsu engine) |
+| Tools | `src/core/task/tools/`, `src/shared/tools.ts` | Typed default tools plus dynamic subagent and native tools |
 | Completion/finalization | `src/core/task/tools/completion/`, `src/core/task/tools/finalization/` | Deterministic lifecycle decisions, action guards, receipts, wiki finalization |
 | Coordination authority | `src/core/governance/`, `src/core/swarm/SwarmMutexService.ts`, `src/infrastructure/db/Config.ts` | SQLite production leases, fencing, projections, reconciliation, durable terminal results |
 | Workspace intelligence | `src/core/workspace-intelligence/` | Finalization-time cognitive model, drift findings, classified knowledge signals |
-| Providers | `src/core/api/`, `src/shared/providers/providers.json` | Five active provider keys in current code/UI |
+| Providers | `src/core/api/`, `src/shared/providers/providers.json` | Active provider keys in current code/UI |
 | Prompts | `src/core/prompts/system-prompt/` | Variant-specific system prompts and tool descriptions |
 | Context/rules/skills | `src/core/context/`, `.dietcoderules/`, `.agents/skills/` | User/project instructions and optional skills |
 | Context window projection | `src/core/context/context-management/`, `src/core/context/ContextPruner.ts`, `src/core/task/index.ts` | Durable-source, turn-boundary, progressively bounded context compaction; see [Recoverable Context Compaction](.wiki/recoverable-context-compaction.md) |

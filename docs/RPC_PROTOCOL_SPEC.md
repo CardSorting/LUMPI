@@ -29,6 +29,7 @@ All RPC messages use JSON-RPC 2.0 compatible structured payloads typed by `@noor
     "prompt": "Audit src/index.ts for memory leaks",
     "provider": "openai-codex",
     "model": "gpt-5.6-luna",
+    "thinkingLevel": "adaptive",
     "executionMode": "read_only"
   }
 }

@@ -44,11 +44,13 @@ This guide provides engineering leaders, CTOs, Security Officers, and System Arc
 - **Goal**: Validate terminal responsiveness, basic multi-provider routing, and tool execution without exposing sensitive internal repositories.
 - **Actions**:
   1. Clone repository and run `./pi-test.sh --no-env` for zero-key setup testing.
-  2. Test local offline model execution using Ollama:
+  2. Verify single-host worker host probe: `bun packages/coding-agent/src/cli.ts --smoke-test`.
+  3. Verify native Rust crate compilation: `cargo check --manifest-path crates/pi-natives/Cargo.toml`.
+  4. Test local offline model execution using Ollama:
      ```bash
      pi --provider ollama --model llama3.3:70b -p "Explain codebase architecture"
      ```
-  3. Validate non-interactive execution mode (`-p`).
+  5. Validate non-interactive execution mode (`-p`).
 
 ### Phase 2: Security & Data Governance Audit (Week 1)
 
@@ -56,7 +58,8 @@ This guide provides engineering leaders, CTOs, Security Officers, and System Arc
 - **Actions**:
   1. Audit outbound network traffic using proxy logging (verify zero background telemetry calls).
   2. Inspect Gondolin Micro-VM sandboxing extension (`packages/coding-agent/examples/extensions/gondolin`).
-  3. Review pinned dependency integrity and static lockfile policies.
+  3. Verify native POSIX `file_lock` and xxHash line delta verification (`@oh-my-pi/hashline`).
+  4. Review pinned dependency integrity and static lockfile policies.
 
 ### Phase 3: Developer Pilot Group (Weeks 2–3)
 

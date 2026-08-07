@@ -88,6 +88,15 @@ lumpi --extension packages/coding-agent/examples/extensions/custom-tool
 # Run full monorepo quality gate (formatting, types, relative imports, shrinkwrap)
 npm run check
 
+# Verify native Rust crate compilation
+cargo check --manifest-path crates/pi-natives/Cargo.toml
+
+# Run single-host worker host architecture smoke probe
+bun packages/coding-agent/src/cli.ts --smoke-test
+
+# Regenerate model definitions and catalog
+bun run gen:models
+
 # Run non-e2e unit and integration test suite
 ./test.sh
 

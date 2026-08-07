@@ -11,19 +11,25 @@ This document provides visual diagrams illustrating the component relationships,
 |                           MONOREPO DEPENDENCY TOPOLOGY                            |
 +-----------------------------------------------------------------------------------+
 |                                                                                   |
-|    @noorm/lumpi-coding-agent (CLI Binary & Session TUI Host)               |
+|    @noorm/lumpi-coding-agent (CLI Binary & Session TUI Host)                     |
 |            │                                                                      |
-|            ├───> @noorm/lumpi-agent-core (CAS State Machine)               |
-|            ├───> @noorm/lumpi-codemarie (Host Provider Bridge)             |
-|            ├───> @noorm/lumpi-ai (Multi-LLM Gateway Router)                 |
-|            ├───> @noorm/lumpi-tui (Differential Terminal UI)                |
-|            └───> @noorm/broccolidb (16MB Slab Arena Memory Substrate)   |
+|            ├───> crates/pi-natives (@oh-my-pi/pi-natives Rust Nightly walker/grep) |
+|            ├───> @oh-my-pi/hashline (xxHash Line Deltas & Patch Verification)     |
+|            ├───> @oh-my-pi/pi-catalog (Model Thinking Budget Clampers)             |
+|            ├───> @oh-my-pi/pi-utils (Single-Host Worker Host Architecture)        |
+|            ├───> @noorm/lumpi-agent-core (CAS State Machine)                     |
+|            ├───> @noorm/lumpi-codemarie (Host Provider Bridge)                   |
+|            ├───> @noorm/lumpi-ai (Multi-LLM Gateway Router)                       |
+|            ├───> @noorm/lumpi-tui (Differential Terminal UI)                      |
+|            └───> @noorm/broccolidb (16MB Slab Arena Memory Substrate)             |
 |                                                                                   |
 |    Shared Packages:                                                               |
-|    - @noorm/lumpi-protocol (RPC Schemas)                                   |
-|    - @noorm/lumpi-telemetry (Metrics)                                      |
-|    - @noorm/lumpi-session-backends (Persistence Wrappers)                  |
-|    - @noorm/lumpi-evals (Benchmark Harness)                                |
+|    - @oh-my-pi/omptype (ArkType-compatible Lazy JIT Schema Validation)            |
+|    - @oh-my-pi/snapcompact (Transcript Compaction Engine)                         |
+|    - @noorm/lumpi-protocol (RPC Schemas)                                         |
+|    - @noorm/lumpi-telemetry (Metrics)                                            |
+|    - @noorm/lumpi-session-backends (Persistence Wrappers)                        |
+|    - @noorm/lumpi-evals (Benchmark Harness)                                      |
 +-----------------------------------------------------------------------------------+
 ```
 

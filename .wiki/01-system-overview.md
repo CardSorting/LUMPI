@@ -10,8 +10,12 @@ LUMI is a VS Code extension monorepo with two complementary layers:
 
 | Layer | Paths | Responsibility |
 |---|---|---|
-| LUMI session layer | `src/`, `webview-ui/`, `proto/` | VS Code activation, webview UI, task loop, tools, providers, MCP, hooks, completion gates |
-| BroccoliDB substrate | `broccolidb/` | Local cognitive memory, runtime graph, Spider/repair substrate, durable snapshots |
+| LUMI session layer | `packages/coding-agent/` | CLI host, TUI rendering, task loop, tool dispatch, extension host |
+| Native Rust core | `crates/pi-natives/`, `packages/natives/` | High-throughput parallel directory walker (`pi-walker`), sub-ms Ripgrep, POSIX locks |
+| Model Catalog | `packages/catalog/` | Unified provider descriptors, model identity, thinking budget clampers |
+| Line Delta Engine | `packages/hashline/` | xxHash line hashing, fuzzy patch validation, non-contiguous edits |
+| Worker Host Subsystem | `packages/utils/` | Single-host worker entry, `installWorkerInbox` buffering, IPC transport |
+| BroccoliDB substrate | `packages/broccolidb/` | Local cognitive memory, runtime graph, 16MB zero-GC slab allocators |
 
 Do not merge the narratives. LUMI owns IDE session behavior and approval gates. BroccoliDB owns substrate truth and runtime graph capabilities.
 

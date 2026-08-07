@@ -39,7 +39,9 @@ Maintainers have commit and release authority across the `@noorm/*` monorepo. Th
 For significant changes affecting core architecture, public APIs, substrate memory models, or host integration contracts, an RFC is required before implementation begins.
 
 ### When is an RFC Required?
-- Major API contract changes in `@noorm/lumpi-agent-core` or `@noorm/lumpi-ai`.
+- Major API contract changes in `@noorm/lumpi-agent-core`, `@noorm/lumpi-ai`, or `@oh-my-pi/pi-catalog`.
+- Native Rust crate modifications in `crates/pi-natives` or dynamic C-ABI native addon interfaces (`pi_natives.node`).
+- Single-host worker architecture routing or worker inbox buffering logic in `@oh-my-pi/pi-utils`.
 - Modifications to `BroccoliDB` substrate memory layouts or zero-GC ring buffer protocols.
 - Introducing new host client provider bridges or sandbox execution engines.
 - Deprecating existing tools, flags, or provider integrations.

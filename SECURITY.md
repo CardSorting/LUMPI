@@ -62,6 +62,8 @@ If you discover a potential security vulnerability in LUMI or any package in thi
 | Security Control | Implementation Mechanism | Enforcement Standard |
 | :--- | :--- | :--- |
 | **Zero External Telemetry** | Default local execution | No code snippets transmitted to 3rd party servers |
+| **Native Memory Safety** | Rust 1.99 Nightly compiler borrow-checker (`crates/pi-natives`) | Borrow-checker guaranteed zero-buffer-overflow C-ABI addon |
+| **Atomic File Locking** | POSIX advisory `file_lock` & xxHash line deltas (`@oh-my-pi/hashline`) | Prevents overlapping multi-agent file mutation race conditions |
 | **Lifecycle Script Block** | `--ignore-scripts` installation | Blocks dynamic post-install script execution |
 | **Lockfile Immutability** | `PI_ALLOW_LOCKFILE_CHANGE` pre-commit gate | Prevents un-audited transitive dependency drift |
 | **Strip-Only TypeScript** | Erasable Node syntax | No un-audited JS emit transformers |

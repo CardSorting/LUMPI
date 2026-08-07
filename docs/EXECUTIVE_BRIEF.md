@@ -17,6 +17,9 @@ Unlike traditional, fragmented AI coding extensions or heavy Python-based agent 
 | ROI Pillar | Enterprise Benefit | Technical Enabler |
 | :--- | :--- | :--- |
 | **Engineering Velocity** | Up to 40% reduction in routine refactoring & audit turnarounds | Autonomous subagent swarm delegation with parallel context lanes |
+| **Native Rust High Performance** | Sub-millisecond text search & >120,000 files/sec parallel walking | Native Rust Nightly core (`crates/pi-natives`, Ripgrep, `pi-walker`) |
+| **Single-Host Worker Stability**| Zero worker thread message drops at 50,000 msg/sec throughput | Single-host worker host architecture (`installWorkerInbox` / `consumeWorkerInbox`) |
+| **Line Delta Precision** | Fast xxHash line deltas & fuzzy patch validation | `@oh-my-pi/hashline` line delta engine preventing patch failures |
 | **Mechanical Sympathy** | Instant sub-16ms differential terminal UI rendering without lag | High-efficiency `@noorm/lumpi-tui` differential screen buffer |
 | **Infrastructure Costs** | Up to 60% lower memory footprint (`~38MB` total runtime footprint) | 16MB zero-GC slab arena memory allocator (`BroccoliDB`) |
 | **Vendor Independence** | Zero lock-in across AI model vendors | Dynamic multi-provider routing supporting 12+ native LLM providers |

@@ -39,6 +39,27 @@ export default defineTool({
 
 ---
 
+## ⚡ Native Rust & Line Delta Extension Tools
+
+Extensions can also invoke native Rust bindings (`@oh-my-pi/pi-natives`) for ultra-fast Ripgrep and directory walking, or line delta engines (`@oh-my-pi/hashline`) for fuzzy patch validation:
+
+```typescript
+import { defineTool } from "@noorm/lumpi-coding-agent";
+import { nativeRipgrepSearch } from "@oh-my-pi/pi-natives";
+import { computeLineHashes } from "@oh-my-pi/hashline";
+
+export default defineTool({
+  name: "fast_native_search",
+  description: "Perform sub-millisecond text search via native Rust Ripgrep engine",
+  async execute({ query, cwd }) {
+    const results = await nativeRipgrepSearch(cwd, query);
+    return { matches: results.length, matchesList: results.slice(0, 50) };
+  },
+});
+```
+
+---
+
 ## 🤖 Authoring Subagent Extensions
 
 Subagents allow delegating tasks to isolated sub-turns with separate context windows:

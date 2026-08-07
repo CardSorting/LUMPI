@@ -44,12 +44,19 @@ Always install dependencies with `--ignore-scripts` to prevent running untrusted
 npm install --ignore-scripts
 ```
 
-### 3. Verify Quality Gate
+### 3. Verify Quality Gate & Native Worker Probe
 
-Run the monorepo verification gate:
+Run the monorepo verification gate and native worker probe:
 
 ```bash
+# 1. Run typescript, linter, and shrinkwrap quality check
 npm run check
+
+# 2. Verify native Rust crate compilation
+cargo check --manifest-path crates/pi-natives/Cargo.toml
+
+# 3. Run single-host worker host architecture smoke probe
+bun packages/coding-agent/src/cli.ts --smoke-test
 ```
 
 ### 4. Configure Provider API Keys
@@ -80,11 +87,14 @@ $env:GEMINI_API_KEY="AIzaSy..."
 
 ---
 
-## ⚡ Option 2: Bun Binary Execution
+## ⚡ Option 2: Bun Binary Execution & Worker Host
 
 If you prefer using Bun for fast startup execution:
 
 ```bash
+# Verify worker host probe
+bun packages/coding-agent/src/cli.ts --smoke-test
+
 # Launch CLI directly via Bun
 bun run packages/coding-agent/src/cli.ts
 ```

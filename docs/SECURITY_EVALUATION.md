@@ -29,6 +29,8 @@ This document provides Chief Information Security Officers (CISOs), Security Arc
 | Threat Category | Potential Risk | LUMI Mitigation Control | Verification Standard |
 | :--- | :--- | :--- | :--- |
 | **Data Leakage / Telemetry** | Codebase transmission to telemetry aggregators | Zero default telemetry. All code execution stays strictly within local process context. | Network traffic inspection shows zero background outbound telemetry endpoints. |
+| **Native Memory Safety** | Buffer overflow or memory corruption in native extensions | Safe Rust 1.99 Nightly native crate (`crates/pi-natives`) compiled into N-API addon. | Rust compiler borrow checker guarantees 100% memory safety. |
+| **Concurrent File Tampering** | Race conditions during parallel agent file edits | POSIX advisory `file_lock` and xxHash line delta verification (`@oh-my-pi/hashline`). | Atomic lock acquiring prevents overlapping concurrent file writes. |
 | **Untrusted Code Execution** | Malicious shell commands executed by agent turns | Gondolin Micro-VM isolation routes command execution into lightweight Linux micro-VMs. | Host process isolation verified; host kernel filesystem protected. |
 | **Supply Chain Poisoning** | Malicious post-install lifecycle scripts | Strict installation policy: `npm install --ignore-scripts`. | Dependency installation executes zero binary lifecycle hooks. |
 | **Lockfile Drift** | Un-audited transitive dependency updates | Pre-commit lockfile gate requiring `PI_ALLOW_LOCKFILE_CHANGE=1`. | Lockfile mutations blocked by default. |

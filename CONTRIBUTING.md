@@ -120,6 +120,12 @@ Before opening a PR, ensure all verification commands pass cleanly:
 # Run complete verification gate
 npm run check
 
+# Verify native Rust crate compilation
+cargo check --manifest-path crates/pi-natives/Cargo.toml
+
+# Run single-host worker host architecture smoke probe
+bun packages/coding-agent/src/cli.ts --smoke-test
+
 # Run non-e2e test suite
 ./test.sh
 

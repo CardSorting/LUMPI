@@ -13,15 +13,24 @@ packages/
 ├── agent/              # @noorm/lumpi-agent-core (State machine, prompt assembly, CAS history)
 ├── ai/                 # @noorm/lumpi-ai (Multi-provider LLM gateway router)
 ├── broccolidb/         # @noorm/broccolidb (Zero-GC 16MB slab arena memory engine)
+├── catalog/            # @oh-my-pi/pi-catalog (Model thinking budget clampers & resolvers)
 ├── client/             # @noorm/lumpi-client (RPC client bindings)
 ├── codemarie/          # @noorm/lumpi-codemarie (Merged CodeMarie host bridge provider)
 ├── coding-agent/       # @noorm/lumpi-coding-agent (CLI binary, session CAS, TUI host)
 ├── evals/              # @noorm/lumpi-evals (Benchmarking framework)
+├── hashline/           # @oh-my-pi/hashline (Fast xxHash line deltas & patch verification)
+├── natives/            # @oh-my-pi/pi-natives (Native N-API addon loader for pi_natives.node)
+├── omptype/            # @oh-my-pi/omptype (ArkType-compatible schema validation & JIT runtime)
 ├── protocol/           # @noorm/lumpi-protocol (Shared RPC protocol codecs & schemas)
 ├── server/             # @noorm/lumpi-server (Multi-tenant IPC server broker)
 ├── session-backends/   # @noorm/lumpi-session-backends (Persistence backends & SQLite wrappers)
+├── snapcompact/        # @oh-my-pi/snapcompact (Transcript compaction & session snapshot engine)
 ├── telemetry/          # @noorm/lumpi-telemetry (Vendor-neutral telemetry metrics)
-└── tui/                # @noorm/lumpi-tui (Differential terminal UI library)
+├── tui/                # @noorm/lumpi-tui (Differential terminal UI library)
+└── utils/              # @oh-my-pi/pi-utils (Single-host worker-host, stream & path utilities)
+
+crates/
+└── pi-natives/         # Rust 1.99 Nightly parallel walker, Ripgrep, ast-grep, Sixel, POSIX locks
 ```
 
 ---
@@ -69,6 +78,23 @@ It executes the following verifications in sequence:
 3. **TypeScript Relative Imports**: Verifies top-level relative import paths.
 4. **Shrinkwrap Consistency**: Verifies `npm-shrinkwrap.json` for `@noorm/lumpi-coding-agent`.
 5. **Browser & Package Smoke Tests**: Validates compilation targets.
+
+### Native Crate Verification & Worker Host Smoke Probe
+
+To verify native Rust bindings and the single-host worker host routing:
+
+```bash
+# 1. Verify Rust native crate compilation
+cargo check --manifest-path crates/pi-natives/Cargo.toml
+
+# 2. Run single-host worker architecture smoke probe
+bun packages/coding-agent/src/cli.ts --smoke-test
+```
+
+Expected Output:
+```text
+pi native worker smoke test passed
+```
 
 ### Running Non-E2E Unit & Integration Tests
 

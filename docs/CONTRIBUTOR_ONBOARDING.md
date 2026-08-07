@@ -37,10 +37,16 @@ npm install --ignore-scripts
 Before making any changes, verify that your local workspace passes all quality checks:
 
 ```bash
-# Run mandatory quality gate (Biome linter, pinned deps, imports, shrinkwrap)
+# 1. Run mandatory quality gate (Biome linter, pinned deps, imports, shrinkwrap)
 npm run check
 
-# Run non-e2e test suite across packages
+# 2. Verify native Rust crate compilation
+cargo check --manifest-path crates/pi-natives/Cargo.toml
+
+# 3. Run single-host worker host architecture smoke probe
+bun packages/coding-agent/src/cli.ts --smoke-test
+
+# 4. Run non-e2e test suite across packages
 ./test.sh
 ```
 

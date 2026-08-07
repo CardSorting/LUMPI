@@ -30,7 +30,7 @@ Join our active developer community on [Discord](https://discord.com/invite/nKXT
 
 Before submitting a bug report on GitHub:
 1. Search existing closed issues to check if a fix or workaround already exists in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
-2. Run `npm run check` and `./test.sh` to ensure your environment is healthy.
+2. Run verification suite (`npm run check`, `cargo check --manifest-path crates/pi-natives/Cargo.toml`, `bun packages/coding-agent/src/cli.ts --smoke-test`, and `./test.sh`) to ensure your environment is healthy.
 3. Include minimal reproduction steps, terminal output logs, node version, operating system, and affected package name.
 
 ---
