@@ -50,3 +50,9 @@ collect.sh
 *.sqlite
 *.sqlite3
 *.db-journal
+
+# Rust build artifacts
+target/
+*.node
+packages/natives/native/
+
