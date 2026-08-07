@@ -16,6 +16,9 @@ This document provides a comprehensive gallery of copy-pasteable execution recip
 - [Recipe 8: Headless JSON-RPC Daemon Server](#recipe-8-headless-json-rpc-daemon-server)
 - [Recipe 9: Custom Extension Tool Registration](#recipe-9-custom-extension-tool-registration)
 - [Recipe 10: Monorepo Quality Gate Verification](#recipe-10-monorepo-quality-gate-verification)
+- [Recipe 11: Agentic Commit & Conventional Changelog Pipeline](#recipe-11-agentic-commit--conventional-changelog-pipeline)
+- [Recipe 12: Autonomous Auto-Learning & Workspace Skill Discovery](#recipe-12-autonomous-auto-learning--workspace-skill-discovery)
+- [Recipe 13: High-Precision Line Delta Patching](#recipe-13-high-precision-line-delta-patching)
 
 ---
 
@@ -163,6 +166,39 @@ npm run check
 
 # Run non-e2e test suite
 ./test.sh
+```
+
+---
+
+## Recipe 11: Agentic Commit & Conventional Changelog Pipeline
+
+Analyze staged diffs using a multi-phase map-reduce pipeline, sort hunk dependencies topographically, and auto-generate conventional commits with changelog updates:
+
+```bash
+# Execute agentic commit analysis and conventional commit generation
+npx tsx packages/coding-agent/src/commit/cli.ts --agentic
+```
+
+---
+
+## Recipe 12: Autonomous Auto-Learning & Workspace Skill Discovery
+
+Enable continuous agent self-improvement to discover project skills, manage lessons from code modifications, and synthesize reusable workspace skill modules:
+
+```bash
+# Launch interactive turn with autolearn harness enabled
+npx tsx packages/coding-agent/src/cli.ts --autolearn -p "Audit error handlers and log workspace lessons"
+```
+
+---
+
+## Recipe 13: High-Precision Line Delta Patching
+
+Apply precise, line-anchored checksum edits using xxHash line deltas (`@oh-my-pi/hashline`) to guarantee zero-drift file patching:
+
+```bash
+# Execute exact hashline tool patch on a target codebase file
+npx tsx packages/coding-agent/src/cli.ts -p "Update server request validator using exact hashline deltas"
 ```
 
 ---

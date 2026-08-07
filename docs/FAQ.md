@@ -12,6 +12,7 @@ This document resolves common operational, architectural, and security questions
 - [4. Security, Isolation & Telemetry](#4-security-isolation--telemetry)
 - [5. Substrate Memory & Architecture](#5-substrate-memory--architecture)
 - [6. Headless Automation & CI/CD](#6-headless-automation--cicd)
+- [7. Zenith Engines, Auto-Learning & Commit Subsystem](#7-zenith-engines-auto-learning--commit-subsystem)
 
 ---
 
@@ -107,6 +108,19 @@ Use non-interactive print mode (`-p` flag):
 ```bash
 npx tsx packages/coding-agent/src/cli.ts -p "Audit repository for security vulnerabilities and format results as Markdown"
 ```
+
+---
+
+## 7. Zenith Engines, Auto-Learning & Commit Subsystem
+
+### Q: What is the `autolearn` continuous self-improvement harness?
+The `autolearn` module (`src/core/harness/autolearn`) continuously monitors code edits during agent turns, discovers workspace conventions, logs lessons learned, synthesizes skill modules, and persists knowledge into `.agents/skills` across sessions.
+
+### Q: How does `@oh-my-pi/hashline` prevent file patching errors?
+`@oh-my-pi/hashline` computes xxHash line-level checksums for every line in modified files. Instead of relying on ambiguous fuzzy line matches or search-and-replace strings, Hashes verify line anchors before applying edits, ensuring zero line-drift corruption.
+
+### Q: How does the agentic git commit pipeline analyze diffs?
+The agentic commit pipeline (`src/commit/agentic`) uses a multi-phase map-reduce model to inspect staged hunks, topographically sort file dependencies, categorize conventional commit scopes, and auto-generate changelog entries (`packages/coding-agent/src/commit/cli.ts --agentic`).
 
 ---
 

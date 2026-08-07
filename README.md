@@ -7,8 +7,10 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Node.js-%3E%3D22.19.0-brightgreen?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js Version" />
   <img src="https://img.shields.io/badge/TypeScript-Native_Strip--Only-blue?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Biome-Verified-purple?style=for-the-badge" alt="Biome" />
+  <img src="https://img.shields.io/badge/Rust-Native_pi--natives-orange?style=for-the-badge&logo=rust&logoColor=white" alt="Rust Native Engine" />
   <img src="https://img.shields.io/badge/Substrate-Zero--GC_BroccoliDB-orange?style=for-the-badge" alt="BroccoliDB Substrate" />
+  <img src="https://img.shields.io/badge/Hashline-xxHash_Deltas-blueviolet?style=for-the-badge" alt="Hashline xxHash Deltas" />
+  <img src="https://img.shields.io/badge/Autolearn-Dynamic_Skills-yellowgreen?style=for-the-badge" alt="Auto-Learning Harness" />
   <img src="https://img.shields.io/badge/Sandbox-Gondolin_Micro--VM-darkgreen?style=for-the-badge" alt="Micro-VM Sandboxing" />
   <img src="https://img.shields.io/badge/License-MIT%20%2F%20Apache--2.0-green?style=for-the-badge" alt="License MIT / Apache-2.0" />
   <img src="https://img.shields.io/badge/Sponsor-Earendil-pink?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor" />
@@ -42,6 +44,9 @@ Select your role for a tailored, zero-friction onboarding path:
 | **Engineering Executive / CTO** | Review ROI, security compliance, and strategic architecture | [👉 Executive Brief](docs/EXECUTIVE_BRIEF.md) • [👉 Enterprise Adoption Guide](docs/ADOPTION_GUIDE.md) |
 | **CISO / Security Architect** | Evaluate threat model, data flow, zero telemetry, and micro-VM | [👉 CISO Security Sheet](docs/SECURITY_EVALUATION.md) • [👉 Compliance](docs/COMPLIANCE.md) |
 | **Individual Developer** | Launch LUMI locally in under 30 seconds & access recipe gallery | [👉 30-Second Quickstart](#1-30-second-local-developer-quickstart) • [👉 Recipe Gallery](docs/DEMOS_AND_EXAMPLES.md) |
+| **AI Agent / Parent Orchestrator** | Programmatic CLI, JSON-RPC daemons, subagent swarms & agent invariants | [👉 Agent Onboarding](docs/AGENT_ONBOARDING.md) • [👉 Interoperability Protocol](docs/AGENT_HOST_INTEROPERABILITY.md) |
+| **Git / Release Engineer** | Run agentic conventional commit & topological changelog generator | [👉 Agentic Commit Recipe](#recipe-6-agentic-git-commit--conventional-changelog-pipeline) • [👉 Quickstart](docs/QUICKSTART.md#-option-5-agentic-git-commit--conventional-changelog-engine) |
+| **AI Agent Lead / Tech Lead** | Enable continuous auto-learning & dynamic workspace skill discovery | [👉 Autolearn Recipe](#recipe-7-autonomous-auto-learning--dynamic-skill-discovery) • [👉 Quickstart](docs/QUICKSTART.md#-option-6-autonomous-auto-learning--dynamic-skill-discovery) |
 | **System Architect** | Evaluate monorepo packages, TUI, substrate memory, and diagrams | [👉 Architecture Guide](docs/ARCHITECTURE.md) • [👉 Diagrams Catalog](docs/DIAGRAMS.md) |
 | **DevOps / Security Lead** | Deploy micro-VM sandboxing, enterprise proxies & air-gapped LLMs | [👉 Security & Air-Gap Guide](docs/SECURITY_AND_AIRGAP.md) • [👉 FAQ](docs/FAQ.md) |
 | **AI Researcher / Evaluator** | Benchmark agent tool calls, memory allocation, and coding accuracy | [👉 Benchmark Methodology](docs/BENCHMARKS.md) |
@@ -56,6 +61,8 @@ Explore our comprehensive documentation suite in [`docs/`](docs/):
 
 - 💼 **[Executive ROI Brief](docs/EXECUTIVE_BRIEF.md)**: CTO/VP 1-pager covering ROI, zero telemetry, and performance.
 - 🏢 **[Enterprise Adoption & Rollout Guide](docs/ADOPTION_GUIDE.md)**: 5-Phase rollout matrix, evaluation rubrics, and security checklists.
+- 🤖 **[Autonomous AI Agent Onboarding Guide](docs/AGENT_ONBOARDING.md)**: Agent discovery rules, erasable TS invariants, zero-GC substrate rules, and quality gates.
+- 🛰️ **[Agent Host Interoperability Protocol](docs/AGENT_HOST_INTEROPERABILITY.md)**: Integration surfaces for parent agents, JSON-RPC schemas, CLI `-p` mode, and subagent swarm topologies.
 - 🛡️ **[CISO & Security Evaluation Sheet](docs/SECURITY_EVALUATION.md)**: Threat model, data flow diagrams, zero telemetry, and air-gap protocols.
 - 🎨 **[Demos & Example Recipes Gallery](docs/DEMOS_AND_EXAMPLES.md)**: 10 copy-pasteable recipes for audits, tests, Ollama, and swarms.
 - ⏱️ **[15-Minute Contributor Onboarding](docs/CONTRIBUTOR_ONBOARDING.md)**: Fast-track contributor guide for monorepo development.
@@ -75,9 +82,9 @@ Explore our comprehensive documentation suite in [`docs/`](docs/):
 
 ## 🚀 Executive Overview
 
-**LUMI** is an enterprise-grade agentic AI coding engine built for high-velocity software engineering. Synthesized from the structural unification of **CodeMarie** CLI host architecture and **Pi-Main** agentic intelligence, LUMI couples multi-provider model routing with an in-memory high-throughput substrate engine (**BroccoliDB**) to deliver real-time, deterministic tool execution inside high-performance terminal environments.
+**LUMI** is an enterprise-grade agentic AI coding engine built for high-velocity software engineering. Synthesized from the structural unification of **CodeMarie** CLI host architecture and **Pi-Main** agentic intelligence, LUMI couples multi-provider model routing with an in-memory high-throughput substrate engine (**BroccoliDB**) and Rust native engines (**pi-natives**) to deliver real-time, deterministic tool execution inside high-performance terminal environments.
 
-Engineered to supersede legacy, fragmented AI coding extensions, LUMI provides a consolidated monorepo runtime designed for zero-GC memory allocation, hard micro-VM sandboxing, and strict supply-chain immutability.
+Engineered to supersede legacy, fragmented AI coding extensions, LUMI provides a consolidated monorepo runtime designed for zero-GC memory allocation (`mnemopi-broccolidb`), exact line-level xxHash deltas (`@oh-my-pi/hashline`), autonomous continuous learning (`autolearn`), agentic Git commit map-reduce pipelines, hard micro-VM sandboxing, and strict supply-chain immutability.
 
 ---
 
@@ -218,6 +225,33 @@ Isolate code modification and shell tool execution inside a local Linux micro-VM
 pi --extension packages/coding-agent/examples/extensions/gondolin
 ```
 
+### Recipe 6: Agentic Git Commit & Conventional Changelog Pipeline
+
+Run LUMI's multi-phase map-reduce commit pipeline to analyze staged diffs, topographically isolate dependencies, and auto-generate conventional commits with changelog updates:
+
+```bash
+# Execute agentic commit analysis and conventional commit generation
+npx tsx packages/coding-agent/src/commit/cli.ts --agentic
+```
+
+### Recipe 7: Autonomous Auto-Learning & Dynamic Skill Discovery
+
+Enable continuous agent self-improvement to discover workspace skills, record lessons from code modifications, and synthesize reusable agent playbooks:
+
+```bash
+# Launch interactive turn with autolearn harness enabled
+npx tsx packages/coding-agent/src/cli.ts --autolearn -p "Audit error handlers and log workspace lessons"
+```
+
+### Recipe 8: High-Precision Hashline Line Delta Patching
+
+Apply precise line-anchored checksum edits using xxHash line deltas to guarantee zero-drift file patching:
+
+```bash
+# Execute exact hashline tool patch on a target codebase file
+pi -p "Update server request validator using exact hashline deltas"
+```
+
 ---
 
 ## 🏆 Why LUMI? Feature & Performance Matrix
@@ -246,7 +280,11 @@ LUMI is engineered from first principles for mechanical sympathy, deterministic 
 | Capability Matrix | Traditional AI CLI Tools | Python Agent Frameworks | **LUMI Agentic Engine** |
 | :--- | :--- | :--- | :--- |
 | **Execution Latency** | High (Process spawn per turn) | High (GIL bottleneck, heavy GC) | **Sub-millisecond TUI / Zero-GC Substrate** |
-| **Memory Engine** | Heap allocation on every event | Dynamic object creation per turn | **16MB Zero-GC Slab Allocator (`BroccoliDB`)** |
+| **Native Search Engine** | Node/Python filesystem search | Subprocess invocations | **Rust Native `pi-natives` (pi-walker, Ripgrep, ast-grep)** |
+| **File Patching & Editing** | Search/replace string matching | Diff block replacement | **Exact Line xxHash Deltas (`@oh-my-pi/hashline`)** |
+| **Memory Substrate** | Transient prompt history | Dynamic object creation | **16MB Zero-GC Slab Allocator (`mnemopi-broccolidb`)** |
+| **Continuous Learning** | Static prompt directives | No cross-session persistence | **Autonomous Skill Discovery & Lesson Manager (`autolearn`)** |
+| **Commit Intelligence** | Manual git commit | Simple prompt wrapper | **Multi-Phase Map-Reduce Commit & Changelog Engine** |
 | **Host Integration** | Limited file watching | Basic shell sub-processes | **Native CodeMarie Host Provider Bridge** |
 | **Sandbox Runtime** | Host process execution | Un-isolated local sub-shells | **Gondolin Micro-VM, Docker, & OpenShell** |
 | **Multi-Provider Routing** | Single vendor lock-in | Complex third-party dependencies | **12+ Native LLM Providers (`openai-codex` default)** |
@@ -257,27 +295,29 @@ LUMI is engineered from first principles for mechanical sympathy, deterministic 
 
 ## 🏗️ System Architecture
 
-LUMI processes developer interactions through a multi-layered pipeline connecting host client providers, agent execution state machines, provider abstractions, substrate storage engines, and isolated sandbox environments.
+LUMI processes developer interactions through a multi-layered pipeline connecting host client providers, agent execution state machines, native Rust search engines, provider abstractions, substrate storage engines, and isolated sandbox environments.
 
 ```
 +-----------------------------------------------------------------------------------+
 |                            LUMI ENGINE TOPOLOGY                                   |
 +-----------------------------------------------------------------------------------+
-|  [Developer Interface]  --> @noorm/lumpi-tui (Differential Terminal UI)             |
+|  [Developer Interface]  --> @noorm/lumpi-tui (Differential Terminal UI & Controllers)|
 |                                     |                                             |
-|  [Agent Core Engine]   --> @noorm/lumpi (Session State CAS & CLI)                 |
+|  [Agent Core Engine]   --> @noorm/lumpi (Session State CAS & Task Worktrees)      |
 |                                     |                                             |
 |  [Native Rust Core]    --> crates/pi-natives (pi-walker, Ripgrep, ast-grep)       |
 |                                     |                                             |
 |  [Line Delta Engine]   --> @oh-my-pi/hashline (xxHash deltas & patch validation)  |
 |                                     |                                             |
-|  [Model Catalog & Thinking] --> @oh-my-pi/pi-catalog (Effort clampers & router)   |
+|  [Auto-Learning Engine]--> autolearn (Lesson Manager & Skill Discovery Generator) |
+|                                     |                                             |
+|  [Commit Subsystem]    --> src/commit (Map-Reduce Commit & Changelog Engine)      |
+|                                     |                                             |
+|  [Memory Substrate]    --> mnemopi-broccolidb (16MB Zero-GC Slab Arena Allocator) |
 |                                     |                                             |
 |  [Host Integration]    --> @noorm/lumpi-codemarie (CodemarieBridge Provider)      |
 |                                     |                                             |
 |  [Multi-LLM Router]    --> @noorm/lumpi-ai (OpenAI Codex / Claude / Gemini)       |
-|                                     |                                             |
-|  [Substrate Storage]   --> @noorm/broccolidb (16MB Slab Arena & RingBuf)          |
 |                                     |                                             |
 |  [Sandbox Execution]   --> Gondolin Micro-VM / Docker / OpenShell Sandbox          |
 +-----------------------------------------------------------------------------------+
@@ -313,9 +353,10 @@ sequenceDiagram
 
 LUMI is structured as a unified monorepo under the `@noorm/*` scope.
 
-| Package | Location | Description |
+| Package / Engine | Location | Description |
 | :--- | :--- | :--- |
-| **`@noorm/lumpi`** | [`packages/coding-agent`](packages/coding-agent) | Primary CLI binary engine, TUI session manager, tool execution runtime, and extension loaders. |
+| **`@noorm/lumpi`** | [`packages/coding-agent`](packages/coding-agent) | Primary CLI binary engine, TUI session manager (`ToolArgsReveal`, `BTW`, `OMFG`), Hashes/line delta engine (`hashline`), Auto-learning harness (`autolearn`), Mnemopi BroccoliDB memory (`mnemopi-broccolidb`), VFS router, task worktree isolation, and agentic git commit pipeline. |
+| **`pi-natives`** | [`crates/pi-natives`](crates/pi-natives) | High-performance native Rust engine bindings (pi-walker, Ripgrep, ast-grep) for zero-latency structural workspace search. |
 | **`@noorm/lumpi-codemarie`** | [`packages/codemarie`](packages/codemarie) | Merged CodeMarie CLI Host Provider (`HostProvider`, workspace/env/window/diff clients). |
 | **`@noorm/broccolidb`** | [`packages/broccolidb`](packages/broccolidb) | Substrate storage engine with 16MB contiguous zero-GC slab allocators (`ArenaAllocator`) and SharedArrayBuffer ring buffers. |
 | **`@noorm/lumpi-agent-core`** | [`packages/agent`](packages/agent) | Core agent runtime enforcing CAS state transitions, prompt assembly, and tool invocations. |

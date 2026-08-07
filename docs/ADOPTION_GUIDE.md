@@ -41,16 +41,17 @@ This guide provides engineering leaders, CTOs, Security Officers, and System Arc
 
 ### Phase 1: Local Sandbox Evaluation (Days 1–3)
 
-- **Goal**: Validate terminal responsiveness, basic multi-provider routing, and tool execution without exposing sensitive internal repositories.
+- **Goal**: Validate terminal responsiveness, basic multi-provider routing, zero-GC substrate performance, and tool execution without exposing sensitive internal repositories.
 - **Actions**:
   1. Clone repository and run `./pi-test.sh --no-env` for zero-key setup testing.
   2. Verify single-host worker host probe: `bun packages/coding-agent/src/cli.ts --smoke-test`.
   3. Verify native Rust crate compilation: `cargo check --manifest-path crates/pi-natives/Cargo.toml`.
-  4. Test local offline model execution using Ollama:
+  4. Test autonomous auto-learning engine: `npx tsx packages/coding-agent/src/cli.ts --autolearn -p "Audit codebase architecture"`.
+  5. Test local offline model execution using Ollama:
      ```bash
      pi --provider ollama --model llama3.3:70b -p "Explain codebase architecture"
      ```
-  5. Validate non-interactive execution mode (`-p`).
+  6. Validate non-interactive execution mode (`-p`).
 
 ### Phase 2: Security & Data Governance Audit (Week 1)
 
@@ -66,16 +67,18 @@ This guide provides engineering leaders, CTOs, Security Officers, and System Arc
 - **Goal**: Deploy LUMI to an initial cohort of 5–10 senior developers to establish baseline productivity gains.
 - **Actions**:
   1. Issue standard provider API keys (OpenAI Codex, Anthropic Claude, or local enterprise gateway).
-  2. Conduct a 15-minute onboarding session covering terminal shortcuts (`Tab`, `Ctrl+O`, `Esc`) and prompt strategies.
-  3. Track velocity indicators (PR cycle time, code review turnaround).
+  2. Conduct a 15-minute onboarding session covering terminal shortcuts (`Tab`, `Ctrl+O`, `Esc`), hashline line deltas, and prompt strategies.
+  3. Enable agentic git commit map-reduce workflow (`npx tsx packages/coding-agent/src/commit/cli.ts --agentic`) for standardized conventional commits.
+  4. Track velocity indicators (PR cycle time, code review turnaround).
 
 ### Phase 4: Team-Wide Scaling (Month 1)
 
 - **Goal**: Standardize LUMI across engineering organizations.
 - **Actions**:
-  1. Publish shared workspace `AGENTS.md` guidelines for team-specific code conventions.
+  1. Publish shared workspace `AGENTS.md` guidelines and enable `autolearn` skill synthesis for team-specific code conventions.
   2. Provision central API key distribution or internal air-gapped proxy endpoints.
-  3. Establish internal support channel for keybinding and prompt optimization.
+  3. Enable BroccoliDB Mnemopi memory persistence (`mnemopi-broccolidb`) across shared team environments.
+  4. Establish internal support channel for keybinding and prompt optimization.
 
 ### Phase 5: Headless CI/CD & Autonomous Swarm Integration (Month 2+)
 

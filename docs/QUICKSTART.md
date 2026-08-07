@@ -126,6 +126,28 @@ npx tsx packages/coding-agent/src/cli.ts --extension packages/coding-agent/examp
 
 ---
 
+## ⚡ Option 5: Agentic Git Commit & Conventional Changelog Engine
+
+To analyze staged changes, topographically isolate dependencies, and auto-generate conventional commits with changelogs:
+
+```bash
+# Run multi-phase agentic commit pipeline
+npx tsx packages/coding-agent/src/commit/cli.ts --agentic
+```
+
+---
+
+## ⚡ Option 6: Autonomous Auto-Learning & Dynamic Skill Discovery
+
+Enable continuous agent self-improvement to discover workspace skills, record lessons from code modifications, and synthesize reusable agent playbooks:
+
+```bash
+# Launch interactive turn with autolearn harness enabled
+npx tsx packages/coding-agent/src/cli.ts --autolearn -p "Audit codebase and synthesize lessons"
+```
+
+---
+
 ## 🔍 Troubleshooting & Onboarding Resources
 
 If you encounter setup issues:
