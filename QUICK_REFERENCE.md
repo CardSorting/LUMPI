@@ -71,13 +71,13 @@ lumpi --provider ollama --model llama3.3:70b
 
 ```bash
 # Launch with subagent swarm delegation extension
-pi --extension packages/coding-agent/examples/extensions/subagent
+lumpi --extension packages/coding-agent/examples/extensions/subagent
 
 # Launch with Gondolin Micro-VM isolation extension
-pi --extension packages/coding-agent/examples/extensions/gondolin
+lumpi --extension packages/coding-agent/examples/extensions/gondolin
 
 # Launch custom metric query tool
-pi --extension packages/coding-agent/examples/extensions/custom-tool
+lumpi --extension packages/coding-agent/examples/extensions/custom-tool
 ```
 
 ---
