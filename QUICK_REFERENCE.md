@@ -38,19 +38,19 @@ LUMI supports on-the-fly AI model provider switching:
 
 ```bash
 # OpenAI Codex (Default)
-pi --provider openai-codex --model gpt-5.6-luna
+lumpi --provider openai-codex --model gpt-5.6-luna
 
 # Anthropic Claude
-pi --provider anthropic --model claude-3.7-sonnet
+lumpi --provider anthropic --model claude-3.7-sonnet
 
 # Google Gemini
-pi --provider gemini --model gemini-2.5-pro
+lumpi --provider gemini --model gemini-2.5-pro
 
 # OpenRouter Gateway
-pi --provider openrouter --model anthropic/claude-3.7-sonnet
+lumpi --provider openrouter --model anthropic/claude-3.7-sonnet
 
 # Sovereign Local LLM (Ollama)
-pi --provider ollama --model llama3.3:70b
+lumpi --provider ollama --model llama3.3:70b
 ```
 
 ---
