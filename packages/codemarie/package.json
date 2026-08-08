@@ -1,6 +1,5 @@
 {
 	"name": "@noorm/lumi-codemarie",
-	"private": true,
 	"publisher": "earendil-works",
 	"version": "0.83.2",
 	"description": "Codemarie / LUMI agent core controller, task lifecycle, state persistence, and MoD prompt steering",
@@ -10,36 +9,8 @@
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./src/index.ts",
-			"import": "./src/index.ts"
-		},
-		"./hosts": {
-			"types": "./src/hosts/index.ts",
-			"import": "./src/hosts/index.ts"
-		},
-		"./joyride": {
-			"types": "./src/core/joyride/index.ts",
-			"import": "./src/core/joyride/index.ts"
-		},
-		"./storage": {
-			"types": "./src/services/storage/StorageManager.ts",
-			"import": "./src/services/storage/StorageManager.ts"
-		},
-		"./transform": {
-			"types": "./src/core/api/transform/token-buffer-engine.ts",
-			"import": "./src/core/api/transform/token-buffer-engine.ts"
-		},
-		"./db": {
-			"types": "./src/infrastructure/db/SQLiteMaintenanceEngine.ts",
-			"import": "./src/infrastructure/db/SQLiteMaintenanceEngine.ts"
-		},
-		"./disk": {
-			"types": "./src/core/storage/disk.ts",
-			"import": "./src/core/storage/disk.ts"
-		},
-		"./providers": {
-			"types": "./src/core/api/providers/cerebras.ts",
-			"import": "./src/core/api/providers/cerebras.ts"
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
 		},
 		"./package.json": "./package.json"
 	},
@@ -48,30 +19,30 @@
 		"README.md"
 	],
 	"scripts": {
-		"clean": "shx rm -rf dist",
-		"build": "tsgo -p tsconfig.build.json"
+		"clean": "echo 'codemarie dist is preserved'",
+		"build": "echo 'codemarie dist is preserved'"
 	},
 	"dependencies": {
-		"@anthropic-ai/sdk": "0.91.1",
-		"@google/genai": "1.52.0",
-		"@modelcontextprotocol/sdk": "1.30.0",
-		"@noorm/broccolidb": "^0.83.2",
+		"@anthropic-ai/sdk": "0.37.0",
+		"@google/genai": "1.45.0",
+		"@modelcontextprotocol/sdk": "1.29.0",
+		"@noorm/broccolidb": "0.83.2",
 		"@bufbuild/protobuf": "2.2.5",
 		"better-sqlite3": "12.8.0",
-		"kysely": "0.28.14",
-		"zod": "3.25.76",
-		"execa": "1.0.0",
+		"kysely": "0.28.11",
+		"zod": "3.24.1",
+		"execa": "8.0.1",
 		"simple-git": "3.33.0",
-		"chokidar": "5.0.0",
-		"diff": "8.0.4",
-		"ignore": "7.0.5",
-		"nanoid": "3.3.16",
+		"chokidar": "4.0.1",
+		"diff": "5.2.0",
+		"ignore": "7.0.3",
+		"nanoid": "5.1.16",
 		"ora": "9.3.0",
-		"picomatch": "2.3.2",
-		"shell-quote": "1.10.0",
-		"strip-ansi": "7.2.0",
+		"picomatch": "4.0.3",
+		"shell-quote": "1.8.3",
+		"strip-ansi": "7.1.2",
 		"turndown": "7.2.4",
-		"undici": "8.9.0",
+		"undici": "7.16.0",
 		"uuid": "10.0.0",
 		"axios": "1.19.0",
 		"open": "11.0.0",
@@ -101,7 +72,7 @@
 		"@opentelemetry/sdk-node": "0.219.0",
 		"@opentelemetry/sdk-trace-base": "2.8.0",
 		"@opentelemetry/sdk-trace-node": "2.8.0",
-		"@opentelemetry/semantic-conventions": "1.41.1",
+		"@opentelemetry/semantic-conventions": "1.37.0",
 		"@grpc/grpc-js": "1.9.15",
 		"os-name": "6.0.0",
 		"jwt-decode": "4.0.0",
@@ -115,7 +86,7 @@
 		"open-graph-scraper": "6.9.0",
 		"pdf-parse": "1.1.1",
 		"ulid": "2.4.0",
-		"mime-types": "3.0.2",
+		"mime-types": "2.1.35",
 		"p-mutex": "1.0.0",
 		"p-timeout": "6.1.4",
 		"p-wait-for": "5.0.2",
@@ -127,7 +98,7 @@
 		"globby": "14.0.2",
 		"google-auth-library": "10.6.2",
 		"grpc-health-check": "2.0.2",
-		"iconv-lite": "0.7.3",
+		"iconv-lite": "0.6.3",
 		"image-size": "2.0.2",
 		"nice-grpc": "2.1.16",
 		"tree-sitter-wasms": "0.1.11",
@@ -137,15 +108,17 @@
 		"@azure/identity": "4.13.0",
 		"@streamparser/json": "0.0.22",
 		"@vscode/codicons": "0.0.45",
-		"archiver": "5.3.2",
+		"archiver": "7.0.1",
 		"fast-deep-equal": "3.1.3",
-		"web-tree-sitter": "0.22.6"
+		"web-tree-sitter": "0.22.6",
+		"typescript": "5.9.3",
+		"js-yaml": "4.3.1"
 	},
 	"devDependencies": {
+		"@types/js-yaml": "4.0.9",
 		"@types/node": "22.19.0",
 		"@types/vscode": "1.96.0",
-		"shx": "0.4.0",
-		"typescript": "5.9.3"
+		"shx": "0.4.0"
 	},
 	"engines": {
 		"node": ">=22.19.0"

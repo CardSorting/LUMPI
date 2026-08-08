@@ -1,12 +1,11 @@
 /**
  * Generate session titles using a smol, fast model.
  */
-import { dlopen, FFIType, ptr } from "bun:ffi";
 import * as path from "node:path";
 
 import type { Api, AssistantMessage, Model } from "@noorm/lumi-ai";
 import { completeSimple } from "@noorm/lumi-ai/compat";
-import { isTerminalHeadless, logger, prompt } from "@oh-my-pi/pi-utils";
+import { dlopen, FFIType, isTerminalHeadless, logger, prompt, ptr } from "@oh-my-pi/pi-utils";
 import type { ModelRegistry } from "../core/model-registry.ts";
 import { findExactModelReferenceMatch } from "../core/model-resolver.ts";
 import type { Settings } from "../core/settings-manager.ts";

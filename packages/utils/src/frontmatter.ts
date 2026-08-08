@@ -1,6 +1,10 @@
-import { YAML } from "bun";
+import jsYaml from "js-yaml";
 import { truncate } from "./format";
 import * as logger from "./logger";
+
+const YAML = {
+	parse: (str: string) => (typeof Bun !== "undefined" && Bun.YAML ? Bun.YAML.parse(str) : jsYaml.load(str)),
+};
 
 function stripHtmlComments(content: string): string {
 	return content.replace(/<!--[\s\S]*?-->/g, "");
@@ -68,12 +72,15 @@ function parseYamlRecord(metadata: string, repairTabs: boolean): Record<string, 
 }
 
 export class FrontmatterError extends Error {
+	readonly source?: unknown;
+
 	constructor(
 		error: Error,
-		readonly source?: unknown,
+		source?: unknown,
 	) {
 		super(`Failed to parse YAML frontmatter (${source}): ${error.message}`, { cause: error });
 		this.name = "FrontmatterError";
+		this.source = source;
 	}
 
 	override toString(): string {

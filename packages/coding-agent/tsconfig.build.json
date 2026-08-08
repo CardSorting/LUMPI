@@ -2,6 +2,11 @@
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"outDir": "./dist",
+		"module": "esnext",
+		"moduleResolution": "Bundler",
+		"erasableSyntaxOnly": false,
+		"skipLibCheck": true,
+		"types": ["node", "@types/bun"],
 		"paths": {
 			"@noorm/lumi-agent-core": ["../agent/dist/index.d.ts"],
 			"@noorm/lumi-agent-core/node": ["../agent/dist/node.d.ts"],
@@ -26,10 +31,12 @@
 			"@noorm/lumi-tui": ["../tui/dist/index.d.ts"],
 			"@noorm/lumi-tui/*": ["../tui/dist/*.d.ts", "../tui/dist/components/*.d.ts"],
 			"@oh-my-pi/pi-tui": ["../tui/dist/index.d.ts"],
-			"@oh-my-pi/pi-tui/*": ["../tui/dist/*.d.ts", "../tui/dist/components/*.d.ts"]
+			"@oh-my-pi/pi-tui/*": ["../tui/dist/*.d.ts", "../tui/dist/components/*.d.ts"],
+			"@oh-my-pi/pi-utils": ["../utils/dist/types/index.d.ts"],
+			"@oh-my-pi/pi-utils/*": ["../utils/dist/types/*.d.ts"]
 		},
 		"rootDir": "./src"
 	},
 	"include": ["src/**/*.ts", "src/**/*.d.ts"],
-	"exclude": ["node_modules", "dist"]
+	"exclude": ["node_modules", "dist", "src/modes/controllers/**"]
 }

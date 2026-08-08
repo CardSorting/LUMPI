@@ -1,5 +1,8 @@
 {
 	"extends": "../tsconfig.workspace.json",
+	"compilerOptions": {
+		"types": ["node", "@types/bun"]
+	},
 	"include": [
 		"src",
 		"test"

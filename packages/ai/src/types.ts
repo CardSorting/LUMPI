@@ -354,6 +354,7 @@ export interface ImageContent {
 	type: "image";
 	data: string; // base64 encoded image data
 	mimeType: string; // e.g., "image/jpeg", "image/png"
+	detail?: string;
 }
 
 export interface ToolCall {
@@ -362,6 +363,7 @@ export interface ToolCall {
 	name: string;
 	arguments: Record<string, any>;
 	thoughtSignature?: string; // Google-specific: opaque signature for reusing thought context
+	intent?: string;
 }
 
 export interface Usage {
@@ -441,6 +443,7 @@ export interface ToolResultMessage<TDetails = any> {
 	 */
 	addedToolNames?: string[];
 	isError: boolean;
+	useless?: boolean;
 	timestamp: number; // Unix timestamp in milliseconds
 }
 

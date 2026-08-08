@@ -2,8 +2,8 @@
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"noEmit": true,
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
 		"types": ["node", "vitest"],
 		"paths": {
 			"@noorm/lumi-protocol": ["../protocol/src/index.ts"]

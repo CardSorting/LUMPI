@@ -4,18 +4,26 @@ import * as path from "node:path";
 import {
 	ApcStableIngestionEngine,
 	AUTO_GOVERNANCE,
+	atomicWriteFile,
 	BASE_SLASH_COMMANDS,
 	BroccoliContextCompactionStore,
 	type BroccoliFenceReadResult,
 	broccoliFencePath,
 	buildGateStateFromInputs,
+	buildJoyRideWorkspaceSnapshot,
 	buildSteeringContext,
+	bumpTaskGeneration,
 	CerebrasHandler,
 	ContextPruner,
 	ContextStalenessTracker,
 	Controller,
+	calculateFileChecksum,
+	classifyCommand,
+	cleanStaleTempFiles,
+	createJoyRideTaskScope,
 	createLockAuthority,
 	defaultApcStableEngine,
+	defaultTokenBufferEngine,
 	detectWorkspaceArchitectureProfile,
 	EnvironmentIntegrity,
 	type EnvironmentLease,
@@ -23,21 +31,36 @@ import {
 	executeJoyZoningRefactor,
 	findBootstrapPlaceholders,
 	findLastIndex,
+	flushTaskGeneration,
+	flushWorkspace,
 	formatBytes,
 	formatResponse,
 	type GateInputs,
 	type GateState,
 	generateLayerComment,
+	getJoyRideCache,
+	getJoyRideDecisionLog,
+	getJoyRideStats,
 	getJoyZoningSection,
 	getLayer,
 	governanceFieldsFromStatus,
 	HEALTH_STATUSES,
 	type HostProvider,
 	initializeCliHostProvider,
+	isEnvAlteringCommand,
+	isJoyRideHitDecision,
 	isLayerTagSupported,
+	isReadOnlyCacheableCommand,
+	type JoyRideCacheDecision,
+	type JoyRideCommandClassification,
+	type JoyRideTaskScope,
+	type JoyRideWorkspaceSnapshot,
 	KnowledgeGraphService,
 	type Layer,
+	type LifetimeTelemetryStats,
 	type LockAuthority,
+	logJoyRideDiagnostics,
+	lookupSafeCommandResult,
 	MAX_CONTENT_SIZE_BYTES,
 	PersistentSubscriptionHub,
 	PlanModeEnforcer,
@@ -47,15 +70,24 @@ import {
 	REQUIRED_SECTIONS,
 	ROADMAP_DIAGNOSTIC_SLASH_COMMANDS,
 	readBroccoliFence,
+	registerTaskLifecycle,
 	runDoctorChecks,
 	SpiderEngine,
+	type SQLiteMaintenanceEngine,
 	StabilityPolicy,
+	StorageManager,
+	type StorageOptimizationResult,
 	SwarmMutexService,
 	sanitizeCellForLLM,
 	sanitizeNotebookForLLM,
+	shutdownJoyRideCache,
+	sqliteMaintenanceEngine,
+	storeCommandDiagnostic,
+	storeReusableCommandResult,
 	suggestLayerForContent,
 	TaskLatencyTracker,
 	TemplateEngine,
+	type TokenIngestionBufferEngine,
 	triggerJoyZoningAudit,
 	truncateContent,
 	UniversalGuard,
@@ -64,47 +96,11 @@ import {
 	validateJoyZoning,
 	validateLayering,
 	validateSmells,
+	verifyIntegrity,
 	type WorkspaceArchitectureProfile,
 	WorkspaceIntelligenceEngine,
 	WriteCoalescer,
 } from "@noorm/lumi-codemarie";
-import { type SQLiteMaintenanceEngine, sqliteMaintenanceEngine } from "@noorm/lumi-codemarie/db";
-import {
-	atomicWriteFile,
-	calculateFileChecksum,
-	cleanStaleTempFiles,
-	verifyIntegrity,
-} from "@noorm/lumi-codemarie/disk";
-import {
-	buildJoyRideWorkspaceSnapshot,
-	bumpTaskGeneration,
-	classifyCommand,
-	createJoyRideTaskScope,
-	flushTaskGeneration,
-	flushWorkspace,
-	getJoyRideCache,
-	getJoyRideDecisionLog,
-	getJoyRideStats,
-	isEnvAlteringCommand,
-	isJoyRideHitDecision,
-	isReadOnlyCacheableCommand,
-	type JoyRideCacheDecision,
-	type JoyRideCommandClassification,
-	type JoyRideTaskScope,
-	type JoyRideWorkspaceSnapshot,
-	logJoyRideDiagnostics,
-	lookupSafeCommandResult,
-	registerTaskLifecycle,
-	shutdownJoyRideCache,
-	storeCommandDiagnostic,
-	storeReusableCommandResult,
-} from "@noorm/lumi-codemarie/joyride";
-import { StorageManager, type StorageOptimizationResult } from "@noorm/lumi-codemarie/storage";
-import {
-	defaultTokenBufferEngine,
-	type LifetimeTelemetryStats,
-	type TokenIngestionBufferEngine,
-} from "@noorm/lumi-codemarie/transform";
 import { URI } from "vscode-uri";
 
 export interface CodemarieBridgeOptions {
@@ -269,7 +265,7 @@ export class CodemarieBridge {
 	}
 
 	public getVariantBuilder(): VariantBuilder {
-		return new VariantBuilder();
+		return new VariantBuilder({} as never);
 	}
 
 	public async runRoadmapDoctor(workspace?: string): Promise<Record<string, unknown>> {
@@ -410,7 +406,7 @@ export class CodemarieBridge {
 		const steering = await this.getSteeringContext();
 		const cwd = this.options.cwd || process.cwd();
 		const profile = detectWorkspaceArchitectureProfile(cwd);
-		const joyZoningSection = await getJoyZoningSection(undefined, { mode, cwd });
+		const joyZoningSection = await getJoyZoningSection(undefined, { mode, cwd } as never);
 
 		const lines: string[] = ["\n<codemarie_steering>"];
 		if (steering && steering.ok !== false) {
@@ -540,7 +536,7 @@ export class CodemarieBridge {
 		return getJoyRideDecisionLog(limit);
 	}
 
-	public getJoyRideStats() {
+	public getJoyRideStats(): ReturnType<typeof getJoyRideStats> {
 		return getJoyRideStats(this.getJoyRideCache());
 	}
 

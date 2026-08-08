@@ -1,6 +1,7 @@
 export { once, untilAborted } from "./abortable.ts";
 export * from "./async.ts";
 export * from "./binary.ts";
+export * from "./bun-ffi.ts";
 export * from "./color.ts";
 export * from "./dirs.ts";
 export * from "./env.ts";

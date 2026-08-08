@@ -2,7 +2,12 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { $which } from "@oh-my-pi/pi-utils";
 import { LRUCache } from "@oh-my-pi/pi-utils/lru";
-import { withTimeoutSignal } from "./fetch-timeout";
+
+function withTimeoutSignal(timeoutMs: number, signal?: AbortSignal): AbortSignal {
+	const timeoutSignal = AbortSignal.timeout(timeoutMs);
+	return signal ? AbortSignal.any([signal, timeoutSignal]) : timeoutSignal;
+}
+
 import * as git from "./git.ts";
 
 // ════════════════════════════════════════════════════════════════════════════

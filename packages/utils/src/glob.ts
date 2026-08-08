@@ -1,5 +1,6 @@
+import * as fs from "node:fs";
 import * as path from "node:path";
-import { Glob } from "bun";
+import picomatch from "picomatch";
 import { getProjectDir } from "./dirs";
 
 export interface GlobPathsOptions {
@@ -18,6 +19,62 @@ export interface GlobPathsOptions {
 	/** Respect .gitignore files when true. Walks up directory tree to find all applicable .gitignore files. */
 	gitignore?: boolean;
 }
+
+class SafeGlob {
+	private pattern: string;
+	private isMatch: (str: string) => boolean;
+
+	constructor(pattern: string) {
+		this.pattern = pattern;
+		this.isMatch = picomatch(pattern, { dot: true });
+	}
+
+	match(str: string): boolean {
+		if (typeof Bun !== "undefined" && Bun.Glob) {
+			return new Bun.Glob(this.pattern).match(str);
+		}
+		return this.isMatch(str);
+	}
+
+	async *scan(options: { cwd: string; dot?: boolean; onlyFiles?: boolean; throwErrorOnBrokenSymlink?: boolean }) {
+		if (typeof Bun !== "undefined" && Bun.Glob) {
+			const bunGlob = new Bun.Glob(this.pattern);
+			yield* bunGlob.scan(options);
+			return;
+		}
+
+		const cwd = options.cwd;
+		const isMatch = picomatch(this.pattern, { dot: options.dot });
+
+		async function* walk(dir: string, baseDir: string): AsyncGenerator<string> {
+			let entries: fs.Dirent[];
+			try {
+				entries = await fs.promises.readdir(dir, { withFileTypes: true });
+			} catch {
+				return;
+			}
+			for (const entry of entries) {
+				if (!options.dot && entry.name.startsWith(".")) continue;
+				const fullPath = path.join(dir, entry.name);
+				const relPath = path.relative(baseDir, fullPath).replace(/\\/g, "/");
+				if (entry.isDirectory()) {
+					if (!options.onlyFiles && isMatch(relPath)) {
+						yield relPath;
+					}
+					yield* walk(fullPath, baseDir);
+				} else if (entry.isFile()) {
+					if (isMatch(relPath)) {
+						yield relPath;
+					}
+				}
+			}
+		}
+
+		yield* walk(cwd, cwd);
+	}
+}
+
+const Glob = SafeGlob;
 
 /** Patterns always excluded (.git is never useful in glob results). */
 const ALWAYS_IGNORED = ["**/.git", "**/.git/**"];
@@ -107,7 +164,7 @@ export async function loadGitignorePatterns(baseDir: string): Promise<string[]> 
 		const gitignorePath = path.join(current, ".gitignore");
 
 		try {
-			const content = await Bun.file(gitignorePath).text();
+			const content = await fs.promises.readFile(gitignorePath, "utf8");
 			const filePatterns = parseGitignorePatterns(content, current, absoluteBase);
 			patterns.push(...filePatterns);
 		} catch {

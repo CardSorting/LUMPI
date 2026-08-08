@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
-import type { AssistantMessage, Message, Usage } from "@oh-my-pi/pi-ai";
-import { INTENT_FIELD } from "@oh-my-pi/pi-wire";
+import type { AssistantMessage, Message, Usage } from "@noorm/lumi-ai";
+import { INTENT_FIELD } from "@noorm/lumi-protocol";
 import * as snapcompact from "../src";
 
 // Small frames keep render time negligible. Legacy 5x8 shape: 320px → 64 cols
@@ -190,7 +190,7 @@ function decodePng(png: Uint8Array): DecodedPng {
 		offset += part.length;
 	}
 	// Strip the zlib envelope (2-byte header + trailing Adler-32).
-	const raw = Bun.inflateSync(idat.subarray(2, idat.length - 4));
+	const raw = (Bun as unknown as { inflateSync: (buf: Uint8Array) => Uint8Array }).inflateSync(idat.subarray(2, idat.length - 4));
 	const per = 8 / depth;
 	const rowBytes = Math.ceil(width / per);
 	expect(raw.length).toBe(height * (rowBytes + 1));

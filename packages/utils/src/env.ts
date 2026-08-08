@@ -56,6 +56,8 @@ export function filterProcessEnv(env: Record<string, string | undefined>): Recor
 // runs — including inside `bun build --compile` binaries — so a snapshot of
 // `Bun.env` is only pre-dotenv when autoloading was explicitly disabled. Linux
 // keeps the original exec environment in procfs, which is authoritative.
+const bunEnv: Record<string, string | undefined> = typeof Bun !== "undefined" ? Bun.env : (process.env as any);
+
 function readLaunchEnv(): ReadonlyMap<string, string> | undefined {
 	if (process.platform === "linux") {
 		try {
@@ -69,8 +71,8 @@ function readLaunchEnv(): ReadonlyMap<string, string> | undefined {
 	}
 	if (!process.execArgv.includes("--no-env-file")) return undefined;
 	const values = new Map<string, string>();
-	for (const key in Bun.env) {
-		const value = Bun.env[key];
+	for (const key in bunEnv) {
+		const value = bunEnv[key];
 		if (value !== undefined) values.set(key, value);
 	}
 	return values;
@@ -199,17 +201,17 @@ const piEnv = parseEnvFile(path.join(getConfigRootDir(), ".env"));
 const agentEnv = parseEnvFile(path.join(getAgentDir(), ".env"));
 const projectEnv = parseEnvFile(path.join(process.cwd(), ".env"));
 
-for (const key of Object.keys(Bun.env)) {
-	const value = Bun.env[key];
+for (const key of Object.keys(bunEnv)) {
+	const value = bunEnv[key];
 	if (!isSafeEnvName(key) || isMacosMallocStackLoggingEnvName(key) || value === undefined || !isSafeEnvValue(value)) {
-		delete Bun.env[key];
+		delete bunEnv[key];
 	}
 }
 
 for (const file of [projectEnv, agentEnv, piEnv, homeEnv]) {
 	for (const key in file) {
-		if (!isMacosMallocStackLoggingEnvName(key) && !Bun.env[key]) {
-			Bun.env[key] = file[key];
+		if (!isMacosMallocStackLoggingEnvName(key) && !bunEnv[key]) {
+			bunEnv[key] = file[key];
 			if (file === projectEnv) projectEnvNamesLoadedByOmp.add(key);
 		}
 	}
@@ -229,7 +231,7 @@ refreshDirsFromEnv();
  * before using environment variables. This ensures that .env files have been loaded and
  * overrides (project, home) have been applied, so $env always reflects the correct values.
  */
-export const $env: Record<string, string> = Bun.env as Record<string, string>;
+export const $env: Record<string, string> = bunEnv as Record<string, string>;
 
 /**
  * Resolve the first environment variable value from the given keys.
@@ -238,7 +240,7 @@ export const $env: Record<string, string> = Bun.env as Record<string, string>;
  */
 export function $pickenv(...keys: string[]): string | undefined {
 	for (const key of keys) {
-		const value = Bun.env[key]?.trim();
+		const value = bunEnv[key]?.trim();
 		if (value) {
 			return value;
 		}
@@ -291,9 +293,10 @@ const BUN_TEST_ENTRY_PATTERN = /[._](?:test|spec)\.[cm]?[jt]sx?$/;
 
 /** True when the process is an explicitly marked test child or Bun is running a test entrypoint. */
 export function isBunTestRuntime(): boolean {
-	if (Bun.env.PI_TEST_RUNTIME === "1") return true;
-	const hasTestEnvironment = Bun.env.BUN_ENV === "test" || Bun.env.NODE_ENV === "test";
-	return hasTestEnvironment && BUN_TEST_ENTRY_PATTERN.test(Bun.main);
+	if (bunEnv.PI_TEST_RUNTIME === "1") return true;
+	const hasTestEnvironment = bunEnv.BUN_ENV === "test" || bunEnv.NODE_ENV === "test";
+	const main = typeof Bun !== "undefined" ? Bun.main : "";
+	return hasTestEnvironment && BUN_TEST_ENTRY_PATTERN.test(main);
 }
 
 let terminalHeadless = isBunTestRuntime();

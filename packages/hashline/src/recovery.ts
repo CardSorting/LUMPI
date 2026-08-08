@@ -335,7 +335,10 @@ function replayRemappedAnchorsOnCurrent(
  * caller can surface a {@link MismatchError} with current context.
  */
 export class Recovery {
-	constructor(readonly store: SnapshotStore) {}
+	readonly store: SnapshotStore;
+	constructor(store: SnapshotStore) {
+		this.store = store;
+	}
 	/**
 	 * Attempt recovery. Returns `null` when no path forward is found — the
 	 * caller should then surface a {@link MismatchError}.

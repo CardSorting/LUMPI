@@ -195,6 +195,11 @@ function resolveExternalDependency(lockPackages, packageName, fromLockPath) {
 
 	while (current) {
 		candidateDirs.push(current);
+		if (current.startsWith("node_modules/@noorm/lumi-") || current.startsWith("node_modules/@oh-my-pi/")) {
+			const subName = current.split("/").slice(1).join("/");
+			const shortName = subName.replace("@noorm/lumi-", "").replace("@oh-my-pi/pi-", "").replace("@oh-my-pi/", "");
+			candidateDirs.push(`packages/${shortName}`);
+		}
 		const parent = posix.dirname(current);
 		if (parent === "." || parent === current) {
 			break;

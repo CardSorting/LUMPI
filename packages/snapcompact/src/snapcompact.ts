@@ -45,10 +45,10 @@
  * re-attached to the compaction summary message on every context rebuild.
  */
 
-import type { Api, ImageContent, Message, TextContent } from "@oh-my-pi/pi-ai";
+import type { Api, ImageContent, Message, TextContent } from "@noorm/lumi-ai";
 import { renderSnapcompactPng, snapcompactSupportedChars } from "@oh-my-pi/pi-natives";
 import { formatGroupedPaths, prompt } from "@oh-my-pi/pi-utils";
-import { INTENT_FIELD } from "@oh-my-pi/pi-wire";
+import { INTENT_FIELD } from "@noorm/lumi-protocol";
 import fileOperationsTemplate from "./prompts/file-operations.md" with { type: "text" };
 import snapcompactSummaryPrompt from "./prompts/snapcompact-summary.md" with { type: "text" };
 
@@ -1097,11 +1097,12 @@ function renderableUnicodeChars(chars: readonly string[], font: Shape["font"] | 
 }
 
 function normalizedInputChars(text: string): string[] {
-	const stripped = text.includes("\u001b") ? Bun.stripANSI(text) : text;
+	const stripFn = (Bun as unknown as { stripANSI?: (s: string) => string }).stripANSI;
+	const stripped = text.includes("\u001b") && stripFn ? stripFn(text) : text;
 	const collapsed = stripped
 		// A run of pure format chars (BOM is both \s and Cf) vanishes; only a
 		// run containing genuine whitespace separates words.
-		.replace(COLLAPSIBLE, run => (LINE_BREAK.test(run) ? NEWLINE_GLYPH : /[^\p{Cf}]/u.test(run) ? " " : ""))
+		.replace(COLLAPSIBLE, (run: string) => (LINE_BREAK.test(run) ? NEWLINE_GLYPH : /[^\p{Cf}]/u.test(run) ? " " : ""))
 		.replace(EDGE_RUNS, "");
 	return [...collapsed];
 }

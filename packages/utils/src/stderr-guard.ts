@@ -21,7 +21,7 @@
  * variadic, and the arm64-darwin ABI passes variadic arguments on the stack,
  * so a fixed-arity FFI signature would read garbage for the third argument.
  */
-import { dlopen, FFIType } from "bun:ffi";
+import { dlopen, FFIType } from "./bun-ffi.ts";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { getLogPath } from "./dirs";
@@ -39,7 +39,7 @@ let libcFdOpsCache: LibcFdOps | null | undefined;
 function libcFdOps(): LibcFdOps | null {
 	if (libcFdOpsCache !== undefined) return libcFdOpsCache;
 	libcFdOpsCache = null;
-	if (process.platform === "win32") return null;
+	if (process.platform === "win32" || !dlopen) return null;
 	// Darwin: dyld resolves libSystem from the shared cache. Linux: glibc
 	// first, then the generic soname for musl-style layouts.
 	const candidates =
@@ -50,13 +50,14 @@ function libcFdOps(): LibcFdOps | null {
 				dup: { args: [FFIType.i32], returns: FFIType.i32 },
 				dup2: { args: [FFIType.i32, FFIType.i32], returns: FFIType.i32 },
 			});
-			libcFdOpsCache = libc.symbols;
-			return libcFdOpsCache;
+			const ops: LibcFdOps | null = libc?.symbols ?? null;
+			libcFdOpsCache = ops;
+			return ops;
 		} catch {
 			// Try the next candidate; the guard stays inert if none load.
 		}
 	}
-	return libcFdOpsCache;
+	return libcFdOpsCache ?? null;
 }
 
 /**

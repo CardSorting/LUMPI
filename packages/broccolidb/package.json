@@ -1,6 +1,5 @@
 {
 	"name": "@noorm/broccolidb",
-	"private": true,
 	"version": "0.83.2",
 	"description": "Stable operational substrate for agent-driven code work — capabilities, runtime, Spider, and durable snapshots.",
 	"type": "module",

@@ -139,19 +139,41 @@ export interface PatcherApplyResult {
  * {@link Patcher.commit} just writes the {@link PreparedSection.applyResult}.
  */
 export class PreparedSection {
+	readonly section: PatchSection;
+	readonly canonicalPath: string;
+	readonly exists: boolean;
+	readonly rawContent: string;
+	readonly bom: string;
+	readonly lineEnding: LineEnding;
+	readonly normalized: string;
+	readonly applyResult: ApplyResult;
+	readonly parseWarnings: readonly string[];
+	readonly fileOp: FileOp | undefined;
+
 	/** @internal */
 	constructor(
-		readonly section: PatchSection,
-		readonly canonicalPath: string,
-		readonly exists: boolean,
-		readonly rawContent: string,
-		readonly bom: string,
-		readonly lineEnding: LineEnding,
-		readonly normalized: string,
-		readonly applyResult: ApplyResult,
-		readonly parseWarnings: readonly string[],
-		readonly fileOp: FileOp | undefined,
-	) {}
+		section: PatchSection,
+		canonicalPath: string,
+		exists: boolean,
+		rawContent: string,
+		bom: string,
+		lineEnding: LineEnding,
+		normalized: string,
+		applyResult: ApplyResult,
+		parseWarnings: readonly string[],
+		fileOp: FileOp | undefined,
+	) {
+		this.section = section;
+		this.canonicalPath = canonicalPath;
+		this.exists = exists;
+		this.rawContent = rawContent;
+		this.bom = bom;
+		this.lineEnding = lineEnding;
+		this.normalized = normalized;
+		this.applyResult = applyResult;
+		this.parseWarnings = parseWarnings;
+		this.fileOp = fileOp;
+	}
 
 	/** Convenience: returns true when the apply produced no change and no file op. */
 	get isNoop(): boolean {

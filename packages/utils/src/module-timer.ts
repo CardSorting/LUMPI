@@ -40,7 +40,6 @@
  * - **Dev runs only.** In the compiled `omp` binary every module is pre-bundled
  *   into bunfs, so `onLoad` never fires; profile with a `bun --preload` dev run.
  */
-import { plugin } from "bun";
 import { moduleLoadBuffer } from "./timing-buffer";
 
 // Restrict to TS/TSX only. node_modules ships CommonJS `.js`/`.cjs` that Bun
@@ -130,19 +129,21 @@ if (process.env.PI_TIMING) {
 		});
 	};
 
-	plugin({
-		name: "pi-module-load-timer",
-		setup(build) {
-			build.onLoad({ filter: MODULE_LOADER_FILTER }, async args => {
-				starts.set(args.path, performance.now());
-				childSetFor(importsByPath, args.path);
-				const contents = await Bun.file(args.path).text();
-				addImportEdges(importsByPath, args.path, contents);
-				return {
-					contents: instrumentContents(args.path, contents),
-					loader: args.path.endsWith(".tsx") ? "tsx" : "ts",
-				};
-			});
-		},
-	});
+	if (typeof Bun !== "undefined" && typeof (Bun as any).plugin === "function") {
+		(Bun as any).plugin({
+			name: "pi-module-load-timer",
+			setup(build: any) {
+				build.onLoad({ filter: MODULE_LOADER_FILTER }, async (args: any) => {
+					starts.set(args.path, performance.now());
+					childSetFor(importsByPath, args.path);
+					const contents = await Bun.file(args.path).text();
+					addImportEdges(importsByPath, args.path, contents);
+					return {
+						contents: instrumentContents(args.path, contents),
+						loader: args.path.endsWith(".tsx") ? "tsx" : "ts",
+					};
+				});
+			},
+		});
+	}
 }

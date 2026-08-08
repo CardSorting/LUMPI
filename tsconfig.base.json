@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ES2022",
-		"module": "Node16",
+		"module": "node16",
 		"lib": ["ES2022", "ES2023", "ES2024"],
 		"strict": true,
 		"erasableSyntaxOnly": true,
