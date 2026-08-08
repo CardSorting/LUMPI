@@ -10,6 +10,10 @@
 - **Advanced custom model sampling** — Configure arbitrary OpenAI-compatible `samplingParams` and opt-in vLLM `thinking_token_budget` values. See [Sampling Parameters](docs/models.md#sampling-parameters).
 - **Baseten provider** — Use built-in Baseten authentication and model support. See [API Keys](docs/providers.md#api-keys).
 
+### Changed
+
+- **Single Package NPM Distribution** — `@noorm/lumi` is now packaged and published as a single standalone 1-package NPM install (`npm install @noorm/lumi` or `npx @noorm/lumi`). All internal workspace packages (`@noorm/lumi-agent-core`, `@noorm/lumi-ai`, `@noorm/lumi-client`, `@noorm/lumi-codemarie`, `@noorm/lumi-protocol`, `@noorm/lumi-tui`) are bundled directly via `bundleDependencies` and in-bundle shrinkwrap so separate NPM sub-package downloads are no longer required.
+
 ### Breaking Changes
 
 - Renamed the inherited pi-ai `ModelsStreamTransforms` interface to `ModelsRequestTransforms` because its header transformation now applies to all authenticated provider requests.
