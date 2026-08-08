@@ -39,8 +39,8 @@
 			"@noorm/lumi-codemarie/joyride": ["./packages/codemarie/dist/index.d.ts"],
 			"@noorm/lumi-codemarie/*": ["./packages/codemarie/dist/index.d.ts"],
 
-			"@noorm/broccolidb": ["./packages/broccolidb/src/index.ts"],
-			"@noorm/broccolidb/*": ["./packages/broccolidb/src/*"],
+			"@noorm/broccolidb": ["./packages/broccolidb/dist/index.d.ts"],
+			"@noorm/broccolidb/*": ["./packages/broccolidb/dist/index.d.ts"],
 			"@oh-my-pi/pi-utils": ["./packages/utils/dist/types/index.d.ts"],
 			"@oh-my-pi/pi-utils/worker-host": ["./packages/utils/dist/types/worker-host.d.ts"],
 			"@oh-my-pi/pi-utils/worker-host.js": ["./packages/utils/dist/types/worker-host.d.ts"],
@@ -68,13 +68,13 @@
 		"**/dist/**",
 		"packages/coding-agent/examples/extensions/gondolin/**",
 		"**/packages/codemarie/**",
-		"./packages/utils/**",
-		"./packages/omptype/**",
-		"./packages/natives/**",
-		"./packages/hashline/**",
-		"./packages/snapcompact/**",
-		"./packages/catalog/**",
-		"./packages/broccolidb/**"
+		"**/packages/utils/**",
+		"**/packages/omptype/**",
+		"**/packages/natives/**",
+		"**/packages/hashline/**",
+		"**/packages/snapcompact/**",
+		"**/packages/catalog/**",
+		"**/packages/broccolidb/**"
 	]
 }
 

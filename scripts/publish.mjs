@@ -5,21 +5,6 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const packages = [
-	{ directory: "packages/natives", name: "@oh-my-pi/pi-natives" },
-	{ directory: "packages/utils", name: "@oh-my-pi/pi-utils" },
-	{ directory: "packages/omptype", name: "@oh-my-pi/omptype" },
-	{ directory: "packages/catalog", name: "@oh-my-pi/pi-catalog" },
-	{ directory: "packages/telemetry", name: "@noorm/lumi-telemetry" },
-	{ directory: "packages/ai", name: "@noorm/lumi-ai" },
-	{ directory: "packages/tui", name: "@noorm/lumi-tui" },
-	{ directory: "packages/agent", name: "@noorm/lumi-agent-core" },
-	{ directory: "packages/protocol", name: "@noorm/lumi-protocol" },
-	{ directory: "packages/client", name: "@noorm/lumi-client" },
-	{ directory: "packages/broccolidb", name: "@noorm/broccolidb" },
-	{ directory: "packages/codemarie", name: "@noorm/lumi-codemarie" },
-	{ directory: "packages/snapcompact", name: "@oh-my-pi/snapcompact" },
-	{ directory: "packages/hashline", name: "@oh-my-pi/hashline" },
-	{ directory: "packages/session-backends/sqlite-node", name: "@noorm/lumi-session-backend-sqlite-node" },
 	{ directory: "packages/coding-agent", name: "@noorm/lumi" },
 ];
 
