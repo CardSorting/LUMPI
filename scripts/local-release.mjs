@@ -6,12 +6,20 @@ import { isAbsolute, join, relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const packages = [
+	{ directory: "packages/natives", name: "@oh-my-pi/pi-natives" },
+	{ directory: "packages/utils", name: "@oh-my-pi/pi-utils" },
+	{ directory: "packages/omptype", name: "@oh-my-pi/omptype" },
+	{ directory: "packages/catalog", name: "@oh-my-pi/pi-catalog" },
 	{ directory: "packages/telemetry", name: "@noorm/lumi-telemetry" },
 	{ directory: "packages/ai", name: "@noorm/lumi-ai" },
 	{ directory: "packages/tui", name: "@noorm/lumi-tui" },
 	{ directory: "packages/agent", name: "@noorm/lumi-agent-core" },
 	{ directory: "packages/protocol", name: "@noorm/lumi-protocol" },
 	{ directory: "packages/client", name: "@noorm/lumi-client" },
+	{ directory: "packages/broccolidb", name: "@noorm/broccolidb" },
+	{ directory: "packages/codemarie", name: "@noorm/lumi-codemarie" },
+	{ directory: "packages/snapcompact", name: "@oh-my-pi/snapcompact" },
+	{ directory: "packages/hashline", name: "@oh-my-pi/hashline" },
 	{ directory: "packages/session-backends/sqlite-node", name: "@noorm/lumi-session-backend-sqlite-node" },
 	{ directory: "packages/coding-agent", name: "@noorm/lumi" },
 ];
@@ -91,6 +99,7 @@ function run(command, args, options = {}) {
 		encoding: "utf8",
 		shell: process.platform === "win32",
 		stdio: options.capture ? ["inherit", "pipe", "inherit"] : "inherit",
+		maxBuffer: 500 * 1024 * 1024,
 	});
 
 	if (result.status !== 0) {
@@ -241,13 +250,13 @@ if (!options.skipInstall) {
 	binaryPlatform = buildBunBinaryRelease(binaryDirectory, outDir);
 
 	mkdirSync(nodeInstallDirectory, { recursive: true });
-	const dependencies = Object.fromEntries(
-		packages.map((pkg) => [pkg.name, fileSpecifier(nodeInstallDirectory, tarballs.get(pkg.name))]),
-	);
+	const dependencies = {
+		"@noorm/lumi": fileSpecifier(nodeInstallDirectory, tarballs.get("@noorm/lumi")),
+	};
 	const installPackageJson = `${JSON.stringify({ private: true, dependencies, overrides: dependencies }, undefined, "\t")}\n`;
 	writeFileSync(join(nodeInstallDirectory, "package.json"), installPackageJson);
 
-	run("npm", ["install", "--omit=dev", "--ignore-scripts"], { cwd: nodeInstallDirectory });
+	run("bun", ["install", "--production", "--ignore-scripts"], { cwd: nodeInstallDirectory });
 	createPiShim(nodeInstallDirectory);
 
 	if (!options.skipBunInstall) {
@@ -255,9 +264,9 @@ if (!options.skipInstall) {
 			throw new Error("Bun is required for the isolated Bun install. Use --skip-bun-install to skip it.");
 		}
 		mkdirSync(bunInstallDirectory, { recursive: true });
-		const bunDependencies = Object.fromEntries(
-			packages.map((pkg) => [pkg.name, fileSpecifier(bunInstallDirectory, tarballs.get(pkg.name))]),
-		);
+		const bunDependencies = {
+			"@noorm/lumi": fileSpecifier(bunInstallDirectory, tarballs.get("@noorm/lumi")),
+		};
 		writeFileSync(join(bunInstallDirectory, "package.json"), `${JSON.stringify({ private: true, dependencies: bunDependencies, overrides: bunDependencies }, undefined, "\t")}\n`);
 		run("bun", ["install", "--production", "--ignore-scripts"], { cwd: bunInstallDirectory });
 		createPiShim(bunInstallDirectory);
